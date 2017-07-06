@@ -29,6 +29,11 @@
 	<%-- 회원 메뉴 : 개인회원 메뉴 /member로 시작 --%>
 	<sec:authorize access="hasRole('ROLE_1')">
 		<li><a href="/MMONG/member/mypage.do?userId=<sec:authentication property="principal.userId"/>">회원 정보조회</a></li>
+		
+	<%-- 소모임 - 자유게시판  --%>
+		<li><a href="/MMONG/group/board/board_form.do?userId=<sec:authentication property='principal.userId'/>">자유게시판 글쓰기</a>
+		<li><a href="/MMONG/group/board/allBoardList.do">자유게시판 목록</a>
+		
 	</sec:authorize>
 </ul>
 <%-- =======================menu 영역 끝=================== --%>
