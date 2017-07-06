@@ -10,7 +10,7 @@
  
 </head>
 <body>
-요니
+
 <h3>index 페이지</h3>
 
 <%-- ========================menu 영역 =================== --%>
@@ -44,7 +44,7 @@
          
 	<%-- 소모임 - 자유게시판 (임시) --%>
 	<sec:authorize access="hasRole('ROLE_1')">
-	  <li><a href="/MMONG/group/board/board_form.do?userId=<sec:authentication property='principal.userId'/>">자유게시판 글쓰기</a>
+	  <li><a href="/MMONG/group/board/board_form.do">자유게시판 글쓰기</a>
 	  <li><a href="/MMONG/group/board/allBoardList.do">자유게시판 목록</a>
 	</sec:authorize>
    
