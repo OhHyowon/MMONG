@@ -7,9 +7,10 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
-    
+ 
 </head>
 <body>
+요니
 <h3>index 페이지</h3>
 
 <%-- ========================menu 영역 =================== --%>
