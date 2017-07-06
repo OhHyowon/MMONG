@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mmong.config.mapper.messageMapper">
+
+<!-- 
+	message_state 값 사용시,
+		0 : 쪽지 받은 사람이 읽지 않음 (이 값 이외에는 모두 읽은 것으로 처리)
+		1 : 쪽지 받은 사람이 읽음
+		2 : 쪽지 보낸 사람이 자신의 보낸 쪽지함에서 삭제
+		3 : 쪽지 받은 사람이 자신의 받은 쪽지함에서 삭제
+		4 : 쪽지 보낸&받은 사람이 모두 삭제 -> database에서 아예 삭제
+ -->
+
+<resultMap type="message" id="message_resultmap">
+	<id column="no" property="no"/> <!-- property : vo, column : sql -->
+	<result column="message_date" property="messageDate"/>
+	<result column="title" property="title"/>
+	<result column="content" property="content"/>
+	<result column="state" property="state"/>
+	<result column="send_id" property="sendId"/>
+	<result column="receive_id" property="receiveId"/>
+</resultMap>
+
+<resultMap type="member" id="member_resultmap">
+	<id column="member_id" property="memberId"/>
+	<result column="member_name" property="memberName"/>
+	<result column="nickname" property="nickName"/>
+	<result column="member_phone" property="memberPhone"/>
+	<result column="member_email" property="memberEmail"/>
+	<result column="member_address" property="memberAddress"/>
+	<result column="member_picture" property="memberPicture"/>
+</resultMap>
+
+<resultMap type="message" id="message_member_resultmap" extends="message_resultmap">
+	<association property="member" javaType="com.mmong.vo.Member">
+		<result column="member_id" property="memberId"/>
+		<result column="member_name" property="memberName"/>
+		<result column="nickname" property="nickName"/>
+		<result column="member_phone" property="memberPhone"/>
+		<result column="member_email" property="memberEmail"/>
+		<result column="member_address" property="memberAddress"/>
+		<result column="member_picture" property="memberPicture"/>
+	</association>
+</resultMap>
+
+
+<!-- 쪽지보내기 -->
+<insert id="insertMessage" parameterType="message">
+	<selectKey resultType="int" keyProperty="no" order="BEFORE">
+		SELECT MESSAGE_NO_SEQ.nextval FROM dual
+	</selectKey>
+	INSERT INTO message VALUES (#{no}, #{messageDate}, #{title}, #{content}, #{state}, #{sendId}, #{receiveId})
+</insert>
+
+<!-- 받은 쪽지함 페이징을 위한 쪽지 개수 세기 -->
+<select id="selectReceiveMessageCount" parameterType="string" resultType="int">
+	SELECT COUNT(no) 
+	FROM message
+	WHERE receive_id = #{value}
+</select>
+
+<!-- 받은 쪽지함 목록 조회 -->
+<select id="selectReceiveMsg" parameterType="map" resultMap="message_member_resultmap">
+	<![CDATA[
+		SELECT no, message_date, title, content, state, send_id, receive_id, nickname
+		FROM(
+			SELECT rownum rnum, no, message_date, title, content, state, send_id, receive_id, nickname
+			FROM(
+				SELECT s.no, s.message_date, s.title, s.content, s.state, s.send_id, s.receive_id, m.nickname
+				FROM message s JOIN member m ON s.send_id = m.member_id
+				WHERE s.receive_id = #{id}
+				ORDER BY s.no DESC
+			)
+			WHERE rownum <= #{endMessageNum}
+		)
+		WHERE rnum >= #{beginMessageNum}
+	]]>
+</select>
+
+<!-- 보낸 쪽지함 페이징을 위한 쪽지 개수 세기 -->
+<select id="selectSendMessageCount" parameterType="string" resultType="int">
+	SELECT COUNT(no) 
+	FROM message
+	WHERE send_id = #{value}
+</select>
+
+<!-- 보낸 쪽지함 목록 조회 -->
+<select id="selectSendMsg" parameterType="map" resultMap="message_member_resultmap">
+	<![CDATA[
+		SELECT no, message_date, title, content, state, send_id, receive_id, nickname
+		FROM(
+			SELECT rownum rnum, no, message_date, title, content, state, send_id, receive_id, nickname
+			FROM(
+				SELECT s.no, s.message_date, s.title, s.content, s.state, s.send_id, s.receive_id, m.nickname
+				FROM message s JOIN member m ON s.receive_id = m.member_id
+				WHERE s.send_id = #{id}
+				ORDER BY s.no DESC
+			)
+			WHERE rownum <= #{endMessageNum}
+		)
+		WHERE rnum >= #{beginMessageNum}
+	]]>
+</select>
+
+<!-- 현재 쪽지의 상태 조회 -->
+<select id="selectMessageState" parameterType="string" resultType="int">
+	SELECT state
+	FROM message
+	WHERE no = #{value}
+</select>
+
+<!-- db에서 쪽지 완전 삭제 -->
+<delete id="deleteMessage" parameterType="string">
+	DELETE FROM message
+	WHERE no = #{value}
+</delete>
+
+<!-- 보낸 쪽지함에서 삭제했다고 상태 표시 -->
+<update id="updateSendMsgState" parameterType="string">
+	UPDATE message
+	SET state = 2
+	WHERE no = #{value}
+</update>
+
+<!-- 받은 쪽지함에서 삭제했다고 상태 표시 -->
+<update id="updateReceiveMsgState" parameterType="string">
+	UPDATE message
+	SET state = 3
+	WHERE no = #{value}
+</update>
+
+<update id="updateMsgState" parameterType="int">
+	UPDATE message
+	SET state = 1
+	WHERE no = #{value}
+</update>
+
+ <!-- 받은 쪽지 조회 -->
+<select id="viewReceiveMsg" parameterType="int" resultMap="message_member_resultmap">
+	SELECT s.no, s.message_date, s.title, s.content, s.state, s.send_id, s.receive_id, m.nickname
+	FROM message s JOIN member m ON s.send_id = m.member_id
+	WHERE s.no = #{no} 
+</select>
+ 
+<!-- 보낸 쪽지 조회 -->
+<select id="viewSendMsg" parameterType="int" resultMap="message_member_resultmap">
+	SELECT s.no, s.message_date, s.title, s.content, s.state, s.send_id, s.receive_id, m.nickname
+	FROM message s JOIN member m ON s.receive_id = m.member_id
+	WHERE s.no = #{no}
+</select>
+
+<!-- 답장하기 위해 쪽지를 보낸 사람의 Id와 닉네임 알아내기 -->
+<select id="selectMsgIdNick" parameterType="int" resultMap="message_member_resultmap">
+	SELECT s.send_id, m.nickname
+	FROM message s JOIN member m ON s.send_id = m.member_id
+	WHERE s.no = #{value}
+</select>
+
+<!-- 보낸 쪽지함에서 검색 결과의 게시글 개수 구하기 -->
+<select id="searchSendMsgCount" parameterType="hashmap" resultType="int">
+	<choose>
+		<when test="searchOpt == 'ID'">
+			SELECT COUNT(no) 
+			FROM message
+			WHERE send_id = #{id} AND receive_id LIKE '%'||#{search}||'%'
+		</when> 
+		<when test="searchOpt == 'title'">
+			SELECT COUNT(no) 
+			FROM message
+			WHERE send_id = #{id} AND title LIKE '%'||#{search}||'%'
+		</when>
+		<otherwise>
+			SELECT COUNT(no) 
+			FROM message
+			WHERE send_id = #{id} AND content LIKE '%'||#{search}||'%'
+		</otherwise>
+	</choose>
+</select>
+
+<!-- 보낸 쪽지함에서 검색 결과 페이징 처리해 목록 조회 -->
+<select id="searchSendMsg" parameterType="hashmap" resultMap="message_member_resultmap">
+	<choose>
+		<when test="searchOpt == 'ID'">
+			<![CDATA[
+				SELECT no, message_date, title, content, state, send_id, receive_id, nickname
+				FROM(
+					SELECT rownum rnum, no, message_date, title, content, state, send_id, receive_id, nickname
+					FROM(
+						SELECT s.no, s.message_date, s.title, s.content, s.state, s.send_id, s.receive_id, m.nickname
+						FROM message s JOIN member m ON s.receive_id = m.member_id
+						WHERE s.send_id = #{id} AND s.receive_id LIKE '%'||#{search}||'%'
+						ORDER BY s.no DESC
+					)
+					WHERE rownum <= #{endMessageNum}
+				)
+				WHERE rnum >= #{beginMessageNum}
+			]]>
+		</when>
+		<when test="searchOpt == 'title'">
+			<![CDATA[
+				SELECT no, message_date, title, content, state, send_id, receive_id, nickname
+				FROM(
+					SELECT rownum rnum, no, message_date, title, content, state, send_id, receive_id, nickname
+					FROM(
+						SELECT s.no, s.message_date, s.title, s.content, s.state, s.send_id, s.receive_id, m.nickname
+						FROM message s JOIN member m ON s.receive_id = m.member_id
+						WHERE s.send_id = #{id} AND s.title LIKE '%'||#{search}||'%'
+						ORDER BY s.no DESC
+					)
+					WHERE rownum <= #{endMessageNum}
+				)
+				WHERE rnum >= #{beginMessageNum}
+			]]>
+		</when>
+		<otherwise>
+			<![CDATA[
+				SELECT no, message_date, title, content, state, send_id, receive_id, nickname
+				FROM(
+					SELECT rownum rnum, no, message_date, title, content, state, send_id, receive_id, nickname
+					FROM(
+						SELECT s.no, s.message_date, s.title, s.content, s.state, s.send_id, s.receive_id, m.nickname
+						FROM message s JOIN member m ON s.receive_id = m.member_id
+						WHERE s.send_id = #{id} AND s.content LIKE '%'||#{search}||'%'
+						ORDER BY s.no DESC
+					)
+					WHERE rownum <= #{endMessageNum}
+				)
+				WHERE rnum >= #{beginMessageNum}
+			]]>
+		</otherwise>
+	</choose>
+</select>
+
+<!-- 받은 쪽지함에서 검색 결과의 게시글 개수 구하기 -->
+<select id="searchReceiveMsgCount"  parameterType="hashmap" resultType="int">
+	<choose>
+		<when test="searchOpt == 'ID'">
+			SELECT COUNT(no) 
+			FROM message
+			WHERE receive_id = #{id} AND send_id LIKE '%'||#{search}||'%'
+		</when> 
+		<when test="searchOpt == 'title'">
+			SELECT COUNT(no) 
+			FROM message
+			WHERE receive_id = #{id} AND title LIKE '%'||#{search}||'%'
+		</when>
+		<otherwise>
+			SELECT COUNT(no) 
+			FROM message
+			WHERE receive_id = #{id} AND content LIKE '%'||#{search}||'%'
+		</otherwise>
+	</choose>
+</select>
+
+<!-- 받은 쪽지함에서 검색 결과 페이징 처리해 목록 조회 -->
+<select id="searchReceiveMsg" parameterType="hashmap" resultMap="message_member_resultmap">
+	<choose>
+		<when test="searchOpt == 'ID'">
+			<![CDATA[
+				SELECT no, message_date, title, content, state, send_id, receive_id, nickname
+				FROM(
+					SELECT rownum rnum, no, message_date, title, content, state, send_id, receive_id, nickname
+					FROM(
+						SELECT s.no, s.message_date, s.title, s.content, s.state, s.send_id, s.receive_id, m.nickname
+						FROM message s JOIN member m ON s.send_id = m.member_id
+						WHERE s.receive_id = #{id} AND s.send_id LIKE '%'||#{search}||'%'
+						ORDER BY s.no DESC
+					)
+					WHERE rownum <= #{endMessageNum}
+				)
+				WHERE rnum >= #{beginMessageNum}
+			]]>
+		</when>
+		<when test="searchOpt == 'title'">
+			<![CDATA[
+				SELECT no, message_date, title, content, state, send_id, receive_id, nickname
+				FROM(
+					SELECT rownum rnum, no, message_date, title, content, state, send_id, receive_id, nickname
+					FROM(
+						SELECT s.no, s.message_date, s.title, s.content, s.state, s.send_id, s.receive_id, m.nickname
+						FROM message s JOIN member m ON s.send_id = m.member_id
+						WHERE s.receive_id = #{id} AND s.title LIKE '%'||#{search}||'%'
+						ORDER BY s.no DESC
+					)
+					WHERE rownum <= #{endMessageNum}
+				)
+				WHERE rnum >= #{beginMessageNum}
+			]]>
+		</when>
+		<otherwise>
+			<![CDATA[
+				SELECT no, message_date, title, content, state, send_id, receive_id, nickname
+				FROM(
+					SELECT rownum rnum, no, message_date, title, content, state, send_id, receive_id, nickname
+					FROM(
+						SELECT s.no, s.message_date, s.title, s.content, s.state, s.send_id, s.receive_id, m.nickname
+						FROM message s JOIN member m ON s.send_id = m.member_id
+						WHERE s.receive_id = #{id} AND s.content LIKE '%'||#{search}||'%'
+						ORDER BY s.no DESC
+					)
+					WHERE rownum <= #{endMessageNum}
+				)
+				WHERE rnum >= #{beginMessageNum}
+			]]>
+		</otherwise>
+	</choose>
+</select>
+
+</mapper>

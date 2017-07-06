@@ -17,5 +17,6 @@
 		<mapper resource="com/mmong/config/mapper/replyMapper.xml"/>
 		<mapper resource="com/mmong/config/mapper/groupDateMapper.xml"/>
 		<mapper resource="com/mmong/config/mapper/groupMemberMapper.xml"/>
+		<mapper resource="com/mmong/config/mapper/messageMapper.xml" />
 	</mappers>
 </configuration>

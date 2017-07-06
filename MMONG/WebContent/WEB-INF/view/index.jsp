@@ -10,7 +10,7 @@
  
 </head>
 <body>
-요니
+
 <h3>index 페이지</h3>
 
 <%-- ========================menu 영역 =================== --%>
@@ -56,6 +56,8 @@
 		<li><a href="/MMONG/member/mypage.do">관리자 등록</a></li>	
 	</sec:authorize>
       
+      
+      <li><a href="/MMONG/message.do?userId=<sec:authentication property="principal.userId"/>">쪽지 관리</a></li>
 </ul>   
 <%-- ======================대menu 영역 끝=================== --%>   
 
