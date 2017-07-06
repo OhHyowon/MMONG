@@ -14,7 +14,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.mmong.dao.AdministratorDao;
+import com.mmong.dao.MemberDao;
 import com.mmong.dao.UserDao;
+import com.mmong.vo.Administrator;
+import com.mmong.vo.Member;
 import com.mmong.vo.User;
 
 @Component
@@ -27,10 +31,18 @@ import com.mmong.vo.User;
 public class UserAuthenticationProvider implements AuthenticationProvider{
 	
 	@Autowired
-	private UserDao authDao;
+	private UserDao userDao;
+	@Autowired
+	private MemberDao memDao;
+	@Autowired
+	private AdministratorDao adminDao;
+
 	
 	@Autowired
 	private PasswordEncoder encoder;
+	
+	
+	
 	//문자열을 암호화 - encode()
 	//문자열과 암호화된 문자열을 비고 - matches(비교대상문자열, 암호화된문자열) : boolean
 	
@@ -45,7 +57,7 @@ public class UserAuthenticationProvider implements AuthenticationProvider{
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		//ID 체크
 		String userId = authentication.getName();//사용자가 입력한 ID
-		User user = authDao.searchUserByUserId(userId);
+		User user = userDao.searchUserByUserId(userId);
 		if(user == null){ //없는 id => 로그인실패
 			throw new UsernameNotFoundException("ID를 확인하세요");
 		}
@@ -58,11 +70,17 @@ public class UserAuthenticationProvider implements AuthenticationProvider{
 
 		//SimpleGrantedAuthority - 권한정보를 문자열로 저장.
 		List<SimpleGrantedAuthority> authList = new ArrayList<>();
-		String auth = String.valueOf(user.getUserAuthority());
-		authList.add(new SimpleGrantedAuthority(auth));
+		authList.add(new SimpleGrantedAuthority(user.getUserAuthority()));
 		
-		//인증한 사용자 정보(Principal), 패스워드, 인증된사용자의 권한(int->String으로 변환된 권한)을 넣어 Authentication객체 생성해 리턴
-		return new UsernamePasswordAuthenticationToken(user, null, authList);
+		//인증한 사용자 정보(Principal), 패스워드, 인증된사용자의 권한을 넣어서 principal객체 리턴
+		//인증한 사용자가 관리자이면 principal은 관리자 객체, 회원이면 회원 객체가 리턴됨
+		if(user.getUserAuthority().equals("ROLE_1")){
+			Member member = memDao.searchMemberById(userId);
+			return new UsernamePasswordAuthenticationToken(member, null, authList);
+		}else{ //user.getUserAuthority().equals("ROLE_0") 일때 
+			Administrator admin = adminDao.searchAdministratorById(userId);
+			return new UsernamePasswordAuthenticationToken(admin, null, authList);
+		}
 	}
 
 	@Override

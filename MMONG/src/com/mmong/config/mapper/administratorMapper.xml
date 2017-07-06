@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mmong.config.mapper.administratorMapper">
+
+	<resultMap type="administrator" id="administrator-resultmap">
+		<id column="admin_id" property="adminId"/>
+		<result column="admin_name" property="adminName"/>
+		<result column="admin_phone" property="adminPhone"/>
+		<result column="admin_email" property="adminEmail"/>
+	</resultMap>
+
+
+	<sql id="select-sql-administrator">
+		SELECT admin_id adminId, 
+					  admin_name adminName, 					  
+					  admin_phone adminPhone, 					  
+					  admin_email adminEmail
+		FROM administrator
+	</sql>
+
+	<insert id="registerAdministrator" parameterType="administrator">
+		INSERT INTO administrator 
+		VALUES (#{adminId},
+						#{adminName},
+						#{adminPhone},
+						#{adminEmail}
+						)
+	</insert>
+
+	<update id="updateAdministratorById" parameterType="administrator">
+		UPDATE administrator
+		SET  admin_name=#{adminName},
+				admin_phone=#{adminPhone},
+				admin_email=#{adminEmail}
+		WHERE admin_id=#{adminId}
+	</update>
+
+	<delete id="deleteAdministratorById" parameterType="string">
+		DELETE FROM administrator WHERE admin_id=#{value}
+	</delete>
+	
+ <!-- 
+ 조인 - administrator가 user의 패스워드를 불러 올수 있어야함
+ -->
+	<resultMap id="administrator-users-resultMap" type="administrator" extends="administrator-resultmap">
+		<association property="adminUser" javaType="User">
+			<result property="userId" column="user_id"/>
+			<result property="userPwd" column="user_pwd"/>
+			<result property="userAuthority" column="user_authority"/>
+			<result property="userEnable" column="user_enable"/>
+		</association>
+	</resultMap>
+ 
+	<select id="searchAdministratorById" parameterType="string" resultMap="administrator-users-resultMap">
+		SELECT a.admin_id, a.admin_name, a.admin_phone, a.admin_email,
+					  u.user_id, u.user_pwd, u.user_authority, u.user_enable
+		FROM 	  administrator a, users u
+		WHERE admin_id=user_id(+)
+		AND	  admin_id=#{value}
+	</select> 
+
+ 
+ 
+	<!-- 병원 -->
+	<sql id="select-sql-hospital">
+		SELECT hospital_id hospitalId, 
+					  hospital_tel hospitalTel, 
+					  hospital_name hospitalName, 
+					  hospital_address hospitalAddress, 
+					  hospital_site hospitalSite  
+		FROM hospital
+	</sql> 
+ 
+ 	
+ 	
+ 	
+ 	<!-- 일반회원(member) 관리 -->
+ 	<sql id="select-sql-member">
+		SELECT member_id memberId,
+					  member_name memberName,
+					  nickname nickName,
+					  member_phone memberPhone,
+					  member_address memberAddress,
+					  member_email memberEmail,
+					  member_picture memberPicture
+		FROM member
+	</sql>  
+ 	
+ 	<!-- 일반회원 조회 -->
+ 	<select id="searchMemberById" parameterType="string" resultType="member">
+ 		<include refid="select-sql-member"/>
+ 		WHERE member_id=#{value}
+ 	</select>
+ 	
+ 	
+ 	
+ 	<!-- 아래 매핑은 필요 없어질 수도 -->
+ 	
+ 	
+ 	
+ 	
+ 	<!-- 일반회원 권한 변경 (1->4) -->
+ 	<update id="updateAuthorityMemberToStop" parameterType="member">
+ 	<!-- UPDATE member
+ 	SET 			member_authority=4
+ 	WHERE 	member_id=#{value} -->
+ 	</update>
+ 	
+ 	<!-- 일반회원 권한 변경 (1<-4) -->
+ 	<update id="updateAuthorityMemberToRun" parameterType="member">
+ 	<!-- UPDATE member
+ 	SET 			member_authority=1
+ 	WHERE 	member_id=#{value} -->
+ 	</update>
+
+
+	<!-- 여기까지(권한설정) 필요성 다시 검토 필요 -->
+
+
+
+	<!-- 유저(User) -->
+	<sql id="select-sql-user">
+		SELECT user_id userId,
+					  user_pwd userPwd,
+					  user_authority userAuthority,
+					  user_enable userEnable
+	</sql>
+	
+	<!-- 유저(user) 조회-->
+	<select id="searchUserById" parameterType="user" resultType="user">
+		<include refid="select-sql-user"/>
+		FROM users
+	</select>
+
+	<!-- 유저테이블(Users)에 등록 -->
+	<insert id="registerUser" parameterType="user">
+	INSERT INTO users VALUES (#{userId}, #{userPwd}, #{userAuthority}, #{userEnable})
+	</insert>
+	
+	
+	
+	
+	
+	
+ 	
+ </mapper>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

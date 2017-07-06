@@ -1,6 +1,7 @@
 package com.mmong.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -33,8 +34,6 @@ public class MemberController {
 	public ModelAndView registerMember(@ModelAttribute Member member, BindingResult errors) {		
 		User user = new User(member.getMemberId(), member.getMemberUser().getUserPwd(), "ROLE_1", 1);
 		member.setMemberUser(user);
-		System.out.println("멤버컨트롤러 : "+user);
-		System.out.println("멤버컨트롤러 : "+member);
 		
 		//요청 파라미터 검증
 		MemberRegisterValidator validator = new MemberRegisterValidator();
@@ -99,8 +98,8 @@ public class MemberController {
 	 * @return
 	 */
 	@RequestMapping("mypage")
-	public ModelAndView searchMemberInfoById(@RequestParam(required=false) String userId){
-		Member member = memberService.searchMemberById(userId);
+	public ModelAndView searchMemberInfoById(){
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return new ModelAndView("content/member/mypage", "member", member);
 	}
 	
