@@ -6,28 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style>
-#simplemodal-overlay {background-color:#000;}
-#modal_content{display:none;margin:50 auto;width:200px;height:100px;background:blue;color:#fff}
-</style>
-<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<script type="text/javascript">
-var dialog;
-$(document).ready(function() {
-	
-	dialog = $( "#dialog" ).dialog({
-	    autoOpen: false,
-	    title: '소모임 만들기',
-	    height: 400,
-	    width: 350
-	});
-	
-	$( "#createGroup" ).button().on( "click", function() {
-	      dialog.dialog( "open" );
-	});
 
-});
+<script type="text/javascript">
+
 </script>
 </head>
 <body>
@@ -85,11 +66,7 @@ $(document).ready(function() {
 
 
 <!-- 소모임 추가 버튼 -->
-<button id="createGroup">소모임 만들기</button>
-
-<div id="dialog">
-   <p>다이얼로그 모달창을 띄우는 간단한 방법!!</p>
-</div>
+<button type="button" onclick="window.open('/MMONG/WebContent/WEB-INF/view/content/group/createGroup.jsp', '회원가입', 'top=100px, left=100px, height=500px, width=800px')">소모임 만들기</button>
 
 
 
