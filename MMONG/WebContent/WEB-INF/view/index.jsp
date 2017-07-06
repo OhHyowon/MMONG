@@ -30,10 +30,7 @@
 	<sec:authorize access="hasRole('ROLE_1')">
 		<li><a href="/MMONG/member/mypage.do?userId=<sec:authentication property="principal.userId"/>">회원 정보조회</a></li>
 		
-	<%-- 소모임 - 자유게시판  --%>
-		<li><a href="/MMONG/group/board/board_form.do?userId=<sec:authentication property='principal.userId'/>">자유게시판 글쓰기</a>
-		<li><a href="/MMONG/group/board/allBoardList.do">자유게시판 목록</a>
-		
+
 	</sec:authorize>
 </ul>
 <%-- =======================menu 영역 끝=================== --%>
@@ -45,6 +42,14 @@
 <%-- =======================대menu 영역 =================== --%>
 <ul>
 		<li><a href="/MMONG/group/mygroup.do">소모임</a></li>
+			
+			
+	<%-- 소모임 - 자유게시판  --%>
+	<sec:authorize access="hasRole('ROLE_1')">
+		<li><a href="/MMONG/group/board/board_form.do?userId=<sec:authentication property='principal.userId'/>">자유게시판 글쓰기</a>
+		<li><a href="/MMONG/group/board/allBoardList.do">자유게시판 목록</a>
+	</sec:authorize>
+		
 </ul>	
 <%-- ======================대menu 영역 끝=================== --%>	
 

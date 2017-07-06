@@ -33,7 +33,7 @@ public interface BoardDao {
 	 * @param boardNo
 	 * @return
 	 */
-	public Board selectNickNameByMemberId(String memberId,int boardNo);
+	public String selectNickNameByMemberId(String memberId,int boardNo);
 	/**
 	 * 게시글 번호와 작성자 이름 확인 후 게시글 삭제
 	 * @param boardNo

@@ -18,6 +18,19 @@ public class Board implements Serializable {
 	private Member member;
 	
 	public Board(){}
+	
+	public Board(int no, String title, String content, Date boardDate, int hit, String memberId, int groupNo) {
+		super();
+		this.no = no;
+		this.title = title;
+		this.content = content;
+		this.boardDate = boardDate;
+		this.hit = hit;
+		this.memberId = memberId;
+		this.groupNo = groupNo;
+	}
+
+
 
 	public Board(int no, String title, String content, Date boardDate, int hit, String memberId, int replyCount,
 			int groupNo, Group group, Member member) {

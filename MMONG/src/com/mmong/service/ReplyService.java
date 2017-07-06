@@ -20,5 +20,6 @@ public interface ReplyService {
 	
 	public int selectReplyCount(int boardNo);
 	
+	public void updateReply(Reply reply);
 	
 }

@@ -16,7 +16,7 @@ public interface BoardService {
 	
 	public int updateBoard(Board board);
 	
-	public Board selectNickNameByMemberId(String memberId,int boardNo);
+	public String selectNickNameByMemberId(String memberId,int boardNo);
 	
 	public void deleteBoard(int boardNo,String memberId);
 	

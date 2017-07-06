@@ -20,19 +20,32 @@
 	<mvc:view-controller path="/login_form.do" view-name="login_form"/>
 	<!-- 개인회원 회원가입 폼 -->
 	<mvc:view-controller path="/member/register_form.do" view-name="content/member/register_form"/>
+
+
+
+
+
+
+
+	<!--  @@@@@ 추가시 각자의 구역 안에서 추가 해주세요 @@@@ -->
+
+	<!-- 여림 -->
+		<mvc:view-controller path="/group/groupDate/groupDate_form.do" view-name="content/group/groupDate/groupDate_form"/>
+		<mvc:view-controller path="/group/board/board_form.do" view-name="content/group/board/board_form"/>
+		<mvc:view-controller path="/group/board/board_success.do" view-name="content/group/board/board_success"/>
+		<mvc:view-controller path="/group/board/board_view.do" view-name="content/group/board/board_view"/>
+		<mvc:view-controller path="/group/board/board_update.do" view-name="content/group/board/board_update"/>
+		
+		
+	<!-- 세연 -->
+
+	<!-- 규현 -->
 	
-	<!-- groupDate -->
-	<mvc:view-controller path="/group/groupDate/groupDate_form.do" view-name="content/group/groupDate/groupDate_form"/>
+	<!-- 효원 -->
 	
-	<!-- board -->
-	<mvc:view-controller path="/group/board/board_form.do" view-name="content/group/board/board_form"/>
-	<mvc:view-controller path="/group/board/board_success.do" view-name="content/group/board/board_success"/>
-	<mvc:view-controller path="/group/board/board_view.do" view-name="content/group/board/board_view"/>
-	<mvc:view-controller path="/group/board/board_update.do" view-name="content/group/board/board_update"/>
-
-
-
-
+	<!-- 주현 -->
+	
+	<!-- 진우 -->
 
  	<bean name="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"
 				p:basename="com.mmong.validation.message.error_message" p:defaultEncoding="utf-8"/>

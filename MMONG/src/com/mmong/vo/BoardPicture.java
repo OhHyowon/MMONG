@@ -6,8 +6,8 @@ public class BoardPicture implements Serializable {
 	
 	private int no;
 	private String route;
-	
 	private int boardNo;
+	
 	private Board board;
 	
 	public BoardPicture(){}

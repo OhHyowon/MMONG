@@ -32,4 +32,8 @@ public class ReplyServiceImpl implements ReplyService{
 	public int selectReplyCount(int boardNo){
 		return dao.selectReplyCount(boardNo);
 	}
+	
+	public void updateReply(Reply reply){
+		dao.updateReply(reply);
+	}
 }

@@ -58,6 +58,9 @@ public class BoardController {
 				
 		String destDir = request.getServletContext().getRealPath("/up_image"); // 진짜경로
 
+		System.out.println(destDir);
+		
+		
 		String memberId=userId;
 		int groupNo=0;
 		/*
@@ -78,7 +81,7 @@ public class BoardController {
 		
 		
 		
-		String nickname = boardService.selectNickNameByMemberId(memberId, boardNo).getMember().getNickName();
+		String nickname = boardService.selectNickNameByMemberId(memberId, boardNo);
 		// 등록한 게시글의 nickname 가져오기
 
 		ArrayList<String> nameList = new ArrayList<>(); // 업로드 된 파일명 저장할 list
@@ -138,17 +141,18 @@ public class BoardController {
 															ModelMap map) throws Exception{
 		
 		
-		String memberId="testId"; // test되는 동안에 쓸 memberId
-		/*
-		 	session.getAttribute("memberId"); 로그인되면 이걸로 쓰기!
-		 */
-		
 		BoardRegisterValidator validator=new BoardRegisterValidator();
 		validator.validate(board,errors);
 		if(errors.hasErrors()){
 			return "content/group/board/board_update";
 		}
-	
+
+		
+		
+		String memberId="duflalrjdi"; 
+		/*
+		 *  로그인 수정 필요.!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		 */
 		
 		String destDir=request.getServletContext().getRealPath("/up_image"); // 진짜경로
 		
@@ -161,7 +165,7 @@ public class BoardController {
 		boardService.updateBoard(board); // DB에 수정된 글 넣기
 
 		// 등록한 게시글의 nickname 가져오기
-		String nickname=boardService.selectNickNameByMemberId(memberId,boardNo).getMember().getNickName();
+		String nickname=boardService.selectNickNameByMemberId(memberId,boardNo);
 		
 		ArrayList<String> nameList=new ArrayList<>(); // 업로드 된 파일명 저장할 list
 		BoardPicture boardPicture = new BoardPicture();
@@ -211,12 +215,14 @@ public class BoardController {
 		/*
 		session.getAttribute("memberId");  로그인 되면 사용하기
 		*/
-		String memberId="testId"; // test하는 동안에 쓸 Id
+		
+		System.out.println("deleteBoard 컨트롤러 ");
+		
+		String memberId="duflalrjdi"; // test하는 동안에 쓸 Id
 		
 		Board board=boardService.selectBoard(boardNo);
 
 		if(board.getMemberId().equals(memberId)){
-			
 			BPService.deleteBPByBoardNo(boardNo);
 			boardService.deleteBoard(boardNo, memberId);
 		}
@@ -232,24 +238,22 @@ public class BoardController {
 		hit++; // 조횟수 올리기
 		board.setHit(hit);
 		
-		System.out.println("업데이트 들어가기 전 "+board);
-		
 		boardService.updateBoard(board);
-		
-		System.out.println("업데이트 들어간 후 : "+board);
-		
+			
 		board=boardService.selectBoard(boardNo);
-
+		
+		// 사진 찾기
 		List<BoardPicture> bP = BPService.selectBPByBoardNo(boardNo);
 		ArrayList<String> nameList = new ArrayList<>();  // 업로드 된 파일명 저장할 list
-
+		
+		
 		for(int i =0; i<bP.size(); i++){
 			nameList.add(bP.get(i).getRoute()); 
 		}
 	
 		String memberId=board.getMemberId(); // 게시판 쓴 사람의 Id
 		
-		String boardNickname=boardService.selectNickNameByMemberId(memberId, boardNo).getMember().getNickName();
+		String boardNickname=boardService.selectNickNameByMemberId(memberId, boardNo);
 
 		List<Reply> replyList = replyService.selectReplyByBoardNo(boardNo); 
 		
@@ -276,7 +280,6 @@ public class BoardController {
 													@RequestParam (value="option", defaultValue="1")String option, 
 													@RequestParam  (value="key", defaultValue="1")String key, 
 													ModelMap map) {
-
 		
 		HashMap<String,Object> pagingMap =null;
 		

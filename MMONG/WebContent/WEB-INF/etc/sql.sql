@@ -232,3 +232,35 @@ CREATE TABLE MESSAGE (
 );
 DROP SEQUENCE MESSAGE_NO_SEQ;
 CREATE SEQUENCE MESSAGE_NO_SEQ;
+
+
+		SELECT no,title,content,board_date,hit,member_id,group_no
+		FROM board
+		WHERE no=3
+
+		SELECT no,route,board_no
+		FROM board_picture
+		WHERE board_no=2
+		
+		
+LJY.jpg
+
+
+		INSERT INTO board_picture VALUES(
+		BP_NO_SEQ.nextval,'LJY.jpg',12
+		)
+		
+		
+		
+		SELECT m.nickname
+		FROM board b JOIN member m ON b.member_id=m.member_id
+		WHERE m.member_id='duflalrjdi'
+		AND b.no=3
+		
+		
+	UPDATE reply
+	SET		content='수정완료',
+				reply_date='2017-07-05'
+	WHERE no=3 AND member_Id='duflalrjdi'
+
+		

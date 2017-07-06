@@ -14,7 +14,7 @@ public class BoardPictureDaoImpl implements BoardPictureDao{
 	private SqlSessionTemplate session;
 	
 	private String makeSqlId(String id){
-		return "kr.co.patch.config.mapper.boardMapper."+id;
+		return "com.mmong.config.mapper.boardMapper."+id;
 	}
 	
 	public int insertBP(BoardPicture boardPicture){
@@ -27,5 +27,6 @@ public class BoardPictureDaoImpl implements BoardPictureDao{
 	
 	public List<BoardPicture> selectBPByBoardNo(int boardNo){
 		return session.selectList(makeSqlId("selectBPByBoardNo"),boardNo);
+		
 	}
 }

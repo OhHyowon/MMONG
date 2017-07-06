@@ -68,4 +68,12 @@
 	WHERE board_no=#{value}
 </select>
 
+<!-- replyNo로 리플 수정하기 -->
+<update id="updateReply" parameterType="reply">	
+	UPDATE reply
+	SET		content=#{content},
+				reply_date=#{replyDate}
+	WHERE no=#{no} AND member_id=#{memberId}
+</update>
+
 </mapper>

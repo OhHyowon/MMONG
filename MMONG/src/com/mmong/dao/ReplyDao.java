@@ -40,6 +40,13 @@ public interface ReplyDao {
 	 * @return
 	 */
 	public int selectReplyCount(int boardNo);
+	/**
+	 * 댓글 수정
+	 * @param replyNo
+	 * @param reply
+	 * @return
+	 */
+	public void updateReply(Reply reply);
 	
 	
 }

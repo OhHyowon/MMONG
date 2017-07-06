@@ -43,4 +43,8 @@ public class ReplyDaoImpl implements ReplyDao{
 	public int selectReplyCount(int boardNo){
 		return session.selectOne(makeSqlId("selectReplyCount"),boardNo);
 	}
+	
+	public void updateReply(Reply reply){
+		session.update(makeSqlId("updateReply"),reply);
+	}
 }

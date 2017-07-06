@@ -30,7 +30,7 @@ public class BoardDaoImpl implements BoardDao{
 		return session.update(makeSqlId("updateBoard"),board);
 	}
 	
-	public Board selectNickNameByMemberId(String memberId,int boardNo){
+	public String selectNickNameByMemberId(String memberId,int boardNo){
 		HashMap<String,Object> map = new HashMap<>();
 		map.put("memberId", memberId);
 		map.put("boardNo",boardNo);
@@ -59,7 +59,7 @@ public class BoardDaoImpl implements BoardDao{
 		return session.selectList(makeSqlId("selectAllBoard"),map);
 	}
 	
-	public List<Board> selectOption(String option, String key, int beginItemNo, int endItemNo){
+	public List<Board> selectOption(String option, String key, int beginItemNo, int endItemNo){		
 		HashMap<String,Object> map = new HashMap<>();
 		
 		map.put("beginItemNo", beginItemNo);

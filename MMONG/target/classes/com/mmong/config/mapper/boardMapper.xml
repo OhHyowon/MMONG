@@ -10,7 +10,7 @@
 		<result column="board_date" property="boardDate" />
 		<result column="hit" property="hit" />
 		<result column="member_Id" property="memberId" />
-		<result column="GROUP_NO" property="groupNo"/>
+		<result column="group_no" property="groupNo"/>
 		<result column="reply_count" property="replyCount" />
 	</resultMap>
 
@@ -52,26 +52,28 @@
 	</insert>
 
 	<!-- BOARD NO으로 게시물 찾아오기 -->
-	<select id="selectBoardByNo" parameterType="_int" resultMap="board-resultmap">
-		<include refid="select-board" />
+	<select id="selectBoardByNo" parameterType="int" resultMap="board-resultmap">
+		SELECT no,title,content,board_date,hit,member_id,group_no
+		FROM 	board
 		WHERE no=#{value}
 	</select>
 
 	<!-- BOARD UPDATE 하기 -->
-	<select id="updateBoard" parameterType="board">
+	<update id="updateBoard" parameterType="board">
 		UPDATE board
-		SET no=#{no},
+		SET
+		no=#{no},
+		title = #{title},
 		content=#{content},
 		board_date=#{boardDate},
 		hit=#{hit},
-		member_id=#{memberId},
-		group_no=#{groupNo},
+		member_id=#{memberId}
 		WHERE no=#{no}
-	</select>
+	</update>
 
 	<!-- BOARD-MEMBER 조인 -->
 	<select id="selectNickNameByMemberId" parameterType="map"
-		resultMap="board-member-resultMap">
+		resultType="string">
 		SELECT m.nickname
 		FROM board b JOIN member m ON b.member_id=m.member_id
 		WHERE m.member_id=#{memberId}
@@ -184,9 +186,9 @@
 	<!-- BOARDPICTURE 등록 -->
 	<insert id="insertBoardPicture" parameterType="boardPicture">
 		<selectKey keyProperty="no" resultType="_int" order="BEFORE">
-			SELECT BOARD_PICTURE_NO_SEQ.nextval FROM dual
+			SELECT BP_NO_SEQ.nextval FROM dual
 		</selectKey>
-		INSERT INTO board_Picture VALUES(
+		INSERT INTO board_picture VALUES(
 		#{no},#{route},#{boardNo}
 		)
 	</insert>
@@ -199,7 +201,7 @@
 	</delete>
 
 	<!-- BoardPicture boardNo조회 -->
-	<select id="selectBPByBoardNo" parameterType="_int"
+	<select id="selectBPByBoardNo" parameterType="int"
 		resultMap="boardPicture-reusltmap">
 		SELECT no,route,board_no
 		FROM board_picture

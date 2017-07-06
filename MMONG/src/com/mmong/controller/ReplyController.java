@@ -61,7 +61,7 @@ public class ReplyController {
 		
 			String memberId=board.getMemberId(); // 게시판 쓴 사람의 Id
 			
-			String boardNickname=boardService.selectNickNameByMemberId(memberId, boardNo).getMember().getNickName();
+			String boardNickname=boardService.selectNickNameByMemberId(memberId, boardNo);
 
 			List<Reply> replyList = replyService.selectReplyByBoardNo(boardNo); 
 			
@@ -83,9 +83,9 @@ public class ReplyController {
 		}
 		
 		/*
-		 *  loginId=session.getAttribute("memberId");  로그인 되면 이걸로 바꾸기
+		 * 로그인 수정 필요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		 */
-		String loginId="testId"; // test되는 동안에 쓸 로그인 아이디 
+		String loginId="duflalrjdi"; // test되는 동안에 쓸 로그인 아이디 
 
 		Date date = new Date();
 		
@@ -108,25 +108,17 @@ public class ReplyController {
 	
 	@RequestMapping("replyUpdate")
 	public String replyUpadate(@ModelAttribute Reply reply, BindingResult errors,
-											@RequestParam int boardNo,
 											HttpServletRequest request,
 											HttpSession session,
 											ModelMap map){
-		
-		/*
-		 *  값들 다 받아서 board_view로 돌려주기
-		 */
+	
+		int boardNo=reply.getBoardNo();
 		
 		ReplyRegisterValidator validator = new ReplyRegisterValidator();
 		validator.validate(reply, errors);
 		if(errors.hasErrors()){
 			
-			Board board = boardService.selectBoard(boardNo);
-			int hit=board.getHit();
-			hit++; // 조횟수 올리기
-			board.setHit(hit);
-			boardService.updateBoard(board);
-			board=boardService.selectBoard(boardNo);
+			Board board=boardService.selectBoard(boardNo);
 
 			List<BoardPicture> bP = BPService.selectBPByBoardNo(boardNo);
 			ArrayList<String> nameList = new ArrayList<>();  // 업로드 된 파일명 저장할 list
@@ -137,8 +129,8 @@ public class ReplyController {
 
 			String memberId=board.getMemberId(); // 게시판 쓴 사람의 Id
 			
-			String boardNickname=boardService.selectNickNameByMemberId(memberId, boardNo).getMember().getNickName();
-
+			String boardNickname=boardService.selectNickNameByMemberId(memberId, boardNo);
+			
 			List<Reply> replyList = replyService.selectReplyByBoardNo(boardNo); 
 			
 			int replyNo;
@@ -159,18 +151,17 @@ public class ReplyController {
 		}
 		
 		/*
-		 *  loginId=session.getAttribute("memberId");  로그인 되면 이걸로 바꾸기
+		 *  로그인 수정 필요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		 */
-		String loginId="testId"; // test되는 동안에 쓸 로그인 아이디 
+		String loginId="duflalrjdi"; // test되는 동안에 쓸 로그인 아이디 
 
 		Date date = new Date(); // 수정된 시간
 		
 		reply.setMemberId(loginId);
 		reply.setReplyDate(date);
 		reply.setBoardNo(boardNo);
-		
-		replyService.insertReply(reply);
-	
+
+		replyService.updateReply(reply);
 		
 		List<Reply> replyList =replyService.selectReplyByBoardNo(boardNo); // 게시물번호로 댓글 가져오기
 		Board board = boardService.selectBoard(boardNo);
@@ -179,6 +170,18 @@ public class ReplyController {
 		map.addAttribute("board", board);
 		
 		return "redirect:/group/board/board_view.do?boardNo="+boardNo;
+	}
 	
+	
+	@RequestMapping("deleteReply")
+	public String deleteReply(@RequestParam int replyNo,
+											@RequestParam int boardNo){
+		
+		
+		
+		System.out.println("deleteReply 컨트롤러 들어옴");
+		
+		System.out.println("리플넘버,보드넘버"+replyNo+"/"+boardNo);
+		return "1";
 	}
 }

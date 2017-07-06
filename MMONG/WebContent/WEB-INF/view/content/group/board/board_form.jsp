@@ -22,7 +22,7 @@
 <form action="/MMONG/group/board/register.do?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data" onsubmit="return confirm('등록하시겠습니까?');">
 제목 : <input type="text" name="title"><span class="error"><form:errors path="board.title" deilimiter="&nbsp;&nbsp;"/></span><br>
 내용 : <br>
-<textarea rows='20' cols='100' name="content">${param.content }</textarea><span class="erorr"> <form:errors path="board.content" deilimiter="&nbsp;&nbsp;"/></span><br>
+<textarea rows='20' cols='100' name="content">${param.content }</textarea><span class="error"><form:errors path="board.title" deilimiter="&nbsp;&nbsp;"/></span><br>
 <input type="file" name="upImage" multiple><br>
 <input type="hidden" name="userId" value=<sec:authentication property="principal.userId"/>>
 <input type="submit" value="등록"> <input type="button" value="취소" onclick="location.href='/MMONG/group/board/board_list.do'"/>
