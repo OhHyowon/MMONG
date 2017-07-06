@@ -2,6 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mmong.config.mapper.groupMapper">
 
+		       
+	<insert id="insertGroup" parameterType="group">
+		<selectKey resultType="_int" keyProperty="no" order="BEFORE">
+			SELECT group_no_seq.nextVal FROM dual
+		</selectKey>
+		INSERT INTO small_group VALUES (#{no}, #{name}, #{leader}, #{picture}, #{content})	
+	</insert>
+
 
 
 </mapper>

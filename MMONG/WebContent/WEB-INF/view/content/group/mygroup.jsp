@@ -56,7 +56,7 @@
 	</sec:authorize>
 	
 	 <!-- 소모임 찾기 메뉴 : searchGroup.jsp로 가기 -->
-		<li><a href="/MMONG/group/">소모임 찾기
+		<li><a href="/MMONG/group/mygroup.do">소모임 찾기
 </ul>
 <%-- ==============소모임 페이지 소메뉴 끝================== --%>
 
@@ -66,7 +66,7 @@
 
 
 <!-- 소모임 추가 버튼 -->
-<button type="button" onclick="window.open('/MMONG/WebContent/WEB-INF/view/content/group/createGroup.jsp', '회원가입', 'top=100px, left=100px, height=500px, width=800px')">소모임 만들기</button>
+<button type="button" onclick="window.open('/MMONG/group/createGroup.do', '소모임 만들기', 'top=100px, left=100px, height=500px, width=800px')">소모임 만들기</button>
 
 
 

@@ -8,5 +8,5 @@ public interface GroupService {
 	 * @param group
 	 * 작성자 : 이주현 
 	 */
-	void insertGroup(Group group);
+	int insertGroup(Group group);
 }
