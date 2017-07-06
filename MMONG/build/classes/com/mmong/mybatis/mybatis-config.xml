@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<package name="kr.co.patch.vo"/>
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="kr/co/patch/config/mapper/memberMapper.xml" />
+		<mapper resource="kr/co/patch/config/mapper/managerMapper.xml" />
+		<mapper resource="kr/co/patch/config/mapper/usersMapper.xml" />
+		<mapper resource="kr/co/patch/config/mapper/administratorMapper.xml" />
+		<mapper resource="kr/co/patch/config/mapper/administratorNoticeMapper.xml" />
+	</mappers>
+</configuration>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+		
+	<context:component-scan base-package="com.mmong.controller"/>
+	<mvc:annotation-driven/>
+	
+	<!-- ================ 링크 =============== -->
+	<!-- 비인증 관련 -->
+	<!-- 메인페이지 -->
+	<mvc:view-controller path="/index.do" view-name="index"/>
+	<!-- 로그인 폼 -->
+	<mvc:view-controller path="/login_form.do" view-name="login_form"/>
+	<!-- 개인회원 회원가입 폼 -->
+	<mvc:view-controller path="/member/register_form.do" view-name="content/member/register_form"/>
+
+
+
+
+
+ 	<bean name="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"
+				p:basename="com.mmong.validation.message.error_message" p:defaultEncoding="utf-8"/>
+
+	<bean name="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"	p:prefix="/WEB-INF/view/" p:suffix=".jsp"/>
+	
+
+
+	 
+</beans>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.MMONG.config.mapper.userMapper">
+
+	
+	<insert id="registerUser" parameterType="user">
+		INSERT INTO users VALUES (#{userId}, 
+								   #{userPwd}, 
+								   #{userAuthority},
+								   1)
+	</insert>
+	
+	<sql id="select-sql">
+		SELECT user_id userId,
+			   user_pwd userPwd,
+			   user_authority userAuthority,
+			   user_enable userEnable
+		FROM users
+	</sql>
+	
+	<resultMap id="user-resultmap" type="user"> 		
+		<id column="user_id" property="userId" />
+		<result column="user_pwd" property="userPwd" />
+		<result column="user_authority" property="userAuthority" />
+		<result column="user_enable" property="userEnable" />	
+	</resultMap>
+	
+	<select id="searchUserByUserId" parameterType="java.lang.String" resultMap="user-resultmap">
+		<include refid="select-sql" />
+		WHERE user_id = #{value}
+	</select>
+	
+	<select id="searchAuthorityByUserId" parameterType="java.lang.String" resultType="int">
+		SELECT user_authority userAuthority
+		FROM users
+		WHERE user_id = #{value}
+	</select>
+	
+	<update id="updateUserByUserId" parameterType="user">
+		UPDATE user
+		SET    user_id = #{userId},
+			   user_pwd = #{userPwd},
+			   user_authority = #{userAuthority},
+			   user_enable = #{userEnable}
+		WHERE user_id = #{userId}	
+	</update>
+		
+	
+</mapper>
