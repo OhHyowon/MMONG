@@ -10,6 +10,15 @@
 		INSERT INTO small_group VALUES (#{no}, #{name}, #{leader}, #{picture}, #{content})	
 	</insert>
 
-
-
+	<!-- groupNo로 Group을 select -->
+	<select id="selectMyGroupByNo" parameterType="_int" resultType="group">
+		SELECT no no,
+			   name name,
+			   leader leader,
+			   picture picture,
+			   content content
+		FROM small_group
+		WHERE no = #{value}			   
+	</select>
+	
 </mapper>

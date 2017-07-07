@@ -22,4 +22,9 @@ public class GroupDaoImpl implements GroupDao {
 		return session.insert(makeSql("insertGroup"), group);
 	}
 
+	@Override
+	public Group selectMyGroupByNo(int no) {
+		return session.selectOne(makeSql("selectMyGroupByNo"), no);
+	}
+
 }

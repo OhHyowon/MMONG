@@ -29,8 +29,10 @@
    <%-- 회원 메뉴 : 개인회원 메뉴 /member로 시작 --%>
    <sec:authorize access="hasRole('ROLE_1')">
       <li><a href="/MMONG/member/mypage.do">회원 정보조회</a></li>
-    
+
+  	  <li><a href="/MMONG/message.do">쪽지 관리</a></li>
    </sec:authorize>
+
 </ul>
 <%-- =======================menu 영역 끝=================== --%>
 
@@ -57,6 +59,8 @@
 	<sec:authorize access="hasRole('ROLE_0')">
 		<li><a href="/MMONG/member/mypage.do">관리자 등록</a></li>	
 	</sec:authorize>
+      
+      
       
 </ul>   
 <%-- ======================대menu 영역 끝=================== --%>   

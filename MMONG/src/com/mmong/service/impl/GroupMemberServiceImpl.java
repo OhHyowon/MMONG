@@ -1,5 +1,7 @@
 package com.mmong.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +17,12 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 
 	@Override
 	public int insertGroupMember(GroupMember groupMember) {
-
 		return groupMemberDao.insertGroupMember(groupMember);
+	}
+
+	@Override
+	public List<GroupMember> selectMeById(String memberId) {
+		return groupMemberDao.selectMeById(memberId);
 	}
 
 }

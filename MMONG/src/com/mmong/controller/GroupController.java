@@ -1,6 +1,10 @@
 package com.mmong.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +16,7 @@ import com.mmong.service.GroupMemberService;
 import com.mmong.service.GroupService;
 import com.mmong.vo.Group;
 import com.mmong.vo.GroupMember;
+import com.mmong.vo.Member;
 
 @Controller
 @RequestMapping("/group/")
@@ -28,9 +33,23 @@ public class GroupController {
 	 * 작성자 : 이주현
 	 */
 	@RequestMapping("mygroup")
-	public ModelAndView searchMyGroupById(@RequestParam(required=false) String userId){
-		///내가 소속된 소모임 뿌리는 로직 추가 필요
-		return new ModelAndView("/content/group/mygroup");
+	public ModelAndView searchMyGroupById(){
+		if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")){
+			System.out.println("로그인된 사용자 없음");
+			return new ModelAndView("/content/group/mygroup");
+		}else{
+			Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			System.out.println(member);
+			List<GroupMember> gms = groupMemberService.selectMeById(member.getMemberId());
+			List<Group> myGroup = new ArrayList();
+			for(GroupMember gm : gms){
+				myGroup.add(groupService.selectMyGroupByNo(gm.getGroupNo()));
+			}
+			for(Group g : myGroup){
+				System.out.println(g);
+			}
+			return new ModelAndView("/content/group/mygroup", "myGroup", myGroup);
+		}
 	}
 	
 	/**
@@ -39,6 +58,7 @@ public class GroupController {
 	 * @return
 	 * 작성자 : 이주현
 	 */
+	
 	@RequestMapping("createGroup")
 	public ModelAndView openCreateGroupWindow(){
 		return new ModelAndView("/content/group/createGroup");
@@ -53,12 +73,15 @@ public class GroupController {
 	@RequestMapping(value="insertGroup", produces="text/html;charset=utf-8")
 	@ResponseBody
 	public String insertGroup(@ModelAttribute Group group){
-		System.out.println(group);
-		groupService.insertGroup(group);
-		
+		//로그인된 멤버가 그룹을 생성하는 경우이므로 로그인된 아이디를 리더로 설정 
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		group.setLeader(member.getMemberId());
+		//그룹 추가
+		groupService.insertGroup(group);		
 		//해당 소모임에 소속될 그룹멤버도 추가 
 		GroupMember groupMember = new GroupMember(0, group.getNo(), group.getLeader());
-		System.out.println(groupMember);
+		groupMember.setGroup(group);
+		groupMember.setMember(member);
 		groupMemberService.insertGroupMember(groupMember);
 		
 		return "가입완료";
