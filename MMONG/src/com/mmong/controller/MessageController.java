@@ -73,7 +73,7 @@ public class MessageController {
 	 * @return
 	 */
 	@RequestMapping("selectReceiveMsg")
-	public String selectReceiveMsg(HttpSession session, ModelMap map, @RequestParam(value="page", defaultValue="1") String reqPage){
+	public String selectReceiveMsg(ModelMap map, @RequestParam(value="page", defaultValue="1") String reqPage){
 
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String receiveId = member.getMemberId();
@@ -98,7 +98,7 @@ public class MessageController {
 	 * @return
 	 */
 	@RequestMapping("selectSendMsg")
-	public String selectSendMsg(HttpSession session, ModelMap map, @RequestParam(value="page", defaultValue="1") String reqPage){
+	public String selectSendMsg(ModelMap map, @RequestParam(value="page", defaultValue="1") String reqPage){
 		
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String sendId = member.getMemberId();
