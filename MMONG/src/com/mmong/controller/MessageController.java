@@ -27,7 +27,7 @@ import com.mmong.vo.Member;
 import com.mmong.vo.Message;
 
 @Controller
-@RequestMapping("message/")
+@RequestMapping("/message/")
 public class MessageController {
 
 	@Autowired
@@ -45,7 +45,7 @@ public class MessageController {
 		
 		Date date = new Date();
 		//String receiveId = "b1b2b3b4";   ////대체될 줄!!!!!!!!!
-		String receiveId = "a1a2a3a4";   ////대체될 줄!!!!!!!!!
+		String receiveId = "wngus0424";   ////대체될 줄!!!!!!!!!
 
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String sendId = member.getMemberId();   

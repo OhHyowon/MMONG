@@ -1,3 +1,14 @@
+
+		
+
+SELECT gm.no, gm.group_no, gm.member_id,
+			   g.no, g.name, g.leader, g.picture, g.content
+		FROM group_member gm, small_group g
+		WHERE gm.group_no = g.no AND gm.member_id = wngus0424	
+
+
+
+
 /* 사용자 0번 */
 
 CREATE TABLE USERS (
