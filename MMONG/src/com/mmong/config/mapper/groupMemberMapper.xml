@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mmong.config.mapper.groupMapper">
+<mapper namespace="com.mmong.config.mapper.groupMemberMapper">
 
 		       
-	<insert id="insertGroup" parameterType="group">
+	<insert id="insertGroupMember" parameterType="groupMember">
 		<selectKey resultType="_int" keyProperty="no" order="BEFORE">
-			SELECT group_no_seq.nextVal FROM dual
+			SELECT GROUP_MEMBER_NO_SEQ.nextVal FROM dual
 		</selectKey>
-		INSERT INTO small_group VALUES (#{no}, #{name}, #{leader}, #{picture}, #{content})	
+		INSERT INTO GROUP_MEMBER VALUES (#{no}, #{groupNo}, #{memberId})	
 	</insert>
 
 

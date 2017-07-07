@@ -92,4 +92,32 @@ public class BoardServiceImpl implements BoardService{
 		
 		return map;
 	}
+	
+	public HashMap<String,Object> selectMyBoardList(int page,String memberId){
+		HashMap<String,Object> map = new HashMap<>();
+		int totalCount = dao.selectMyBoardCount(memberId);
+		PagingBean pageBean = new PagingBean(totalCount, page);
+		
+		List<Board> myBoardList=dao.selectMyBoardList(pageBean.getBeginItemInPage(), pageBean.getEndItemInPage(),memberId);
+		
+		map.put("pageBean", pageBean);
+		map.put("myBoardList", myBoardList);
+		
+		return map;
+	}
+	
+	public HashMap<String,Object> selectMyOption(int page,String option,String key,String memberId){
+		HashMap<String,Object> map=new HashMap<>();
+		
+		int totalCount = dao.selectMyBoardCount(memberId);
+		PagingBean pageBean = new PagingBean(totalCount,page);
+		
+		List<Board> myBoardList=dao.selectMyOption(pageBean.getBeginItemInPage(),pageBean.getEndItemInPage(),option,key,memberId);
+		
+		map.put("pageBean", pageBean);
+		map.put("myBoardList", myBoardList);
+		
+		
+		return map;
+	}
 }

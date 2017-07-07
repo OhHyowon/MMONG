@@ -69,5 +69,37 @@ public class BoardDaoImpl implements BoardDao{
 		
 		return session.selectList(makeSqlId("selectOption"),map);
 	}
+
+	@Override
+	public int selectMyBoardCount(String memberId) {
+		return session.selectOne(makeSqlId("selectMyBoardCount"),memberId);
+	}
+	
+	public List<Board> selectMyBoardList(int beginItemNo, int endItemNo,String memberId){
+		HashMap<String,Object> map=new HashMap<>();
+		
+		map.put("beginItemNo",beginItemNo);
+		map.put("endItemNo", endItemNo);
+		map.put("memberId",memberId);
+		
+		return session.selectList(makeSqlId("selectMyBoardList"),map);
+	}
+	
+	public List<Board>selectMyOption(int beginItemNo, int endItemNo,String option,String key,String memberId){
+		HashMap<String,Object> map=new HashMap<>();
+		
+		map.put("beginItemNo", beginItemNo);
+		map.put("endItemNo",endItemNo);
+		map.put("memberId",memberId);
+		map.put("option",option);
+		map.put("key", key);
+		
+		return session.selectList(makeSqlId("selectMyOption"),map);
+	}
+	
+	public String selectBoardTitle(int boardNo){
+		return session.selectOne(makeSqlId("selectBoardTitle"),boardNo);
+	}
+	
 	
 }

@@ -10,10 +10,12 @@
 	
 	<mappers>
 		<mapper resource="com/mmong/config/mapper/memberMapper.xml" />
+		<mapper resource="com/mmong/config/mapper/administratorMapper.xml"/>
 		<mapper resource="com/mmong/config/mapper/userMapper.xml" />
 		<mapper resource="com/mmong/config/mapper/groupMapper.xml" />
 		<mapper resource="com/mmong/config/mapper/boardMapper.xml"/>
 		<mapper resource="com/mmong/config/mapper/replyMapper.xml"/>
 		<mapper resource="com/mmong/config/mapper/groupDateMapper.xml"/>
+		<mapper resource="com/mmong/config/mapper/groupMemberMapper.xml"/>
 	</mappers>
 </configuration>

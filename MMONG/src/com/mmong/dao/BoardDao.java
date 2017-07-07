@@ -61,8 +61,33 @@ public interface BoardDao {
 	 * @return
 	 */
 	public List<Board> selectOption(String option, String key, int beginItemNo, int endItemNo);
-	
-	
-	
-	
+	/**
+	 * 내가 쓴 게시글의 전체 갯수 조회
+	 * @return
+	 */
+	public int selectMyBoardCount(String memberId);
+	/**
+	 * 내가 쓴 게시글 목록 조회
+	 * @param beginItemNo
+	 * @param endItemNo
+	 * @param memberId
+	 * @return
+	 */
+	public List<Board> selectMyBoardList(int beginItemNo, int endItemNo,String memberId);
+	/**
+	 * 내가 쓴 게시물 검색해서 조회
+	 * @param beginItemNo
+	 * @param endItemNo
+	 * @param option
+	 * @param key
+	 * @param memberId
+	 * @return
+	 */
+	public List<Board>selectMyOption(int beginItemNo, int endItemNo,String option,String key,String memberId);
+	/**
+	 * boardNo으로 boardContent 조회
+	 * @param boardNo
+	 * @return
+	 */
+	public String selectBoardTitle(int boardNo);
 }

@@ -47,6 +47,26 @@ public interface ReplyDao {
 	 * @return
 	 */
 	public void updateReply(Reply reply);
-	
-	
+	/**
+	 * replyNo와 memberId가 같을 때  댓글 삭제
+	 * @param replyNo
+	 */
+	public void deleteReply(int replyNo,String memberId);
+	/**
+	 * boardNo로 댓글 삭제
+	 * @param boardNo
+	 */
+	public void deleteReplyByBoardNo(int boardNo);
+	/**
+	 * 내가 쓴 댓글 갯수 
+	 * @param memberId
+	 * @return
+	 */
+	public int selectMyReplyCount(String memberId);
+	/**
+	 * memberId로 내가 쓴 댓글 목록 가져오기
+	 * @param memberId
+	 * @return
+	 */
+	public List<Reply> selectMyReply(int beginItemNo, int endItemNo,String memberId);
 }

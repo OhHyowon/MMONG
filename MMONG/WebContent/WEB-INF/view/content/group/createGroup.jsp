@@ -1,80 +1,70 @@
-
 <%@ page contentType="text/html;charset=UTF-8"%>
-
-
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-
+<title>MMONG - 소모임 만들기</title>
 <style>
-
-.head{
-				text-align: center;
-			}
-
+#content{ line-height: 50px; }
 </style>
-
-
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+$('document').ready(function(){
+	$("#create").on('click', function(){
+		var params = jQuery("#createGroup").serialize();
+		if( $('#name').val()==""){
+			alert("모임 이름을 입력하세요.");
+			return;
+		}
+		if( $('#content').val()==""){
+			alert("모임에 대한 설명을 입력하세요.");
+			return;
+		}
+		$.ajax({
+			url : "/MMONG/group/insertGroup.do",
+			type : "Post",
+			data : params,
+			cache : false,
+			async : false,
+			success : function(response) {
+				if(response=="가입완료"){
+					alert("모임 생성이 완료되었습니다.");
+					opener.parent.location.reload();
+					window.close();
+				}
+			}
+		});			
+	});
+	
+});
+</script>
 </head>
 <body>
 
-	<center>
-		<h2>회원 가입</h2>
-	</center>
-
- 
-
-	<center>
-	
-		<form>
-			<table width="700" bgcolor="#d0d4dd" border="0" cellpadding="5"
-				cellspacing="1">
-				<tr bgcolor="fffff">
-					<td bgcolor="f5f5f5">ID:</td>
-					<td><input type="text" id="id" name="memberId" size="25"><button type="button" id="idDupCheck">중복확인</button></td>					
-				</tr>
-				<tr bgcolor="fffff">
-					<td bgcolor="f5f5f5">패스워드:</td>
-					<td><input type="password" id="pw" name="password" size="25"></td>
-				</tr>
-				<tr bgcolor="fffff">
-					<td bgcolor="f5f5f5">패스워드 확인:</td>
-					<td><input type="password" id="pw_check" name="password" size="25"></td>
-				</tr>
-				<tr bgcolor="fffff">
-					<td bgcolor="f5f5f5">이름:</td>
-					<td><input type="text" id="name" name="memberName" size="25"></td>
-				</tr>
-				<tr bgcolor="fffff">
-					<td bgcolor="f5f5f5">핸드폰번호:<br>
-					<font size="2em" color="green"> - 없이 숫자만 입력해주세요.</font> </td>
-					<td><input type="text" id="phone_number" name="phoneNumber" size="25"></td>
-				</tr>
-				<tr bgcolor="fffff">
-					<td bgcolor="f5f5f5">email:</td>
-					<td><input type="text" id="email" name="email" size="25"></td>
-				</tr>
-				<tr bgcolor="fffff">
-					<td bgcolor="f5f5f5">point:</td>
-					<td><input type="text" id="point" name="point" size="25" readonly/></td>
-				</tr>
-				<tr>
-					<td><input type="button" id="join" value="가입">&nbsp; 
-						<input type="reset" value="다시 작성하기">&nbsp;</td>
-				</form>
-				</tr>
-
-			</table>
-		</form>
-		
-	</center>
-
-
+<h3>소모임 만들기</h3>
+<form id="createGroup">
+	<table>	
+		<tr>
+			<th>소모임 이름</th>
+			<td><input type="text" id="name" name="name" value="${param.name}"></td>
+		</tr>		
+		<tr>
+			<th>모임 설명</th>
+			<td><input type="text" id="content" name="content" value="${param.content}">
+				<input type="hidden" id="picture" name="picture" value="tmp">
+				<input type="hidden" id="leader" name="leader" value="juhyun903" >	</td>
+		</tr>		
+		<tr>
+			<td colspan="2">
+				<input type="button" id="create" value="생성">&nbsp; 
+				<input type="reset" value="다시 작성">&nbsp;</td>
+			</td>
+		</tr>
+	</table>
+	<input type="hidden"  id="token" name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+</form>
 
 </body>
 </html>

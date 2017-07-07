@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript" src="/PatcH/resource/jquery/jquery-3.2.1.min.js"></script>
- <script src="/PatcH/resource/bootstrap/bootstrap.min.js"></script>
+ <script src="/MMONG/resource/bootstrap/bootstrap.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$("#imgCheck").on("click",function(){
@@ -34,8 +34,8 @@ $(document).ready(function(){
 <form:errors path="board.content" deilimiter="&nbsp;&nbsp;"/><br>
 <hr>
 기존 사용된 이미지 : <br>
-		<c:forEach items="${requestScope.nameList }" var="fileName">
-			${fileName } <br>
+		<c:forEach items="${requestScope.nameList }" var="name">
+			${name } <br>
 		</c:forEach>
 		
 <input type="hidden" name="no" value="${requestScope.board.no }">

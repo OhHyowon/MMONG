@@ -2,18 +2,21 @@ package com.mmong.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mmong.service.impl.BoardPictureServiceImpl;
 import com.mmong.service.impl.BoardServiceImpl;
@@ -21,6 +24,7 @@ import com.mmong.service.impl.ReplyServiceImpl;
 import com.mmong.validation.ReplyRegisterValidator;
 import com.mmong.vo.Board;
 import com.mmong.vo.BoardPicture;
+import com.mmong.vo.Member;
 import com.mmong.vo.Reply;
 
 @Controller
@@ -46,9 +50,7 @@ public class ReplyController {
 		if(errors.hasErrors()){
 			
 			Board board = boardService.selectBoard(boardNo);
-			int hit=board.getHit();
-			hit++; // 조횟수 올리기
-			board.setHit(hit);
+
 			boardService.updateBoard(board);
 			board=boardService.selectBoard(boardNo);
 
@@ -73,7 +75,7 @@ public class ReplyController {
 				replyNickname.add(replyService.selectNickNameByNo(replyNo, replyMemberId));
 			}
 
-			
+			map.addAttribute("replyNickname",replyNickname);
 			map.addAttribute("replyList", replyList);
 			map.addAttribute("nameList", nameList);
 			map.addAttribute("board", board);
@@ -82,10 +84,8 @@ public class ReplyController {
 			return "content/group/board/board_view";
 		}
 		
-		/*
-		 * 로그인 수정 필요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		 */
-		String loginId="duflalrjdi"; // test되는 동안에 쓸 로그인 아이디 
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String loginId=member.getMemberId();
 
 		Date date = new Date();
 		
@@ -99,6 +99,17 @@ public class ReplyController {
 		List<Reply> replyList =replyService.selectReplyByBoardNo(boardNo); // 게시물번호로 댓글 가져오기
 		Board board = boardService.selectBoard(boardNo);
 		
+		int replyNo;
+		ArrayList<String> replyNickname=new ArrayList<>();
+		for(int i =0; i<replyList.size(); i++){
+			replyNo=replyList.get(i).getNo();
+			String replyMemberId=replyService.selectMemberId(replyNo); // 리플 쓴 사람의 Id
+			replyNickname.add(replyService.selectNickNameByNo(replyNo, replyMemberId));
+		}
+		
+
+		
+		map.addAttribute("replyNickname",replyNickname);
 		map.addAttribute("replyList", replyList);
 		map.addAttribute("board", board);
 		
@@ -141,7 +152,7 @@ public class ReplyController {
 				replyNickname.add(replyService.selectNickNameByNo(replyNo, replyMemberId));
 			}
 
-			
+			map.addAttribute("replyNickname",replyNickname);
 			map.addAttribute("replyList", replyList);
 			map.addAttribute("nameList", nameList);
 			map.addAttribute("board", board);
@@ -150,10 +161,8 @@ public class ReplyController {
 			return "content/group/board/board_view";
 		}
 		
-		/*
-		 *  로그인 수정 필요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		 */
-		String loginId="duflalrjdi"; // test되는 동안에 쓸 로그인 아이디 
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String loginId=member.getMemberId();
 
 		Date date = new Date(); // 수정된 시간
 		
@@ -166,6 +175,15 @@ public class ReplyController {
 		List<Reply> replyList =replyService.selectReplyByBoardNo(boardNo); // 게시물번호로 댓글 가져오기
 		Board board = boardService.selectBoard(boardNo);
 		
+		int replyNo;
+		ArrayList<String> replyNickname=new ArrayList<>();
+		for(int i =0; i<replyList.size(); i++){
+			replyNo=replyList.get(i).getNo();
+			String replyMemberId=replyService.selectMemberId(replyNo); // 리플 쓴 사람의 Id
+			replyNickname.add(replyService.selectNickNameByNo(replyNo, replyMemberId));
+		}
+
+		map.addAttribute("replyNickname",replyNickname);
 		map.addAttribute("replyList", replyList);
 		map.addAttribute("board", board);
 		
@@ -174,14 +192,50 @@ public class ReplyController {
 	
 	
 	@RequestMapping("deleteReply")
-	public String deleteReply(@RequestParam int replyNo,
-											@RequestParam int boardNo){
+	@ResponseBody
+	public String deleteReply(@RequestParam int replyNo){
 		
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String memberId=member.getMemberId();
+		replyService.deleteReply(replyNo,memberId);
 		
+		return "1";
+	}
+	
+	@RequestMapping("myReplyList")
+	public String  selectMyReply(@RequestParam(value="page", defaultValue="1")int page,ModelMap map){
 		
-		System.out.println("deleteReply 컨트롤러 들어옴");
+
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String memberId=member.getMemberId();
 		
-		System.out.println("리플넘버,보드넘버"+replyNo+"/"+boardNo);
+		HashMap<String,Object> pagingMap=null;
+		
+		pagingMap=replyService.selectMyReply(page,memberId);
+		
+		map.addAttribute("boardNoList", pagingMap.get("boardNoList"));
+		map.addAttribute("boardTitle", pagingMap.get("boardTitle"));
+		map.addAttribute("myReplyList", pagingMap.get("myReplyList"));
+		map.addAttribute("pageBean", pagingMap.get("pageBean"));
+		
+		return "content/group/board/reply_mine";
+	}
+	
+	@RequestMapping("deleteMyReplyList")
+	@ResponseBody
+	public String deleteMyReplyList(@RequestParam List<Integer> replyNoList){
+		
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String memberId=member.getMemberId();
+		
+		int replyNo;
+		
+		for(int i =0; i<replyNoList.size(); i++){
+			replyNo=replyNoList.get(i);
+			replyService.deleteReply(replyNo, memberId);
+		}
+		
+		System.out.println("댓글 삭제 완료");
 		return "1";
 	}
 }

@@ -9,7 +9,7 @@
 <body>
 <h3> 개인 회원 마이페이지</h3>
  
- ID : <sec:authentication property="principal.userId"/> <br>
+ ID : <sec:authentication property="principal.memberId"/> <br>
  이름 : ${requestScope.member.memberName }
 </body>
 </html>

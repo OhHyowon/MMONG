@@ -9,6 +9,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<jsp:include page="/index.do"/>
 
 <style type="text/css">
 a:link {
@@ -70,7 +71,7 @@ td {
 						<td>${board.no }</td>
 						<td><a href="/MMONG/group/board/board_view.do?boardNo=${board.no }">${board.title }[${board.replyCount}]</a></td>
 						<td>${board.memberId }(${requestScope.nickNameList[idx.index] })</td>
-						<td><fmt:formatDate value="${board.boardDate }" pattern="yyyy-MM-dd a hh:mm" /></td>
+						<td><fmt:formatDate value="${board.boardDate }" pattern="yyyy-MM-dd HH:mm" /></td>
 						<td>${board.hit }</td>
 					</tr>
 			</c:when>
@@ -79,7 +80,7 @@ td {
 					<td>${board.no }</td>
 					<td><a href="/MMONG/group/board/board_view.do?boardNo=${board.no }">${board.title }</a></td>
 					<td>${board.memberId }(${requestScope.nickNameList[idx.index] })</td>
-					<td><fmt:formatDate value="${board.boardDate }" pattern="yyyy-MM-dd a hh:mm" /></td>
+					<td><fmt:formatDate value="${board.boardDate }" pattern="yyyy-MM-dd HH:mm" /></td>
 					<td>${board.hit }</td>
 				</tr>
 			</c:otherwise>

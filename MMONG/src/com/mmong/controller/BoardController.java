@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -25,6 +26,7 @@ import com.mmong.service.impl.ReplyServiceImpl;
 import com.mmong.validation.BoardRegisterValidator;
 import com.mmong.vo.Board;
 import com.mmong.vo.BoardPicture;
+import com.mmong.vo.Member;
 import com.mmong.vo.Reply;
 
 @Controller
@@ -42,7 +44,6 @@ public class BoardController {
 	@RequestMapping("register")
 	public String registerBoard(@RequestParam List<MultipartFile> upImage, 
 											@ModelAttribute Board board, BindingResult errors, 
-											@RequestParam String userId, 
 											/*@RequestParam int groupNo,*/
 											HttpServletRequest request, HttpSession session, 
 											ModelMap map) throws Exception {
@@ -53,15 +54,11 @@ public class BoardController {
 			return "content/group/board/board_form";
 		}
 		
-		
-		
-				
 		String destDir = request.getServletContext().getRealPath("/up_image"); // 진짜경로
 
-		System.out.println(destDir);
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String memberId=member.getMemberId();
 		
-		
-		String memberId=userId;
 		int groupNo=0;
 		/*
 		 * 	소모임에 가입됐을 때 groupNo도 넘겨줘야함... 일단 TEST 로 0 번 줌
@@ -74,16 +71,12 @@ public class BoardController {
 		board.setBoardDate(date);
 		board.setMemberId(memberId);
 		board.setGroupNo(groupNo);
-
-		System.out.println("board : "+board);
 		
 		int boardNo = boardService.insertBoard(board); // 등록한 게시글 No 가져오기
 		
-		
-		
 		String nickname = boardService.selectNickNameByMemberId(memberId, boardNo);
 		// 등록한 게시글의 nickname 가져오기
-
+		
 		ArrayList<String> nameList = new ArrayList<>(); // 업로드 된 파일명 저장할 list
 
 		BoardPicture boardPicture = new BoardPicture();
@@ -109,7 +102,7 @@ public class BoardController {
 		map.addAttribute("nickname", nickname);
 
 		
-		return "content/group/board/board_view";
+		return "redirect:/group/board/board_view.do?boardNo="+boardNo;
 	}
 
 	/* 게시물 그대로 받아오기 */
@@ -117,6 +110,11 @@ public class BoardController {
 	public String updateBoard1(@RequestParam String[] nameList, @RequestParam int boardNo, HttpServletRequest request,
 			ModelMap map) {
 
+		System.out.println("update컨트롤러"+nameList);
+		for(int i=0; i<nameList.length;i++){
+			System.out.println(nameList[i]);
+		}
+		
 		if (nameList.length == 0) { 
 			Board board = boardService.selectBoard(boardNo);
 
@@ -147,12 +145,9 @@ public class BoardController {
 			return "content/group/board/board_update";
 		}
 
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
-		
-		String memberId="duflalrjdi"; 
-		/*
-		 *  로그인 수정 필요.!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		 */
+		String memberId=member.getMemberId();
 		
 		String destDir=request.getServletContext().getRealPath("/up_image"); // 진짜경로
 		
@@ -212,17 +207,15 @@ public class BoardController {
 												HttpServletRequest request,
 												HttpSession session){
 		
-		/*
-		session.getAttribute("memberId");  로그인 되면 사용하기
-		*/
+	
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String memberId=member.getMemberId();
 		
-		System.out.println("deleteBoard 컨트롤러 ");
-		
-		String memberId="duflalrjdi"; // test하는 동안에 쓸 Id
-		
+
 		Board board=boardService.selectBoard(boardNo);
 
 		if(board.getMemberId().equals(memberId)){
+			replyService.deleteReplyByBoardNo(boardNo);
 			BPService.deleteBPByBoardNo(boardNo);
 			boardService.deleteBoard(boardNo, memberId);
 		}
@@ -264,8 +257,8 @@ public class BoardController {
 			String replyMemberId=replyService.selectMemberId(replyNo); // 리플 쓴 사람의 Id
 			replyNickname.add(replyService.selectNickNameByNo(replyNo, replyMemberId));
 		}
-
 		
+
 		map.addAttribute("replyList", replyList);
 		map.addAttribute("nameList", nameList);
 		map.addAttribute("board", board);
@@ -295,4 +288,52 @@ public class BoardController {
 	
 		return "content/group/board/board_list";
 	}
+	
+	@RequestMapping("myBoardList")
+	public String myBoardList(@RequestParam(value="page", defaultValue="1")int page, 
+											@RequestParam (value="option", defaultValue="1")String option, 
+											@RequestParam  (value="key", defaultValue="1")String key, ModelMap map){
+		
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String memberId=member.getMemberId();
+		
+		
+		HashMap<String,Object> pagingMap=null;
+		
+		if(option.equals("1")){
+			pagingMap=boardService.selectMyBoardList(page,memberId);			
+		}else{
+			pagingMap=boardService.selectMyOption(page, option, key,memberId);
+		}
+
+		
+		map.addAttribute("myBoardList", pagingMap.get("myBoardList"));
+		map.addAttribute("pageBean", pagingMap.get("pageBean"));
+		
+		return "content/group/board/board_mine";
+	}
+	
+	
+	@RequestMapping(value="deleteMyBoardList",produces="html/text;charset=UTF-8;" )
+	@ResponseBody
+	public String deleteMyboardList(@RequestParam List<Integer> boardNoList){
+	
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String memberId=member.getMemberId();
+		
+		int boardNo;
+		
+		for(int i =0; i<boardNoList.size(); i++){
+			boardNo=boardNoList.get(i);
+			replyService.deleteReplyByBoardNo(boardNo);
+			BPService.deleteBPByBoardNo(boardNo);
+			boardService.deleteBoard(boardNo, memberId);
+			}
+	
+		return "1";
+	}
+	
+
+
+
 }

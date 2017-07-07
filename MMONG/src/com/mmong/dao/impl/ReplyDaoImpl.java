@@ -47,4 +47,32 @@ public class ReplyDaoImpl implements ReplyDao{
 	public void updateReply(Reply reply){
 		session.update(makeSqlId("updateReply"),reply);
 	}
+	
+	public void deleteReply(int replyNo,String memberId){
+		HashMap<String,Object>map=new HashMap<>();
+		
+		map.put("replyNo", replyNo);
+		map.put("memberId", memberId);
+		session.delete(makeSqlId("deleteReply"),map);
+	}
+	
+	public void deleteReplyByBoardNo(int boardNo){
+		session.delete(makeSqlId("deleteReplyByBoardNo"),boardNo);
+	}
+	
+	public int selectMyReplyCount(String memberId){
+		return session.selectOne(makeSqlId("selectMyReplyCount"),memberId);
+	}
+	
+	
+	
+	public List<Reply> selectMyReply(int beginItemNo, int endItemNo,String memberId){
+		HashMap<String,Object> map=new HashMap<>();
+		
+		map.put("beginItemNo", beginItemNo);
+		map.put("endItemNo", endItemNo);
+		map.put("memberId", memberId);
+		
+		return session.selectList(makeSqlId("selectMyReply"),map);
+	}
 }

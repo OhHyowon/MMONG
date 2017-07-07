@@ -10,7 +10,7 @@
 		<result column="board_date" property="boardDate" />
 		<result column="hit" property="hit" />
 		<result column="member_Id" property="memberId" />
-		<result column="group_no" property="groupNo"/>
+		<result column="group_no" property="groupNo" />
 		<result column="reply_count" property="replyCount" />
 	</resultMap>
 
@@ -42,9 +42,10 @@
 
 
 	<!-- BOARD 등록 -->
-	<insert id="insertBoard" parameterType="board" >
+	<insert id="insertBoard" parameterType="board">
 		<selectKey keyProperty="no" resultType="_int" order="BEFORE">
-			SELECT BOARD_NO_SEQ.nextval FROM dual
+			SELECT
+			BOARD_NO_SEQ.nextval FROM dual
 		</selectKey>
 		INSERT INTO board VALUES(
 		#{no},#{title},#{content},#{boardDate},#{hit},#{memberId},#{groupNo}
@@ -54,7 +55,7 @@
 	<!-- BOARD NO으로 게시물 찾아오기 -->
 	<select id="selectBoardByNo" parameterType="int" resultMap="board-resultmap">
 		SELECT no,title,content,board_date,hit,member_id,group_no
-		FROM 	board
+		FROM board
 		WHERE no=#{value}
 	</select>
 
@@ -75,15 +76,18 @@
 	<select id="selectNickNameByMemberId" parameterType="map"
 		resultType="string">
 		SELECT m.nickname
-		FROM board b JOIN member m ON b.member_id=m.member_id
+		FROM board b JOIN member m ON
+		b.member_id=m.member_id
 		WHERE m.member_id=#{memberId}
-		AND b.no=#{boardNo}
+		AND
+		b.no=#{boardNo}
 	</select>
 
 	<!-- 한개Board 삭제 -->
 	<delete id="deleteBoard" parameterType="map">
 		DELETE board
-		WHERE no=#{boardNo}
+		WHERE
+		no=#{boardNo}
 		AND member_Id=#{memberId}
 	</delete>
 
@@ -172,8 +176,93 @@
 	<!-- 전체 board List 갯수 -->
 	<select id="selectBoardCount" resultType="_int">
 		SELECT COUNT(no)
-		FROM board
+		FROM
+		board
 	</select>
+
+	<!-- 내가 쓴 boardList 갯수 -->
+	<select id="selectMyBoardCount" parameterType="string"
+		resultType="int">
+		SELECT COUNT(no)
+		FROM board
+		WHERE member_Id=#{value}
+	</select>
+
+
+	<!-- 내가 쓴 boardList -->
+	<select id="selectMyBoardList" parameterType="map" resultMap="board-resultmap">
+	<![CDATA[
+		SELECT no,content, title, board_date, hit, member_id, group_no, reply_count
+		FROM (
+			SELECT rownum rnum, no, content, title, board_date, hit, member_id, group_no, reply_count
+			FROM (
+				SELECT b.no, b.content, b.title, b.board_date, b.hit, b.member_id, b.group_no,count(r.no) reply_count
+				FROM board b, reply r
+				WHERE b.no=r.board_no(+)
+				AND b.member_id=#{memberId}
+				GROUP BY b.no, b.title, b.content, b.board_date, b.hit, b.member_id, b.group_no
+				ORDER BY b.no DESC
+			)
+			WHERE rownum <= #{endItemNo}
+		)
+		WHERE rnum >=#{beginItemNo}
+	]]>
+
+	</select>
+
+
+
+	<!-- MyBoardList 검색 -->
+	<select id="selectMyOption" parameterType="map" resultMap="board-resultmap">
+		<choose>
+			<when test="option=='title'">
+			<![CDATA[
+			SELECT no,content, title, board_date, hit, member_id, group_no, reply_count
+			FROM (
+			SELECT rownum rnum, no, content, title, board_date, hit, member_id, group_no, reply_count
+			FROM (
+				SELECT b.no, b.content, b.title, b.board_date, b.hit, b.member_id, b.group_no, count(r.no) reply_count
+				FROM board b, reply r
+				WHERE b.no=r.board_no(+)
+				AND b.member_id=${memberId}
+				AND b.title LIKE '%'||#{key}||'%'
+				GROUP BY b.no, b.title, b.content, b.board_date, b.hit, b.member_id, b.group_no
+				ORDER BY b.no DESC
+			)
+			WHERE rownum <= #{endItemNo}
+		)
+		WHERE rnum >=#{beginItemNo}
+		]]>
+			</when>
+			<when test="option=='content'">
+			<![CDATA[
+			SELECT no,content, title, board_date, hit, member_id, group_no, reply_count
+			FROM (
+			SELECT rownum rnum, no, content, title, board_date, hit, member_id, group_no, reply_count
+			FROM (
+				SELECT b.no, b.content, b.title, b.board_date, b.hit, b.member_id, b.group_no, count(r.no) reply_count
+				FROM board b, reply r
+				WHERE b.no=r.board_no(+)
+				AND b.member_id=#{memberId}
+				AND b.content LIKE '%'||#{key}||'%'
+				GROUP BY b.no, b.title, b.content, b.board_date, b.hit, b.member_id, b.group_no
+				ORDER BY b.no DESC
+			)
+			WHERE rownum <= #{endItemNo}
+		)
+		WHERE rnum >=#{beginItemNo}
+		]]>
+			</when>
+		</choose>
+	</select>
+
+<!-- boardNo로 boardTitle  -->
+<select id="selectBoardTitle" parameterType="int" resultType="string">
+	SELECT title
+	FROM board
+	WHERE no=${value}
+</select>
+
 
 
 
@@ -186,7 +275,8 @@
 	<!-- BOARDPICTURE 등록 -->
 	<insert id="insertBoardPicture" parameterType="boardPicture">
 		<selectKey keyProperty="no" resultType="_int" order="BEFORE">
-			SELECT BP_NO_SEQ.nextval FROM dual
+			SELECT
+			BP_NO_SEQ.nextval FROM dual
 		</selectKey>
 		INSERT INTO board_picture VALUES(
 		#{no},#{route},#{boardNo}
@@ -196,7 +286,8 @@
 
 	<!-- BoardPicture 삭제 -->
 	<delete id="deleteBPByBoardNo" parameterType="_int">
-		DELETE FROM board_picture
+		DELETE FROM
+		board_picture
 		WHERE board_no=${value}
 	</delete>
 
@@ -205,7 +296,8 @@
 		resultMap="boardPicture-reusltmap">
 		SELECT no,route,board_no
 		FROM board_picture
-		WHERE board_no=${value}
+		WHERE
+		board_no=${value}
 	</select>
 
 </mapper>

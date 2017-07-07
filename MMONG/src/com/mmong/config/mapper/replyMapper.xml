@@ -76,4 +76,45 @@
 	WHERE no=#{no} AND member_id=#{memberId}
 </update>
 
+
+<!-- replyNo로 삭제하기 -->
+<delete id="deleteReply" parameterType="map">
+	DELETE reply
+	WHERE no=#{replyNo}
+	AND member_id=#{memberId}
+</delete>
+
+<!-- boardNo로 삭제하기 -->
+<delete id="deleteReplyByBoardNo" parameterType="int">
+	DELETE reply
+	WHERE board_no=#{value}
+</delete>
+
+
+<!-- memberId로 리플 갯수 조회 -->
+<select id="selectMyReplyCount" parameterType="string" resultType="int">
+	SELECT COUNT(no)
+	FROM reply
+	WHERE member_id=#{value}
+</select>
+
+<!-- memberId로 리플 조회하기 -->
+<select id="selectMyReply" parameterType="map" resultMap="reply-resultmap">
+<![CDATA[
+SELECT no, content, reply_date, member_id, board_no
+	FROM(
+		SELECT  rownum rnum, no, content, reply_date, member_id, board_no
+			FROM(
+				SELECT no, content, reply_date, member_id, board_no
+				FROM reply
+				WHERE member_id=#{memberId}
+				)
+		WHERE rownum <= #{endItemNo}
+	)
+	WHERE rnum >= #{beginItemNo}
+]]>
+</select>
+
+
+
 </mapper>
