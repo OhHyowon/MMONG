@@ -24,9 +24,6 @@
 
 
 
-
-
-
    <!--  @@@@@ 추가시 각자의 구역 안에서 추가 해주세요 @@@@ -->
 
    <!-- 여림 -->
@@ -62,11 +59,7 @@
    
    <!-- 진우 -->
    
-   
-   
-   
-   
-   
+
 
     <bean name="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"
             p:basename="com.mmong.validation.message.error_message" p:defaultEncoding="utf-8"/>
