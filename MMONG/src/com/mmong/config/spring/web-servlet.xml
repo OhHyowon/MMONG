@@ -24,9 +24,6 @@
 
 
 
-
-
-
    <!--  @@@@@ 추가시 각자의 구역 안에서 추가 해주세요 @@@@ -->
 
    <!-- 여림 -->
@@ -38,24 +35,31 @@
       
       
    <!-- 세연 -->
-		<!-- 쪽지 관리 탭 -->	
-		<mvc:view-controller path="/message.do" view-name="message"/>
-		<!-- 쪽지보내기 폼 ㅡ 아마 수정 필요.........? -->
-		<mvc:view-controller path="/message/sendMessage.do" view-name="content/message/sendMessage"/>
-		<!-- 쪽지 보내기 성공 폼 -->
-		<mvc:view-controller path="/message/sendSuccess.do" view-name="content/message/sendSuccess"/>
-	
-
-
-
+      <!-- 쪽지 관리 탭 -->   
+      <mvc:view-controller path="/message.do" view-name="message"/>
+      <!-- 쪽지보내기 폼 ㅡ 아마 수정 필요.........? -->
+      <mvc:view-controller path="/message/sendMessage.do" view-name="content/message/sendMessage"/>
+      <!-- 쪽지 보내기 성공 폼 -->
+      <mvc:view-controller path="/message/sendSuccess.do" view-name="content/message/sendSuccess"/>
+   
 
    <!-- 규현 -->
    
+   
+   
    <!-- 효원 -->
+   
+   
+   
    
    <!-- 주현 -->
    
+   
+   
+   
    <!-- 진우 -->
+   
+
 
     <bean name="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"
             p:basename="com.mmong.validation.message.error_message" p:defaultEncoding="utf-8"/>

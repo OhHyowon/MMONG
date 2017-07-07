@@ -29,7 +29,7 @@
 	
 	<%-- 회원 메뉴 : 개인회원 메뉴 /member로 시작 --%>
 	<sec:authorize access="hasRole('ROLE_1')">
-		<li><a href="/MMONG/member/mypage.do?userId=<sec:authentication property="principal.userId"/>">회원 정보조회</a></li>
+		<li><a href="/MMONG/member/mypage.do">회원 정보조회</a></li>
 	</sec:authorize>
 </ul>
 <%-- =======================menu 영역 끝=================== --%>

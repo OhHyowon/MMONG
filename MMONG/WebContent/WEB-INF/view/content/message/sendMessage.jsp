@@ -7,12 +7,24 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
+
+span, td, th{
+	padding: 5px; 
+}
+span.error{
+	font-size:small; /* 1em : 기본 크기의 1배수 크기 */
+	color: red;
+}
+
+</style>
+
 </head>
 <body>
 <h2>쪽지 보내기</h2><hr>
 
 <!-- 받는 아이디는 자유게시판에서 session scope를 통해 받아온다 -->
-<form action="/MMONG/message/insert.do?userId=<sec:authentication property="principal.userId"/>" method="post">
+<form action="/MMONG/message/insert.do" method="post">
 	 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	
 	<table>
@@ -35,7 +47,7 @@
 	<tr>
 		<td colspan="2">
 			<input type="submit" value="전송">
-			<input type="button" value="취소" onclick="javascript:history.back(-1)">
+			<input type="button" value="취소" onclick="location.href='/MMONG/message.do'">
 		</td>
 	</tr>
 </table>

@@ -22,7 +22,6 @@ public class MessageDaoImpl implements MessageDao{
 	
 	@Override
 	public int insertMessage(Message message) {
-		System.out.println("dao"+message);
 		return session.insert(makeSqlId("insertMessage"), message);
 	}
 

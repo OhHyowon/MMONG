@@ -43,32 +43,42 @@ $(document).ready(function(){
 		$("input[name='message']").prop("checked", this.checked);
 	});
 	
+	$("input[class='check']").on("click",function(){
+		if($("input[class='check']").not(':checked').length>0){
+			$("#allCheck").prop("checked",false);
+		}
+	}); 
+	
 	$("#delete").on("click", function(){
 		var cnt = $("input[name='message']:checked").length;
 		if(cnt == 0){
 			alert("삭제할 쪽지를 선택해주세요.");
 		}else{
-			confirm("삭제시 복구할 수 없습니다. 삭제하시겠습니까?");
-			var list = new Array();
-			list[0] = "receiveList";
-			var i = 1;
-			$("input[name='message']:checked").each(function(){
-				var no = $(this).val();
-				alert(no);
-				list[i] = no;
-				i++;
-			});
-	 		$.ajax({
-				url:"/MMONG/message/deleteMsg.do",
-				type:"post",
-				data:"no="+list,
-				success:function(val){
-					if(val=='1'){
-						alert("삭제되었습니다"); 
-						location.href="/MMONG/message/selectReceiveMsg.do";
+			if(!confirm("삭제시 복구할 수 없습니다. 삭제하시겠습니까?")){
+				return;
+			}else{
+				var list = new Array();
+				list[0] = "receiveList";
+				var i = 1;
+				$("input[name='message']:checked").each(function(){
+					var no = $(this).val();
+					list[i] = no;
+					i++;
+				});
+				
+				jQuery.ajaxSettings.traditional = true;
+		 		$.ajax({
+					url:"/MMONG/message/deleteMsg.do",
+					type:"post",
+					data:{"no":list, "${_csrf.parameterName}":"${_csrf.token}"},
+					success:function(val){
+						if(val=='1'){
+							alert("삭제되었습니다"); 
+							location.href="/MMONG/message/selectReceiveMsg.do";
+						}
 					}
-				}
-			}); 
+				}); 
+			}
 		}
  	});
 });
@@ -93,7 +103,7 @@ $(document).ready(function(){
 				<c:when test="${not empty requestScope.receiveList }">
 					<c:forEach items="${requestScope.receiveList }" var="list">
 						<tr>
-							<td><input type="checkbox" name="message" value="${list.no }"></td>
+							<td><input type="checkbox" name="message" class="check" value="${list.no }"></td>
 							<td>${list.sendId } (${list.member.nickName })</td>
 							<td><a href="/MMONG/message/viewReceiveMsg.do?no=${list.no }">${list.title }</a></td> <!-- 링크걸기 -->
 							<td><a href="/MMONG/message/viewReceiveMsg.do?no=${list.no }">${list.content }</a></td>
@@ -117,7 +127,7 @@ $(document).ready(function(){
 
 
 						<!-- 첫페이지로 이동 -->
-<a href="/MMONG/message/selectReceiveMsg.do?page=1&userId=<sec:authentication property="principal.userId"/>">첫페이지</a>
+<a href="/MMONG/message/selectReceiveMsg.do?page=1">첫페이지</a>
 
 <!-- 
 			이전 페이지 그룹 처리
@@ -125,7 +135,7 @@ $(document).ready(function(){
 -->
 		 <c:choose >
 			<c:when test="${requestScope.pageBean.previousPageGroup }">
-			<a href="/MMONG/message/selectReceiveMsg.do?page=${requestScope.pageBean.beginPage-1 }&userId=<sec:authentication property="principal.userId"/>">◀</a>
+			<a href="/MMONG/message/selectReceiveMsg.do?page=${requestScope.pageBean.beginPage-1 }">◀</a>
 		 </c:when>
 		 <c:otherwise>
 			 ◀
@@ -141,7 +151,7 @@ $(document).ready(function(){
 		<c:choose>
 			<c:when test="${requestScope.pageBean.page!=page }">
 				<!-- 현재 페이지가 아니라면 -->
-			<a href="/MMONG/message/selectReceiveMsg.do?page=${page}&userId=<sec:authentication property="principal.userId"/>">${page }</a>
+			<a href="/MMONG/message/selectReceiveMsg.do?page=${page}">${page }</a>
 			</c:when>
 			<c:otherwise>
 				&nbsp;[${page }]&nbsp;
@@ -156,7 +166,7 @@ $(document).ready(function(){
 	
 	<c:choose>
 		<c:when test="${requestScope.pageBean.nextPageGroup }">
-			<a href="/MMONG/message/selectReceiveMsg.do?page=${requestScope.pageBean.endPage+1}&userId=<sec:authentication property="principal.userId"/>">▶</a>
+			<a href="/MMONG/message/selectReceiveMsg.do?page=${requestScope.pageBean.endPage+1}">▶</a>
 		</c:when>
 		<c:otherwise>
 			▶
@@ -165,12 +175,12 @@ $(document).ready(function(){
 		 
 						<!-- 마지막 페이지로 이동 -->
 
-<a href="/MMONG/message/selectReceiveMsg.do?page=${requestScope.pageBean.totalPage}&userId=<sec:authentication property="principal.userId"/>">마지막페이지</a>
+<a href="/MMONG/message/selectReceiveMsg.do?page=${requestScope.pageBean.totalPage}">마지막페이지</a>
 
 </p>
 
 
-	<form action="/MMONG/message/searchReceiveMsg.do?userId=<sec:authentication property="principal.userId"/>">
+	<form action="/MMONG/message/searchReceiveMsg.do">
 		<select name="searchOpt">
 			<option value="ID">보낸사람의 ID</option>
 			<option value="title">제목</option>

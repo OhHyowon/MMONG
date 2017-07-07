@@ -151,7 +151,7 @@
 
 <!-- 답장하기 위해 쪽지를 보낸 사람의 Id와 닉네임 알아내기 -->
 <select id="selectMsgIdNick" parameterType="int" resultMap="message_member_resultmap">
-	SELECT s.send_id, m.nickname
+	SELECT s. no, s.send_id, m.nickname
 	FROM message s JOIN member m ON s.send_id = m.member_id
 	WHERE s.no = #{value}
 </select>

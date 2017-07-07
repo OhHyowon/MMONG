@@ -23,10 +23,7 @@ public class MessageServiceImpl implements MessageService{
 	
 	@Override
 	public void insertMessage(Message message) {
-		
-		System.out.println("service"+message);
 		dao.insertMessage(message);
-		
 	}
 
 	@Override

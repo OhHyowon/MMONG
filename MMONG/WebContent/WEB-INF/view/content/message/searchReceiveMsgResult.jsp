@@ -44,31 +44,42 @@ $(document).ready(function(){
 		$("input[name='message']").prop("checked", this.checked);
 	});
 	
+	$("input[class='check']").on("click",function(){
+		if($("input[class='check']").not(':checked').length>0){
+			$("#allCheck").prop("checked",false);
+		}
+	}); 
+	
 	$("#delete").on("click", function(){
 		var cnt = $("input[name='message']:checked").length;
 		if(cnt == 0){
 			alert("삭제할 쪽지를 선택해주세요.");
 		}else{
-			confirm("삭제시 복구할 수 없습니다. 삭제하시겠습니까?");
-			var list = new Array();
-			list[0] = "receiveList";
-			var i = 1;
-			$("input[name='message']:checked").each(function(){
-				var no = $(this).val();
-				list[i] = no;
-				i++;
-			});
-	 		$.ajax({
-				url:"/MMONG/message/deleteMsg.do",
-				type:"post",
-				data:"no="+list,
-				success:function(val){
-					if(val=='1'){
-						alert("삭제되었습니다"); 
-						location.href="/MMONG/message/searchReceiveMsg.do";
+			if(!confirm("삭제시 복구할 수 없습니다. 삭제하시겠습니까?")){
+				return;
+			}else{
+				var list = new Array();
+				list[0] = "receiveList";
+				var i = 1;
+				$("input[name='message']:checked").each(function(){
+					var no = $(this).val();
+					list[i] = no;
+					i++;
+				});
+				
+				jQuery.ajaxSettings.traditional = true;
+		 		$.ajax({
+					url:"/MMONG/message/deleteMsg.do",
+					type:"post",
+					data:{"no":list, "${_csrf.parameterName}":"${_csrf.token}"},
+					success:function(val){
+						if(val=='1'){
+							alert("삭제되었습니다"); 
+							location.href="/MMONG/message/searchReceiveMsg.do?&searchOpt=${requestScope.search_opt}&search=${requestScope.search_txt}";
+						}
 					}
-				}
-			}); 
+				}); 
+			}
 		}
  	});
 });
@@ -95,7 +106,7 @@ $(document).ready(function(){
 				<c:when test="${not empty requestScope.searchReceiveList }">
 					<c:forEach items="${requestScope.searchReceiveList }" var="list">
 						<tr>
-							<td><input type="checkbox" name="message" value="${list.no }"></td>
+							<td><input type="checkbox" name="message" class="check" value="${list.no }"></td>
 							<td>${list.sendId } (${list.member.nickName })</td>
 							<td><a href="/MMONG/message/viewReceiveMsg.do?no=${list.no }">${list.title }</a></td>
 							<td><a href="/MMONG/message/viewReceiveMsg.do?no=${list.no }">${list.content }</a></td>

@@ -42,32 +42,43 @@ $(document).ready(function(){
 	$("#allCheck").on("click", function(){
 		$("input[name='message']").prop("checked", this.checked);
 	});
+	
+	$("input[class='check']").on("click",function(){
+		if($("input[class='check']").not(':checked').length>0){
+			$("#allCheck").prop("checked",false);
+		}
+	}); 
      
 	$("#delete").on("click", function(){
 		var cnt = $("input[name='message']:checked").length;
 		if(cnt == 0){
 			alert("삭제할 쪽지를 선택해주세요.");
 		}else{
-			confirm("삭제시 복구할 수 없습니다. 삭제하시겠습니까?");
-			var list = new Array();
-			list[0] = "sendList";
-			var i = 1;
-			$("input[name='message']:checked").each(function(){
-				var no = $(this).val();
-				list[i] = no;
-				i++;
-			});
-	 		$.ajax({
-				url:"/MMONG/message/deleteMsg.do", //controller
-				type:"post",
-				data:"no="+list,
-				success:function(val){
-					if(val=='1'){
-						alert("삭제되었습니다"); 
-						location.href="/MMONG/message/searchSendMsg.do"; //controller
+			if(!confirm("삭제시 복구할 수 없습니다. 삭제하시겠습니까?")){
+				return;
+			}else{
+				var list = new Array();
+				list[0] = "sendList";
+				var i = 1;
+				$("input[name='message']:checked").each(function(){
+					var no = $(this).val();
+					list[i] = no;
+					i++;
+				});
+				
+				jQuery.ajaxSettings.traditional = true;
+		 		$.ajax({
+					url:"/MMONG/message/deleteMsg.do", //controller
+					type:"post",
+					data:{"no":list, "${_csrf.parameterName}":"${_csrf.token}"},
+					success:function(val){
+						if(val=='1'){
+							alert("삭제되었습니다"); 
+							location.href="/MMONG/message/searchSendMsg.do?searchOpt=${requestScope.search_opt}&search=${requestScope.search_txt}"; //controller
+						}
 					}
-				}
-			}); 
+				}); 
+			}
 		}
  	});
 });
@@ -94,7 +105,7 @@ $(document).ready(function(){
 			<c:when test="${not empty requestScope.searchSendList }">
 				<c:forEach items="${requestScope.searchSendList }" var="list">
 					<tr>
-						<td><input type="checkbox" name="message" value="${list.no }"></td>
+						<td><input type="checkbox" name="message" class="check" value="${list.no }"></td>
 						<td>${list.receiveId } (${list.member.nickName })</td>
 						<td><a href="/MMONG/message/viewSendMsg.do?no=${list.no }">${list.title }</a></td>
 						<td><a href="/MMONG/message/viewSendMsg.do?no=${list.no }">${list.content }</a></td>
@@ -180,6 +191,17 @@ $(document).ready(function(){
 <a href="/MMONG/message/searchSendMsg.do?page=${requestScope.pageBean.totalPage}&searchOpt=${requestScope.search_opt}&search=${requestScope.search_txt}">마지막페이지</a>
 
 </p>
+
+
+	<form action="/MMONG/message/searchSendMsg.do">
+		<select name="searchOpt">
+			<option value="ID">받은사람의 ID</option>
+			<option value="title">제목</option>
+			<option value="content">내용</option>
+		</select>
+		<input type="text" name="search">
+		<input type="submit" value="검색">
+	</form>
 
 
 

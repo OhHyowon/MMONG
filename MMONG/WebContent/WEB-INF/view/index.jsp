@@ -29,7 +29,7 @@
    <%-- 회원 메뉴 : 개인회원 메뉴 /member로 시작 --%>
    <sec:authorize access="hasRole('ROLE_1')">
       <li><a href="/MMONG/member/mypage.do">회원 정보조회</a></li>
-    
+  	  <li><a href="/MMONG/message.do">쪽지 관리</a></li>
    </sec:authorize>
 </ul>
 <%-- =======================menu 영역 끝=================== --%>
@@ -44,7 +44,7 @@
          
 	<%-- 소모임 - 자유게시판 (임시) --%>
 	<sec:authorize access="hasRole('ROLE_1')">
-	  <li><a href="/MMONG/group/board/board_form.do?userId=<sec:authentication property='principal.userId'/>">자유게시판 글쓰기</a>
+	  <li><a href="/MMONG/group/board/board_form.do">자유게시판 글쓰기</a>
 	  <li><a href="/MMONG/group/board/allBoardList.do">자유게시판 목록</a>
 	</sec:authorize>
    
@@ -57,7 +57,7 @@
 	</sec:authorize>
       
       
-      <li><a href="/MMONG/message.do?userId=<sec:authentication property="principal.userId"/>">쪽지 관리</a></li>
+      
 </ul>   
 <%-- ======================대menu 영역 끝=================== --%>   
 

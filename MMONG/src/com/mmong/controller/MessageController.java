@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -20,7 +21,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.mmong.service.MessageService;
+import com.mmong.validation.ReplyMessageValidator;
 import com.mmong.validation.SendMessageValidator;
+import com.mmong.vo.Member;
 import com.mmong.vo.Message;
 
 @Controller
@@ -38,16 +41,15 @@ public class MessageController {
 	 * @return
 	 */
 	@RequestMapping("insert")
-	public ModelAndView insertMessage(@ModelAttribute Message mess, BindingResult errors, HttpSession session, @RequestParam(required=false) String userId){
+	public ModelAndView insertMessage(@ModelAttribute Message mess, BindingResult errors){
 		
 		Date date = new Date();
-		String receiveId = "b1b2b3b4";   ////대체될 줄
-		String sendId = userId;   
-	/*	
-	 * session 체크 필요
-	 * String receiveId = session.getAttribute("receiveId"); //받는 사람 아이디 받아옴
-		String sendId = session.getAttribute("memberId"); //내가 쪽지 보냄
-		*/
+		//String receiveId = "b1b2b3b4";   ////대체될 줄!!!!!!!!!
+		String receiveId = "a1a2a3a4";   ////대체될 줄!!!!!!!!!
+
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String sendId = member.getMemberId();   
+
 		
 		Message message = new Message(0, date, mess.getTitle(), mess.getContent(), 0, sendId, receiveId);
 		
@@ -71,10 +73,10 @@ public class MessageController {
 	 * @return
 	 */
 	@RequestMapping("selectReceiveMsg")
-	public String selectReceiveMsg(HttpSession session, ModelMap map, @RequestParam(value="page", defaultValue="1") String reqPage, @RequestParam(required=false) String userId){
+	public String selectReceiveMsg(HttpSession session, ModelMap map, @RequestParam(value="page", defaultValue="1") String reqPage){
 
-		System.out.println(userId);
-		String receiveId = userId;
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String receiveId = member.getMemberId();
 	
 		int page = 1;
 		page = Integer.parseInt(reqPage);
@@ -96,15 +98,14 @@ public class MessageController {
 	 * @return
 	 */
 	@RequestMapping("selectSendMsg")
-	public String selectSendMsg(HttpSession session, ModelMap map, @RequestParam(value="page", defaultValue="1") String reqPage, @RequestParam(required=false) String userId){
+	public String selectSendMsg(HttpSession session, ModelMap map, @RequestParam(value="page", defaultValue="1") String reqPage){
 		
-		System.out.println(userId);
-		String sendId = userId;
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String sendId = member.getMemberId();
 	
 		int page = 1;
 		page = Integer.parseInt(reqPage);
 		
-	
 		Map<String, Object> pagebeanMap = service.selectSendMsg(sendId, page);
 		
 		map.addAttribute("sendList", pagebeanMap.get("list"));
@@ -123,7 +124,6 @@ public class MessageController {
 	@ResponseBody
 	public String deleteMsg(@RequestParam List no){
 
-		System.out.println(no);
 		List<Object> msgNo = new ArrayList<Object>();
 		for(int i=1; i<no.size(); i++){
 			msgNo.add(no.get(i));
@@ -170,7 +170,7 @@ public class MessageController {
 	}
 	
 	/**
-	 * 답장보내기 - 보낼 사람의 Id와 닉네임 가져오기
+	 * 받은 쪽지 view -> 답장보내기 jsp 이동 중간 거치는 컨트롤러 - 보낼 사람의 Id와 닉네임 가져오기
 	 * @param no
 	 * @return
 	 */
@@ -178,44 +178,38 @@ public class MessageController {
 	public String selectMsgIdNick(@RequestParam int no, ModelMap map){
 		
 		Message message = service.selectMsgIdNick(no);
+
 		map.addAttribute("message", message);
-		
+		map.addAttribute("no", no);
 		return "content/message/replyMessage";
 	}
-	
-	
-	
-	//*****************************************************************************************88
-	//*********************************************************
 	
 	/**
 	 * 답장 보내기
 	 * @return
 	 */
 	@RequestMapping("reply")
-	public ModelAndView reply(@RequestParam String receiveId, @ModelAttribute Message mess, BindingResult errors, HttpSession session){
+	public ModelAndView reply(@ModelAttribute("mess") Message mess, BindingResult errors, ModelMap map, @RequestParam String receiveId, @RequestParam int no){
 		
-		System.out.println(receiveId);
-
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Date date = new Date();
-		String sendId = "receiveId";   ////대체될 줄
-	/*	
-	 * session 체크 필요
-		String sendId = session.getAttribute("memberId"); //내가 쪽지 보냄
-		*/
+		String sendId = member.getMemberId(); 
 		
 		Message message = new Message(0, date, mess.getTitle(), mess.getContent(), 0, sendId, receiveId);
-		
-		SendMessageValidator valid = new SendMessageValidator();
+
+		ReplyMessageValidator valid = new ReplyMessageValidator();
 		valid.validate(message, errors);
-		
+
 		if(errors.hasErrors()){
+			Message msg = service.selectMsgIdNick(no);
+			map.addAttribute("message", msg);
+			map.addAttribute("no", no);
 			return new ModelAndView("/content/message/replyMessage");
 		}
-
+		
 		service.insertMessage(message);
 		
-		RedirectView rv = new RedirectView("/MMONG/content/message/sendSuccess.do");
+		RedirectView rv = new RedirectView("/MMONG/message/sendSuccess.do");
 		rv.setExposeModelAttributes(false);
 		
 		return new ModelAndView(rv);
@@ -231,10 +225,10 @@ public class MessageController {
 	 * @return
 	 */
 	@RequestMapping("searchSendMsg")
-	public String searchSendMsg(@RequestParam String searchOpt, @RequestParam String search, HttpSession session,  ModelMap map, @RequestParam(value="page", defaultValue="1") String reqPage, @RequestParam(required=false) String userId){
+	public String searchSendMsg(@RequestParam String searchOpt, @RequestParam String search, ModelMap map, @RequestParam(value="page", defaultValue="1") String reqPage){
 		
-		System.out.println(userId);
-		String sendId = userId;
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String sendId = member.getMemberId();
 	
 		int page = 1;
 		page = Integer.parseInt(reqPage);
@@ -264,10 +258,10 @@ public class MessageController {
 	 * @return
 	 */
 	@RequestMapping("searchReceiveMsg")
-	public String searchReceiveMsg(@RequestParam String searchOpt, @RequestParam String search, HttpSession session,  ModelMap map, @RequestParam(value="page", defaultValue="1") String reqPage, @RequestParam(required=false) String userId){
+	public String searchReceiveMsg(@RequestParam String searchOpt, @RequestParam String search, ModelMap map, @RequestParam(value="page", defaultValue="1") String reqPage){
 		
-		System.out.println(userId);
-		String receiveId = userId;
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String receiveId = member.getMemberId();
 	
 		int page = 1;
 		page = Integer.parseInt(reqPage);
