@@ -11,15 +11,14 @@ import com.mmong.vo.Group;
 public class GroupServiceImpl implements GroupService {
 	@Autowired
 	private GroupDao groupDao;
-	
-	/**
-	 * 소모임을 하나 생성하는 메소드 
-	 * @param group
-	 * @return 
-	 * 작성자 : 이주현 
-	 */
+
 	public int insertGroup(Group group) {
 		return groupDao.insertGroup(group);
+	}
+
+	@Override
+	public Group selectMyGroupByNo(int no) {
+		return groupDao.selectMyGroupByNo(no);
 	}
 
 }

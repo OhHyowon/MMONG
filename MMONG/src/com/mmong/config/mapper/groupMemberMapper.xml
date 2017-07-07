@@ -9,7 +9,29 @@
 		</selectKey>
 		INSERT INTO GROUP_MEMBER VALUES (#{no}, #{groupNo}, #{memberId})	
 	</insert>
+	
+	<!-- GroupMember를 select할 때 Group을 조인하는 Mapper  -->
+	<resultMap id="groupMember-resultMap" type="groupMember">
+		<id column="no" property="no" />
+		<result column="group_no" property="groupNo"/>
+		<result column="member_id" property="memberId"/>
+	</resultMap>
+	<resultMap id="groupMember-group-resultMap" type="groupMember" extends="groupMember-resultMap">
+		<association property="group" javaType="com.mmong.vo.Group">
+			<id column="no" property="no" />
+			<result column="name" property="name"/>
+			<result column="leader" property="leader"/>
+			<result column="picture" property="picture"/>
+			<result column="content" property="content"/>	
+		</association>
+	</resultMap>
 
+	<select id="selectMeById" parameterType="java.lang.String" resultMap="groupMember-group-resultMap">
+		SELECT gm.no, gm.group_no, gm.member_id,
+			   g.no, g.name, g.leader, g.picture, g.content
+		FROM group_member gm, small_group g
+		WHERE gm.group_no = g.no AND gm.member_id = #{value}	
+	</select>
 
-
+		
 </mapper>

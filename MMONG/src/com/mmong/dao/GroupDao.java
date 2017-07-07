@@ -9,4 +9,12 @@ public interface GroupDao {
 	 * 작성자 : 이주현 
 	 */
 	int insertGroup(Group group);
+	
+	/**
+	 * 해당 no의 소모임을 조회하는 메소드
+	 * @param no
+	 * @return
+	 * 작성자 : 이주현 
+	 */
+	Group selectMyGroupByNo(int no);
 }
