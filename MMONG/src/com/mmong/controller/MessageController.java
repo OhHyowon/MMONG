@@ -27,7 +27,7 @@ import com.mmong.vo.Member;
 import com.mmong.vo.Message;
 
 @Controller
-@RequestMapping("message/")
+@RequestMapping("/message/")
 public class MessageController {
 
 	@Autowired
