@@ -3,10 +3,13 @@ package com.mmong.vo;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class AdministratorNotice  implements Serializable {
 	private int no;
 	private String title;
 	private String content;
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date adminDate;
 	
 	private String adminId;
