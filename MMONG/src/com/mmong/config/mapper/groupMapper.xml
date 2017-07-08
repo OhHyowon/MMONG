@@ -21,4 +21,27 @@
 		WHERE no = #{value}			   
 	</select>
 	
+	<!-- 전체 Group select -->
+	<select id="selectAllGroup" resultType="group">
+		SELECT no no,
+			   name name,
+			   leader leader,
+			   picture picture,
+			   content content
+		FROM small_group		
+	</select>
+	
+	<!-- 이름으로 group select -->
+	<select id="searchGroupByName" parameterType="java.lang.String" resultType="group">
+		SELECT no no,
+			   name name,
+			   leader leader,
+			   picture picture,
+			   content content
+		FROM small_group
+		WHERE name like '%'||#{value}||'%'
+	</select>
+	
+	
+	
 </mapper>
