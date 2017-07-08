@@ -33,4 +33,46 @@ public interface UserDao {
 	int updateUserByUserId(User user);
 	
 	int deleteUserByUserId(String userId);
+	
+	
+	////////////////////////////////////////////////////////
+	
+	/**
+	 * 사용자 정보 수정처리
+	 * @param user
+	 * @return
+	 */
+	int updateUser(User user);	
+	
+	
+	//일반회원(member)의 권한이 'ROLE_1' 이면 'ROLE_2'로 변경 (update)
+	/**
+	* 일반회원(member)의 권한이  'ROLE_1'이면 'ROLE_2'로 변경 (update)
+	* @param memberId
+	* @return
+	* 작성자 : 이진우
+	*/
+	int updateAuthorityMemberToStop(String memberId);
+	
+	//일반회원(member)의 권한이 'ROLE_2'이면 'ROLE_1'로 변경 (update)
+	/**
+	* 일반회원(member)의 권한이 'ROLE_2'이면 'ROLE_1'로 변경 (update)
+	* @param memberId
+	* @return
+	* 작성자 : 이진우
+	*/
+	int updateAuthorityMemberToRun(String memberId);	
+	
+	
+	/**
+	 * 관리자(administrator)의 enable이 1 이면 0으로 변경한다
+	 * 필요 이유: 관리자 공지사항 게시글 보존을 위해 관리자 삭제 대신 필요
+	 * @param adminId
+	 * @return
+	 * 작성자 : 이진우
+	 */
+	int updateAdministratorEnableToZero(String adminId);
+	////////////////////////////////////////////////////////
+			
+	
 }

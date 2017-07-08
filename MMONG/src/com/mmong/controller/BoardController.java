@@ -44,7 +44,6 @@ public class BoardController {
 	@RequestMapping("register")
 	public String registerBoard(@RequestParam List<MultipartFile> upImage, 
 											@ModelAttribute Board board, BindingResult errors, 
-											/*@RequestParam int groupNo,*/
 											HttpServletRequest request, HttpSession session, 
 											ModelMap map) throws Exception {
 		
@@ -54,15 +53,12 @@ public class BoardController {
 			return "content/group/board/board_form";
 		}
 		
+		int groupNo=(int) session.getAttribute("groupNo");
+		
 		String destDir = request.getServletContext().getRealPath("/up_image"); // 진짜경로
 
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String memberId=member.getMemberId();
-		
-		int groupNo=0;
-		/*
-		 * 	소모임에 가입됐을 때 groupNo도 넘겨줘야함... 일단 TEST 로 0 번 줌
-		*/
 		 
 		// 시퀀스로 들어갈 no=0, 처음 들어갈 조횟수 hit=0
 		Date date = new Date();
@@ -100,6 +96,7 @@ public class BoardController {
 		
 		map.addAttribute("nameList", nameList);
 		map.addAttribute("nickname", nickname);
+		map.addAttribute("groupNo", groupNo);
 
 		
 		return "redirect:/group/board/board_view.do?boardNo="+boardNo;
@@ -109,11 +106,6 @@ public class BoardController {
 	@RequestMapping("boardUpdate1")
 	public String updateBoard1(@RequestParam String[] nameList, @RequestParam int boardNo, HttpServletRequest request,
 			ModelMap map) {
-
-		System.out.println("update컨트롤러"+nameList);
-		for(int i=0; i<nameList.length;i++){
-			System.out.println(nameList[i]);
-		}
 		
 		if (nameList.length == 0) { 
 			Board board = boardService.selectBoard(boardNo);
@@ -200,7 +192,7 @@ public class BoardController {
 		return "content/group/board/board_view";
 	}
 	
-	
+	/*게시글 삭제*/
 	@RequestMapping("boardDelete")
 	@ResponseBody
 	public String deleteBoard(@RequestParam int boardNo,
@@ -223,6 +215,7 @@ public class BoardController {
 		return "1";
 	}
 	
+	/*게시글 조회*/
 	@RequestMapping("board_view")
 	public String boardView(int boardNo,ModelMap map){
 
@@ -268,20 +261,28 @@ public class BoardController {
 		return "content/group/board/board_view";
 	}
 	
+	/*게시글 목록*/
 	@RequestMapping("allBoardList")
 	public String showAllBoardList(@RequestParam(value="page", defaultValue="1")int page, 
 													@RequestParam (value="option", defaultValue="1")String option, 
 													@RequestParam  (value="key", defaultValue="1")String key, 
+													HttpSession session,
 													ModelMap map) {
 		
 		HashMap<String,Object> pagingMap =null;
 		
+		
+		int groupNo=(int) session.getAttribute("groupNo");
+		
 		if(option.equals("1")){ // option 선택을 안했을 때
-			pagingMap=boardService.selectAllBoard(page); 
+			pagingMap=boardService.selectAllBoard(page,groupNo); 
 		}else{ // option 선택했을 때
-			pagingMap=boardService.selectOption(page,option,key);
+			pagingMap=boardService.selectOption(page,option,key,groupNo);
 		}
 		
+		
+		
+		map.addAttribute("groupNo", groupNo);
 		map.addAttribute("nickNameList", pagingMap.get("nickNameList"));
 		map.addAttribute("boardList", pagingMap.get("boardList"));
 		map.addAttribute("pageBean", pagingMap.get("pageBean"));
@@ -289,31 +290,35 @@ public class BoardController {
 		return "content/group/board/board_list";
 	}
 	
+	/*내가 쓴 게시글 목록*/
 	@RequestMapping("myBoardList")
 	public String myBoardList(@RequestParam(value="page", defaultValue="1")int page, 
 											@RequestParam (value="option", defaultValue="1")String option, 
-											@RequestParam  (value="key", defaultValue="1")String key, ModelMap map){
+											@RequestParam  (value="key", defaultValue="1")String key, 
+											HttpSession session,
+											ModelMap map){
 		
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String memberId=member.getMemberId();
 		
+		int groupNo=(int) session.getAttribute("groupNo");
 		
 		HashMap<String,Object> pagingMap=null;
 		
 		if(option.equals("1")){
-			pagingMap=boardService.selectMyBoardList(page,memberId);			
+			pagingMap=boardService.selectMyBoardList(page,memberId,groupNo);			
 		}else{
-			pagingMap=boardService.selectMyOption(page, option, key,memberId);
+			pagingMap=boardService.selectMyOption(page, option, key,memberId,groupNo);
 		}
 
-		
+		map.addAttribute("groupNo", groupNo);
 		map.addAttribute("myBoardList", pagingMap.get("myBoardList"));
 		map.addAttribute("pageBean", pagingMap.get("pageBean"));
 		
 		return "content/group/board/board_mine";
 	}
 	
-	
+	/*내가 쓴 게시글 목록 중 선택 삭제*/
 	@RequestMapping(value="deleteMyBoardList",produces="html/text;charset=UTF-8;" )
 	@ResponseBody
 	public String deleteMyboardList(@RequestParam List<Integer> boardNoList){

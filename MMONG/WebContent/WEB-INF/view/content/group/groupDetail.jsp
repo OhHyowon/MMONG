@@ -78,7 +78,7 @@ $(document).ready(function(){
 <%-- =============소모임 상세페이지 소메뉴 : 밑에 세메뉴안에도 이것 포함시키기! ================ --%>
 <ul>
 	<li><a href="/MMONG/group/">모임 일정 목록</a></li> <!-- 소모임 상세페이지 첫 화면 -->
-	<li><a href="/MMONG/group/">자유게시판</a></li>
+	<li><a href="/MMONG/group/board/allBoardList.do">자유게시판</a></li>
 	<li><a href="/MMONG/groupMember/searchGroupMember.do">참여 멤버 목록</a></li>
 </ul>
 <%-- =============소모임 상세페이지 소메뉴 끝================ --%>
@@ -89,7 +89,7 @@ $(document).ready(function(){
 	int groupNo = ((Group)request.getAttribute("group")).getNo();
 	session.setAttribute("groupNo", groupNo);	
 %>
-<!-- 그룹 가입 시 그룹멤버 객체 만들어주기위해 넘겨줄 값 : 이건 예전에 만든거라 세션처리 못함 -->
+<!-- 그룹 가입 시 그룹멤버 객체 만들어주기위해 넘겨줄 값 : 이건 예전에 만든거라 세션처리 못함 - 이주현 -->
 <input type="hidden" id="groupNo" value="${requestScope.group.no}">
 <input type="hidden" id="memberId" value="<sec:authentication property="principal.memberId"/>">
 <br>

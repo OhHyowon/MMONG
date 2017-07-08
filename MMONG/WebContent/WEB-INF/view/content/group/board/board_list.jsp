@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -9,7 +10,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<jsp:include page="/index.do"/>
 
 <style type="text/css">
 a:link {
@@ -50,7 +50,43 @@ td {
 	padding: 10px;
 	text-align:center;
 }
+
+.messageGo {
+    position: relative;
+}
+
+.messageGo .messageGoTxt {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.messageGo:hover .messageGoTxt {
+    visibility: visible;
+}
 </style>
+<script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.messageGoTxt').on("click",function(){
+		alert("올ㅋ 되는뎅ㅋ 여기서 세연이한테 쪽지 주소 받고, 아이디, 닉네임 넘겨 주면 됩니다!");
+	});
+});
+
+</script>
+
+<jsp:include page="/group/board/board_menu.do"/>
+
+
+
 	<h2>게시판 전체 목록</h2>
 	<table>
 		<thead>
@@ -70,8 +106,11 @@ td {
 					<tr>
 						<td>${board.no }</td>
 						<td><a href="/MMONG/group/board/board_view.do?boardNo=${board.no }">${board.title }[${board.replyCount}]</a></td>
-						<td>${board.memberId }(${requestScope.nickNameList[idx.index] })</td>
-						<td><fmt:formatDate value="${board.boardDate }" pattern="yyyy-MM-dd HH:mm" /></td>
+						<td class="messageGo">${board.memberId }(${requestScope.nickNameList[idx.index] })
+							<div class="messageGoTxt">쪽지보내기</div>
+						</td>
+						<td><fmt:formatDate value="${board.boardDate }" pattern="yyyy-MM-dd HH:mm" />
+						</td>
 						<td>${board.hit }</td>
 					</tr>
 			</c:when>
@@ -79,7 +118,9 @@ td {
 				<tr>
 					<td>${board.no }</td>
 					<td><a href="/MMONG/group/board/board_view.do?boardNo=${board.no }">${board.title }</a></td>
-					<td>${board.memberId }(${requestScope.nickNameList[idx.index] })</td>
+					<td class="messageGo">${board.memberId }(${requestScope.nickNameList[idx.index] })
+						<div class="messageGoTxt">쪽지보내기</div>
+					</td>
 					<td><fmt:formatDate value="${board.boardDate }" pattern="yyyy-MM-dd HH:mm" /></td>
 					<td>${board.hit }</td>
 				</tr>
@@ -90,6 +131,7 @@ td {
 	</table>
 
 
+ <%-- 검색 창 --%>
 	<form action="/MMONG/group/board/allBoardList.do">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<select name="option">
@@ -106,14 +148,14 @@ td {
 
 	<%-- 첫 페이지로 이동 --%>
 	<p align="center">
-		<a href="/MMONG/group/board/allBoardList.do?page=1">첫 페이지</a>
+		<a href="/MMONG/group/board/allBoardList.do?page=1&groupNo=${requestScope.groupNo}">첫 페이지</a>
 
 		<%-- 이전 페이지 그룹 처리 --%>
 		<c:choose>
 			<c:when test="${requestScope.pageBean.previousPageGroup }">
 				<%-- 이전 페이지 그룹이 있다면 isPreviousPageGroup() 호출 --%>
 				<a
-					href="/MMONG/group/board/allBoardList.do?page=${requestScope.pageBean.beginPage - 1 }">◀</a>
+					href="/MMONG/group/board/allBoardList.do?page=${requestScope.pageBean.beginPage - 1 }&groupNo=${sessionScope.groupNo}">◀</a>
 			</c:when>
 			<c:otherwise>
 			◀
@@ -126,7 +168,7 @@ td {
 			<c:choose>
 				<c:when test="${requestScope.pageBean.page != page }">
 					<!-- 현재 페이지가 아니라면 -->
-					<a href="/MMONG/group/board/allBoardList.do?page=${page}">${page }&nbsp;&nbsp;</a>
+					<a href="/MMONG/group/board/allBoardList.do?page=${page}&groupNo=${sessionScope.groupNo}">${page }&nbsp;&nbsp;</a>
 				</c:when>
 				<c:otherwise>
 				[${page }]&nbsp;&nbsp;  <%-- &nbsp;는 공백을 나타냄 --%>
@@ -139,7 +181,7 @@ td {
 			<c:when test="${requestScope.pageBean.nextPageGroup }">
 				<%-- isNextPageGroup() 호출 --%>
 				<a
-					href="/MMONG/group/board/allBoardList.do?page=${requestScope.pageBean.endPage + 1 }">▶</a>
+					href="/MMONG/group/board/allBoardList.do?page=${requestScope.pageBean.endPage + 1 }&groupNo=${sessionScope.groupNo}">▶</a>
 				<%-- getEndPage()에서 리턴된 값 넣기 --%>
 			</c:when>
 			<c:otherwise>
@@ -149,7 +191,7 @@ td {
 
 		<!-- 마지막 페이지로 이동 -->
 		<a
-			href="/MMONG/group/board/allBoardList.do?page=${requestScope.pageBean.totalPage}">마지막
+			href="/MMONG/group/board/allBoardList.do?page=${requestScope.pageBean.totalPage}&groupNo=${sessionScope.groupNo}">마지막
 			페이지</a>
 	</p>
 

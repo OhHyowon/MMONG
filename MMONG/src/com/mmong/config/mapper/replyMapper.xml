@@ -108,6 +108,7 @@ SELECT no, content, reply_date, member_id, board_no
 				SELECT no, content, reply_date, member_id, board_no
 				FROM reply
 				WHERE member_id=#{memberId}
+				ORDER BY reply_date DESC
 				)
 		WHERE rownum <= #{endItemNo}
 	)
