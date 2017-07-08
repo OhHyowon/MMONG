@@ -33,5 +33,12 @@
 		WHERE gm.group_no = g.no AND gm.member_id = #{value}	
 	</select>
 
-		
+	<!-- 소모임no로 그룹멤버 select -->
+	<select id="searchGroupMemberByGroupNo" parameterType="_int" resultType="groupMember">
+		SELECT no no,
+			   group_no groupNo,
+			   member_id memberId
+		FROM group_member
+		WHERE group_no = #{value}
+	</select>
 </mapper>

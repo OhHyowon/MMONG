@@ -1,16 +1,23 @@
 package com.mmong.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.mmong.service.GroupMemberService;
 import com.mmong.vo.GroupMember;
 
 @Controller
 @RequestMapping("/groupMember/")
+@SessionAttributes("groupNo")
 public class GroupMemberController {
 	@Autowired
 	private GroupMemberService groupMemberService;
@@ -25,5 +32,12 @@ public class GroupMemberController {
 	public String insertGroup(@ModelAttribute GroupMember groupMember){
 		groupMemberService.insertGroupMember(groupMember);
 		return "가입완료";
+	}
+	
+	@RequestMapping("searchGroupMember")
+	public ModelAndView searchGroupMemberByGroupNo(HttpSession session){
+		int groupNo = Integer.parseInt(session.getAttribute("groupNo").toString());		;
+		List<GroupMember> groupMemberList = groupMemberService.searchGroupMemberByGroupNo(groupNo);
+		return new ModelAndView("/content/group/groupMember/groupMemberList", "groupMemberList", groupMemberList);
 	}
 }
