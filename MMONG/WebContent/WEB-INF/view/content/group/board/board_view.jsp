@@ -14,6 +14,27 @@
 	font-size:.8em;
 	color: red;
 }
+.messageGo {
+    position: relative;
+}
+
+.messageGo .messageGoTxt {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.messageGo:hover .messageGoTxt {
+    visibility: visible;
+}
 </style>
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
@@ -61,6 +82,9 @@ $(document).ready(function(){
 				}
 			});
 		}
+	}); // end of .replyDeleteBtn
+	$('.messageGoTxt').on("click",function(){
+		alert("올ㅋ 되는뎅ㅋ 여기서 세연이한테 쪽지 주소 받고, 아이디, 닉네임 넘겨 주면 됩니다!");
 	});
 });
 
@@ -81,7 +105,9 @@ $(document).ready(function(){
 		</tr>
 		<tr>
 			<td>작성자(닉네임)</td>
-			<td>${requestScope.board.memberId }(${requestScope.boardNickname })</td>
+			<td class="messageGo">${requestScope.board.memberId }(${requestScope.boardNickname })
+				<div class="messageGoTxt">쪽지보내기</div>
+			</td>
 		</tr>
 		<tr>
 			<td>작성일자</td>

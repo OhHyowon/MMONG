@@ -38,6 +38,7 @@ public class ReplyController {
 	@Autowired
 	private BoardPictureServiceImpl BPService;
 	
+	/*리플 등록*/
 	@RequestMapping("register")
 	public String insertReply(@ModelAttribute Reply reply, BindingResult errors,
 											@RequestParam int boardNo,
@@ -116,7 +117,7 @@ public class ReplyController {
 		return "redirect:/group/board/board_view.do?boardNo="+boardNo;
 	}
 	
-	
+	/*리플 수정*/
 	@RequestMapping("replyUpdate")
 	public String replyUpadate(@ModelAttribute Reply reply, BindingResult errors,
 											HttpServletRequest request,
@@ -190,7 +191,7 @@ public class ReplyController {
 		return "redirect:/group/board/board_view.do?boardNo="+boardNo;
 	}
 	
-	
+	/*리플 삭제*/
 	@RequestMapping("deleteReply")
 	@ResponseBody
 	public String deleteReply(@RequestParam int replyNo){
@@ -202,6 +203,7 @@ public class ReplyController {
 		return "1";
 	}
 	
+	/*내가 쓴 리플 목록*/
 	@RequestMapping("myReplyList")
 	public String  selectMyReply(@RequestParam(value="page", defaultValue="1")int page,ModelMap map){
 		
@@ -221,6 +223,7 @@ public class ReplyController {
 		return "content/group/board/reply_mine";
 	}
 	
+	/*내가 쓴 리플 선택 삭제*/
 	@RequestMapping("deleteMyReplyList")
 	@ResponseBody
 	public String deleteMyReplyList(@RequestParam List<Integer> replyNoList){

@@ -50,7 +50,38 @@ td {
 	padding: 10px;
 	text-align:center;
 }
+
+.messageGo {
+    position: relative;
+}
+
+.messageGo .messageGoTxt {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.messageGo:hover .messageGoTxt {
+    visibility: visible;
+}
 </style>
+<script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.messageGoTxt').on("click",function(){
+		alert("올ㅋ 되는뎅ㅋ 여기서 세연이한테 쪽지 주소 받고, 아이디, 닉네임 넘겨 주면 됩니다!");
+	});
+});
+
+</script>
 	<h2>게시판 전체 목록</h2>
 	<table>
 		<thead>
@@ -70,8 +101,11 @@ td {
 					<tr>
 						<td>${board.no }</td>
 						<td><a href="/MMONG/group/board/board_view.do?boardNo=${board.no }">${board.title }[${board.replyCount}]</a></td>
-						<td>${board.memberId }(${requestScope.nickNameList[idx.index] })</td>
-						<td><fmt:formatDate value="${board.boardDate }" pattern="yyyy-MM-dd HH:mm" /></td>
+						<td class="messageGo">${board.memberId }(${requestScope.nickNameList[idx.index] })
+							<div class="messageGoTxt">쪽지보내기</div>
+						</td>
+						<td><fmt:formatDate value="${board.boardDate }" pattern="yyyy-MM-dd HH:mm" />
+						</td>
 						<td>${board.hit }</td>
 					</tr>
 			</c:when>
@@ -79,7 +113,9 @@ td {
 				<tr>
 					<td>${board.no }</td>
 					<td><a href="/MMONG/group/board/board_view.do?boardNo=${board.no }">${board.title }</a></td>
-					<td>${board.memberId }(${requestScope.nickNameList[idx.index] })</td>
+					<td class="messageGo">${board.memberId }(${requestScope.nickNameList[idx.index] })
+						<div class="messageGoTxt">쪽지보내기</div>
+					</td>
 					<td><fmt:formatDate value="${board.boardDate }" pattern="yyyy-MM-dd HH:mm" /></td>
 					<td>${board.hit }</td>
 				</tr>
@@ -88,6 +124,7 @@ td {
 	</c:forEach>
 	</tbody>
 	</table>
+
 
 
 	<form action="/MMONG/group/board/allBoardList.do">

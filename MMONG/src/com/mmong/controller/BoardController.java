@@ -109,11 +109,6 @@ public class BoardController {
 	@RequestMapping("boardUpdate1")
 	public String updateBoard1(@RequestParam String[] nameList, @RequestParam int boardNo, HttpServletRequest request,
 			ModelMap map) {
-
-		System.out.println("update컨트롤러"+nameList);
-		for(int i=0; i<nameList.length;i++){
-			System.out.println(nameList[i]);
-		}
 		
 		if (nameList.length == 0) { 
 			Board board = boardService.selectBoard(boardNo);
@@ -200,7 +195,7 @@ public class BoardController {
 		return "content/group/board/board_view";
 	}
 	
-	
+	/*게시글 삭제*/
 	@RequestMapping("boardDelete")
 	@ResponseBody
 	public String deleteBoard(@RequestParam int boardNo,
@@ -223,6 +218,7 @@ public class BoardController {
 		return "1";
 	}
 	
+	/*게시글 조회*/
 	@RequestMapping("board_view")
 	public String boardView(int boardNo,ModelMap map){
 
@@ -268,6 +264,7 @@ public class BoardController {
 		return "content/group/board/board_view";
 	}
 	
+	/*게시글 목록*/
 	@RequestMapping("allBoardList")
 	public String showAllBoardList(@RequestParam(value="page", defaultValue="1")int page, 
 													@RequestParam (value="option", defaultValue="1")String option, 
@@ -289,6 +286,7 @@ public class BoardController {
 		return "content/group/board/board_list";
 	}
 	
+	/*내가 쓴 게시글 목록*/
 	@RequestMapping("myBoardList")
 	public String myBoardList(@RequestParam(value="page", defaultValue="1")int page, 
 											@RequestParam (value="option", defaultValue="1")String option, 
@@ -313,7 +311,7 @@ public class BoardController {
 		return "content/group/board/board_mine";
 	}
 	
-	
+	/*내가 쓴 게시글 목록 중 선택 삭제*/
 	@RequestMapping(value="deleteMyBoardList",produces="html/text;charset=UTF-8;" )
 	@ResponseBody
 	public String deleteMyboardList(@RequestParam List<Integer> boardNoList){
