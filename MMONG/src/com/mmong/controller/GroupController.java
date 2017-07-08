@@ -27,26 +27,21 @@ public class GroupController {
 	private GroupMemberService groupMemberService;
 	
 	/**
-	 * 소모임 대메뉴 여는 handler method - 처음 화면은 '나의 소모임' 소메뉴 열림
+	 * 소모임 대메뉴 여는 handler method
 	 * @param userId
 	 * @return
 	 * 작성자 : 이주현
 	 */
 	@RequestMapping("mygroup")
 	public ModelAndView searchMyGroupById(){
-		if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")){
-			System.out.println("로그인된 사용자 없음");
+		if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")){ //로그인 안 한 사용자는 myGroup을 없이 전달 
 			return new ModelAndView("/content/group/mygroup");
 		}else{
 			Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			System.out.println(member);
 			List<GroupMember> gms = groupMemberService.selectMeById(member.getMemberId());
 			List<Group> myGroup = new ArrayList();
 			for(GroupMember gm : gms){
 				myGroup.add(groupService.selectMyGroupByNo(gm.getGroupNo()));
-			}
-			for(Group g : myGroup){
-				System.out.println(g);
 			}
 			return new ModelAndView("/content/group/mygroup", "myGroup", myGroup);
 		}
@@ -82,8 +77,19 @@ public class GroupController {
 		GroupMember groupMember = new GroupMember(0, group.getNo(), group.getLeader());
 		groupMember.setGroup(group);
 		groupMember.setMember(member);
-		groupMemberService.insertGroupMember(groupMember);
-		
+		groupMemberService.insertGroupMember(groupMember);		
 		return "가입완료";
+	}
+
+	/**
+	 * 선택된 소모임No로 소모임찾아서, 소모임 상세페이지로 이동시키는 handler method
+	 * @param groupNo
+	 * @return 소모임 상세페이지
+	 * 작성자 : 이주현
+	 */
+	@RequestMapping("myGroupDetail")
+	public ModelAndView searchMyGroupDetailById(String groupNo){
+		Group selectedGroup = groupService.selectMyGroupByNo(Integer.parseInt(groupNo));		
+		return new ModelAndView("/content/group/myGroupDetail", "group", selectedGroup);
 	}
 }

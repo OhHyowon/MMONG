@@ -16,8 +16,7 @@ $(document).ready(function(){
 	});
 	
 	$(".myGroup").on("click", function(){
-		var no = $(this).attr('id'); 
-		alert(no);
+		$(this).parent().submit();
 	})
 });
 </script>
@@ -59,42 +58,35 @@ $(document).ready(function(){
 <hr>
 
 
-<%-- ================소모임 페이지 소메뉴=================== --%>
-<ul>	
-	<%-- 회원메뉴 --%>
-	<sec:authorize access="hasRole('ROLE_1')"> <!-- 소모임 메뉴로 들어왔을 때 기본 메뉴 : 없으면 권한없음 메시지 -->
-		<li><a href="/MMONG/group/mygroup.do">나의 소모임</a>
-	</sec:authorize>
-	
-	 <!-- 소모임 찾기 메뉴 : searchGroup.jsp로 가기 -->
-		<li><a href="/MMONG/group/mygroup.do">소모임 찾기</a>
-</ul>
-<%-- ==============소모임 페이지 소메뉴 끝================== --%>
-
-<hr>
-
-
 <!-- 나의 소모임 뿌리기 -->
+<p><b>나의 소모임</b></p>
 <sec:authorize access="!isAuthenticated()">      
 	로그인 해주세욥 <br>
 </sec:authorize>
 <sec:authorize access="isAuthenticated()">      
 	<c:forEach var="myGroup" items="${myGroup }">
-		<div class="myGroup" id="${myGroup.no }" style="border:1px solid; padding:10px; margin:10px; width:300px;">
-			소모임 이름 : ${myGroup.name } <br>
-			모임 설명 : ${myGroup.content }
-		</div>
+		<form id="groupInfo" action="/MMONG/group/myGroupDetail.do">
+			<div class="myGroup" id="${myGroup.no }" style="border:1px solid; padding:10px; margin:10px; width:300px;">
+				소모임 이름 : ${myGroup.name } <br>
+				모임 설명 : ${myGroup.content }
+			</div>
+			<input type="hidden" name="groupNo" value="${myGroup.no }">
+			<sec:csrfInput/>
+		</form>
 	</c:forEach>
 </sec:authorize>
 
+<br>
 
+<!-- 소모임 찾기 버튼 -->
+<input type="button" value="소모임 찾기" onClick="self.location='/MMONG/group/';"> <br>
 
 <!-- 소모임 추가 버튼 -->
 <sec:authorize access="!isAuthenticated()">      
 	<button type="button" id="createNone">소모임 만들기</button>
 </sec:authorize>
 <sec:authorize access="isAuthenticated()">      
-	<button type="button" onclick="window.open('/MMONG/group/createGroup.do', '소모임 만들기', 'top=100px, left=100px, height=220px, width=310px')">소모임 만들기</button>
+	<button type="button" onclick="window.open('/MMONG/group/createGroup.do', '소모임 만들기', 'top=100px, left=100px, height=220px, width=500px')">소모임 만들기</button>
 </sec:authorize>
 
 

@@ -1,29 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-	$("#createNone").on("click", function(){
-		alert("먼저 로그인 해주세요.");
-		return;
-	});
-	
-	$(".myGroup").on("click", function(){
-		var no = $(this).attr('id'); 
-		alert(no);
-	})
-});
-</script>
 </head>
 <body>
-<h3>소모임 페이지</h3>
+<h3>소모임 페이지 - 나의 소모임 상세 페이지 </h3>
 
 <%-- ========================menu 영역 =================== --%>
 <ul>
@@ -59,16 +43,20 @@ $(document).ready(function(){
 <hr>
 
 
-<input type="button" value="나의 소모임" onClick="self.location='/MMONG/group/mygroup.do';">
-<br>
+<%-- =============소모임 상세페이지 소메뉴 : 밑에 세메뉴안에도 이것 포함시키기! ================ --%>
+<ul>
+	<li><a href="/MMONG/group/">모임 일정 목록</a></li> <!-- 상세페이지 첫 화면 -->
+	<li><a href="/MMONG/group/">자유게시판</a></li>
+	<li><a href="/MMONG/group/">참여 멤버 목록</a></li>
+</ul>
+<%-- =============소모임 상세페이지 소메뉴 끝================ --%>
 
 
-<!-- 소모임 검색창 : 이름으로 검색 -->
+<!-- 소모임 정보 -->
+모임 이름 : ${requestScope.group.name } <br>
+모임 장 : ${requestScope.group.leader }
 
-
-
-<!-- 소모임 전체리스트 : 회원수 많은 순 -->
-
+<!-- 모임 일정 목록 -->
 
 
 
