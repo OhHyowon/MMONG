@@ -31,7 +31,7 @@
       <mvc:view-controller path="/group/board/board_form.do" view-name="content/group/board/board_form"/>
       <mvc:view-controller path="/group/board/board_view.do" view-name="content/group/board/board_view"/>
       <mvc:view-controller path="/group/board/board_update.do" view-name="content/group/board/board_update"/>
-      
+      <mvc:view-controller path="/group/board/board_menu.do" view-name="content/group/board/board_menu"/>
       
    <!-- 세연 -->
       <!-- 쪽지 관리 탭 -->   
@@ -40,7 +40,7 @@
       <mvc:view-controller path="/message/sendMessage.do" view-name="content/message/sendMessage"/>
       <!-- 쪽지 보내기 성공 폼 -->
       <mvc:view-controller path="/message/sendSuccess.do" view-name="content/message/sendSuccess"/>
-   
+   	
 
    <!-- 규현 -->
    

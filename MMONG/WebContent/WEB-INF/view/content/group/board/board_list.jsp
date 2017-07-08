@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -9,7 +10,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<jsp:include page="/index.do"/>
 
 <style type="text/css">
 a:link {
@@ -82,6 +82,11 @@ $(document).ready(function(){
 });
 
 </script>
+
+<jsp:include page="/group/board/board_menu.do"/>
+
+
+
 	<h2>게시판 전체 목록</h2>
 	<table>
 		<thead>
@@ -126,7 +131,7 @@ $(document).ready(function(){
 	</table>
 
 
-
+ <%-- 검색 창 --%>
 	<form action="/MMONG/group/board/allBoardList.do">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<select name="option">
@@ -143,14 +148,14 @@ $(document).ready(function(){
 
 	<%-- 첫 페이지로 이동 --%>
 	<p align="center">
-		<a href="/MMONG/group/board/allBoardList.do?page=1">첫 페이지</a>
+		<a href="/MMONG/group/board/allBoardList.do?page=1&groupNo=${requestScope.groupNo}">첫 페이지</a>
 
 		<%-- 이전 페이지 그룹 처리 --%>
 		<c:choose>
 			<c:when test="${requestScope.pageBean.previousPageGroup }">
 				<%-- 이전 페이지 그룹이 있다면 isPreviousPageGroup() 호출 --%>
 				<a
-					href="/MMONG/group/board/allBoardList.do?page=${requestScope.pageBean.beginPage - 1 }">◀</a>
+					href="/MMONG/group/board/allBoardList.do?page=${requestScope.pageBean.beginPage - 1 }&groupNo=${sessionScope.groupNo}">◀</a>
 			</c:when>
 			<c:otherwise>
 			◀
@@ -163,7 +168,7 @@ $(document).ready(function(){
 			<c:choose>
 				<c:when test="${requestScope.pageBean.page != page }">
 					<!-- 현재 페이지가 아니라면 -->
-					<a href="/MMONG/group/board/allBoardList.do?page=${page}">${page }&nbsp;&nbsp;</a>
+					<a href="/MMONG/group/board/allBoardList.do?page=${page}&groupNo=${sessionScope.groupNo}">${page }&nbsp;&nbsp;</a>
 				</c:when>
 				<c:otherwise>
 				[${page }]&nbsp;&nbsp;  <%-- &nbsp;는 공백을 나타냄 --%>
@@ -176,7 +181,7 @@ $(document).ready(function(){
 			<c:when test="${requestScope.pageBean.nextPageGroup }">
 				<%-- isNextPageGroup() 호출 --%>
 				<a
-					href="/MMONG/group/board/allBoardList.do?page=${requestScope.pageBean.endPage + 1 }">▶</a>
+					href="/MMONG/group/board/allBoardList.do?page=${requestScope.pageBean.endPage + 1 }&groupNo=${sessionScope.groupNo}">▶</a>
 				<%-- getEndPage()에서 리턴된 값 넣기 --%>
 			</c:when>
 			<c:otherwise>
@@ -186,7 +191,7 @@ $(document).ready(function(){
 
 		<!-- 마지막 페이지로 이동 -->
 		<a
-			href="/MMONG/group/board/allBoardList.do?page=${requestScope.pageBean.totalPage}">마지막
+			href="/MMONG/group/board/allBoardList.do?page=${requestScope.pageBean.totalPage}&groupNo=${sessionScope.groupNo}">마지막
 			페이지</a>
 	</p>
 

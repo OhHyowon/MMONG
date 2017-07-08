@@ -11,7 +11,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<jsp:include page="/index.do" />
+
+<jsp:include page="/group/board/board_menu.do"/>
+
+
 	<style type="text/css">
 a:link {
 	/*방문하지 않은 링크 설정.*/
@@ -166,14 +169,14 @@ td {
 
 	<%-- 첫 페이지로 이동 --%>
 	<p align="center">
-		<a href="/MMONG/group/board/myBoardList.do?page=1">첫 페이지</a>
+		<a href="/MMONG/group/board/myBoardList.do?page=1&groupNo=${sessionScope.groupNo }">첫 페이지</a>
 
 		<%-- 이전 페이지 그룹 처리 --%>
 		<c:choose>
 			<c:when test="${requestScope.pageBean.previousPageGroup }">
 				<%-- 이전 페이지 그룹이 있다면 isPreviousPageGroup() 호출 --%>
 				<a
-					href="/MMONG/group/board/myBoardList.do?page=${requestScope.pageBean.beginPage - 1 }">◀</a>
+					href="/MMONG/group/board/myBoardList.do?page=${requestScope.pageBean.beginPage - 1 }&groupNo=${sessionScope.groupNo }">◀</a>
 			</c:when>
 			<c:otherwise>
 			◀
@@ -186,7 +189,7 @@ td {
 			<c:choose>
 				<c:when test="${requestScope.pageBean.page != page }">
 					<!-- 현재 페이지가 아니라면 -->
-					<a href="/MMONG/group/board/myBoardList.do?page=${page}">${page }&nbsp;&nbsp;</a>
+					<a href="/MMONG/group/board/myBoardList.do?page=${page}&groupNo=${sessionScope.groupNo }">${page }&nbsp;&nbsp;</a>
 				</c:when>
 				<c:otherwise>
 				[${page }]&nbsp;&nbsp;  <%-- &nbsp;는 공백을 나타냄 --%>
@@ -199,7 +202,7 @@ td {
 			<c:when test="${requestScope.pageBean.nextPageGroup }">
 				<%-- isNextPageGroup() 호출 --%>
 				<a
-					href="/MMONG/group/board/myBoardList.do?page=${requestScope.pageBean.endPage + 1 }">▶</a>
+					href="/MMONG/group/board/myBoardList.do?page=${requestScope.pageBean.endPage + 1 }&groupNo=${sessionScope.groupNo }">▶</a>
 				<%-- getEndPage()에서 리턴된 값 넣기 --%>
 			</c:when>
 			<c:otherwise>
@@ -209,7 +212,7 @@ td {
 
 		<!-- 마지막 페이지로 이동 -->
 		<a
-			href="/MMONG/group/board/myBoardList.do?page=${requestScope.pageBean.totalPage}">마지막
+			href="/MMONG/group/board/myBoardList.do?page=${requestScope.pageBean.totalPage}&groupNo=${sessionScope.groupNo }">마지막
 			페이지</a>
 	</p>
 

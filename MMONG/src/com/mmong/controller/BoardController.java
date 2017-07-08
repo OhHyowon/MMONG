@@ -44,7 +44,6 @@ public class BoardController {
 	@RequestMapping("register")
 	public String registerBoard(@RequestParam List<MultipartFile> upImage, 
 											@ModelAttribute Board board, BindingResult errors, 
-											/*@RequestParam int groupNo,*/
 											HttpServletRequest request, HttpSession session, 
 											ModelMap map) throws Exception {
 		
@@ -54,15 +53,12 @@ public class BoardController {
 			return "content/group/board/board_form";
 		}
 		
+		int groupNo=(int) session.getAttribute("groupNo");
+		
 		String destDir = request.getServletContext().getRealPath("/up_image"); // 진짜경로
 
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String memberId=member.getMemberId();
-		
-		int groupNo=0;
-		/*
-		 * 	소모임에 가입됐을 때 groupNo도 넘겨줘야함... 일단 TEST 로 0 번 줌
-		*/
 		 
 		// 시퀀스로 들어갈 no=0, 처음 들어갈 조횟수 hit=0
 		Date date = new Date();
@@ -100,6 +96,7 @@ public class BoardController {
 		
 		map.addAttribute("nameList", nameList);
 		map.addAttribute("nickname", nickname);
+		map.addAttribute("groupNo", groupNo);
 
 		
 		return "redirect:/group/board/board_view.do?boardNo="+boardNo;
@@ -269,16 +266,23 @@ public class BoardController {
 	public String showAllBoardList(@RequestParam(value="page", defaultValue="1")int page, 
 													@RequestParam (value="option", defaultValue="1")String option, 
 													@RequestParam  (value="key", defaultValue="1")String key, 
+													HttpSession session,
 													ModelMap map) {
 		
 		HashMap<String,Object> pagingMap =null;
 		
+		
+		int groupNo=(int) session.getAttribute("groupNo");
+		
 		if(option.equals("1")){ // option 선택을 안했을 때
-			pagingMap=boardService.selectAllBoard(page); 
+			pagingMap=boardService.selectAllBoard(page,groupNo); 
 		}else{ // option 선택했을 때
-			pagingMap=boardService.selectOption(page,option,key);
+			pagingMap=boardService.selectOption(page,option,key,groupNo);
 		}
 		
+		
+		
+		map.addAttribute("groupNo", groupNo);
 		map.addAttribute("nickNameList", pagingMap.get("nickNameList"));
 		map.addAttribute("boardList", pagingMap.get("boardList"));
 		map.addAttribute("pageBean", pagingMap.get("pageBean"));
@@ -290,21 +294,24 @@ public class BoardController {
 	@RequestMapping("myBoardList")
 	public String myBoardList(@RequestParam(value="page", defaultValue="1")int page, 
 											@RequestParam (value="option", defaultValue="1")String option, 
-											@RequestParam  (value="key", defaultValue="1")String key, ModelMap map){
+											@RequestParam  (value="key", defaultValue="1")String key, 
+											HttpSession session,
+											ModelMap map){
 		
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String memberId=member.getMemberId();
 		
+		int groupNo=(int) session.getAttribute("groupNo");
 		
 		HashMap<String,Object> pagingMap=null;
 		
 		if(option.equals("1")){
-			pagingMap=boardService.selectMyBoardList(page,memberId);			
+			pagingMap=boardService.selectMyBoardList(page,memberId,groupNo);			
 		}else{
-			pagingMap=boardService.selectMyOption(page, option, key,memberId);
+			pagingMap=boardService.selectMyOption(page, option, key,memberId,groupNo);
 		}
 
-		
+		map.addAttribute("groupNo", groupNo);
 		map.addAttribute("myBoardList", pagingMap.get("myBoardList"));
 		map.addAttribute("pageBean", pagingMap.get("pageBean"));
 		

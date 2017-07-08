@@ -20,9 +20,9 @@ public interface BoardService {
 	
 	public void deleteBoard(int boardNo,String memberId);
 	
-	public HashMap<String,Object> selectAllBoard(int page);
+	public HashMap<String,Object> selectAllBoard(int page,int groupNo);
 	
-	public HashMap<String,Object> selectOption(int page, String option, String key);
+	public HashMap<String,Object> selectOption(int page, String option, String key,int groupNo);
 	
 	
 	

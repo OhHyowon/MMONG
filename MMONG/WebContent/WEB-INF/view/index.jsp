@@ -43,14 +43,7 @@
 <%-- =======================대menu 영역 =================== --%>
 <ul>
 	<li><a href="/MMONG/group/mygroup.do">소모임</a></li>        
-         
-	<%-- 소모임 - 자유게시판 (임시) --%>
-	<sec:authorize access="hasRole('ROLE_1')">
-	  <li><a href="/MMONG/group/board/board_form.do">자유게시판 글쓰기</a></li>
-	  <li><a href="/MMONG/group/board/allBoardList.do">자유게시판 목록</a></li>
-	  <li><a href="/MMONG/group/board/myBoardList.do">내가 쓴 글목록</a></li>
-	  <li><a href="/MMONG/group/reply/myReplyList.do">내가 쓴 댓글목록</a></li>
-	</sec:authorize>
+       
    
    
    

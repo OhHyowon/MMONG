@@ -92,7 +92,7 @@ $(document).ready(function(){
 </head>
 <body>
 
-<a href="/MMONG/group/board/allBoardList.do">자유게시판 목록</a>
+<jsp:include page="/group/board/board_menu.do"/>
 
 	<sec:authentication property="principal.memberId" var="loginId"/>
 	<h2>게시글 보기</h2>

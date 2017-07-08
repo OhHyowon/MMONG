@@ -1,5 +1,7 @@
 package com.mmong.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,16 @@ public class GroupServiceImpl implements GroupService {
 	@Override
 	public Group selectMyGroupByNo(int no) {
 		return groupDao.selectMyGroupByNo(no);
+	}
+
+	@Override
+	public List<Group> selectAllGroup() {
+		return groupDao.selectAllGroup();
+	}
+
+	@Override
+	public List<Group> searchGroupByName(String groupName) {
+		return groupDao.searchGroupByName(groupName);
 	}
 
 }

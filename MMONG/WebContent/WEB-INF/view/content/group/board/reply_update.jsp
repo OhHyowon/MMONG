@@ -2,12 +2,22 @@
     pageEncoding="UTF-8"%>
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
  <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+ <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 </head>
+<ul>
+	<sec:authorize access="hasRole('ROLE_1')">
+	  <li><a href="/MMONG/group/board/board_form.do?groupNo=${sessionScope.groupNo }">자유게시판 글쓰기</a></li>
+	  <li><a href="/MMONG/group/board/allBoardList.do?groupNo=${sessionScope.groupNo }">자유게시판 글목록</a></li>
+	  <li><a href="/MMONG/group/board/myBoardList.do?groupNo=${sessionScope.groupNo }">내가 쓴 글목록</a></li>
+	  <li><a href="/MMONG/group/reply/myReplyList.do?groupNo=${sessionScope.groupNo }">내가 쓴 댓글목록</a></li>
+	 </sec:authorize>
+</ul>
+<hr>
 <body>
 	<table>
 	
@@ -43,7 +53,7 @@
 			<c:when test="${reply.no==requestScope.replyNo }">
 			<tr>
 				<td>
-				<form action="/MMONG/group/reply/rreplyUpdate.do" method="post">
+				<form action="/MMONG/group/reply/replyUpdate.do" method="post">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 					<input type="hidden" name="replyNo" value="${reply.no }">
 					<input type="hidden" name="boardNo" value="${requestScope.board.no }">
