@@ -41,6 +41,8 @@
       <!-- 쪽지 보내기 성공 폼 -->
       <mvc:view-controller path="/message/sendSuccess.do" view-name="content/message/sendSuccess"/>
    
+	
+	   <mvc:view-controller path="/calendar.do" view-name="calendar"/>
 
    <!-- 규현 -->
    

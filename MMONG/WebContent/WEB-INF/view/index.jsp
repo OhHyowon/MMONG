@@ -13,12 +13,16 @@
 
 <h3>index 페이지</h3>
 
+
 <%-- ========================menu 영역 =================== --%>
 <ul>
    <%-- 비회원 메뉴 --%>
    <sec:authorize access="!isAuthenticated()">      
       <li><a href="/MMONG/login_form.do">로그인</a></li>
       <li><a href="/MMONG/member/register_form.do">회원가입</a></li>
+      
+      <li><a href="/MMONG/calendar.do">달력</a></li>
+      
    </sec:authorize>
    
    <%-- 회원메뉴 --%>
