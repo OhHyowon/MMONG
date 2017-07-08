@@ -8,7 +8,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -60,7 +59,7 @@ public class GroupController {
 	}
 	
 	/**
-	 * 모임장이 소모임 추가하는 handler method
+	 * 모임장이 소모임 생성하는 handler method
 	 * @param group
 	 * @return
 	 * 작성자 : 이주현
@@ -87,9 +86,33 @@ public class GroupController {
 	 * @return 소모임 상세페이지
 	 * 작성자 : 이주현
 	 */
-	@RequestMapping("myGroupDetail")
+	@RequestMapping("groupDetail")
 	public ModelAndView searchMyGroupDetailById(String groupNo){
 		Group selectedGroup = groupService.selectMyGroupByNo(Integer.parseInt(groupNo));		
-		return new ModelAndView("/content/group/myGroupDetail", "group", selectedGroup);
+		return new ModelAndView("/content/group/groupDetail", "group", selectedGroup);
+	}
+	
+	/**
+	 * 소모임 페이지에서 소모임찾기/소모임전체조회 페이지로 이동시키는 handler method
+	 * @return 소모임 전체 리스트
+	 * 작성자 : 이주현
+	 */
+	@RequestMapping("searchGroup")
+	public ModelAndView selectAllGroup(){
+		List<Group> groupList = groupService.selectAllGroup();
+		return new ModelAndView("/content/group/searchGroup", "allGroup", groupList);
+	}
+	
+	/**
+	 * 소모임 이름으로 소모임 검색하는 handler method
+	 * @param groupName
+	 * @return 검색된 소모임 리스트
+	 * 작성자 : 이주현
+	 */
+	@RequestMapping("searchGroupName")
+	@ResponseBody
+	public List<Group> searchGroupByName(String groupName){
+		List<Group> selctedGroupByName = groupService.searchGroupByName(groupName);
+		return selctedGroupByName;
 	}
 }
