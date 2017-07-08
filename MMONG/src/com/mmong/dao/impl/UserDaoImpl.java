@@ -37,10 +37,31 @@ public class UserDaoImpl implements UserDao{
 	public int updateUserByUserId(User user) {
 		return session.update(makeSql("updateUserByUserId"), user);
 	}
-
+	
 	@Override
 	public int deleteUserByUserId(String userId) {
 		return session.delete(makeSql("deleteUserByUserId"), userId);
 	}
+	
+/////////////////////////////////////////////////
+	@Override
+	public int updateUser(User user) {
+		return session.update(makeSql("updateUser"), user);
+	}	
+	@Override
+	public int updateAuthorityMemberToStop(String memberId) {
+		return session.update(makeSql("updateAuthorityMemberToStop"), memberId);
+	}
+
+	@Override
+	public int updateAuthorityMemberToRun(String memberId) {
+		return session.update(makeSql("updateAuthorityMemberToRun"), memberId);
+	}
+	
+	@Override
+	public int updateAdministratorEnableToZero(String adminId) {
+		return session.update(makeSql("updateAdministratorEnableToZero"), adminId);
+	}
+/////////////////////////////////////////////////
 	
 }

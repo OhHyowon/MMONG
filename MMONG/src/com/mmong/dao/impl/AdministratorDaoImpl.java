@@ -23,41 +23,20 @@ public class AdministratorDaoImpl implements AdministratorDao{
 	}
 	
 	@Override
-	public int registerAdministrator(Administrator administrator) {
-		return session.insert(makeSql("registerAdministrator"), administrator);
+	public int insertAdministrator(Administrator administrator) {
+		return session.insert(makeSql("insertAdministrator"), administrator);
 	}
 
 	@Override
-	public int updateAdministratorById(Administrator administrator) {
-		return session.update(makeSql("updateAdministratorById"), administrator);
+	public int updateAdministrator(Administrator administrator) {
+		return session.update(makeSql("updateAdministrator"), administrator);
 	}
 
-	@Override
-	public int deleteAdministratorById(String administratorId) {
-		return session.delete(makeSql("deleteAdministratorById"), administratorId);
-	}
 	
 	@Override
 	public Administrator searchAdministratorById(String administratorId) {
 		return session.selectOne(makeSql("searchAdministratorById"), administratorId);
 	}
-
-////////////////////////테스트 완료 /////////////////////////////////
-	@Override
-	public Member searchMemberById(String memberId) {
-		return session.selectOne(makeSql("searchMemberById"), memberId);
-	}
-
-	@Override
-	public int updateAuthorityMemberToStop(String memberId) {
-		return session.update(makeSql("updateAuthorityMemberToStop"), memberId);
-	}
-
-	@Override
-	public int updateAuthorityMemberToRun(String memberId) {
-		return session.update(makeSql("updateAuthorityMemberToRun"), memberId);
-	}
-
 
 
 }		

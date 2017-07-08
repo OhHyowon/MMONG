@@ -24,16 +24,7 @@ public interface AdministratorService {
 	 */
 	void updateAdministrator(Administrator newData);
 	
-	/**
-	 * 매개변수로 받은 id로 저장된 관리자정보를 삭제
-	 * - 삭제할 ID의 관리자가 없으면 없다고 AdministratorNotFoundException 발생
-	 * - list내에 매개변수의 id를 가진 administrator 객체를 remove
-	 * @param id 삭제할 id.
-	 * @throws AdministratorNotFoundException 삭제할 관리자가 없는 경우 발생ㅂ
-	 * 
-	 */
-	void deleteAdministratorById(String adminId);
-	
+
 	/**
 	* 저장된 관리자중 매개변수의 id를 가진 관리자를 찾아 주는 메소드.
 	* @param id 찾을 관리자의 ID
@@ -42,32 +33,4 @@ public interface AdministratorService {
 	* 
 	*/
 	Administrator searchAdministratorById(String adminId);
-	
-//
-//			
-//	//일반회원(member) 권한 변경
-//		//일반회원(member) 활동상태(1) -> 중지상태(4)
-//	/**
-//	 * 일반회원 (member)의 권한을 '활동중지(4)'로 변경한다.
-//	 * @param memberId
-//	 * @return
-//	 */
-//		void changeAuthorityMemberToStop(String memberId);
-//		//1. 일반회원(member)의 권한 상태 조회(select)
-//		//2. 권한이 1이면 4로 변경(update)
-//		
-//		
-//	//일반회원(member) 활동상태(4) <- 중지상태(1)
-//	/**
-//	 * 일반회원 (member)의 권한을 '일반회원(1)'로 변경한다.
-//	 * @param memberId
-//	 * @return
-//	 */
-//		void changeAuthorityMemberToRun(String memberId);
-//		//1. 일반회원(member)의 권한 상태 조회(select)
-//		//2. 권한이 4이면 1로 변경(update)
-//	
-//		
-//		///////// 테스트 완료/////////
-//		
 }

@@ -11,24 +11,17 @@ public interface AdministratorDao {
 	 * @param administrator
 	 * @return
 	 */
-	int registerAdministrator(Administrator administrator);
+	int insertAdministrator(Administrator administrator);
 	
 	/**
-	 * 매개변수로 받은 Administrator 객체의 id와 일치하는 관리자의 나머지 값들을 update 하는 메소드
+	 * 매개변수로 받은 Administrator 객체와 일치하는 관리자의 나머지 값들을 update 하는 메소드
 	 * 
 	 * @param administrator
 	 * @return
 	 */
-	int updateAdministratorById(Administrator administrator);
+	int updateAdministrator(Administrator administrator);
 	
-	/**
-	 * 매개변수로 받은 Administrator 객체의 id와 일치하는 관리자의 나머지 값들을 delete 하는 메소드
-	 * 
-	 * @param administratorId
-	 * @return
-	 */
-	int deleteAdministratorById(String administratorId);
-	
+
 	/**
 	 * 매개변수로 받은 administratorId와 일치하는 administrator data를 select하는 메소드
 	 * 
@@ -38,16 +31,7 @@ public interface AdministratorDao {
 	Administrator searchAdministratorById(String administratorId);
 	
 
-	
-	//일반회원(member)을 조회 (select)
-	Member searchMemberById(String membId);
-	
-	//일반회원(member)의 권한이 1이면 4로 변경 (update)
-	int updateAuthorityMemberToStop(String memberId);
-	
-	//일반회원(member)의 권한이 4이면 1로 변경 (update)
-	int updateAuthorityMemberToRun(String memberId);
-	
+
 	
 	
 	
