@@ -1,5 +1,6 @@
 package com.mmong.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.mmong.vo.Reply;
@@ -20,5 +21,11 @@ public interface ReplyService {
 	
 	public int selectReplyCount(int boardNo);
 	
+	public void updateReply(Reply reply);
 	
+	public void deleteReply(int replyNo,String memberId);
+	
+	public void deleteReplyByBoardNo(int boardNo);
+	
+	public HashMap<String,Object>selectMyReply(int page,String memberId);
 }

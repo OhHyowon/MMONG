@@ -29,7 +29,6 @@
    <!-- 여림 -->
       <mvc:view-controller path="/group/groupDate/groupDate_form.do" view-name="content/group/groupDate/groupDate_form"/>
       <mvc:view-controller path="/group/board/board_form.do" view-name="content/group/board/board_form"/>
-      <mvc:view-controller path="/group/board/board_success.do" view-name="content/group/board/board_success"/>
       <mvc:view-controller path="/group/board/board_view.do" view-name="content/group/board/board_view"/>
       <mvc:view-controller path="/group/board/board_update.do" view-name="content/group/board/board_update"/>
       

@@ -29,7 +29,8 @@ public class BoardRegisterValidator implements Validator{
 			errors.rejectValue("content","size","내용은 한글자 이상 입력해주세요.");
 		}
 		
-		
+	
+				
 		
 	}
 
