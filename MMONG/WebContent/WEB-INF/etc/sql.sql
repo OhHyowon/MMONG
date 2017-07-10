@@ -234,3 +234,9 @@ CREATE TABLE MESSAGE (
 DROP SEQUENCE MESSAGE_NO_SEQ;
 CREATE SEQUENCE MESSAGE_NO_SEQ;
 
+
+
+	SELECT no
+	FROM group_member
+	WHERE member_id='duflalrjdi'
+	AND group_no=0

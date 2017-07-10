@@ -1,6 +1,7 @@
 package com.mmong.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -45,7 +46,7 @@ public class BoardController {
 	public String registerBoard(@RequestParam List<MultipartFile> upImage, 
 											@ModelAttribute Board board, BindingResult errors, 
 											HttpServletRequest request, HttpSession session, 
-											ModelMap map) throws Exception {
+											ModelMap map){
 		
 		BoardRegisterValidator validator = new BoardRegisterValidator();
 		validator.validate(board, errors);
@@ -81,7 +82,13 @@ public class BoardController {
 			MultipartFile mFile = upImage.get(i);
 			if (mFile != null && !mFile.isEmpty()) {
 				nameList.add(mFile.getOriginalFilename());
-				mFile.transferTo(new File(destDir, mFile.getOriginalFilename()));
+				try {
+					mFile.transferTo(new File(destDir, mFile.getOriginalFilename()));
+				} catch (IllegalStateException e) {					
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		

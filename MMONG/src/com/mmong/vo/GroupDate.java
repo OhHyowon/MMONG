@@ -8,7 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class GroupDate implements Serializable{
 	
 	private int no;
-	@DateTimeFormat(pattern="yyyy-MM-ddTHH:mm")
+	@DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm")
 	private Date groupDate;
 	private String place;
 	private String title;

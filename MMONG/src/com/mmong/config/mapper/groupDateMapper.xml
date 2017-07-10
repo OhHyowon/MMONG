@@ -12,6 +12,12 @@
 	<result column="member_id" property="memberId"/>
 </resultMap>
 
+<!-- meetMember resultMap -->
+<resultMap type="meetMember" id="meetMember-resultmap">
+	<result column="group_date_no" property="groupDateNo"/>
+	<result column="group_member_no" property="groupMemberNo"/>
+</resultMap>
+
 <sql id="select-groupDate">
 	SELECT no, MEET_DATE, place, title, group_no, member_id
 	FROM group_date
@@ -33,8 +39,41 @@
 	WHERE no=#{value}
 </select>
 
+<!-- memberId로 memberNo 조회 -->
+<select id="selectMemberNo" parameterType="map" resultType="int">
+	SELECT	no
+	FROM group_member
+	WHERE member_id=#{memberId}
+	AND group_no=#{groupNo}
+</select>
 
+<!-- 일정 참여자 등록 -->
+<insert id="insertMeetMember" parameterType="meetMember">
+	INSERT INTO meet_member VALUES(
+		#{groupDateNo}, #{groupMemberNo}
+	)
+</insert>
 
+<!-- groupDateNo 으로 meetmember 조회 -->
+<select id="selectMeetMemberList" parameterType="int" resultMap="meetMember-resultmap">
+	SELECT group_member_no
+	FROM meet_member
+	WHERE group_date_no=#{value}
+</select>
+
+<!-- memberNo으로 memberId 조회-->
+<select id="selectMemberId" parameterType="int" resultType="string">
+	SELECT member_id
+	FROM group_member
+	WHERE no=#{value}
+</select>
+
+<!-- memberId로 nickName 조회 -->
+<select id="selectNickname" parameterType="string" resultType="string">
+	SELECT nickName
+	FROM member
+	WHERE member_id=#{value}
+</select>
 
 
 

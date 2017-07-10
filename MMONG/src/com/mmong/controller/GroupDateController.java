@@ -1,5 +1,8 @@
 package com.mmong.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.mmong.service.impl.GroupDateServiceImpl;
 import com.mmong.validation.GroupDateValidator;
 import com.mmong.vo.GroupDate;
+import com.mmong.vo.MeetMember;
 import com.mmong.vo.Member;
 
 @Controller
@@ -48,14 +52,43 @@ public class GroupDateController{
 	}
 	
 	@RequestMapping("groupDateView")
-	public String selectGroupDate(int groupDateNo, ModelMap map){
-		
-		System.out.println("상세보기 컨트롤러");
-		
+	public String selectGroupDate(int groupDateNo,HttpSession session, ModelMap map){
+		/*int groupDateNo=(int) session.getAttribute("groupDateNo");*/
 		GroupDate groupDate = groupDateService.selectGroupDate(groupDateNo);
 		
+		List<Integer> memberNoList=groupDateService.selectMeetMemberList(groupDateNo); // 참여자(memberNo) 목록 가져오기
+		List<String> memberIdList=new ArrayList<>();  // id 담을 list
+		List<String> nickNameList=new ArrayList<>(); // 닉네임 담을 list
+		
+		for(int i=0; i<memberNoList.size(); i++){  // 
+			int memberNo=memberNoList.get(i);
+			String memberId=groupDateService.selectMemberId(memberNo);
+			memberIdList.add(memberId);
+			String nickName=groupDateService.selectNickname(memberId);
+			nickNameList.add(nickName);
+		}
+		
+		map.addAttribute("memberIdList", memberIdList);
+		map.addAttribute("nickNameList", nickNameList);
 		map.addAttribute("groupDate", groupDate);
 		
 		return "content/group/groupDate/groupDate_view";
+	}
+	
+	
+	@RequestMapping("registerMeet")
+	public String insertMeetMemner(HttpSession session){
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String memberId=member.getMemberId();
+		
+		int groupNo= (int) session.getAttribute("groupNo");
+		int groupDateNo=(int) session.getAttribute("groupDateNo");
+		
+		int memberNo=groupDateService.selectMemberNo(memberId,groupNo);
+		
+		MeetMember MM = new MeetMember(groupDateNo,memberNo);
+		groupDateService.insertMeetMember(MM);
+		
+		return "group/groupDate/groupDateView.do?groupDateNo="+groupDateNo;
 	}
 }
