@@ -238,7 +238,6 @@ public class ReplyController {
 			replyService.deleteReply(replyNo, memberId);
 		}
 		
-		System.out.println("댓글 삭제 완료");
 		return "1";
 	}
 }

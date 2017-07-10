@@ -21,7 +21,12 @@ public class GroupDateValidator implements Validator{
 		
 		GroupDate groupDate = (GroupDate)target;
 		
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors,"title","내용은 한 글자 이상 입력해주세요");
-	}
-	
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors,"title","size");
+		
+		if(groupDate.getGroupDate()==null){
+			errors.rejectValue("groupDate", "required");
+		}
+		
+
+	}	
 }

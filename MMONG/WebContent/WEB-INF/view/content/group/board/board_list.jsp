@@ -107,7 +107,7 @@ $(document).ready(function(){
 						<td>${board.no }</td>
 						<td><a href="/MMONG/group/board/board_view.do?boardNo=${board.no }">${board.title }[${board.replyCount}]</a></td>
 						<td class="messageGo">${board.memberId }(${requestScope.nickNameList[idx.index] })
-							<div class="messageGoTxt">쪽지보내기</div>
+							<div class="messageGoTxt" >쪽지보내기</div>
 						</td>
 						<td><fmt:formatDate value="${board.boardDate }" pattern="yyyy-MM-dd HH:mm" />
 						</td>
@@ -125,10 +125,13 @@ $(document).ready(function(){
 					<td>${board.hit }</td>
 				</tr>
 			</c:otherwise>
+			
 		</c:choose>
 	</c:forEach>
 	</tbody>
 	</table>
+
+
 
 
  <%-- 검색 창 --%>

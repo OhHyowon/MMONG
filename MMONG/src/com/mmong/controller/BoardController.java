@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mmong.service.impl.BoardPictureServiceImpl;
-import com.mmong.service.impl.BoardServiceImpl;
-import com.mmong.service.impl.ReplyServiceImpl;
+import com.mmong.service.BoardPictureService;
+import com.mmong.service.BoardService;
+import com.mmong.service.ReplyService;
 import com.mmong.validation.BoardRegisterValidator;
 import com.mmong.vo.Board;
 import com.mmong.vo.BoardPicture;
@@ -33,11 +33,11 @@ import com.mmong.vo.Reply;
 @RequestMapping("group/board/")
 public class BoardController {
 	@Autowired
-	private BoardServiceImpl boardService; // 완성되면 Impl말고 service로 바꾸기
+	private BoardService boardService; // 완성되면 Impl말고 service로 바꾸기
 	@Autowired
-	private BoardPictureServiceImpl BPService; // 완성되면 Impl말고 service로 바꾸기
+	private BoardPictureService BPService; // 완성되면 Impl말고 service로 바꾸기
 	@Autowired
-	private ReplyServiceImpl replyService;
+	private ReplyService replyService;
 	
 	
 	/* 게시물 등록 */
@@ -60,7 +60,7 @@ public class BoardController {
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String memberId=member.getMemberId();
 		 
-		// 시퀀스로 들어갈 no=0, 처음 들어갈 조횟수 hit=0
+		// 처음 들어갈 조횟수 hit=0
 		Date date = new Date();
 
 		board.setHit(0);
