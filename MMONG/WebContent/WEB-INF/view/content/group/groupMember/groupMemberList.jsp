@@ -66,9 +66,23 @@ $(document).ready(function(){
 
 <!-- 참여자 목록 -->
 <p><b>참여 멤버</b></p>
-	<c:forEach var="groupMember" items="${groupMemberList }">
-		- 이름 : ${groupMember.memberId }<br>
-	</c:forEach>
+	<sec:authorize access="!isAuthenticated()">
+		로그인 해주세요. 
+	</sec:authorize>
+	<sec:authorize access="isAuthenticated()">
+		<c:choose>
+			<c:when test="${groupMemberList == null}">
+				참여 멤버 목록 조회는 모임 멤버만 가능합니다. 
+			</c:when>
+			<c:otherwise>
+				<c:forEach var="groupMember" items="${groupMemberList }">
+				- 이름 : ${groupMember.memberId }<br>
+				</c:forEach>
+			</c:otherwise>
+		</c:choose>
+
+	</sec:authorize>
+
 
 
 
