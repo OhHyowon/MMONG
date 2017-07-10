@@ -1,14 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-<h2>관리자 등록</h2>				<%-- value="${param. } 는 EL의 내장객체를 이용한 것 --%>
+
+<h3>관리자 등록</h3>				<%-- value="${param. } 는 EL의 내장객체를 이용한 것 --%>
 	<form action="/MMONG/admin/register_success.do" method="post">
 		ID : <input type="text" name="adminId"  value="${param.adminId }"><span class="error"><form:errors path="administrator.adminUser.userId" delimiter="<br>"/></span><br>  
 		비밀번호 : <input type="password" name="adminUser.userPwd" ><span class="error"><form:errors path="administrator.adminUser.userPwd" delimiter="<br>"/></span><br>
@@ -27,10 +21,3 @@
 		<input type="submit" value="등록하기">		 
 	</form>
 
-
-
-
-
-
-</body>
-</html>

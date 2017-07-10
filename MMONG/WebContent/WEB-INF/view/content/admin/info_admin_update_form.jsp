@@ -1,12 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	<h2>관리자 정보 수정하기</h2>
+
+<h3>관리자 정보 수정하기</h3>
 
 	<form action="/MMONG/admin/info_admin.do" method="post">
 		<table>
@@ -47,5 +41,3 @@
 			</tr>
 		</table>
 	</form>
-</body>
-</html>

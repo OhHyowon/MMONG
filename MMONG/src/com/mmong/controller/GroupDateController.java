@@ -36,7 +36,7 @@ public class GroupDateController{
 		GroupDateValidator vaildator=new GroupDateValidator();
 		vaildator.validate(groupDate, errors);
 		if(errors.hasErrors()){
-			return "content/group/groupDate/groupDate_form";
+			return "group/groupDate/groupDate_form.tiles";
 		}
 	
 		groupDate.setMemberId(memberId); // 로그인한 사람이 일정 등록자
@@ -56,6 +56,6 @@ public class GroupDateController{
 		
 		map.addAttribute("groupDate", groupDate);
 		
-		return "content/group/groupDate/groupDate_view";
+		return "group/groupDate/groupDate_view.tiles";
 	}
 }

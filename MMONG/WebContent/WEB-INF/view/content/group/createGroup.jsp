@@ -43,7 +43,9 @@ $('document').ready(function(){
 </script>
 </head>
 <body>
+
 <h3>소모임 만들기</h3>
+
 <form id="createGroup">
 	<table>	
 		<tr>

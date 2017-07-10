@@ -50,7 +50,7 @@ public class BoardController {
 		BoardRegisterValidator validator = new BoardRegisterValidator();
 		validator.validate(board, errors);
 		if (errors.hasErrors()) {
-			return "content/group/board/board_form";
+			return "group/board/board_form.tiles";
 		}
 		
 		int groupNo=(int) session.getAttribute("groupNo");
@@ -111,7 +111,7 @@ public class BoardController {
 			Board board = boardService.selectBoard(boardNo);
 
 			map.addAttribute("board", board);
-			return "content/group/board/board_update";
+			return "group/board/board_update.tiles";
 		}
 
 		Board board = boardService.selectBoard(boardNo);
@@ -119,7 +119,7 @@ public class BoardController {
 		map.addAttribute("nameList", nameList);
 		map.addAttribute("board", board);
 
-		return "content/group/board/board_update";
+		return "group/board/board_update.tiles";
 	}
 
 	/* 게시물 수정 -2 수정된 글 DB에 넣기 */
@@ -134,7 +134,7 @@ public class BoardController {
 		BoardRegisterValidator validator=new BoardRegisterValidator();
 		validator.validate(board,errors);
 		if(errors.hasErrors()){
-			return "content/group/board/board_update";
+			return "group/board/board_update.tiles";
 		}
 
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -189,7 +189,7 @@ public class BoardController {
 		map.addAttribute("nameList", nameList);
 		map.addAttribute("nickname", nickname);
 		
-		return "content/group/board/board_view";
+		return "group/board/board_view.tiles";
 	}
 	
 	/*게시글 삭제*/
@@ -258,7 +258,7 @@ public class BoardController {
 		map.addAttribute("boardNickname", boardNickname);
 		map.addAttribute("replyNickname", replyNickname);
 		
-		return "content/group/board/board_view";
+		return "group/board/board_view.tiles";
 	}
 	
 	/*게시글 목록*/
@@ -287,7 +287,7 @@ public class BoardController {
 		map.addAttribute("boardList", pagingMap.get("boardList"));
 		map.addAttribute("pageBean", pagingMap.get("pageBean"));
 	
-		return "content/group/board/board_list";
+		return "group/board/board_list.tiles";
 	}
 	
 	/*내가 쓴 게시글 목록*/
@@ -315,7 +315,7 @@ public class BoardController {
 		map.addAttribute("myBoardList", pagingMap.get("myBoardList"));
 		map.addAttribute("pageBean", pagingMap.get("pageBean"));
 		
-		return "content/group/board/board_mine";
+		return "group/board/board_mine.tiles";
 	}
 	
 	/*내가 쓴 게시글 목록 중 선택 삭제*/

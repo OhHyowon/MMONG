@@ -37,7 +37,7 @@ public class GroupController {
 	@RequestMapping("mygroup")
 	public ModelAndView searchMyGroupById(){
 		if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")){ //로그인 안 한 사용자는 myGroup을 없이 전달 
-			return new ModelAndView("/content/group/mygroup");
+			return new ModelAndView("group/mygroup.tiles");
 		}else{
 			List authList = (List)SecurityContextHolder.getContext().getAuthentication().getAuthorities(); //로그인한 사용자 권한정보 리스트
 			String au = String.valueOf(authList.get(0)); 
@@ -49,10 +49,10 @@ public class GroupController {
 				for(GroupMember gm : gms){
 					myGroup.add(groupService.selectMyGroupByNo(gm.getGroupNo()));
 				}
-				return new ModelAndView("/content/group/mygroup", "myGroup", myGroup);				
+				return new ModelAndView("group/mygroup.tiles", "myGroup", myGroup);				
 			}else{//로그인한 사용자가 관리자
 				List myGroup = new ArrayList(); //빈 myGroup 전달
-				return new ModelAndView("/content/group/mygroup", "myGroup", myGroup);	
+				return new ModelAndView("group/mygroup.tiles", "myGroup", myGroup);	
 			}		
 		}
 	}
@@ -65,7 +65,7 @@ public class GroupController {
 	 */
 	@RequestMapping("createGroup")
 	public ModelAndView openCreateGroupWindow(){
-		return new ModelAndView("/content/group/createGroup");
+		return new ModelAndView("group/createGroup.tiles");
 	}
 	
 	/**
@@ -99,7 +99,7 @@ public class GroupController {
 	@RequestMapping("groupDetail")
 	public ModelAndView searchMyGroupDetailById(String groupNo){
 		Group selectedGroup = groupService.selectMyGroupByNo(Integer.parseInt(groupNo));		
-		return new ModelAndView("/content/group/groupDetail", "group", selectedGroup);
+		return new ModelAndView("group/groupDetail.tiles", "group", selectedGroup);
 	}
 	
 	/**
@@ -110,7 +110,7 @@ public class GroupController {
 	@RequestMapping("searchGroup")
 	public ModelAndView selectAllGroup(){
 		List<Group> groupList = groupService.selectAllGroup();
-		return new ModelAndView("/content/group/searchGroup", "allGroup", groupList);
+		return new ModelAndView("group/searchGroup.tiles", "allGroup", groupList);
 	}
 	
 	/**

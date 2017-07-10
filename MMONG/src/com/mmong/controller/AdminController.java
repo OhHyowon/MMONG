@@ -39,7 +39,7 @@ public class AdminController {
 	public ModelAndView HospitalInfo(@RequestParam String memberId){
 		Member member = null;
 			member = memberService.searchMemberById(memberId);
-		return new ModelAndView("content/admin/info_member","member", member);
+		return new ModelAndView("admin/info_member.tiles","member", member);
 	}
 	
 	//일반회원(member) 권한 변경하기
@@ -83,7 +83,7 @@ public class AdminController {
 		AdministratorRegisterValidator validator = new AdministratorRegisterValidator();
 		validator.validate(admin, errors);
 		if(errors.hasErrors()){
-			return  new ModelAndView("content/admin/register_form");
+			return  new ModelAndView("admin/register_form.tiles");
 		}
 		
 		//2.관리자 등록처리
@@ -102,7 +102,7 @@ public class AdminController {
 	public ModelAndView gotoRegisterSuccess(@RequestParam String adminId){
 		Administrator admin = null;
 			admin = adminService.searchAdministratorById(adminId);
-		return new  ModelAndView("content/admin/register_success","administrator", admin);
+		return new  ModelAndView("admin/register_success.tiles","administrator", admin);
 	}
 	
 	//info_admin.jsp(관리자 정보)로 가기 위한 컨트롤러
@@ -110,7 +110,7 @@ public class AdminController {
 	public ModelAndView AdminInfo(@RequestParam String adminId){
 		Administrator admin = null;
 			admin = adminService.searchAdministratorById(adminId);
-		return new ModelAndView("content/admin/info_admin","administrator", admin);
+		return new ModelAndView("admin/info_admin.tiles","administrator", admin);
 	}
 	
 	//(info_admin.jsp)에서 정보 수정하기(info_admin_update_form.jsp)로 이동하기 위한 컨트롤러
@@ -119,7 +119,7 @@ public class AdminController {
 		
 		Administrator admin=null;
 			admin = adminService.searchAdministratorById(adminId);
-		return new ModelAndView("content/admin/info_admin_update_form", "administrator", admin);
+		return new ModelAndView("admin/info_admin_update_form.tiles", "administrator", admin);
 	}
 	
 	//(info_admin_update_form.jsp)에서 (info_admin.jsp)로 이동하기 위한 컨트롤러
@@ -129,7 +129,7 @@ public class AdminController {
 			userService.updateUser(user);
 		Administrator newAdmin = new Administrator(admin.getAdminName(),admin.getAdminPhone(), admin.getAdminEmail(),admin.getAdminId(),user);
 			adminService.updateAdministrator(newAdmin);
-		return new ModelAndView("content/admin/info_admin", "administrator", newAdmin);
+		return new ModelAndView("admin/info_admin.tiles", "administrator", newAdmin);
 	}
 	
 	//(info_admin.jsp)에서 관리자 enable 0으로 바꾸고 다시 (info_admin.jsp)로 이동하기 위한 컨트롤러

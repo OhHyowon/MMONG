@@ -4,13 +4,6 @@
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
 
 <jsp:include page="/group/board/board_menu.do"/>
 
@@ -105,7 +98,7 @@ td {
 
 
 
-	<h2>내가 쓴 게시물 목록</h2>
+	<h3>내가 쓴 게시물 목록</h3>
 	<table>
 		<thead>
 			<tr>
@@ -215,7 +208,3 @@ td {
 			href="/MMONG/group/board/myBoardList.do?page=${requestScope.pageBean.totalPage}&groupNo=${sessionScope.groupNo }">마지막
 			페이지</a>
 	</p>
-
-
-</body>
-</html>

@@ -1,17 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-
- 
-</head>
-<body>
-
-<h3>index 페이지</h3>
 
 <%-- ========================menu 영역 =================== --%>
 <ul>
@@ -31,12 +20,12 @@
 		<li><a href="/MMONG/member/mypage.do">회원 정보조회</a></li>
 		<li><a href="/MMONG/message.do">쪽지 관리</a></li>
 	</sec:authorize>
-
 </ul>
+<hr>
 <%-- =======================menu 영역 끝=================== --%>
 
 
-<hr>
+
 
 
 <%-- =======================대menu 영역 =================== --%>
@@ -51,13 +40,9 @@
 		<li><a href="/MMONG/admin/search_admin_form.do">관리자 찾기 폼</a></li>
 		<li><a href="/MMONG/admin/search_member_form.do">회원(member) 찾기 폼</a></li>
 	</sec:authorize>
-      
-      
-</ul>   
-<%-- ======================대menu 영역 끝=================== --%>   
-
-
-
+</ul> 
+<hr>  
+<%-- ======================대menu 영역 끝=================== --%>  
 
 
 <script type="text/javascript">
@@ -67,22 +52,6 @@
 </script>
 <form id="logoutForm" action="/MMONG/logout.do" method="post" style="display:none">
 <sec:csrfInput/>
-</form>
+</form> 
 
 
-
-
-
-
-
-
-<%--=====================진우 테스트 영역 시작===================== --%> 
-
-
-
-
-
-
-<%--=====================진우 테스트 영역 끝===================== --%> 
-</body>
-</html>

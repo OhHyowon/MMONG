@@ -1,10 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
+
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript"
@@ -369,5 +364,3 @@ span.result {
 	<input type="button" value="산책로 등록하기" id="registerTrail">
 	<input type="button" value="산책로 등록완료" id="finish">
 	<input type="button" value="마커 제거" id="removeMarker">
-</body>
-</html>
