@@ -1,3 +1,4 @@
+<%@page import="java.util.List"%>
 <%@page import="com.mmong.vo.Member"%>
 <%@page import="org.springframework.security.core.context.SecurityContextHolder"%>
 <%@page import="com.mmong.vo.Group"%>
@@ -85,7 +86,6 @@ $(document).ready(function(){
 
 
 <%-- =============소모임 상세페이지 소메뉴 : 밑에 세메뉴안에도 이것 포함시키기! ================ --%>
-<<<<<<< HEAD
 <ul>
 	
 	<li><a href="/MMONG/group/groupDate/groupDate_form.do">모임 일정 목록</a></li> <!-- 소모임 상세페이지 첫 화면 -->
@@ -102,7 +102,7 @@ $(document).ready(function(){
 %>
 <!-- 그룹 가입 시 그룹멤버 객체 만들어주기위해 넘겨줄 값 : 이건 예전에 만든거라 세션처리 못함 - 이주현 -->
 <input type="hidden" id="groupNo" value="${requestScope.group.no}">
-<sec:authorize access="isAuthenticated()">
+<sec:authorize access="hasRole('ROLE_1')">
 	<input type="hidden" id="memberId" value="<sec:authentication property="principal.memberId"/>">
 </sec:authorize>
 
@@ -118,11 +118,15 @@ $(document).ready(function(){
 </sec:authorize>
 <sec:authorize access="isAuthenticated()"> <!-- 로그인 했을시 -->
    <%
-   Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-   if(((Group)request.getAttribute("group")).getLeader().equals(member.getMemberId())){ //주인장은 가입하기 버튼 대신 소모임 정보수정 버튼 필요
-      out.println("<button type='button' id='editGroupBtn'>소모임 수정하기</button>");
-   }else{
-      out.println("<button type='button' id='create'>가입하기</button>");
+   List authList = (List)SecurityContextHolder.getContext().getAuthentication().getAuthorities(); //로그인한 사용자 권한정보 리스트
+   String au = String.valueOf(authList.get(0));
+   if(au.equals("ROLE_1")){//관리자인 경우 아무것도 안뜸 
+      Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+      if(((Group)request.getAttribute("group")).getLeader().equals(member.getMemberId())){ //주인장은 가입하기 버튼 대신 소모임 정보수정 버튼 필요
+         out.println("<button type='button' id='editGroupBtn'>소모임 수정하기</button>");
+      }else{
+         out.println("<button type='button' id='create'>가입하기</button>");
+      }
    }
    %>
 </sec:authorize>
