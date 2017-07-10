@@ -4,6 +4,7 @@ ALTER TABLE administrator DROP COLUMN admin_pwd;
 ALTER TABLE administrator DROP COLUMN admin_authority;
 
 ALTER TABLE GROUP_DATE CREATE COLUMN TITLE VARCHAR2(900);
+ALTER TABLE GROUP_DATE ADD member_Id varchar2(30)
 
 /* 사용자 0번 */
 DROP TABLE USERS;

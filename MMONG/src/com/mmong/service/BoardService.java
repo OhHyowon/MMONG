@@ -24,9 +24,9 @@ public interface BoardService {
 	
 	public HashMap<String,Object> selectOption(int page, String option, String key,int groupNo);
 	
+	public HashMap<String,Object> selectMyBoardList(int page,String memberId,int groupNo);
 	
-	
-	
+	public HashMap<String,Object> selectMyOption(int page,String option,String key,String memberId,int groupNo);
 	
 	
 }
