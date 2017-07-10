@@ -25,4 +25,9 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 		return groupMemberDao.selectMeById(memberId);
 	}
 
+	@Override
+	public List<GroupMember> searchGroupMemberByGroupNo(int groupNo) {
+		return groupMemberDao.searchGroupMemberByGroupNo(groupNo);
+	}
+
 }

@@ -17,4 +17,12 @@ public interface GroupMemberDao {
 	 * 작성자 : 이주현 
 	 */
 	List<GroupMember> selectMeById(String memberId);
+	
+	/**
+	 * 소모임NO로 GroupMember객체들 select
+	 * @param groupNo
+	 * @return
+	 * 작성자 : 이주현
+	 */
+	List<GroupMember> searchGroupMemberByGroupNo(int groupNo);
 }
