@@ -26,6 +26,7 @@ public class GroupMemberController {
 	 * 소모임에 소속된 모임멤버 추가시키는 handler method
 	 * @param groupMember
 	 * @return
+	 * 작성자 : 이주현
 	 */
 	@RequestMapping("insertGroupMember")
 	@ResponseBody
@@ -34,6 +35,12 @@ public class GroupMemberController {
 		return "가입완료";
 	}
 	
+	/**
+	 * 소모임No로 소모임에 소속된 멤버 조회하는 handler method
+	 * @param session
+	 * @return 참여목록 페이지 + 그룹멤버들
+	 * 작성자 : 이주현
+	 */
 	@RequestMapping("searchGroupMember")
 	public ModelAndView searchGroupMemberByGroupNo(HttpSession session){
 		int groupNo = Integer.parseInt(session.getAttribute("groupNo").toString());		;

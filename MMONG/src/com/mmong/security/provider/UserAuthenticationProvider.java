@@ -67,6 +67,7 @@ public class UserAuthenticationProvider implements AuthenticationProvider{
 			throw new BadCredentialsException("패스워드를 확인하세요");
 		}
 		// ==> 인증 성공
+		//System.out.println(user);
 
 		//SimpleGrantedAuthority - 권한정보를 문자열로 저장.
 		List<SimpleGrantedAuthority> authList = new ArrayList<>();

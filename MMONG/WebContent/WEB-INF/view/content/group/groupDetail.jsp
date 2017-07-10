@@ -1,6 +1,9 @@
+<%@page import="com.mmong.vo.Member"%>
+<%@page import="org.springframework.security.core.context.SecurityContextHolder"%>
 <%@page import="com.mmong.vo.Group"%>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +17,8 @@ $(document).ready(function(){
 		alert("먼저 로그인 해주세요.");
 		return;
 	});
-
+	
+	//소모임 가입 처리
 	$("#create").on("click", function(){
 		if(confirm("소모임에 가입하시겠습니까?")){
 			alert("완료");
@@ -29,6 +33,11 @@ $(document).ready(function(){
 				}
 			});//ajax 끝
 		}
+	});
+	
+	//주인장이 소모임 수정 버튼 클릭시
+	$("#editGroupBtn").on("click", function(){
+		alert("수정해야함~~");
 	});
 	
 	//소모임 하나 클릭했을 때 소모임 상세페이지로 이동 
@@ -91,26 +100,38 @@ $(document).ready(function(){
 %>
 <!-- 그룹 가입 시 그룹멤버 객체 만들어주기위해 넘겨줄 값 : 이건 예전에 만든거라 세션처리 못함 - 이주현 -->
 <input type="hidden" id="groupNo" value="${requestScope.group.no}">
-<input type="hidden" id="memberId" value="<sec:authentication property="principal.memberId"/>">
-<br>
+<sec:authorize access="isAuthenticated()">
+	<input type="hidden" id="memberId" value="<sec:authentication property="principal.memberId"/>">
+</sec:authorize>
 
 
 <!-- 소모임 정보 -->
+<p><b>모임 정보</b></p>
 모임 이름 : ${requestScope.group.name } <br>
 모임 장 : ${requestScope.group.leader } <br>
 
 <!-- 가입하기 버튼 -->
-<sec:authorize access="!isAuthenticated()">      
-	<button type="button" id="createNone">가입하기</button>
+<sec:authorize access="!isAuthenticated()"> <!-- 로그인 안했을시  -->       
+   <button type="button" id="createNone">가입하기</button>
 </sec:authorize>
-<sec:authorize access="isAuthenticated()">
-	<!-- 주인장은 가입하기 버튼 대신 소모임 정보수정 버튼 필요 -->
-	<button type="button" id="create">가입하기</button>
+<sec:authorize access="isAuthenticated()"> <!-- 로그인 했을시 -->
+   <%
+   Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+   if(((Group)request.getAttribute("group")).getLeader().equals(member.getMemberId())){ //주인장은 가입하기 버튼 대신 소모임 정보수정 버튼 필요
+      out.println("<button type='button' id='editGroupBtn'>소모임 수정하기</button>");
+   }else{
+      out.println("<button type='button' id='create'>가입하기</button>");
+   }
+   %>
 </sec:authorize>
+
+
+
+<br>
 
 
 <!-- 모임 일정 목록 -->
-
+<p><b>모임 일정</b></p>
 
 
 

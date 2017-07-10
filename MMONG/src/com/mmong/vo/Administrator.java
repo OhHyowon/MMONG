@@ -7,7 +7,7 @@ public class Administrator implements Serializable {
 	private String adminEmail;
 	
 	private String adminId;
-	private User adminUser;
+	private User user;
 	
 	public Administrator() {}
 	public Administrator(String adminName, String adminPhone, String adminEmail, String adminId) {
@@ -23,7 +23,7 @@ public class Administrator implements Serializable {
 		this.adminPhone = adminPhone;
 		this.adminEmail = adminEmail;
 		this.adminId = adminId;
-		this.adminUser = adminUser;
+		this.user = adminUser;
 	}
 	public String getAdminName() {
 		return adminName;
@@ -49,11 +49,11 @@ public class Administrator implements Serializable {
 	public void setAdminId(String adminId) {
 		this.adminId = adminId;
 	}
-	public User getAdminUser() {
-		return adminUser;
+	public User getUser() {
+		return user;
 	}
-	public void setAdminUser(User adminUser) {
-		this.adminUser = adminUser;
+	public void setUser(User adminUser) {
+		this.user = adminUser;
 	}
 	@Override
 	public int hashCode() {
@@ -63,7 +63,7 @@ public class Administrator implements Serializable {
 		result = prime * result + ((adminId == null) ? 0 : adminId.hashCode());
 		result = prime * result + ((adminName == null) ? 0 : adminName.hashCode());
 		result = prime * result + ((adminPhone == null) ? 0 : adminPhone.hashCode());
-		result = prime * result + ((adminUser == null) ? 0 : adminUser.hashCode());
+		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		return result;
 	}
 	@Override
@@ -95,17 +95,17 @@ public class Administrator implements Serializable {
 				return false;
 		} else if (!adminPhone.equals(other.adminPhone))
 			return false;
-		if (adminUser == null) {
-			if (other.adminUser != null)
+		if (user == null) {
+			if (other.user != null)
 				return false;
-		} else if (!adminUser.equals(other.adminUser))
+		} else if (!user.equals(other.user))
 			return false;
 		return true;
 	}
 	@Override
 	public String toString() {
 		return "Administrator [adminName=" + adminName + ", adminPhone=" + adminPhone + ", adminEmail=" + adminEmail
-				+ ", adminId=" + adminId + ", adminUser=" + adminUser + "]";
+				+ ", adminId=" + adminId + ", adminUser=" + user + "]";
 	}
 
 	

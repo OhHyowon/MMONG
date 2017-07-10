@@ -39,7 +39,7 @@
  조인 - administrator가 user의 패스워드를 불러 올수 있어야함
  -->
 	<resultMap id="administrator-users-resultMap" type="administrator" extends="administrator-resultmap">
-		<association property="adminUser" javaType="User">
+		<association property="user" javaType="User">
 			<result property="userId" column="user_id"/>
 			<result property="userPwd" column="user_pwd"/>
 			<result property="userAuthority" column="user_authority"/>

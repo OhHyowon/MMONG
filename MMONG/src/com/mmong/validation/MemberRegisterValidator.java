@@ -20,21 +20,21 @@ public class MemberRegisterValidator implements Validator {
 		
 	
 		//User객체 검증 
-		User user = member.getMemberUser();
+		User user = member.getUser();
 		errors.pushNestedPath("memberUser");		
 		try{
 			//userId 필수 입력, 8글자 이상 12글자 이하
 			//에러메세지 하나만 띄우기 위해 if-else if 사용
-			if(member.getMemberUser().getUserId()==null || member.getMemberUser().getUserId().equals("")){
+			if(member.getUser().getUserId()==null || member.getUser().getUserId().equals("")){
 				errors.rejectValue("userId", "required");
-			}else if(member.getMemberUser().getUserId()!=null && (member.getMemberUser().getUserId().length()<8)||member.getMemberUser().getUserId().length()>12) {
+			}else if(member.getUser().getUserId()!=null && (member.getUser().getUserId().length()<8)||member.getUser().getUserId().length()>12) {
 				errors.rejectValue("userId", "size");
 			}		
 			//userPwd 필수입력, 8글자 이상 16글자 이하
 			//에러메세지 하나만 띄우기 위해 if-else if 사용
-			if(member.getMemberUser().getUserPwd()==null || member.getMemberUser().getUserPwd().equals("")) {
+			if(member.getUser().getUserPwd()==null || member.getUser().getUserPwd().equals("")) {
 				errors.rejectValue("userPwd", "required");
-			}else if(member.getMemberUser().getUserPwd()!=null && (member.getMemberUser().getUserPwd().length()<8)||member.getMemberUser().getUserPwd().length()>16) {
+			}else if(member.getUser().getUserPwd()!=null && (member.getUser().getUserPwd().length()<8)||member.getUser().getUserPwd().length()>16) {
 				errors.rejectValue("userPwd", "size");
 			}
 		}finally{

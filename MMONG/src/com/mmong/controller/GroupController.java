@@ -36,6 +36,8 @@ public class GroupController {
 		if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")){ //로그인 안 한 사용자는 myGroup을 없이 전달 
 			return new ModelAndView("/content/group/mygroup");
 		}else{
+			//System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+			//SecurityContextHolder.getContext().getAuthentication().getPrincipal().getUser();
 			Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			List<GroupMember> gms = groupMemberService.selectMeById(member.getMemberId());
 			List<Group> myGroup = new ArrayList();
