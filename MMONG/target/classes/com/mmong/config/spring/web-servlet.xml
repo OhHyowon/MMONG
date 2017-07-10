@@ -20,6 +20,8 @@
    <mvc:view-controller path="/login_form.do" view-name="login_form"/>
    <!-- 개인회원 회원가입 폼 -->
    <mvc:view-controller path="/member/register_form.do" view-name="content/member/register_form"/>
+   <!-- 기본 맵 폼 -->
+   <mvc:view-controller path="/map/basic_map.do" view-name="content/map/basic_map"/>
 
 
 
