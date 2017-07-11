@@ -1,6 +1,7 @@
 package com.mmong.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -32,7 +33,16 @@ public class AdminController {
 	
 	
 	
-	
+	/**
+	 * 관리자 정보 조회 페이지로 이동시키는 handler method
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping("mypage")
+	public ModelAndView AdminMypage(){
+		Administrator admin = (Administrator)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return new ModelAndView("admin/mypage.tiles", "administrator", admin);
+	}
 	
 	
 
@@ -41,7 +51,7 @@ public class AdminController {
 	
 	//info_member.jsp(회원 정보)로 가기 위한 컨트롤러
 		@RequestMapping("searchMemberById")
-		public ModelAndView HospitalInfo(@RequestParam String memberId){
+		public ModelAndView searchMemberById(@RequestParam String memberId){
 			Member member = null;
 				member = memberService.searchMemberById(memberId);
 			return new ModelAndView("admin/info_member.tiles","member", member);
@@ -70,7 +80,8 @@ public class AdminController {
 	@RequestMapping("register_success")
 	public ModelAndView RegisterAdminSuccess(@ModelAttribute Administrator admin, BindingResult errors){
 		User user = new User(admin.getAdminId(), admin.getUser().getUserPwd(), "ROLE_0", 1);
-		admin.setUser(user);
+			admin.setUser(user);
+			
 		//1. 요청파라미터 검증
 		AdministratorRegisterValidator validator = new AdministratorRegisterValidator();
 		validator.validate(admin, errors);
@@ -147,14 +158,14 @@ public class AdminController {
 		return new ModelAndView("admin/info_admin_update_form.tiles", "administrator", admin);
 	}
 	
-	//(info_admin_update_form.jsp)에서 (info_admin.jsp)로 이동하기 위한 컨트롤러
+	//(info_admin_update_form.jsp)에서 (mypage.jsp)로 이동하기 위한 컨트롤러					//관리자 enable 변경을 위한 업테이트 결과페이지는 무엇으로 할것인지
 	@RequestMapping("info_admin")
 	public ModelAndView updateAdminInfo(@ModelAttribute Administrator admin){
 		User user = new User(admin.getAdminId(),admin.getUser().getUserPwd(), admin.getUser().getUserAuthority(), 1);
 			userService.updateUser(user);
 		Administrator newAdmin = new Administrator(admin.getAdminName(),admin.getAdminPhone(), admin.getAdminEmail(),admin.getAdminId(),user);
 			adminService.updateAdministrator(newAdmin);
-		return new ModelAndView("admin/info_admin.tiles", "administrator", newAdmin);
+		return new ModelAndView("admin/mypage.tiles", "administrator", newAdmin);
 	}
 	
 	//(info_admin.jsp)에서 관리자 enable 0으로 바꾸고 다시 (info_admin.jsp)로 이동하기 위한 컨트롤러
