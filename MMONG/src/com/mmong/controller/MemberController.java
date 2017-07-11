@@ -39,7 +39,7 @@ public class MemberController {
 		MemberRegisterValidator validator = new MemberRegisterValidator();
 		validator.validate(member, errors);
 		if(errors.hasErrors()){
-			return new ModelAndView("content/member/register_form");
+			return new ModelAndView("member/register_form.tiles");
 		}
 		
 		//비즈니스 로직처리 - 회원 추가
@@ -89,7 +89,7 @@ public class MemberController {
 	@RequestMapping("searchByRegisterId")
 	public ModelAndView searchByRegisterId(@RequestParam(required=false) String memberId) {
 		Member member = memberService.searchMemberById(memberId);
-		return new ModelAndView("content/member/request_success", "member", member);
+		return new ModelAndView("member/request_success.tiles", "member", member);
 	}
 	
 	/**
@@ -100,7 +100,7 @@ public class MemberController {
 	@RequestMapping("mypage")
 	public ModelAndView searchMemberInfoById(){
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return new ModelAndView("content/member/mypage", "member", member);
+		return new ModelAndView("member/mypage.tiles", "member", member);
 	}
 	
 }

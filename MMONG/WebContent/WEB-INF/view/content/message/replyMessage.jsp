@@ -1,11 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-
 <style type="text/css">
 
 span, td, th{
@@ -44,6 +38,3 @@ span.error{
 	<input type="submit" value="전송">
 	<input type="button" value="취소" onclick="location.href='/MMONG/message/viewReceiveMsg.do?no=${requestScope.no }'">
 </form>
- 
-</body>
-</html>

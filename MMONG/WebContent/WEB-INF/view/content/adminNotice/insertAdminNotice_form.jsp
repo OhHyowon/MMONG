@@ -1,18 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-<h2>공지사항 글쓰기</h2>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+<h3>공지사항 글쓰기</h3>
 <table>
         <form action="/MMONG/adminNotice/insertAdminNotice.do" method="post" >
         		
         	<tr>
                 <th>작성자: </th>
-                <td><input type="text" placeholder="작성자" name="adminId"/></td>
+                <td>&nbsp;<sec:authentication property="principal.adminId"/>
+                	<input type="hidden" placeholder="작성자" name="adminId" value="<sec:authentication property="principal.adminId"/>"/></td>
             </tr>
             <tr>
                 <th>제목: </th>
@@ -35,12 +31,3 @@
         </form>
 </table>
 
-
-
-
-
-
-
-
-</body>
-</html>

@@ -47,7 +47,7 @@ public class AdminNoticeController {
 			map.addAttribute("adminNoticeList", pagingMap.get("adminNoticeList"));
 			map.addAttribute("pageBean", pagingMap.get("pageBean"));
 
-			return "content/adminNotice/selectAdminNoticeList";
+			return "adminNotice/selectAdminNoticeList.tiles";
 	}
 	
 	
@@ -61,7 +61,7 @@ public class AdminNoticeController {
 	@RequestMapping("viewAdminNotice")
 	public ModelAndView viewAdminNotice(@RequestParam int adminNoticeNo){
 		AdministratorNotice adNo = adminNoticeService.viewAdminNoticeByNo(adminNoticeNo);
-		return new ModelAndView("content/adminNotice/view_notice", "adminNotice", adNo);
+		return new ModelAndView("adminNotice/view_notice.tiles", "adminNotice", adNo);
 	}
 	
 	//관리자 공지사항 목록 조회
@@ -75,7 +75,7 @@ public class AdminNoticeController {
 //			}
 //			System.out.println("공지사항 목록 조회");
 	
-		return new ModelAndView("content/adminNotice/selectAdminNoticeList","adminNoticeList", adminNoticeList);
+		return new ModelAndView("adminNotice/selectAdminNoticeList.tiles","adminNoticeList", adminNoticeList);
 	}
 	
 	//관리자 공지사항 등록
@@ -93,7 +93,7 @@ public class AdminNoticeController {
 			adminNoticeService.deleteAdminNotice(adminNoticeNo);
 		List<AdministratorNotice> adminNoticeList = null;
 		adminNoticeList = adminNoticeService.selectAdminNoticeList();
-		return new ModelAndView("content/adminNotice/selectAdminNoticeList","adminNoticeList", adminNoticeList);
+		return new ModelAndView("adminNotice/selectAdminNoticeList.tiles","adminNoticeList", adminNoticeList);
 	}
 		
 	
@@ -102,7 +102,7 @@ public class AdminNoticeController {
 	public ModelAndView updateAdminNoticeForm(@RequestParam int adminNoticeNo){
 		AdministratorNotice adNotice = null;
 			adNotice = adminNoticeService.viewAdminNoticeByNo(adminNoticeNo);
-		return new ModelAndView("content/adminNotice/updateAdminNotice_form","adminNotice", adNotice);
+		return new ModelAndView("adminNotice/updateAdminNotice_form.tiles","adminNotice", adNotice);
 	}
 	
 	//관리자 공지사항 수정 폼(updateAdminNotice_form.jsp)에서 수정 완료후 다시 하나 조회(view_notice.jsp)로 이동
@@ -132,7 +132,7 @@ public class AdminNoticeController {
 //			}
 //			System.out.println("공지사항 내용 검색 조회");
 		}
-		return new ModelAndView("content/adminNotice/selectAdminNoticeList","adminNoticeList", adminNoticeListByKeyword);
+		return new ModelAndView("adminNotice/selectAdminNoticeList.tiles","adminNoticeList", adminNoticeListByKeyword);
 	}
 	
 	

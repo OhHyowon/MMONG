@@ -1,18 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-<h2>공지사항 수정 폼</h2>
+
+<h3>공지사항 수정 폼</h3>
 <form action="/MMONG/adminNotice/updateAdminNotice.do" method="post">
 		<table>
 			<tr>
                 <td>작성자: </td>
-                <td><input type="text" value="${requestScope.adminNotice.administrator.adminId}" name="adminId" /></td>
+                <td>&nbsp;<sec:authentication property="principal.adminId"/>
+                	<input type="hidden" placeholder="작성자" name="adminId" value="<sec:authentication property="principal.adminId"/>"/></td>
             </tr>
 			<tr>
 				<td>제목 :</td>
@@ -32,5 +27,3 @@
 		</table>
 	</form>
 	<input type="button" value="목록 " onclick="location.href='/MMONG/adminNotice/selectAdminNoticeList.do'"/>
-</body>
-</html>

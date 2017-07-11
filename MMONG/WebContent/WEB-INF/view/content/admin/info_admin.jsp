@@ -1,12 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-<h2>관리자 마이페이지</h2>
+
+<h3>관리자 마이페이지</h3>
 관리자 ID : ${requestScope.administrator.adminId }<br>
 패스워드 : ${requestScope.administrator.adminUser.userPwd }<br>
 권한 : ${requestScope.administrator.adminUser.userAuthority}<br>
@@ -30,10 +24,6 @@ enable : ${requestScope.administrator.adminUser.userEnable}<br>
 	<input type="submit" value="관리자 enable 변경">	
 </form>
 
-
-
-</body>
-</html>
 
 
 

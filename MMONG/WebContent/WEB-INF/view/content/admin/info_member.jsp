@@ -1,12 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-<h2>회원(member) 정보</h2>
+
+<h3>회원(member) 정보</h3>
 회원 ID : ${requestScope.member.memberUser.userId}<br>
 회원 이름 : ${requestScope.member.memberName}<br>
 닉네임 : ${requestScope.member.nickName}<br>
@@ -25,6 +19,3 @@
 	<input type="submit" value="권한 변경하기">
 </form>
 <br>
-
-</body>
-</html>

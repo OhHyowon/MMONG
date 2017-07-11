@@ -46,7 +46,7 @@ public class GroupDateController{
 		GroupDateValidator vaildator=new GroupDateValidator();
 		vaildator.validate(groupDate, errors);
 		if(errors.hasErrors()){
-			return "content/group/groupDate/groupDate_form";
+			return "group/groupDate/groupDate_form.tiles";
 		}
 	
 		groupDate.setMemberId(memberId); // 로그인한 사람이 일정 등록자
@@ -78,7 +78,7 @@ public class GroupDateController{
 		map.addAttribute("nickNameList", nickNameList);
 		map.addAttribute("groupDate", groupDate);
 		
-		return "content/group/groupDate/groupDate_view";
+		return "group/groupDate/groupDate_view.tiles";
 	}
 	
 	
@@ -140,19 +140,13 @@ public class GroupDateController{
 		}else{
 			pagingMap=groupDateService.selectGroupDateOption(page,groupNo,key,option);
 		}
-		
-		
-	/*	if(option.equals("1")){
-			pagingMap=groupDateService.selectAllGroupDateList(page,groupNo);
-		}else{
-			pagingMap=groupDateService.selectGroupDateOption(page,groupNo,option,key);
-		}*/
+
 		
 		map.addAttribute("groupNo", groupNo);
 		map.addAttribute("groupDateList", pagingMap.get("groupDateList"));
 		map.addAttribute("pageBean", pagingMap.get("pageBean"));
 		
-		return "content/group/groupDate/groupDate_list";
+		return "group/groupDate/groupDate_list.tiles";
 	}
 	
 	/* update - 1 일정 그대로 받아오기*/
@@ -164,7 +158,7 @@ public class GroupDateController{
 		GroupDate groupDate=groupDateService.selectGroupDate(groupDateNo);
 		map.addAttribute("groupDate", groupDate);
 		
-		return "content/group/groupDate/groupDate_update";
+		return "group/groupDate/groupDate_update.tiles";
 	}
 	
 	/* update - 2 수정 된 일정 DB에 넣기*/
@@ -176,12 +170,12 @@ public class GroupDateController{
 		GroupDateValidator vaildator=new GroupDateValidator();
 		vaildator.validate(groupDate, errors);
 		if(errors.hasErrors()){
-			return "content/group/groupDate/groupDate_update";
+			return "group/groupDate/groupDate_update.tiles";
 		}
 		
 		groupDateService.upDateGroupDate(groupDate); // DB에 수정된 일정 넣기
 		
-		return "/content/group/groupDate/groupDate_view";
+		return "group/groupDate/groupDate_view.tiles";
 	}
 	
 	@RequestMapping("groupDateDelete")

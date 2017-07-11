@@ -52,8 +52,22 @@ td {
 	text-align:center;
 }
 
+
 </style>
+
+
+<h3>소모임 페이지 - 소모임 상세 페이지</h3>
+<%-- =============소모임 상세페이지 소메뉴 : 밑에 세메뉴안에도 이것 포함시키기! ================ --%>
+<ul>
+	<li><a href="/MMONG/group/groupDate/allGroupDateList.do">모임 일정 목록</a></li> <!-- 소모임 상세페이지 첫 화면 -->
+	<li><a href="/MMONG/group/board/allBoardList.do">자유게시판</a></li>
+	<li><a href="/MMONG/groupMember/searchGroupMember.do">참여 멤버 목록</a></li>
+</ul>
+<%-- =============소모임 상세페이지 소메뉴 끝================ --%>
+
+
 <a href="/MMONG/group/groupDate/groupDate_form.do">일정 등록</a>
+
 
 <h2>전체 일정 목록</h2>
 <table>

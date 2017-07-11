@@ -3,13 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
 
 <style type="text/css">
 a:link {
@@ -73,6 +66,7 @@ td {
     visibility: visible;
 }
 </style>
+
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -83,7 +77,22 @@ $(document).ready(function(){
 
 </script>
 
-<jsp:include page="/group/board/board_menu.do"/>
+<h3>소모임 페이지 - 소모임 상세 페이지</h3>
+<%-- =============소모임 상세페이지 소메뉴 : 밑에 세메뉴안에도 이것 포함시키기! ================ --%>
+<ul>
+	<li><a href="/MMONG/group/groupDate/allGroupDateList.do">모임 일정 목록</a></li> <!-- 소모임 상세페이지 첫 화면 -->
+	<li><a href="/MMONG/group/board/allBoardList.do">자유게시판</a></li>
+	<li><a href="/MMONG/groupMember/searchGroupMember.do">참여 멤버 목록</a></li>
+</ul>
+<%-- =============소모임 상세페이지 소메뉴 끝================ --%>
+<hr>
+
+<h3>자유게시판 메뉴</h3>
+<ul>
+	<li><a href="/MMONG/group/board/board_form.do">게시글작성</a></li>
+	<li><a href="/MMONG/group/board/myBoardList.do">내가 쓴 글 보기</a>
+	<li><a href="/MMONG/group/reply/myReplyList.do">내가 쓴 댓글 보기</a>
+</ul>
 
 
 
@@ -197,9 +206,3 @@ $(document).ready(function(){
 			href="/MMONG/group/board/allBoardList.do?page=${requestScope.pageBean.totalPage}&groupNo=${sessionScope.groupNo}">마지막
 			페이지</a>
 	</p>
-
-
-
-
-</body>
-</html>

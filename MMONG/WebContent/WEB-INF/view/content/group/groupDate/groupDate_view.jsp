@@ -4,11 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec"  uri="http://www.springframework.org/security/tags" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -66,12 +62,13 @@ $(document).ready(function(){
 	}); // end of deleteBtn
 });
 
-
-
 </script>
-</head>
-<body>
-<h2>일정 상세보기</h2>
+
+
+
+
+
+<h3>일정 상세보기</h3>
 
 <%-- 일정 상세보기 페이지가 열릴 때 마다 groupDateNo 세션에 저장 --%>
 <%
@@ -79,6 +76,8 @@ $(document).ready(function(){
 	session.setAttribute("groupDateNo",groupDateNo);
 %>
 	<sec:authentication property="principal.memberId" var="loginId"/>
+
+
 <table>
 	<thead>
 		<tr>일정이름</tr>
@@ -144,6 +143,3 @@ $(document).ready(function(){
 		</c:otherwise>
 	</c:choose>
 </table>
-
-</body>
-</html>

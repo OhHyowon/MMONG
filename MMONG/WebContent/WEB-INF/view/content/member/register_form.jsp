@@ -1,11 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+
 <style type="text/css">
 .error{
 	font-size : 8px;
@@ -280,33 +276,31 @@ function formSubmit(){
 }
 
 </script>
-</head>
 
-<body>
-<h2>개인 회원가입</h2>
+<h3>회원가입</h3>
 <form name="registerForm" id="register" action="/MMONG/member/registerMember.do" method="post">
 	<table>	
 		<tr>
 			<th>ID</th>
-			<td><input type="text" id="memberId" name="memberId" value="${param['memberUser.userId'] }">
+			<td><input type="text" id="memberId" name="memberId" value="${param['user.userId'] }">
 				<input type="button" id="idChk" value="중복확인"/></td>
 		</tr>
 		<tr>
 			<td></td>
 			<td class="error">
-				<form:errors path="member.memberUser.userId" delimiter="<br>"/>
+				<form:errors path="member.user.userId" delimiter="<br>"/>
 				<div id="idMsg" style="display:none"></div>
 			</td>
 		</tr>
 		
 		<tr>
 			<th>비밀번호</th>
-			<td><input type="password" id="memberPwd" name="memberUser.userPwd" value="${param['memberUser.userPwd'] }"></td>
+			<td><input type="password" id="memberPwd" name="user.userPwd" value="${param['user.userPwd'] }"></td>
 		</tr>
 		<tr>
 			<td></td>
 			<td class="error">
-				<form:errors path="member.memberUser.userPwd" delimiter="<br>"/>
+				<form:errors path="member.user.userPwd" delimiter="<br>"/>
 				<div id="pwdMsg" style="display:none"></div>
 			</td>
 		</tr>
@@ -390,5 +384,3 @@ function formSubmit(){
 	</table>
 	<sec:csrfInput/>
 </form>
-</body>
-</html>

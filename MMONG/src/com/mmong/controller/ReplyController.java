@@ -82,7 +82,7 @@ public class ReplyController {
 			map.addAttribute("board", board);
 			map.addAttribute("boardNickname", boardNickname);
 		
-			return "content/group/board/board_view";
+			return "group/board/board_view.tiles";
 		}
 		
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -159,7 +159,7 @@ public class ReplyController {
 			map.addAttribute("board", board);
 			map.addAttribute("boardNickname", boardNickname);
 		
-			return "content/group/board/board_view";
+			return "group/board/board_view.tiles";
 		}
 		
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -220,7 +220,7 @@ public class ReplyController {
 		map.addAttribute("myReplyList", pagingMap.get("myReplyList"));
 		map.addAttribute("pageBean", pagingMap.get("pageBean"));
 		
-		return "content/group/board/reply_mine";
+		return "group/board/reply_mine.tiles";
 	}
 	
 	/*내가 쓴 리플 선택 삭제*/
