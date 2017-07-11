@@ -88,6 +88,15 @@
 		WHERE user_id=#{value}
 	</update>
 
-<!-- ################################################## -->			
+<!-- ################################################## -->	
+	
+	<!-- 관리자ID 중복조회 -->
+	<select id="checkUserId" parameterType="String" resultType="int">
+		SELECT count(*)
+		FROM	 users
+		WHERE user_id = #{value}
+	</select>
+
+<!-- ################################################## -->
 	
 </mapper>

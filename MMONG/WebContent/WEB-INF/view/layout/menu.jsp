@@ -18,7 +18,7 @@
 	<%-- 회원 메뉴 : 개인회원 메뉴 /member로 시작 --%>
 	<sec:authorize access="hasRole('ROLE_1')">
 		<li><a href="/MMONG/member/mypage.do">회원 정보조회</a></li>
-		<li><a href="/MMONG/message.do">쪽지 관리</a></li>
+		<li><a href="/MMONG/message.do">쪽지 관리</a></li>          
 	</sec:authorize>
 </ul>
 <hr>
@@ -30,6 +30,9 @@
 
 <%-- =======================대menu 영역 =================== --%>
 <ul>
+	<sec:authorize access="hasRole('ROLE_0')">
+		<li> <a href="/MMONG/admin/">회원관리</a></li>
+	</sec:authorize>
 	<li><a href="/MMONG/map/basic_map.do">기본 맵</a></li>
 	<li><a href="/MMONG/group/mygroup.do">소모임</a></li>
 	<li><a href="/MMONG/admin/customerCenter.do">고객센터</a></li>

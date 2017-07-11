@@ -72,7 +72,18 @@ public interface UserDao {
 	 * 작성자 : 이진우
 	 */
 	int updateAdministratorEnableToZero(String adminId);
+	
+	
+	/**
+	* 관리자ID로 중복 ID 조회하는 메소드
+	* @param adminId
+	* @return 찾은 관리자 수 : 있으면 1, 없으면 0
+	*/
+	int checkUserId(String userId);
+	
+	
 	////////////////////////////////////////////////////////
+			
 			
 	
 }

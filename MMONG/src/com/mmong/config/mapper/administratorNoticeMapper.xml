@@ -50,57 +50,118 @@
 						a.admin_id, a.admin_name, a.admin_phone, a.admin_email
 		FROM 		administrator_notice an, administrator a
 		WHERE	an.admin_id(+)=a.admin_id
-		AND			an.no=#{value}
+		AND		an.no=#{value}
 	</select>
 	
 	<select id="selectAdminNoticeList" resultMap="administratorNotice-administrator-resultMap">
-		SELECT		an.no, an.title, an.content, an.admin_date, an.admin_id,
+		SELECT	an.no, an.title, an.content, an.admin_date, an.admin_id,
 						a.admin_id, a.admin_name, a.admin_phone, a.admin_email
 		FROM 		administrator_notice an, administrator a
 		WHERE	an.admin_id=a.admin_id(+)
-		ORDER BY an.no	
+		ORDER BY an.no DESC
 	</select>
 	
 	
 	<!-- 제목으로 공지사항 조회 -->
 	<select id="selectAdminNoticeListByTitle" parameterType="string" resultMap="administratorNotice-administrator-resultMap">
-		SELECT		an.no, an.title, an.content, an.admin_date, an.admin_id,
+		SELECT	an.no, an.title, an.content, an.admin_date, an.admin_id,
 						a.admin_id, a.admin_name, a.admin_phone, a.admin_email
 		FROM 		administrator_notice an, administrator a
 		WHERE	an.title LIKE '%'||#{value}||'%'
-		ORDER BY an.no	
+		ORDER BY an.no DESC
 	</select>
 	
 	<!-- 내용으로 공지사항 조회 -->
 	<select id="selectAdminNoticeListByContent" parameterType="string" resultMap="administratorNotice-administrator-resultMap">
-		SELECT		an.no, an.title, an.content, an.admin_date, an.admin_id,
+		SELECT	an.no, an.title, an.content, an.admin_date, an.admin_id,
 						a.admin_id, a.admin_name, a.admin_phone, a.admin_email
 		FROM 		administrator_notice an, administrator a
 		WHERE	an.content LIKE '%'||#{value}||'%'
-		ORDER BY an.no	
+		ORDER BY an.no DESC
 	</select>
 
 	<!-- 페이징 매핑 -->
-	<select id="selectAdminNoticeListPaging" parameterType="map" resultType="AdministratorNotice">
+	<select id="selectAdminNoticeListPaging" parameterType="map" resultMap="administratorNotice-administrator-resultMap">
 		<![CDATA[
-			SELECT rownum rnum, no, title, content, admin_date, admin_id
+			SELECT rownum rnum, no, title, admin_date, admin_id
 			FROM(
-				 	SELECT rownum rnum, no, title, content, admin_date, admin_id
+				 	SELECT rownum rnum, no, title, admin_date, admin_id
 				 	FROM(
-								SELECT		an.no, an.title, an.content, an.admin_date, an.admin_id,
-												a.admin_id, a.admin_name, a.admin_phone, a.admin_email
+								SELECT	an.no, an.title, an.content, an.admin_date, an.admin_id,
+												a.admin_name, a.admin_phone, a.admin_email
 								FROM 		administrator_notice an, administrator a
 								WHERE	an.admin_id=a.admin_id(+)
 								ORDER BY an.no DESC
 							  )
-					WHERE rownum <= #{endNoticeNo}
+					WHERE rownum <= #{endNoticeInPage}
 					)
-			WHERE rownum >= #{beginNoticeNo}
+			WHERE rnum >= #{beginNoticeInPage}
 		]]>
 	</select>
-
+	
+	<!-- option에 따른 List -->
+	<select id="selectOptionNoticeListPaging" parameterType="map" resultMap="administratorNotice-administrator-resultMap">
+		<choose>
+			<when test="option=='title'">
+			<![CDATA[
+			SELECT rownum rnum, no, title, admin_date, admin_id
+			FROM(
+				 	SELECT rownum rnum, no, title, admin_date, admin_id
+				 	FROM(
+								SELECT		an.no, an.title, an.content, an.admin_date, an.admin_id,
+												a.admin_name, a.admin_phone, a.admin_email
+								FROM 		administrator_notice an, administrator a
+								WHERE	an.admin_id=a.admin_id(+)
+								AND			an.title LIKE '%'||#{keyword}||'%'
+								ORDER BY an.no DESC
+							  )
+					WHERE rownum <= #{endNoticeInPage}
+					)
+			WHERE rnum >= #{beginNoticeInPage}
+		]]>
+			</when>
+			<when test="option=='content'">
+			<![CDATA[
+			SELECT rownum rnum, no, title, admin_date, admin_id
+			FROM(
+				 	SELECT rownum rnum, no, title, admin_date, admin_id
+				 	FROM(
+								SELECT		an.no, an.title, an.admin_date, an.admin_id,
+												a.admin_name, a.admin_phone, a.admin_email
+								FROM 		administrator_notice an, administrator a
+								WHERE	an.admin_id=a.admin_id(+)
+								AND			an.content LIKE '%'||#{keyword}||'%'
+								ORDER BY an.no DESC
+							  )
+					WHERE rownum <= #{endNoticeInPage}
+					)
+			WHERE rnum >= #{beginNoticeInPage}
+		]]>
+			</when>
+		</choose>
+	</select>
+	
+	
+	
+	<!-- 페이징에 필요한 total Count -->
 	<select id="selectAdminNoticeCount" resultType="_int">
 		SELECT COUNT(no) FROM administrator_notice
+	</select>
+	
+	<!-- option에 따른 total Count -->
+	<select id="selectAdminNoticeOptionCount" parameterType="map" resultType="_int">
+		<choose>
+			<when test="option=='title'">
+				SELECT COUNT(no)
+				FROM 	administrator_notice
+				WHERE title LIKE '%'||#{keyword}||'%'
+			</when>
+			<when test="option=='content'">
+				SELECT COUNT(no)
+				FROM	 administrator_notice
+				WHERE content LIKE '%'||#{keyword}||'%'
+			</when>
+		</choose>
 	</select>
 
 

@@ -66,20 +66,38 @@ public interface AdministratorNoticeDao {
 	List<AdministratorNotice>selectAdminNoticeListByContent(String content);
 	
 	
-	//페이징
+	//페이징처리된 전체 공지사항 목록 조회
 	/**
 	 * 공지사항 페이징 처리하기 위한 메소드
-	 * @param beginNoticeNo    보려는 페이지의 시작 item 번호
-	 * @param ednNoticeNo 		 보려는 페이지의 마지막 item 번호
+	 * @param beginNoticeInPage  	 보려는 페이지의 시작 adminNotice 번호
+	 * @param endNoticeInPage 		 보려는 페이지의 마지막 adminNotice 번호
 	 * @return
 	 */
-	public List<AdministratorNotice> selectAdminNoticeListPaging(int beginNoticeNo, int endNoticeNo);
+	List<AdministratorNotice> selectAdminNoticeListPaging(int beginNoticeInPage, int endNoticeInPage);
+	
+	/**
+	 * 
+	 * @param option		옵션 검색 조건
+	 * @param keyword	검색할 키워드
+	 * @param beginNoticeInPage		보려는 페이지의 시작 adminNotice 번호
+	 * @param endNoticeInPage		보려는 페이지의 마지막 adminNotice 번호
+	 * @return
+	 */
+	List<AdministratorNotice> selectOptionNoticeListPaging(String option, String keyword, int  beginNoticeInPage, int endNoticeInPage);
 	
 	/**
 	 * administrator_notice의 총 공지사항 수를 조회
 	 * @return 총 공지사항 갯수
 	 */
 	int selectAdminNoticeCount();
+	
+	/**
+	 * administrator_notice의 총 공지사항 중 옵션 검색 수 조회
+	 * @return
+	 */
+	int selectAdminNoticeOptionCount(String option, String keyword);
+
+
 	
 	
 	

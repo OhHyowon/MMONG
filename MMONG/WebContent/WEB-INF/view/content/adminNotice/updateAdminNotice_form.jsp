@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <h3>공지사항 수정 폼</h3>
@@ -21,8 +22,8 @@
 				<input type="hidden" name="no" value="${requestScope.adminNotice.no}"/><br>
 				<input type="hidden" name="adminDate" value=<fmt:formatDate value="${requestScope.adminNotice.adminDate }" pattern="yyyy-MM-dd"/>/><br>
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-				<input type="submit" value="저장">
-				<input type="reset" value="초기화">
+				<input type="submit" value="저장">&nbsp;
+				<input type="reset" value="되돌리기">
 			</tr>
 		</table>
 	</form>
