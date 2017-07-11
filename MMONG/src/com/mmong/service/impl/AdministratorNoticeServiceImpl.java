@@ -70,13 +70,38 @@ public class AdministratorNoticeServiceImpl implements AdministratorNoticeServic
 		PagingBean pageBean = new PagingBean(totalCount, page);
 		map.put("pageBean", pageBean);
 		
-		
 		//2. page에 보여줄 공지사항 리스트.
 		List<AdministratorNotice> list = adminNoticeDao.selectAdminNoticeListPaging(pageBean.getBeginItemInPage(), pageBean.getEndItemInPage());
-		map.put("list", list);
+//		for(AdministratorNotice a : list){
+//			System.out.println("점검--1 "+a);
+//		}
+		map.put("adminNoticeList", list);
+		
 		return map;
 	}
-	
+
+	@Override
+	public Map<String, Object> selectOptionNoitceList(int page, String option, String keyword) {
+		HashMap<String,Object> map = new HashMap<>();getClass();
+		
+		//1. PagingBean 객체 생성 -> Paging 계산 처리하는 객체. -> 보려는 페이지, 총 공지사항 갯수  
+		System.out.println("점검--1 페이지: "+page+" 옵션: "+option+" 키워드: "+keyword);
+		int totalCount = adminNoticeDao.selectAdminNoticeOptionCount(option, keyword);
+		System.out.println("점검--2 "+totalCount);
+		PagingBean pageBean = new PagingBean(totalCount, page);
+		map.put("pageBean", pageBean);
+		
+		//2. page에 보여줄 공지사항 리스트.
+		List<AdministratorNotice> list = adminNoticeDao.selectOptionNoticeListPaging(option, keyword, pageBean.getBeginItemInPage(), pageBean.getEndItemInPage());
+		for(AdministratorNotice a : list){
+			System.out.println("점검--1 "+a);
+		}
+		map.put("adminNoticeList", list);
+
+		return map;
+	}
+
+
 	
 	
 	

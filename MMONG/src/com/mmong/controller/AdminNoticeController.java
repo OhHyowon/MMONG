@@ -25,10 +25,10 @@ public class AdminNoticeController {
 	
 	
 	//관리자 공지사항 페이징
-	@RequestMapping("allAdminNoticeList")
-	public String showAllAdminNoticeList(@RequestParam(value="page", defaultValue="1")int page, 
-//																@RequestParam (value="option", defaultValue="1")String option, 
-//																@RequestParam  (value="key", defaultValue="1")String key, 
+	@RequestMapping("selectAdminNoticeList")
+	public String selectAdminNoticeList(@RequestParam(value="page", defaultValue="1")int page, 
+																@RequestParam (value="option", defaultValue="1")String option, 
+																@RequestParam  (value="keyword", defaultValue="1")String keyword, 
 																ModelMap map) {
 				
 				
@@ -36,14 +36,13 @@ public class AdminNoticeController {
 			
 			//2. 비지니스 로직 처리 - Model 호춛
 			
-//			if(option.equals("1")){ // option 선택을 안했을 때
-			pagingMap = adminNoticeService.selectAdminNoticeListPaging(page); 
-//			}else{ // option 선택했을 때
-//				pagingMap=adminNoticeService.selectOption(page,option,key);
-//			}
+			if(option.equals("1")){ // option 선택을 안했을 때
+				pagingMap = adminNoticeService.selectAdminNoticeListPaging(page); 
+			}else{ // option 선택했을 때
+				pagingMap=adminNoticeService.selectOptionNoitceList(page,option,keyword);
+			}
 			
 			//3. 응답 - View 호출
-//			map.addAttribute("nickNameList", pagingMap.get("nickNameList"));
 			map.addAttribute("adminNoticeList", pagingMap.get("adminNoticeList"));
 			map.addAttribute("pageBean", pagingMap.get("pageBean"));
 
@@ -52,7 +51,6 @@ public class AdminNoticeController {
 	
 	
 	
-
 	
 	/////// 이하 테스트 완료////////////
 	
@@ -64,19 +62,7 @@ public class AdminNoticeController {
 		return new ModelAndView("adminNotice/view_notice.tiles", "adminNotice", adNo);
 	}
 	
-	//관리자 공지사항 목록 조회
-	@RequestMapping("selectAdminNoticeList")
-	public ModelAndView selectNoticeList(@ModelAttribute AdministratorNotice adminNotice){
-		
-		List<AdministratorNotice> adminNoticeList = null;
-		adminNoticeList = adminNoticeService.selectAdminNoticeList();
-//			for(AdministratorNotice man : adminNoticeList){
-//			System.out.println(man);
-//			}
-//			System.out.println("공지사항 목록 조회");
-	
-		return new ModelAndView("adminNotice/selectAdminNoticeList.tiles","adminNoticeList", adminNoticeList);
-	}
+
 	
 	//관리자 공지사항 등록
 	@RequestMapping("insertAdminNotice")

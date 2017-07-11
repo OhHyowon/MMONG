@@ -62,6 +62,17 @@ public class UserDaoImpl implements UserDao{
 	public int updateAdministratorEnableToZero(String adminId) {
 		return session.update(makeSql("updateAdministratorEnableToZero"), adminId);
 	}
-/////////////////////////////////////////////////
+	
+	/////////////////////////////////////////////////	
+	@Override
+	public int checkUserId(String userId) {
+	return session.selectOne(makeSql("checkUserId"), userId);
+	}
+	/////////////////////////////////////////////////
+	
+		
+	
+	
+	
 	
 }

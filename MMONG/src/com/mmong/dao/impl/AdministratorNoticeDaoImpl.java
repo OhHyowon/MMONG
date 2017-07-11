@@ -58,23 +58,46 @@ public class AdministratorNoticeDaoImpl implements AdministratorNoticeDao{
 		return session.selectList(makeSql("selectAdminNoticeListByContent"),content);
 	}
 
-	//관리자 공지사항 페이징
-	@Override
-	public List<AdministratorNotice> selectAdminNoticeListPaging(int beginNoticeNo, int endNoticeNo) {
-		HashMap<String, Integer> param = new HashMap<>();
-		param.put("beginNoticeNum", beginNoticeNo);
-		param.put("endNoticeNum", endNoticeNo);
-		return session.selectList(makeSql("selectAdminNoticeListPaging"), param);
-	}
 
-	//관리자 공지사항 페이징-2
+	//관리자 공지사항 페이징-1 (페이징의 대상이 될 게시물들의 총 갯수 조회)
 	@Override
 	public int selectAdminNoticeCount() {
 		return session.selectOne(makeSql("selectAdminNoticeCount"));
 	}
+	
+	//관리자 공지사항 페이징-2 (페이징 대상이 될 검색조건을 만족하는 게시물들의 총 갯수 조회)
+	@Override
+	public int selectAdminNoticeOptionCount(String option, String keyword) {
+		HashMap<String,Object> param = new HashMap();
+		param.put("option", option);
+		param.put("keyword", keyword);
+		return session.selectOne(makeSql("selectAdminNoticeOptionCount"), param);
+	}
+	
 
-	
-	
+	//관리자 공지사항 페이징-3
+	@Override
+	public List<AdministratorNotice> selectAdminNoticeListPaging(int beginNoticeInPage, int endNoticeInPage) {
+		HashMap<String, Object> param = new HashMap<>();
+		param.put("beginNoticeInPage", beginNoticeInPage);
+		param.put("endNoticeInPage", endNoticeInPage);
+		return session.selectList(makeSql("selectAdminNoticeListPaging"), param);
+	}
+
+	//관리자 공지사항 페이징-4 (검색)
+	@Override
+	public List<AdministratorNotice> selectOptionNoticeListPaging(String option, String keyword, int beginNoticeInPage, int endNoticeInPage) {
+		HashMap<String, Object> param = new HashMap<>();
+		
+		param.put("option", option);
+		param.put("keyword", keyword);
+		param.put("beginNoticeInPage", beginNoticeInPage);
+		param.put("endNoticeInPage", endNoticeInPage);
+		
+		return session.selectList(makeSql("selectOptionNoticeListPaging"), param);
+	}
+
+
 	
 }
 

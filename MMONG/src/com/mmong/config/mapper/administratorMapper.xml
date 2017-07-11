@@ -56,7 +56,16 @@
 	</select> 
 
 
+	<!-- ============수정===================== -->
 	
+ 	
+ 	<!-- 관리자 핸드폰번호 중복조회 -->
+	<select id="checkAdminPhone" parameterType="String" resultType="int">
+		SELECT count(*)
+		FROM administrator
+		WHERE admin_phone = #{value}
+	</select>	
+ 	
  	
  </mapper>
  

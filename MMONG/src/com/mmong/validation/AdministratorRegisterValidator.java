@@ -33,7 +33,7 @@ public class AdministratorRegisterValidator implements Validator  {
 						errors.rejectValue("userId", "required");
 					}else if(admin.getUser().getUserId()!=null && (admin.getUser().getUserId().length()<8)||admin.getUser().getUserId().length()>12) {
 						errors.rejectValue("userId", "size");
-					}		
+					}
 					
 				//userPwd 필수입력, 8글자 이상 16글자 이하
 					//에러메세지 하나만 띄우기 위해 if-else if 사용

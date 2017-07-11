@@ -30,6 +30,15 @@ public class AdministratorServiceImpl implements AdministratorService {
 	public Administrator searchAdministratorById(String adminId) {
 		return adminDao.searchAdministratorById(adminId);
 	}
+	
+	@Override
+	public int checkAdminPhone(String adminPhone) {
+		return adminDao.checkAdminPhone(adminPhone);
+	}
+	
+	
+	
+	
 }
 
 

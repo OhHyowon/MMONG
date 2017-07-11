@@ -6,6 +6,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mmong.service.AdministratorService;
@@ -25,53 +26,44 @@ public class AdminController {
 	private AdministratorService adminService;
 	@Autowired
 	private UserService userService;
-	@Autowired	MemberService memberService;
+	@Autowired	
+	private MemberService memberService;
 	
 	
 	
 	
 	
 	
-	
-	
-	//info_member.jsp(회원 정보)로 가기 위한 컨트롤러
-	@RequestMapping("searchMemberById")
-	public ModelAndView HospitalInfo(@RequestParam String memberId){
-		Member member = null;
-			member = memberService.searchMemberById(memberId);
-		return new ModelAndView("admin/info_member.tiles","member", member);
-	}
-	
-	//일반회원(member) 권한 변경하기
-	@RequestMapping("changeAuthorityMember")
-	public ModelAndView changeAuthorityMember(String memberId) {
-		Member mem = null;
-																											System.out.println("점검---1 -> "+memberId);
-		mem = memberService.searchMemberById(memberId);
-																											System.out.println("점검---2 -> "+mem);
-		
-		if(mem.getUser().getUserAuthority().equals("ROLE_1")){//권한이 'ROLE_1'인 경우, 활동 정지 시킬때
-																											System.out.println("점검---3 -> "+mem.getUser().getUserAuthority());
-			userService.changeAuthorityMemberToStop(mem.getMemberId());
-																											System.out.println("점검---4 -> "+mem.getUser().getUserAuthority());
-			
-		}else{//권한이 'ROLE_2'인 경우, 활동 재개 시킬때
-																											System.out.println("점검---5 -> "+mem.getUser().getUserAuthority());
-			userService.changeAuthorityMemberToRun(mem.getMemberId());
-																											System.out.println("점검---6 -> "+mem.getUser().getUserAuthority());
-		}
-		
-																											System.out.println("점검---7 -> "+mem);
-																											System.out.println("점검---8 -> "+mem.getUser().getUserAuthority());
-		
-		String memId=mem.getMemberId();
-																											System.out.println("점검---9 -> "+memId);
-		return new ModelAndView("redirect:/admin/searchMemberById.do","memberId", memId);
-	}
 	
 
 	
 /////////////// 이하 완료////////////////
+	
+	//info_member.jsp(회원 정보)로 가기 위한 컨트롤러
+		@RequestMapping("searchMemberById")
+		public ModelAndView HospitalInfo(@RequestParam String memberId){
+			Member member = null;
+				member = memberService.searchMemberById(memberId);
+			return new ModelAndView("admin/info_member.tiles","member", member);
+		}
+		
+		//일반회원(member) 권한 변경하기
+		@RequestMapping("changeAuthorityMember")
+		public ModelAndView changeAuthorityMember(String memberId) {
+			Member mem = null;
+			mem = memberService.searchMemberById(memberId);
+			
+			if(mem.getUser().getUserAuthority().equals("ROLE_1")){//권한이 'ROLE_1'인 경우, 활동 정지 시킬때
+				userService.changeAuthorityMemberToStop(mem.getMemberId());
+				
+			}else{//권한이 'ROLE_2'인 경우, 활동 재개 시킬때
+				userService.changeAuthorityMemberToRun(mem.getMemberId());
+			}
+			
+			String memId=mem.getMemberId();
+			return new ModelAndView("redirect:/admin/searchMemberById.do","memberId", memId);
+		}
+	
 	
 	//register_form.jsp (관리자 등록 폼)에서 register_success.jsp(관리자 등록 성공)으로 이동하기 위한 컨트롤러
 	//관리자 등록 처리
@@ -85,18 +77,51 @@ public class AdminController {
 		if(errors.hasErrors()){
 			return  new ModelAndView("admin/register_form.tiles");
 		}
-		
 		//2.관리자 등록처리
 		userService.registerUser(user);
 		//Administrator의 vo에 user 속성 추가하는 작업
 		adminService.insertAdministrator(admin);
-		
 		//3. 응답
 		// 리다이렉트로 보내고 싶을때는 컨틀롤러로 바로 보낼수 없다.
 		// 		-> 다시한번 컨트롤러를 불러서 이동한다.
 		return new ModelAndView("redirect:/admin/gotoRegisterSuccess.do", "adminId", admin.getAdminId());
 	}
 		
+	/**
+	 * 관리자 등록시 아이디 중복확인하는 handler method
+	 * @param adminId
+	 * @return
+	 */
+	@RequestMapping("checkAdminId")
+	@ResponseBody
+	public String checkAdminId(@RequestParam(required=false) String adminId){
+		//요청 파라미터 검증
+		
+		//비즈니스 로직 처리 - 회원 조회
+		int checkId =userService.checkUserId(adminId);
+		//응답
+		System.out.println(checkId);
+		return String.valueOf(checkId);
+	}
+	
+	/**
+	 * 관리자등록시 회원 핸드폰번호 중복확인하는 handler method
+	 * @param adminPhone
+	 * @return
+	 */
+	@RequestMapping("checkAdminPhone")
+	@ResponseBody
+	public String checkMemberPhone(@RequestParam(required=false) String adminPhone){
+		//요청파라미터 검증
+		
+		//비즈니스 로직 처리 - 관리자 번호조회
+		int checkPhone = adminService.checkAdminPhone(adminPhone);
+		//응답
+		return String.valueOf(checkPhone);
+	}
+	
+	
+	
 	//register_form.jsp에서 register_success.jsp로 가기위한 컨트롤러
 	@RequestMapping("gotoRegisterSuccess")
 	public ModelAndView gotoRegisterSuccess(@RequestParam String adminId){

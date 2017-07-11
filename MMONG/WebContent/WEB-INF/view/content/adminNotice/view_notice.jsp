@@ -14,7 +14,7 @@
 			</tr>
         	<tr>
                 <th>작성자: </th>
-                <td>${requestScope.adminNotice.administrator.adminId}"</td>
+                <td>${requestScope.adminNotice.administrator.adminId}</td>
             </tr>
             <tr>
                 <th>제목: </th>
@@ -34,9 +34,7 @@
 						<input type="hidden" name="adminNoticeNo" value="${requestScope.adminNotice.no }"/>
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 						<input type="submit" value="수정">
-					</form>
-            </tr>
-            <tr>
+					</form>&nbsp;
 				<form action="/MMONG/adminNotice/deleteAdminNotice.do" method="post">
 						<input type="hidden" name="adminNoticeNo" value="${requestScope.adminNotice.no }"/>
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
