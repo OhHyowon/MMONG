@@ -111,5 +111,14 @@ public class BoardDaoImpl implements BoardDao{
 		return session.selectOne(makeSqlId("selectBoardTitle"),boardNo);
 	}
 	
-	
+	public int selectOptionCount(int groupNo, String option, String key){
+		HashMap<String,Object> map = new HashMap<>();
+		
+		map.put("option",option);
+		map.put("key", key);
+		map.put("groupNo", groupNo);
+		
+		return session.selectOne(makeSqlId("selectOptionCount"),map);
+		
+	}
 }

@@ -1,11 +1,14 @@
 package com.mmong.service.impl;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mmong.dao.impl.GroupDateDaoImpl;
+import com.mmong.paging.util.PagingBean;
 import com.mmong.service.GroupDateService;
 import com.mmong.vo.GroupDate;
 import com.mmong.vo.MeetMember;
@@ -44,5 +47,59 @@ public class GroupDateServiceImpl implements GroupDateService{
 	
 	public String selectNickname(String memberId){
 		return dao.selectNickname(memberId);
+	}
+	
+	public void deleteMeetmember(MeetMember mm){
+		dao.deleteMeetmember(mm);
+	}
+	
+	public HashMap<String,Object> selectAllGroupDateList (int page, int groupNo){
+		HashMap<String,Object> map=new HashMap<>();
+		
+		int totalCount = dao.selectGroupDateCount(groupNo);
+
+		PagingBean pageBean = new PagingBean(totalCount,page);
+		List<GroupDate> groupDateList = dao.selectAllGroupDateList(pageBean.getBeginItemInPage(),pageBean.getEndItemInPage(),groupNo);
+		
+		map.put("pageBean", pageBean);
+		map.put("groupDateList", groupDateList);
+		
+		
+		return map;
+	}
+	
+	public HashMap<String,Object>selectGroupDateOption(int page, int groupNo, String option, String key){
+		HashMap<String,Object> map = new HashMap<>();
+		int totalCount = dao.selectGroupDateOptionCount(groupNo,option,key);
+
+		PagingBean pageBean = new PagingBean(totalCount, page);
+		List<GroupDate> groupDateList = dao.selectOptionGroupDate(pageBean.getBeginItemInPage(),pageBean.getEndItemInPage(),groupNo,option,key);
+
+		map.put("pageBean", pageBean);
+		map.put("groupDateList", groupDateList);
+		
+		return map;
+	}
+	
+	public HashMap<String,Object>selectGroupDateOption2(int page, int groupNo, Date dateTime, String option){
+		HashMap<String,Object> map = new HashMap<>();
+		int totalCount = dao.selectGroupDateOptionCount2(groupNo, option, dateTime);
+		
+		PagingBean pageBean = new PagingBean(totalCount,page);
+		List<GroupDate> groupDateList= dao.selectOptionGroupDate2(pageBean.getBeginItemInPage(), pageBean.getEndItemInPage(), groupNo, option, dateTime);
+		
+		
+		map.put("pageBean", pageBean);
+		map.put("groupDateList", groupDateList);
+		
+		return  map;
+	}
+	
+	public void upDateGroupDate(GroupDate groupDate){
+		dao.upDateGroupDate(groupDate);
+	}
+	
+	public void deleteGroupDate(int groupDateNo){
+		dao.deleteGroupDate(groupDateNo);
 	}
 }

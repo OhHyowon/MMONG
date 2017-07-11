@@ -1,9 +1,12 @@
 package com.mmong.controller;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -36,13 +39,21 @@ public class GroupController {
 		if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")){ //로그인 안 한 사용자는 myGroup을 없이 전달 
 			return new ModelAndView("/content/group/mygroup");
 		}else{
-			Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			List<GroupMember> gms = groupMemberService.selectMeById(member.getMemberId());
-			List<Group> myGroup = new ArrayList();
-			for(GroupMember gm : gms){
-				myGroup.add(groupService.selectMyGroupByNo(gm.getGroupNo()));
-			}
-			return new ModelAndView("/content/group/mygroup", "myGroup", myGroup);
+			List authList = (List)SecurityContextHolder.getContext().getAuthentication().getAuthorities(); //로그인한 사용자 권한정보 리스트
+			String au = String.valueOf(authList.get(0)); 
+
+			if(au.equals("ROLE_1")){//로그인한 사용자가 회원
+				Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+				List<GroupMember> gms = groupMemberService.selectMeById(member.getMemberId());
+				List<Group> myGroup = new ArrayList();
+				for(GroupMember gm : gms){
+					myGroup.add(groupService.selectMyGroupByNo(gm.getGroupNo()));
+				}
+				return new ModelAndView("/content/group/mygroup", "myGroup", myGroup);				
+			}else{//로그인한 사용자가 관리자
+				List myGroup = new ArrayList(); //빈 myGroup 전달
+				return new ModelAndView("/content/group/mygroup", "myGroup", myGroup);	
+			}		
 		}
 	}
 	
@@ -52,7 +63,6 @@ public class GroupController {
 	 * @return
 	 * 작성자 : 이주현
 	 */
-	
 	@RequestMapping("createGroup")
 	public ModelAndView openCreateGroupWindow(){
 		return new ModelAndView("/content/group/createGroup");

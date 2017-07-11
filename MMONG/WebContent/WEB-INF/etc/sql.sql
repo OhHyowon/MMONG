@@ -153,7 +153,9 @@ DROP TABLE GROUP_DATE;
 CREATE TABLE GROUP_DATE (
 	NO NUMBER PRIMARY KEY,/* NO */
 	MEET_DATE DATE NOT NULL, /* 날짜 */
-	PLACE VARCHAR2(900), /* 장소 */
+	PLACE VARCHAR2(900) NOT NULL, /* 장소 */
+	TITLE VARCHAR2(900) NOT NULL, /* 일정이름 */
+	member_Id varchar2(30) NOT NULL,
 	GROUP_NO NUMBER CONSTRAINT GROUP_NO_MEET_DATE_FK REFERENCES SMALL_GROUP(NO) /* 소모임NO */
 );
 DROP SEQUENCE GROUP_DATE_NO_SEQ;
@@ -240,3 +242,44 @@ CREATE SEQUENCE MESSAGE_NO_SEQ;
 	FROM group_member
 	WHERE member_id='duflalrjdi'
 	AND group_no=0
+
+	SELECT no
+	FROM GROUP_DATE
+	WHERE '2017-01-01' <= meet_date
+	
+	
+			SELECT COUNT(no)
+			FROM board
+			WHERE title LIKE '%뭐%'
+			AND group_no=0
+	
+			SELECT COUNT(no)
+			FROM group_date
+			WHERE group_no=0
+			AND title LIKE '%ㅋ%'
+			
+			SELECT COUNT(no)
+			FROM group_date
+			WHERE group_no=0
+			AND place LIKE '%청담%'
+			
+			SELECT COUNT(no)
+			FROM group_date
+			WHERE group_no=0
+			AND place LIKE '%산%'
+			
+			
+			SELECT no, meet_date, place, title, group_no, member_id
+	FROM (
+		SELECT rownum rnum, no, meet_date, place, title, group_no, member_id
+		FROM( 
+			SELECT  no, meet_date, place, title, group_no, member_id
+			FROM group_date
+			WHERE group_no=0
+			AND place LIKE '%산%'
+			ORDER BY meet_date DESC
+			)
+			WHERE rownum <= 10
+		)
+		WHERE rnum >= 1
+	

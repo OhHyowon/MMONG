@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
 		Member mem = null;
 		//1. 일반회원의 권한상태 조회(select)
 		mem = memberDao.searchMemberById(memberId);
-		if(mem.getMemberUser().getUserAuthority().equals("ROLE_1")){
+		if(mem.getUser().getUserAuthority().equals("ROLE_1")){
 			userDao.updateAuthorityMemberToStop(mem.getMemberId());
 		}
 		//throw new SameAuthorityExceptionStop(String.format("이미 활동정지된 회원 입니다."));
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
 		Member mem = null;
 		//1. 일반회원의 권한상태 조회(select)
 		mem = memberDao.searchMemberById(memberId);
-		if(mem.getMemberUser().getUserAuthority().equals("ROLE_2")){
+		if(mem.getUser().getUserAuthority().equals("ROLE_2")){
 			userDao.updateAuthorityMemberToRun(mem.getMemberId());
 		}
 		//throw new SameAuthorityExceptionStop(String.format("이미 활동중인 회원 입니다."));
@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
 	public void changeAdminEnableToZero(String adminId) {
 		Administrator admin = null;
 		admin = adminDao.searchAdministratorById(adminId);
-		if(admin.getAdminUser().getUserEnable()==1){
+		if(admin.getUser().getUserEnable()==1){
 			userDao.updateAdministratorEnableToZero(admin.getAdminId());
 		}
 	}

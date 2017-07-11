@@ -70,7 +70,7 @@ public class BoardServiceImpl implements BoardService{
 	
 	public HashMap<String,Object> selectOption(int page, String option, String key,int groupNo){
 		HashMap<String,Object> map = new HashMap<>();
-		int totalCount = dao.selectBoardCount(groupNo);
+		int totalCount = dao.selectOptionCount(groupNo,option,key);
 		
 		PagingBean pageBean = new PagingBean(totalCount,page);
 		List<Board> boardList = dao.selectOption(option, key, pageBean.getBeginItemInPage(), pageBean.getEndItemInPage(), groupNo);

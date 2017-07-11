@@ -20,6 +20,8 @@
    <mvc:view-controller path="/login_form.do" view-name="login_form"/>
    <!-- 개인회원 회원가입 폼 -->
    <mvc:view-controller path="/member/register_form.do" view-name="content/member/register_form"/>
+   <!-- 기본 맵 폼 -->
+   <mvc:view-controller path="/map/basic_map.do" view-name="content/map/basic_map"/>
 
 
 
@@ -31,6 +33,9 @@
       <mvc:view-controller path="/group/groupDate/groupDate_form.do" view-name="content/group/groupDate/groupDate_form"/>
       	<!-- 일정 상세 페이지 -->
      <mvc:view-controller path="/group/groupDate/groupDate_view.do" view-name="content/group/groupDate/groupDate_view"/>
+      	<!-- 일정 수정 페이지 -->
+      <mvc:view-controller path="/group/groupDate/groupDate_update.do" view-name="content/group/groupDate/groupDate_update"/>
+      
       
       	<!-- 자유게시판 등록 양식 -->
       <mvc:view-controller path="/group/board/board_form.do" view-name="content/group/board/board_form"/>

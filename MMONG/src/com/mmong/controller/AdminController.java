@@ -50,19 +50,19 @@ public class AdminController {
 		mem = memberService.searchMemberById(memberId);
 																											System.out.println("점검---2 -> "+mem);
 		
-		if(mem.getMemberUser().getUserAuthority().equals("ROLE_1")){//권한이 'ROLE_1'인 경우, 활동 정지 시킬때
-																											System.out.println("점검---3 -> "+mem.getMemberUser().getUserAuthority());
+		if(mem.getUser().getUserAuthority().equals("ROLE_1")){//권한이 'ROLE_1'인 경우, 활동 정지 시킬때
+																											System.out.println("점검---3 -> "+mem.getUser().getUserAuthority());
 			userService.changeAuthorityMemberToStop(mem.getMemberId());
-																											System.out.println("점검---4 -> "+mem.getMemberUser().getUserAuthority());
+																											System.out.println("점검---4 -> "+mem.getUser().getUserAuthority());
 			
 		}else{//권한이 'ROLE_2'인 경우, 활동 재개 시킬때
-																											System.out.println("점검---5 -> "+mem.getMemberUser().getUserAuthority());
+																											System.out.println("점검---5 -> "+mem.getUser().getUserAuthority());
 			userService.changeAuthorityMemberToRun(mem.getMemberId());
-																											System.out.println("점검---6 -> "+mem.getMemberUser().getUserAuthority());
+																											System.out.println("점검---6 -> "+mem.getUser().getUserAuthority());
 		}
 		
 																											System.out.println("점검---7 -> "+mem);
-																											System.out.println("점검---8 -> "+mem.getMemberUser().getUserAuthority());
+																											System.out.println("점검---8 -> "+mem.getUser().getUserAuthority());
 		
 		String memId=mem.getMemberId();
 																											System.out.println("점검---9 -> "+memId);
@@ -77,8 +77,8 @@ public class AdminController {
 	//관리자 등록 처리
 	@RequestMapping("register_success")
 	public ModelAndView RegisterAdminSuccess(@ModelAttribute Administrator admin, BindingResult errors){
-		User user = new User(admin.getAdminId(), admin.getAdminUser().getUserPwd(), "ROLE_0", 1);
-		admin.setAdminUser(user);
+		User user = new User(admin.getAdminId(), admin.getUser().getUserPwd(), "ROLE_0", 1);
+		admin.setUser(user);
 		//1. 요청파라미터 검증
 		AdministratorRegisterValidator validator = new AdministratorRegisterValidator();
 		validator.validate(admin, errors);
@@ -125,7 +125,7 @@ public class AdminController {
 	//(info_admin_update_form.jsp)에서 (info_admin.jsp)로 이동하기 위한 컨트롤러
 	@RequestMapping("info_admin")
 	public ModelAndView updateAdminInfo(@ModelAttribute Administrator admin){
-		User user = new User(admin.getAdminId(),admin.getAdminUser().getUserPwd(), admin.getAdminUser().getUserAuthority(), 1);
+		User user = new User(admin.getAdminId(),admin.getUser().getUserPwd(), admin.getUser().getUserAuthority(), 1);
 			userService.updateUser(user);
 		Administrator newAdmin = new Administrator(admin.getAdminName(),admin.getAdminPhone(), admin.getAdminEmail(),admin.getAdminId(),user);
 			adminService.updateAdministrator(newAdmin);

@@ -32,8 +32,8 @@ public class MemberController {
 	 */
 	@RequestMapping("registerMember")
 	public ModelAndView registerMember(@ModelAttribute Member member, BindingResult errors) {		
-		User user = new User(member.getMemberId(), member.getMemberUser().getUserPwd(), "ROLE_1", 1);
-		member.setMemberUser(user);
+		User user = new User(member.getMemberId(), member.getUser().getUserPwd(), "ROLE_1", 1);
+		member.setUser(user);
 		
 		//요청 파라미터 검증
 		MemberRegisterValidator validator = new MemberRegisterValidator();
