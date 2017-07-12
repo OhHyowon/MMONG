@@ -69,8 +69,17 @@ $(document).ready(function() {///가입 버튼 누르기 전에 폼 이동 시 �
 			$("#idMsg").show();
 		}
 	});	
+	//아이디 영어, 숫자만 입력되게
+	$("input[name=memberId]").keyup(function(event){ 
+		if (!(event.keyCode >=37 && event.keyCode<=40)) {
+			var inputVal = $(this).val();
+			$(this).val(inputVal.replace(/[^a-z0-9]/gi,''));
+		}
+	});
+
 	
 
+	
 	////////////////////비밀번호 값 검사 
 	$("#memberPwd").focus(function(){
 		$("#pwdMsg").empty();
@@ -103,6 +112,32 @@ $(document).ready(function() {///가입 버튼 누르기 전에 폼 이동 시 �
 		}
 	});
 	
+	////////////////////이메일 중복확인  
+	$("#emailAuth").on("click", function(){
+		$.ajax({
+			"url" : "/MMONG/member/checkMemberEmail.do",
+			"data" : {"memberEmail1":$("#memberEmail1").val(), "memberEmail2":$("#memberEmail2").val()},
+			"dataType" : "text",
+			"beforeSend":function(){
+				if($("#memberEmail1").val()==""||$("#memberEmail2").val()==""){
+					$("#emailMsg").empty();
+					$("#emailMsg").append("이메일을 입력하세요.");
+					$("#emailMsg").show();
+					return false;
+				 }
+			},
+			"success":function(response) {
+				if(response==1) {
+					$("#emailMsg").empty();
+					$("#emailMsg").append("이미 가입된 이메일입니다.");
+					$("#emailMsg").show();
+				} else {
+					$("#emailMsg").hide();
+					emailAuthOpen();
+				}
+			}
+		});
+	});
 
 	////////////////////핸드폰번호 비었는지 체크 
 	 $("#memberPhone").blur(function(){
@@ -183,12 +218,12 @@ function emailAuthOpen(){ //이메일 인증컨트롤러 부르는 함수
 	}else{
 		$("#memberEmail").val($("#memberEmail1").val() + "@" + $("#memberEmail2").val()); //이메일 @ 전후로 합쳐서 hidden태그에 넣기
 		var memberEmail = $("#memberEmail").val();
-		window.open("/MMONG/sendMail/auth.do?memberEmail="+$("#memberEmail").val(), '소모임 만들기', 'top=100px, left=100px, height=220px, width=500px')
+		window.open("/MMONG/sendMail/auth.do?memberEmail="+$("#memberEmail").val(), '소모임 만들기', 'top=100px, left=100px, height=220px, width=500px');
 	}	
 }
 
 
-//가입 버튼 누르기 전 값 유효성 검사하기 위한 함수들 =>이메일 인증햇는지안했는지체크 
+//가입 버튼 누르기 전 값 유효성 검사하기 위한 함수들 
 function formChk() {
 	if($("#memberId").val()==""){
 		$("#idMsg").empty();
@@ -247,25 +282,24 @@ function formChk() {
 		$("#nickName").focus();
 		result = false;
 	}else if($("#memberEmail1").val()==""){
-		alert("1");
 		$("#emailMsg").empty();
 		$("#emailMsg").append("이메일을 입력하세요.");
 		$("#emailMsg").show();
 		$("#memberEmail1").focus();
 		result = false;
 	}else if($("#memberEmail2").val()==""){
-		alert("2");
 		$("#emailMsg").empty();
 		$("#emailMsg").append("이메일을 입력하세요.");
 		$("#emailMsg").show();
 		$("#memberEmail2").focus();
 		result = false;
 	}else if($("#emailSuccessMsg").text()!="인증완료"){
-		alert("3");
 		$("#emailMsg").empty();
 		$("#emailMsg").append("이메일 인증을 해주세요.");
 		$("#emailMsg").show();
 		result = false;
+	}else{
+		result = true;
 	}
 	return result;
 }//formChk함수 끝 
@@ -369,7 +403,8 @@ function formSubmit(){
 					<input type="text" id="memberEmail1" name="memberEmail1" value="${param.memberEmail1 }"> @ 
 					<input type="text" id="memberEmail2" name="memberEmail2" value="${param.memberEmail2 }">
 					<input type="hidden" id="memberEmail" name="memberEmail" value="${param.memberEmail }">
-					<input type="button" value="이메일 인증하기" onClick="emailAuthOpen(); return false;"/>
+					<!-- <input type="button" id="emailAuth" value="이메일 인증하기" onClick="emailAuthOpen(); return false;"/> -->
+					<input type="button" id="emailAuth" value="이메일 인증하기"/>
 				</form></td>				
 			<td><input type="hidden" name="memberPicture" value="tmp"></td>
 		</tr>		

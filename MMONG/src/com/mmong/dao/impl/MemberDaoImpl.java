@@ -33,8 +33,8 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 	@Override
-	public int checkMemberPhone(String memberPhone) {
-		return session.selectOne(makeSql("checkMemberPhone"), memberPhone);
+	public int checkMemberEmail(String memberEmail) {
+		return session.selectOne(makeSql("checkMemberEmail"), memberEmail);
 	}
 
 }

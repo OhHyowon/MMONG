@@ -66,19 +66,20 @@ public class MemberController {
 	}
 	
 	/**
-	 * 회원가입 시 회원 핸드폰번호 중복확인하는 handler method
+	 * 회원가입 시 회원 이메일 중복확인하는 handler method
 	 * @param memberPhone
 	 * @return
 	 */
-	@RequestMapping("checkMemberPhone")
+	@RequestMapping("checkMemberEmail")
 	@ResponseBody
-	public String checkMemberPhone(@RequestParam(required=false) String memberPhone){
+	public String checkMemberEmail(@RequestParam(required=false) String memberEmail1, String memberEmail2){
+		String memberEmail = memberEmail1 +"@"+ memberEmail2;
 		//요청파라미터 검증
 		
 		//비즈니스 로직 처리 - 회원 조회
-		int checkPhone = memberService.checkMemberPhone(memberPhone);
+		int checkEmail = memberService.checkMemberEmail(memberEmail);
 		//응답
-		return String.valueOf(checkPhone);
+		return String.valueOf(checkEmail);
 	}
 	
 	/**
