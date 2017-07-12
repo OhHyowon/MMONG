@@ -55,6 +55,10 @@
 	<sec:authorize access="hasRole('ROLE_0')">
 		<li><a href="/MMONG/member/mypage.do">관리자 등록</a></li>	
 	</sec:authorize>
+     
+     <sec:authorize access="hasRole('ROLE_1')">
+    <li><a href="/MMONG/health/list.do">건강관리 목록</a></li>
+    </sec:authorize>
       
 </ul>   
 <%-- ======================대menu 영역 끝=================== --%>   

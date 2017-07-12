@@ -47,8 +47,9 @@
    
 
    <!-- 규현 -->
-   
-   
+   	<mvc:view-controller path="/health/list.do" view-name="content/health/healthlist"/>
+   	<mvc:view-controller path="/health/registform.do" view-name="content/health/healthlist_regist"/>
+   	<mvc:view-controller path="/health/modify_regist.do" view-name="content/health/healthlist_modify"/> 
    
    <!-- 효원 -->
    

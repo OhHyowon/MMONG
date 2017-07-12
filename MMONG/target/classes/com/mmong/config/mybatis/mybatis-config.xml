@@ -17,5 +17,7 @@
 		<mapper resource="com/mmong/config/mapper/replyMapper.xml"/>
 		<mapper resource="com/mmong/config/mapper/groupDateMapper.xml"/>
 		<mapper resource="com/mmong/config/mapper/groupMemberMapper.xml"/>
+		<mapper resource="com/mmong/config/mapper/chartMapper.xml"/>
+		<mapper resource="com/mmong/config/mapper/healthMapper.xml" />
 	</mappers>
 </configuration>

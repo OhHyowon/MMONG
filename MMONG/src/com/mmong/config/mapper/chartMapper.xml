@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mmong.config.mapper.chartMapper">
+
+
+	<resultMap id="chart-resultmap" type="chart">
+		<id column="no" property="no"/>
+		<result column="chart_date" property="time"/>
+		<result column="writer" property="writer"/>
+		<result column="content" property="content"/>
+		<result column="health_no" property="healthNo"/>
+	</resultMap>
+
+<!-- 진료기록 임시 등록  -->
+<insert id="insertChart" parameterType="chart">
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
+		SELECT chart_no_seq.nextval 
+		FROM dual
+	    </selectKey>	
+		INSERT INTO chart
+		VALUES(
+				#{no},
+				#{time},
+				#{writer},
+				#{content},
+				#{healthNo}
+				)		
+</insert>
+
+<!-- 진료기록 등록및 업데이트 -->
+<update id="updateChart" parameterType="map">
+	UPDATE chart
+	   SET content=#{content},
+	   	   chart_date=#{date}
+	 WHERE health_no=#{no} and writer=#{writer}
+</update>
+
+<!-- 진료기록 삭제  -->
+<delete id="deleteChart" parameterType="map">
+	 Delete chart
+	 WHERE writer=#{writer} and health_no=#{no}	
+</delete>
+
+<!--진료 no로 조회  -->
+<select id="selectChartByNoAndWriter" parameterType="map" resultMap="chart-resultmap">
+		SELECT no,
+			   chart_date,
+			   writer,
+			   content,
+			   health_no
+		  FROM chart	   
+		 WHERE writer= #{writer} and health_no = #{no}
+</select>
+
+
+
+</mapper>
