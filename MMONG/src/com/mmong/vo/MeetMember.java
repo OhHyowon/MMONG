@@ -12,6 +12,12 @@ public class MeetMember implements Serializable{
 	
 	public MeetMember(){}
 	
+	public MeetMember(int groupDateNo, int groupMemberNo) {
+		super();
+		this.groupDateNo = groupDateNo;
+		this.groupMemberNo = groupMemberNo;
+	}
+
 	public MeetMember(int groupDateNo, int groupMemberNo, GroupMember groupMember, GroupDate groupDate) {
 		super();
 		this.groupDateNo = groupDateNo;

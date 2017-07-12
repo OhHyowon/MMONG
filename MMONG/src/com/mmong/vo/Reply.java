@@ -9,96 +9,21 @@ public class Reply implements Serializable{
 	private String content;
 	private Date replyDate;
 	private String memberId;
-	
 	private int boardNo;
-	private Board board;
+	private int groupNo;
 	
+	private Board board;
 	private Member member;
 	
 	public Reply() {}
-
-	public Reply(int no, String content, Date replyDate, String memberId, int boardNo, Board board, Member member) {
-		super();
-		this.no = no;
-		this.content = content;
-		this.replyDate = replyDate;
-		this.memberId = memberId;
-		this.boardNo = boardNo;
-		this.board = board;
-		this.member = member;
-	}
-
-	public Reply(int no, String content, Date replyDate, String memberId, int boardNo, Board board) {
-		super();
-		this.no = no;
-		this.content = content;
-		this.replyDate = replyDate;
-		this.memberId = memberId;
-		this.boardNo = boardNo;
-		this.board = board;
-	}
-
-	public int getNo() {
-		return no;
-	}
-
-	public void setNo(int no) {
-		this.no = no;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	public Date getReplyDate() {
-		return replyDate;
-	}
-
-	public void setReplyDate(Date replyDate) {
-		this.replyDate = replyDate;
-	}
-
-	public String getMemberId() {
-		return memberId;
-	}
-
-	public void setMemberId(String memberId) {
-		this.memberId = memberId;
-	}
-
-	public int getBoardNo() {
-		return boardNo;
-	}
-
-	public void setBoardNo(int boardNo) {
-		this.boardNo = boardNo;
-	}
-
-	public Board getBoard() {
-		return board;
-	}
-
-	public void setBoard(Board board) {
-		this.board = board;
-	}
-
-	public Member getMember() {
-		return member;
-	}
-
-	public void setMember(Member member) {
-		this.member = member;
-	}
-
+	
 	@Override
 	public String toString() {
 		return "Reply [no=" + no + ", content=" + content + ", replyDate=" + replyDate + ", memberId=" + memberId
-				+ ", boardNo=" + boardNo + ", board=" + board + ", member=" + member + "]";
+				+ ", boardNo=" + boardNo + ", groupNo=" + groupNo + ", board=" + board + ", member=" + member + "]";
 	}
+
+
 
 	@Override
 	public int hashCode() {
@@ -107,12 +32,15 @@ public class Reply implements Serializable{
 		result = prime * result + ((board == null) ? 0 : board.hashCode());
 		result = prime * result + boardNo;
 		result = prime * result + ((content == null) ? 0 : content.hashCode());
+		result = prime * result + groupNo;
 		result = prime * result + ((member == null) ? 0 : member.hashCode());
 		result = prime * result + ((memberId == null) ? 0 : memberId.hashCode());
 		result = prime * result + no;
 		result = prime * result + ((replyDate == null) ? 0 : replyDate.hashCode());
 		return result;
 	}
+
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -135,6 +63,8 @@ public class Reply implements Serializable{
 				return false;
 		} else if (!content.equals(other.content))
 			return false;
+		if (groupNo != other.groupNo)
+			return false;
 		if (member == null) {
 			if (other.member != null)
 				return false;
@@ -153,6 +83,155 @@ public class Reply implements Serializable{
 		} else if (!replyDate.equals(other.replyDate))
 			return false;
 		return true;
+	}
+
+
+
+	public int getNo() {
+		return no;
+	}
+
+
+
+	public void setNo(int no) {
+		this.no = no;
+	}
+
+
+
+	public String getContent() {
+		return content;
+	}
+
+
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+
+
+	public Date getReplyDate() {
+		return replyDate;
+	}
+
+
+
+	public void setReplyDate(Date replyDate) {
+		this.replyDate = replyDate;
+	}
+
+
+
+	public String getMemberId() {
+		return memberId;
+	}
+
+
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+
+
+
+	public int getBoardNo() {
+		return boardNo;
+	}
+
+
+
+	public void setBoardNo(int boardNo) {
+		this.boardNo = boardNo;
+	}
+
+
+
+	public int getGroupNo() {
+		return groupNo;
+	}
+
+
+
+	public void setGroupNo(int groupNo) {
+		this.groupNo = groupNo;
+	}
+
+
+
+	public Board getBoard() {
+		return board;
+	}
+
+
+
+	public void setBoard(Board board) {
+		this.board = board;
+	}
+
+
+
+	public Member getMember() {
+		return member;
+	}
+
+
+
+	public void setMember(Member member) {
+		this.member = member;
+	}
+
+
+
+	public Reply(int no, String content, Date replyDate, String memberId, int boardNo, int groupNo, Member member) {
+		super();
+		this.no = no;
+		this.content = content;
+		this.replyDate = replyDate;
+		this.memberId = memberId;
+		this.boardNo = boardNo;
+		this.groupNo = groupNo;
+		this.member = member;
+	}
+
+
+
+	public Reply(int no, String content, Date replyDate, String memberId, int boardNo, int groupNo, Board board) {
+		super();
+		this.no = no;
+		this.content = content;
+		this.replyDate = replyDate;
+		this.memberId = memberId;
+		this.boardNo = boardNo;
+		this.groupNo = groupNo;
+		this.board = board;
+	}
+
+
+
+	public Reply(int no, String content, Date replyDate, String memberId, int boardNo, int groupNo) {
+		super();
+		this.no = no;
+		this.content = content;
+		this.replyDate = replyDate;
+		this.memberId = memberId;
+		this.boardNo = boardNo;
+		this.groupNo = groupNo;
+	}
+
+
+
+	public Reply(int no, String content, Date replyDate, String memberId, int boardNo, int groupNo, Board board,
+			Member member) {
+		super();
+		this.no = no;
+		this.content = content;
+		this.replyDate = replyDate;
+		this.memberId = memberId;
+		this.boardNo = boardNo;
+		this.groupNo = groupNo;
+		this.board = board;
+		this.member = member;
 	}
 
 	

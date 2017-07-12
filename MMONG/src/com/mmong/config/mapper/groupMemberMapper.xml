@@ -9,7 +9,60 @@
 		</selectKey>
 		INSERT INTO GROUP_MEMBER VALUES (#{no}, #{groupNo}, #{memberId})	
 	</insert>
+	
+	<!-- GroupMember를 select할 때 Group을 조인하는 Mapper  -->
+	<resultMap id="groupMember-resultMap" type="groupMember">
+		<id column="no" property="no" />
+		<result column="group_no" property="groupNo"/>
+		<result column="member_id" property="memberId"/>
+	</resultMap>
+	<resultMap id="groupMember-group-resultMap" type="groupMember" extends="groupMember-resultMap">
+		<association property="group" javaType="com.mmong.vo.Group">
+			<id column="no" property="no" />
+			<result column="name" property="name"/>
+			<result column="leader" property="leader"/>
+			<result column="picture" property="picture"/>
+			<result column="content" property="content"/>	
+		</association>
+	</resultMap>
 
+	<select id="selectMeById" parameterType="java.lang.String" resultMap="groupMember-group-resultMap">
+		SELECT gm.no, gm.group_no, gm.member_id,
+			   g.no, g.name, g.leader, g.picture, g.content
+		FROM group_member gm, small_group g
+		WHERE gm.group_no = g.no AND gm.member_id = #{value}	
+	</select>
 
-
+	<!-- 소모임no로 그룹멤버 select -->
+	<select id="searchGroupMemberByGroupNo" parameterType="_int" resultType="groupMember">
+		SELECT no no,
+			   group_no groupNo,
+			   member_id memberId
+		FROM group_member
+		WHERE group_no = #{value}
+	</select>
+	
+	<!-- 소모임no과 memberId로 카운트 -->
+	<select id="selectCountNoByIdAndNo" parameterType="map" resultType="int">
+		SELECT COUNT(no)
+		FROM group_member
+		WHERE group_no=#{groupNo}
+		AND member_id=#{memberId}
+	</select>
+	
+	<!-- 소모임 no으로 memberId 카운트 -->
+	<select id="selectMemberIdCount" parameterType="int" resultType="int">
+		SELECT COUNT(member_id)
+		FROM group_member
+		WHERE group_no=#{groupNo}
+	</select>
+	
+	<!-- groupNo,memerId로 소모임 나가기 -->
+	<delete id="deleteGroupMember" parameterType="map">
+		DELETE group_member
+		WHERE group_no=#{groupNo}
+		AND member_id=#{memberId}
+	</delete>
+	
+	
 </mapper>

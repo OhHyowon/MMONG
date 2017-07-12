@@ -9,6 +9,7 @@
 	<result column="reply_date" property="replyDate"/>
 	<result column="member_id" property="memberId"/>
 	<result column="board_no" property="boardNo"/>
+	<result column="group_no" property="groupNo"/>
 </resultMap>
 
 <resultMap type="reply" id="reply-member-resultMap" extends="reply-resultmap">
@@ -23,8 +24,11 @@
 	</association>
 </resultMap>
 
+
+
+
 <sql id="select-reply">
-	SELECT no,content,reply_date,member_id,board_no
+	SELECT no,content,reply_date,member_id,board_no,group_no
 	FROM reply
 </sql>
 
@@ -34,7 +38,7 @@
 		SELECT REPLY_NO_SEQ.nextval FROM dual
 	</selectKey>
 	INSERT INTO reply VALUES(
-		#{no},#{content},#{replyDate},#{memberId},#{boardNo}
+		#{no},#{content},#{replyDate},#{memberId},#{boardNo},#{groupNo}
 	)
 </insert>
 
@@ -67,5 +71,57 @@
 	FROM reply
 	WHERE board_no=#{value}
 </select>
+
+<!-- replyNo로 리플 수정하기 -->
+<update id="updateReply" parameterType="reply">	
+	UPDATE reply
+	SET		content=#{content},
+				reply_date=#{replyDate}
+	WHERE no=#{no} AND member_id=#{memberId}
+</update>
+
+
+<!-- replyNo로 삭제하기 -->
+<delete id="deleteReply" parameterType="map">
+	DELETE reply
+	WHERE no=#{replyNo}
+	AND member_id=#{memberId}
+</delete>
+
+<!-- boardNo로 삭제하기 -->
+<delete id="deleteReplyByBoardNo" parameterType="int">
+	DELETE reply
+	WHERE board_no=#{value}
+</delete>
+
+
+<!-- memberId로 내가 쓴 리플 갯수 조회 -->
+<select id="selectMyReplyCount" parameterType="map" resultType="int">
+	SELECT COUNT(no)
+	FROM reply
+	WHERE member_id=#{memberId}
+	AND group_no=#{groupNo}
+</select>
+
+<!-- memberId로 내가 쓴 리플 조회하기 -->
+<select id="selectMyReply" parameterType="map" resultMap="reply-resultmap">
+<![CDATA[
+SELECT no, content, reply_date, member_id, board_no
+	FROM(
+		SELECT  rownum rnum, no, content, reply_date, member_id, board_no
+			FROM(
+				SELECT no, content, reply_date, member_id, board_no
+				FROM reply
+				WHERE member_id=#{memberId}
+				AND 		group_no=#{groupNo}
+				ORDER BY reply_date DESC
+				)
+		WHERE rownum <= #{endItemNo}
+	)
+	WHERE rnum >= #{beginItemNo}
+]]>
+</select>
+
+
 
 </mapper>

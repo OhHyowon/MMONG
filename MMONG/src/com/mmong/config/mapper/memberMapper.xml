@@ -7,9 +7,9 @@
 		INSERT INTO member VALUES (#{memberId},
 								   #{memberName}, 
 								   #{nickName}, 
-								   #{memberPhone},
-								   #{memberAddress},
+								   #{memberPhone},								   
 								   #{memberEmail},
+								   #{memberAddress},
 								   #{memberPicture}
 								   )
 	</insert>
@@ -37,7 +37,7 @@
 		<result column="member_picture" property="memberPicture"/>
 	</resultMap>
 	<resultMap id="member-user-resultMap" type="member" extends="memeber-resultmap">
-		<association property="memberUser" javaType="com.mmong.vo.User">
+		<association property="user" javaType="com.mmong.vo.User">
 			<result column="user_id" property="userId"/>
 			<result column="user_pwd" property="userPwd"/>
 			<result column="user_authority" property="userAuthority"/>
@@ -59,11 +59,11 @@
 		WHERE member_id = #{value}
 	</select>
 	
-	<!-- 회원핸드폰번호 중복조회 -->
-	<select id="checkMemberPhone" parameterType="String" resultType="int">
+	<!-- 회원이메일 중복조회 -->
+	<select id="checkMemberEmail" parameterType="String" resultType="int">
 		SELECT count(*)
 		FROM member
-		WHERE member_phone = #{value}
+		WHERE member_email = #{value}
 	</select>	
 
 </mapper>

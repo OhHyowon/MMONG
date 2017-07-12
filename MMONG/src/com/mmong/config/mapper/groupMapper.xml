@@ -10,6 +10,58 @@
 		INSERT INTO small_group VALUES (#{no}, #{name}, #{leader}, #{picture}, #{content})	
 	</insert>
 
-
-
+	<!-- groupNo로 Group을 select -->
+	<select id="selectMyGroupByNo" parameterType="_int" resultType="group">
+		SELECT no no,
+			   name name,
+			   leader leader,
+			   picture picture,
+			   content content
+		FROM small_group
+		WHERE no = #{value}			   
+	</select>
+	
+	<!-- 전체 Group select -->
+	<select id="selectAllGroup" resultType="group">
+		SELECT no no,
+			   name name,
+			   leader leader,
+			   picture picture,
+			   content content
+		FROM small_group		
+	</select>
+	
+	<!-- 이름으로 group select -->
+	<select id="searchGroupByName" parameterType="java.lang.String" resultType="group">
+		SELECT no no,
+			   name name,
+			   leader leader,
+			   picture picture,
+			   content content
+		FROM small_group
+		WHERE name like '%'||#{value}||'%'
+	</select>
+	
+	<!-- Leader 변경 -->
+	<update id="updateLeader" parameterType="map">
+		UPDATE small_group
+		SET leader =#{newLeader}
+		WHERE no=#{groupNo}
+	</update>
+	
+	<!-- group 삭제하기 -->
+	<delete id="deleteGroup" parameterType="int">
+		DELETE small_group
+		WHERE no=#{groupNo}
+	</delete>
+	
+	<!-- group 수정하기 -->
+	<update id="updateGroup" parameterType="group">
+		UPDATE small_group
+		SET 		name=#{name},
+					content=#{content}
+		WHERE	no=#{no}
+	</update>
+	
+	
 </mapper>

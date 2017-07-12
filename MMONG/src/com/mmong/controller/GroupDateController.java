@@ -1,42 +1,237 @@
 package com.mmong.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.xml.bind.Validator;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mmong.service.GroupDateService;
 import com.mmong.validation.GroupDateValidator;
 import com.mmong.vo.GroupDate;
+import com.mmong.vo.MeetMember;
+import com.mmong.vo.Member;
 
 @Controller
 @RequestMapping("group/groupDate/")
 public class GroupDateController{
-
+	@Autowired
+	private GroupDateService groupDateService;
 	
+	
+	/***
+	 * 일정 등록하는 handler method
+	 * @param groupDate
+	 * @param errors
+	 * @param session
+	 * @param map
+	 * @return
+	 * 작성자 : 강여림
+	 */
+	@RequestMapping("register")
 	public String groupDateInsert(@ModelAttribute GroupDate groupDate, BindingResult errors,
-													HttpServletRequest request, HttpSession session){
+													HttpSession session,ModelMap map){
 		
 		
-		String memberId = "testId"; // test 되는 동안에 쓸 id
-		/*
-		 * 로그인 되면 memberId = session.getAttribute("memberId");
-		 */
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String memberId=member.getMemberId();
+	
+		int groupNo=(int) session.getAttribute("groupNo"); // session에 있는 groupNo 가져옴
 		
 		GroupDateValidator vaildator=new GroupDateValidator();
 		vaildator.validate(groupDate, errors);
 		if(errors.hasErrors()){
-			return "content/group/groupDate/groupDate_from";
+			return "group/groupDate/groupDate_form.tiles";
+		}
+	
+		groupDate.setMemberId(memberId); // 로그인한 사람이 일정 등록자
+		groupDate.setGroupNo(groupNo); // 세션에서 받은 groupNo 
+		
+		int groupDateNo=groupDateService.insertGroupDate(groupDate); // 등록한 일정 No
+		
+		return "redirect:/group/groupDate/groupDateView.do?groupDateNo="+groupDateNo; // 완성되면 일정 상세보기 페이지로 바꾸기
+	}
+	
+	/***
+	 * 하나의 일정 상세보기 handler method
+	 * @param groupDateNo
+	 * @param session
+	 * @param map
+	 * @return
+	 * 작성자 : 강여림
+	 */
+	@RequestMapping("groupDateView")
+	public String selectGroupDate(int groupDateNo,HttpSession session, ModelMap map){
+		/*int groupDateNo=(int) session.getAttribute("groupDateNo");*/
+		GroupDate groupDate = groupDateService.selectGroupDate(groupDateNo);
+		
+		List<Integer> memberNoList=groupDateService.selectMeetMemberList(groupDateNo); // 참여자(memberNo) 목록 가져오기
+		List<String> memberIdList=new ArrayList<>();  // id 담을 list
+		List<String> nickNameList=new ArrayList<>(); // 닉네임 담을 list
+		
+		for(int i=0; i<memberNoList.size(); i++){  // 
+			int memberNo=memberNoList.get(i);
+			String memberId=groupDateService.selectMemberId(memberNo);
+			memberIdList.add(memberId);
+			String nickName=groupDateService.selectNickname(memberId);
+			nickNameList.add(nickName);
 		}
 		
+		map.addAttribute("memberIdList", memberIdList);
+		map.addAttribute("nickNameList", nickNameList);
+		map.addAttribute("groupDate", groupDate);
 		
+		return "group/groupDate/groupDate_view.tiles";
+	}
+	
+	/***
+	 * 일정에 참여하는 멤버 등록하는 handler method
+	 * @param session
+	 * @return
+	 * 작성자 : 강여림
+	 */
+	@RequestMapping("registerMeet")
+	@ResponseBody
+	public String insertMeetMember(HttpSession session){
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String memberId=member.getMemberId();
 		
+		int groupNo= (int) session.getAttribute("groupNo");
+		int groupDateNo=(int) session.getAttribute("groupDateNo");
 		
+		int memberNo=groupDateService.selectMemberNo(memberId,groupNo);
 		
+		MeetMember MM = new MeetMember(groupDateNo,memberNo);
+		groupDateService.insertMeetMember(MM);
 		
-		return ""; // 완성되면 일정 상세보기 페이지로 바꾸기
+		return "1";
+	}
+	/**
+	 *	일정 참여 취소하는 handler method
+	 * @param session
+	 * @return
+	 * 작성자 : 강여림
+	 */
+	
+	@RequestMapping("cancelMeet")
+	@ResponseBody
+	public String deleteMeetmember(HttpSession session){
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String memberId=member.getMemberId();
+		int groupDateNo=(int) session.getAttribute("groupDateNo");
+		int groupNo= (int) session.getAttribute("groupNo");
+
+		int memberNo=groupDateService.selectMemberNo(memberId,groupNo);
+		
+		MeetMember MM = new MeetMember(groupDateNo, memberNo);
+		groupDateService.deleteMeetmember(MM);
+		
+		return "1";
+	}
+	/**
+	 * 모든 일정 목록 보는handler method
+	 * @param page
+	 * @param option
+	 * @param key
+	 * @param session
+	 * @param map
+	 * @return
+	 * 작성자 : 강여림
+	 */
+	@RequestMapping("allGroupDateList")
+	public String allGroupDateList(@RequestParam(value="page", defaultValue="1")int page, 
+													@RequestParam (value="option", defaultValue="1")String option, 
+													@RequestParam  (value="key", defaultValue="1")String key,
+													HttpSession session, ModelMap map){
+
+		HashMap<String,Object> pagingMap=null;
+
+		int groupNo=(int) session.getAttribute("groupNo");
+		
+		if(option.equals("1")){
+			pagingMap=groupDateService.selectAllGroupDateList(page,groupNo);
+		}else if(option.equals("dateTime")){
+			try {
+				Date dateTime = new SimpleDateFormat("yyyy-MM-dd").parse(key);
+				pagingMap=groupDateService.selectGroupDateOption2(page,groupNo,dateTime,option);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}else{
+			pagingMap=groupDateService.selectGroupDateOption(page,groupNo,key,option);
+		}
+
+		map.addAttribute("groupNo", groupNo);
+		map.addAttribute("groupDateList", pagingMap.get("groupDateList"));
+		map.addAttribute("pageBean", pagingMap.get("pageBean"));
+		
+		return "group/groupDate/groupDate_list.tiles";
+	}
+	
+	/**
+	 * 입력된 일정 그대로 받아오는 handler method
+	 * @param groupDateNo
+	 * @param map
+	 * @return
+	 * 작성자 : 강여림
+	 */
+	@RequestMapping("updateGroupDate1")
+	public String updateGroupDate1(@RequestParam int groupDateNo,ModelMap map){
+		
+		System.out.println("수정1"+groupDateNo);
+		
+		GroupDate groupDate=groupDateService.selectGroupDate(groupDateNo);
+		map.addAttribute("groupDate", groupDate);
+		
+		return "group/groupDate/groupDate_update.tiles";
+	}
+	
+	/**
+	 * 수정된 일정 DB에 넣는 handler method
+	 * @param groupDate
+	 * @param errors
+	 * @return
+	 * 작성자 : 강여림
+	 */
+	@RequestMapping("updateGroupDate2")
+	public String updateGroupDate2(@ModelAttribute GroupDate groupDate, BindingResult errors ){
+		
+		System.out.println("수정2 "+groupDate);
+		
+		GroupDateValidator vaildator=new GroupDateValidator();
+		vaildator.validate(groupDate, errors);
+		if(errors.hasErrors()){
+			return "group/groupDate/groupDate_update.tiles";
+		}
+		
+		groupDateService.upDateGroupDate(groupDate); // DB에 수정된 일정 넣기
+		
+		return "group/groupDate/groupDate_view.tiles";
+	}
+	/**
+	 * 일정 삭제하는 handler
+	 * @param session
+	 * @return
+	 * 작성자 : 강여림
+	 */
+	@RequestMapping("groupDateDelete")
+	@ResponseBody
+	public String groupDateDelete(HttpSession session){
+		int groupDateNo=(int) session.getAttribute("groupDateNo");
+		groupDateService.deleteGroupDate(groupDateNo);
+		return "1";
 	}
 }

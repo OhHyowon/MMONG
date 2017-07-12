@@ -2,12 +2,28 @@
     pageEncoding="UTF-8"%>
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
  <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-</head>
+ <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+
+
+<h3>소모임 페이지 - 소모임 상세 페이지</h3>
+<%-- =============소모임 상세페이지 소메뉴 : 밑에 세메뉴안에도 이것 포함시키기! ================ --%>
+<ul>
+	<li><a href="/MMONG/group/groupDate/allGroupDateList.do">모임 일정 목록</a></li> <!-- 소모임 상세페이지 첫 화면 -->
+	<li><a href="/MMONG/group/board/allBoardList.do">자유게시판</a></li>
+	<li><a href="/MMONG/groupMember/searchGroupMember.do">참여 멤버 목록</a></li>
+</ul>
+<%-- =============소모임 상세페이지 소메뉴 끝================ --%>
+<hr>
+
+<h3>자유게시판 메뉴</h3>
+<ul>
+	<li><a href="/MMONG/group/board/board_form.do">게시글작성</a></li>
+	<li><a href="/MMONG/group/board/myBoardList.do">내가 쓴 글 보기</a>
+	<li><a href="/MMONG/group/reply/myReplyList.do">내가 쓴 댓글 보기</a>
+</ul>
+
+
+
 <body>
 	<table>
 	
@@ -43,7 +59,7 @@
 			<c:when test="${reply.no==requestScope.replyNo }">
 			<tr>
 				<td>
-				<form action="/MMONG/group/reply/rreplyUpdate.do" method="post">
+				<form action="/MMONG/group/reply/replyUpdate.do" method="post">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 					<input type="hidden" name="replyNo" value="${reply.no }">
 					<input type="hidden" name="boardNo" value="${requestScope.board.no }">
@@ -66,6 +82,3 @@
 		</c:choose>
 	</c:forEach>
 </table>
-	
-</body>
-</html>

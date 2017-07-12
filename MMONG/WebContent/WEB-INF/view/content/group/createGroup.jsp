@@ -13,6 +13,7 @@
 <script type="text/javascript">
 $('document').ready(function(){
 	$("#create").on('click', function(){
+		
 		var params = jQuery("#createGroup").serialize();
 		if( $('#name').val()==""){
 			alert("모임 이름을 입력하세요.");
@@ -44,6 +45,7 @@ $('document').ready(function(){
 <body>
 
 <h3>소모임 만들기</h3>
+
 <form id="createGroup">
 	<table>	
 		<tr>
@@ -53,11 +55,10 @@ $('document').ready(function(){
 		<tr>
 			<th>모임 설명</th>
 			<td><input type="text" id="content" name="content" value="${param.content}">
-				<input type="hidden" id="picture" name="picture" value="tmp">
-				<input type="hidden" id="leader" name="leader" value="juhyun903" >	</td>
+				<input type="hidden" id="picture" name="picture" value="tmp"></td>
 		</tr>		
 		<tr>
-			<td colspan="2">
+			<td colspan="2">    
 				<input type="button" id="create" value="생성">&nbsp; 
 				<input type="reset" value="다시 작성">&nbsp;</td>
 			</td>

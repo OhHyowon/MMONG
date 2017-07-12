@@ -1,6 +1,7 @@
 package com.mmong.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -19,68 +21,69 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mmong.service.impl.BoardPictureServiceImpl;
-import com.mmong.service.impl.BoardServiceImpl;
-import com.mmong.service.impl.ReplyServiceImpl;
+import com.mmong.service.BoardPictureService;
+import com.mmong.service.BoardService;
+import com.mmong.service.ReplyService;
 import com.mmong.validation.BoardRegisterValidator;
 import com.mmong.vo.Board;
 import com.mmong.vo.BoardPicture;
+import com.mmong.vo.Member;
 import com.mmong.vo.Reply;
 
 @Controller
 @RequestMapping("group/board/")
 public class BoardController {
 	@Autowired
-	private BoardServiceImpl boardService; // 완성되면 Impl말고 service로 바꾸기
+	private BoardService boardService; 
 	@Autowired
-	private BoardPictureServiceImpl BPService; // 완성되면 Impl말고 service로 바꾸기
+	private BoardPictureService BPService; 
 	@Autowired
-	private ReplyServiceImpl replyService;
+	private ReplyService replyService;
 	
 	
-	/* 게시물 등록 */
+	/**
+	 * 게시물 한개 등록 하는 handler method
+	 * @param upImage
+	 * @param board
+	 * @param errors
+	 * @param request
+	 * @param session
+	 * @param map
+	 * @return
+	 * 작성자 : 강여림
+	 */
 	@RequestMapping("register")
 	public String registerBoard(@RequestParam List<MultipartFile> upImage, 
 											@ModelAttribute Board board, BindingResult errors, 
-											@RequestParam String userId, 
-											/*@RequestParam int groupNo,*/
 											HttpServletRequest request, HttpSession session, 
-											ModelMap map) throws Exception {
+											ModelMap map){
 		
 		BoardRegisterValidator validator = new BoardRegisterValidator();
 		validator.validate(board, errors);
 		if (errors.hasErrors()) {
-			return "content/group/board/board_form";
+			return "group/board/board_form.tiles";
 		}
 		
+		int groupNo=(int) session.getAttribute("groupNo");
 		
-		
-				
 		String destDir = request.getServletContext().getRealPath("/up_image"); // 진짜경로
 
-		String memberId=userId;
-		int groupNo=0;
-		/*
-		 * 	소모임에 가입됐을 때 groupNo도 넘겨줘야함... 일단 TEST 로 0 번 줌
-		*/
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String memberId=member.getMemberId();
 		 
-		// 시퀀스로 들어갈 no=0, 처음 들어갈 조횟수 hit=0
+		// 처음 들어갈 조횟수 hit=0
 		Date date = new Date();
 
 		board.setHit(0);
 		board.setBoardDate(date);
 		board.setMemberId(memberId);
 		board.setGroupNo(groupNo);
-
-		System.out.println("board : "+board);
 		
 		int boardNo = boardService.insertBoard(board); // 등록한 게시글 No 가져오기
 		
-		
-		
-		String nickname = boardService.selectNickNameByMemberId(memberId, boardNo).getMember().getNickName();
+		String nickname = boardService.selectNickNameByMemberId(memberId, boardNo);
 		// 등록한 게시글의 nickname 가져오기
-
+		
 		ArrayList<String> nameList = new ArrayList<>(); // 업로드 된 파일명 저장할 list
 
 		BoardPicture boardPicture = new BoardPicture();
@@ -89,7 +92,13 @@ public class BoardController {
 			MultipartFile mFile = upImage.get(i);
 			if (mFile != null && !mFile.isEmpty()) {
 				nameList.add(mFile.getOriginalFilename());
-				mFile.transferTo(new File(destDir, mFile.getOriginalFilename()));
+				try {
+					mFile.transferTo(new File(destDir, mFile.getOriginalFilename()));
+				} catch (IllegalStateException e) {					
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		
@@ -104,21 +113,29 @@ public class BoardController {
 		
 		map.addAttribute("nameList", nameList);
 		map.addAttribute("nickname", nickname);
+		map.addAttribute("groupNo", groupNo);
 
-		
-		return "content/group/board/board_view";
+		return "redirect:/group/board/board_view.do?boardNo="+boardNo;
 	}
 
-	/* 게시물 그대로 받아오기 */
+	/**
+	 * 게시물 그대로 받아오는 handler method
+	 * @param nameList
+	 * @param boardNo
+	 * @param request
+	 * @param map
+	 * @return
+	 * 작성자 : 강여림
+	 */
 	@RequestMapping("boardUpdate1")
 	public String updateBoard1(@RequestParam String[] nameList, @RequestParam int boardNo, HttpServletRequest request,
 			ModelMap map) {
-
+		
 		if (nameList.length == 0) { 
 			Board board = boardService.selectBoard(boardNo);
 
 			map.addAttribute("board", board);
-			return "content/group/board/board_update";
+			return "group/board/board_update.tiles";
 		}
 
 		Board board = boardService.selectBoard(boardNo);
@@ -126,29 +143,37 @@ public class BoardController {
 		map.addAttribute("nameList", nameList);
 		map.addAttribute("board", board);
 
-		return "content/group/board/board_update";
+		return "group/board/board_update.tiles";
 	}
 
-	/* 게시물 수정 -2 수정된 글 DB에 넣기 */
+	/**
+	 * 수정된 게시물 DB에 넣는 handler method
+	 * @param upImage
+	 * @param board
+	 * @param errors
+	 * @param imgCheck
+	 * @param request
+	 * @param map
+	 * @return
+	 * 작성자 : 강여림
+	 */
 	@RequestMapping("boardUpdate2")
 	public String updateBoard2(@RequestParam List<MultipartFile> upImage,
 															@ModelAttribute Board board, BindingResult errors,
 															@RequestParam String imgCheck,
 															HttpServletRequest request,
-															ModelMap map) throws Exception{
+															ModelMap map){
 		
-		
-		String memberId="testId"; // test되는 동안에 쓸 memberId
-		/*
-		 	session.getAttribute("memberId"); 로그인되면 이걸로 쓰기!
-		 */
 		
 		BoardRegisterValidator validator=new BoardRegisterValidator();
 		validator.validate(board,errors);
 		if(errors.hasErrors()){
-			return "content/group/board/board_update";
+			return "group/board/board_update.tiles";
 		}
-	
+
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		String memberId=member.getMemberId();
 		
 		String destDir=request.getServletContext().getRealPath("/up_image"); // 진짜경로
 		
@@ -161,7 +186,7 @@ public class BoardController {
 		boardService.updateBoard(board); // DB에 수정된 글 넣기
 
 		// 등록한 게시글의 nickname 가져오기
-		String nickname=boardService.selectNickNameByMemberId(memberId,boardNo).getMember().getNickName();
+		String nickname=boardService.selectNickNameByMemberId(memberId,boardNo);
 		
 		ArrayList<String> nameList=new ArrayList<>(); // 업로드 된 파일명 저장할 list
 		BoardPicture boardPicture = new BoardPicture();
@@ -180,7 +205,13 @@ public class BoardController {
 				MultipartFile mFile=upImage.get(i);
 				if(mFile!=null&&!mFile.isEmpty()){
 					nameList.add(mFile.getOriginalFilename());
-					mFile.transferTo(new File(destDir,mFile.getOriginalFilename()));
+					try {
+						mFile.transferTo(new File(destDir,mFile.getOriginalFilename()));
+					} catch (IllegalStateException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 			for(int i=0; i<nameList.size(); i++){
@@ -198,25 +229,32 @@ public class BoardController {
 		map.addAttribute("nameList", nameList);
 		map.addAttribute("nickname", nickname);
 		
-		return "content/group/board/board_view";
+		return "group/board/board_view.tiles";
 	}
 	
-	
+	/**
+	 * 게시글 삭제하는 handler method
+	 * @param boardNo
+	 * @param request
+	 * @param session
+	 * @return
+	 * 작성자 : 강여림
+	 */
 	@RequestMapping("boardDelete")
 	@ResponseBody
 	public String deleteBoard(@RequestParam int boardNo,
 												HttpServletRequest request,
 												HttpSession session){
 		
-		/*
-		session.getAttribute("memberId");  로그인 되면 사용하기
-		*/
-		String memberId="testId"; // test하는 동안에 쓸 Id
+	
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String memberId=member.getMemberId();
 		
+
 		Board board=boardService.selectBoard(boardNo);
 
 		if(board.getMemberId().equals(memberId)){
-			
+			replyService.deleteReplyByBoardNo(boardNo);
 			BPService.deleteBPByBoardNo(boardNo);
 			boardService.deleteBoard(boardNo, memberId);
 		}
@@ -224,6 +262,13 @@ public class BoardController {
 		return "1";
 	}
 	
+	/**
+	 * 게시물 한개 조회하는 handler method
+	 * @param boardNo
+	 * @param map
+	 * @return
+	 * 작성자 : 강여림
+	 */
 	@RequestMapping("board_view")
 	public String boardView(int boardNo,ModelMap map){
 
@@ -232,25 +277,20 @@ public class BoardController {
 		hit++; // 조횟수 올리기
 		board.setHit(hit);
 		
-		System.out.println("업데이트 들어가기 전 "+board);
-		
 		boardService.updateBoard(board);
-		
-		System.out.println("업데이트 들어간 후 : "+board);
-		
 		board=boardService.selectBoard(boardNo);
-
+		
+		// 사진 찾기
 		List<BoardPicture> bP = BPService.selectBPByBoardNo(boardNo);
 		ArrayList<String> nameList = new ArrayList<>();  // 업로드 된 파일명 저장할 list
-
+		
+		
 		for(int i =0; i<bP.size(); i++){
 			nameList.add(bP.get(i).getRoute()); 
 		}
 	
 		String memberId=board.getMemberId(); // 게시판 쓴 사람의 Id
-		
-		String boardNickname=boardService.selectNickNameByMemberId(memberId, boardNo).getMember().getNickName();
-
+		String boardNickname=boardService.selectNickNameByMemberId(memberId, boardNo);
 		List<Reply> replyList = replyService.selectReplyByBoardNo(boardNo); 
 		
 		int replyNo;
@@ -260,36 +300,111 @@ public class BoardController {
 			String replyMemberId=replyService.selectMemberId(replyNo); // 리플 쓴 사람의 Id
 			replyNickname.add(replyService.selectNickNameByNo(replyNo, replyMemberId));
 		}
-
-		
+	
 		map.addAttribute("replyList", replyList);
 		map.addAttribute("nameList", nameList);
 		map.addAttribute("board", board);
 		map.addAttribute("boardNickname", boardNickname);
 		map.addAttribute("replyNickname", replyNickname);
 		
-		return "content/group/board/board_view";
+		return "group/board/board_view.tiles";
 	}
 	
+	/**
+	 * 전체 게시물 조회하는 handler method
+	 * @param page
+	 * @param option
+	 * @param key
+	 * @param session
+	 * @param map
+	 * @return
+	 */
 	@RequestMapping("allBoardList")
 	public String showAllBoardList(@RequestParam(value="page", defaultValue="1")int page, 
 													@RequestParam (value="option", defaultValue="1")String option, 
 													@RequestParam  (value="key", defaultValue="1")String key, 
+													HttpSession session,
 													ModelMap map) {
-
 		
 		HashMap<String,Object> pagingMap =null;
 		
+		int groupNo=(int) session.getAttribute("groupNo");
+		
 		if(option.equals("1")){ // option 선택을 안했을 때
-			pagingMap=boardService.selectAllBoard(page); 
+			pagingMap=boardService.selectAllBoard(page,groupNo); 
 		}else{ // option 선택했을 때
-			pagingMap=boardService.selectOption(page,option,key);
+			pagingMap=boardService.selectOption(page,option,key,groupNo);
 		}
 		
+		map.addAttribute("groupNo", groupNo);
 		map.addAttribute("nickNameList", pagingMap.get("nickNameList"));
 		map.addAttribute("boardList", pagingMap.get("boardList"));
 		map.addAttribute("pageBean", pagingMap.get("pageBean"));
 	
-		return "content/group/board/board_list";
+		return "group/board/board_list.tiles";
 	}
+	
+	/**
+	 * 내가 쓴 게시물 목록 조회하는 handler method
+	 * @param page
+	 * @param option
+	 * @param key
+	 * @param session
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping("myBoardList")
+	public String myBoardList(@RequestParam(value="page", defaultValue="1")int page, 
+											@RequestParam (value="option", defaultValue="1")String option, 
+											@RequestParam  (value="key", defaultValue="1")String key, 
+											HttpSession session,
+											ModelMap map){
+		
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String memberId=member.getMemberId();
+		
+		int groupNo=(int) session.getAttribute("groupNo");
+		
+		HashMap<String,Object> pagingMap=null;
+		
+		if(option.equals("1")){
+			pagingMap=boardService.selectMyBoardList(page,memberId,groupNo);			
+		}else{
+			pagingMap=boardService.selectMyOption(page, option, key,memberId,groupNo);
+		}
+
+		map.addAttribute("groupNo", groupNo);
+		map.addAttribute("myBoardList", pagingMap.get("myBoardList"));
+		map.addAttribute("pageBean", pagingMap.get("pageBean"));
+		
+		return "group/board/board_mine.tiles";
+	}
+	
+	/**
+	 * 내가 쓴 게시물 목록 중 선택 삭제 하는 handler method
+	 * @param boardNoList
+	 * @return
+	 */
+	@RequestMapping(value="deleteMyBoardList",produces="html/text;charset=UTF-8;" )
+	@ResponseBody
+	public String deleteMyboardList(@RequestParam List<Integer> boardNoList){
+	
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String memberId=member.getMemberId();
+		
+		int boardNo;
+		
+		for(int i =0; i<boardNoList.size(); i++){
+			boardNo=boardNoList.get(i);
+			replyService.deleteReplyByBoardNo(boardNo);
+			BPService.deleteBPByBoardNo(boardNo);
+			boardService.deleteBoard(boardNo, memberId);
+			}
+	
+		return "1";
+	}
+	
+
+
+
 }

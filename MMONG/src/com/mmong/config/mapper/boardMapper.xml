@@ -10,7 +10,7 @@
 		<result column="board_date" property="boardDate" />
 		<result column="hit" property="hit" />
 		<result column="member_Id" property="memberId" />
-		<result column="GROUP_NO" property="groupNo"/>
+		<result column="group_no" property="groupNo" />
 		<result column="reply_count" property="replyCount" />
 	</resultMap>
 
@@ -42,9 +42,10 @@
 
 
 	<!-- BOARD 등록 -->
-	<insert id="insertBoard" parameterType="board" >
+	<insert id="insertBoard" parameterType="board">
 		<selectKey keyProperty="no" resultType="_int" order="BEFORE">
-			SELECT BOARD_NO_SEQ.nextval FROM dual
+			SELECT
+			BOARD_NO_SEQ.nextval FROM dual
 		</selectKey>
 		INSERT INTO board VALUES(
 		#{no},#{title},#{content},#{boardDate},#{hit},#{memberId},#{groupNo}
@@ -52,36 +53,41 @@
 	</insert>
 
 	<!-- BOARD NO으로 게시물 찾아오기 -->
-	<select id="selectBoardByNo" parameterType="_int" resultMap="board-resultmap">
-		<include refid="select-board" />
+	<select id="selectBoardByNo" parameterType="int" resultMap="board-resultmap">
+		SELECT no,title,content,board_date,hit,member_id,group_no
+		FROM board
 		WHERE no=#{value}
 	</select>
 
 	<!-- BOARD UPDATE 하기 -->
-	<select id="updateBoard" parameterType="board">
+	<update id="updateBoard" parameterType="board">
 		UPDATE board
-		SET no=#{no},
+		SET
+		no=#{no},
+		title = #{title},
 		content=#{content},
 		board_date=#{boardDate},
 		hit=#{hit},
-		member_id=#{memberId},
-		group_no=#{groupNo},
+		member_id=#{memberId}
 		WHERE no=#{no}
-	</select>
+	</update>
 
 	<!-- BOARD-MEMBER 조인 -->
 	<select id="selectNickNameByMemberId" parameterType="map"
-		resultMap="board-member-resultMap">
+		resultType="string">
 		SELECT m.nickname
-		FROM board b JOIN member m ON b.member_id=m.member_id
+		FROM board b JOIN member m ON
+		b.member_id=m.member_id
 		WHERE m.member_id=#{memberId}
-		AND b.no=#{boardNo}
+		AND
+		b.no=#{boardNo}
 	</select>
 
 	<!-- 한개Board 삭제 -->
 	<delete id="deleteBoard" parameterType="map">
 		DELETE board
-		WHERE no=#{boardNo}
+		WHERE
+		no=#{boardNo}
 		AND member_Id=#{memberId}
 	</delete>
 
@@ -94,7 +100,8 @@
 			FROM (
 				SELECT b.no, b.content, b.title, b.board_date, b.hit, b.member_id, b.group_no,count(r.no) reply_count
 				FROM board b, reply r
-				WHERE b.no=r.board_no(+)
+				WHERE b.group_no=#{groupNo}
+				AND b.no=r.board_no(+)
 				GROUP BY b.no, b.title, b.content, b.board_date, b.hit, b.member_id, b.group_no
 				ORDER BY b.no DESC
 			)
@@ -103,6 +110,9 @@
 		WHERE rnum >=#{beginItemNo}
 	]]>
 	</select>
+
+
+
 
 	<!-- option에 따른 List -->
 	<select id="selectOption" parameterType="map" resultMap="board-resultmap">
@@ -116,6 +126,7 @@
 				SELECT b.no, b.content, b.title, b.board_date, b.hit, b.member_id, b.group_no, count(r.no) reply_count
 				FROM board b, reply r
 				WHERE b.no=r.board_no(+)
+				AND b.group_no=#{groupNo}
 				AND b.title LIKE '%'||#{key}||'%'
 				GROUP BY b.no, b.title, b.content, b.board_date, b.hit, b.member_id, b.group_no
 				ORDER BY b.no DESC
@@ -134,6 +145,7 @@
 				SELECT b.no, b.content, b.title, b.board_date, b.hit, b.member_id, b.group_no, count(r.no) reply_count
 				FROM board b, reply r
 				WHERE b.no=r.board_no(+)
+				AND b.group_no=#{groupNo}
 				AND b.content LIKE '%'||#{key}||'%'
 				GROUP BY b.no, b.title, b.content, b.board_date, b.hit, b.member_id, b.group_no
 				ORDER BY b.no DESC
@@ -153,6 +165,7 @@
 				SELECT b.no, b.content, b.title, b.board_date, b.hit, b.member_id, b.group_no, count(r.no) reply_count
 				FROM board b, reply r
 				WHERE b.no=r.board_no(+)
+				AND b.group_no=#{groupNo}
 				AND b.member_id LIKE '%'||#{key}||'%'
 				GROUP BY b.no, b.title, b.content, b.board_date, b.hit, b.member_id, b.group_no
 				ORDER BY b.no DESC
@@ -165,13 +178,126 @@
 		</choose>
 	</select>
 
+<!-- option에 따른 total Count -->
+<select id="selectOptionCount" parameterType="map" resultType="int">
+	<choose>
+		<when test="option=='title'">
+			SELECT COUNT(no)
+			FROM board
+			WHERE title LIKE '%'||#{key}||'%'
+			AND group_no=#{groupNo}
+		</when>
+		<when test="option=='content'">
+			SELECT COUNT(no)
+			FROM board
+			WHERE content LIKE '%'||#{key}||'%'
+			AND group_no=#{groupNo}
+		</when>
+		<otherwise>
+			SELECT COUNT(no)
+			FROM board
+			WHERE member_id LIKE '%'||#{key}||'%'		
+			AND group_no=#{groupNo}
+		</otherwise>
+	</choose>
+</select>
 
 
 	<!-- 전체 board List 갯수 -->
-	<select id="selectBoardCount" resultType="_int">
+	<select id="selectBoardCount" parameterType="int" resultType="_int">
 		SELECT COUNT(no)
 		FROM board
+		WHERE group_no=#{value}
 	</select>
+
+
+	<!-- 내가 쓴 boardList 갯수 -->
+	<select id="selectMyBoardCount" parameterType="map"
+		resultType="int">
+		SELECT COUNT(no)
+		FROM board
+		WHERE member_Id=#{memberId}
+		AND group_no=#{groupNo}
+	</select>
+
+
+	<!-- 내가 쓴 boardList -->
+	<select id="selectMyBoardList" parameterType="map" resultMap="board-resultmap">
+	<![CDATA[
+		SELECT no,content, title, board_date, hit, member_id, group_no, reply_count
+		FROM (
+			SELECT rownum rnum, no, content, title, board_date, hit, member_id, group_no, reply_count
+			FROM (
+				SELECT b.no, b.content, b.title, b.board_date, b.hit, b.member_id, b.group_no,count(r.no) reply_count
+				FROM board b, reply r
+				WHERE b.no=r.board_no(+)
+				AND b.group_no=#{groupNo}
+				AND b.member_id=#{memberId}
+				GROUP BY b.no, b.title, b.content, b.board_date, b.hit, b.member_id, b.group_no
+				ORDER BY b.no DESC
+			)
+			WHERE rownum <= #{endItemNo}
+		)
+		WHERE rnum >=#{beginItemNo}
+	]]>
+
+	</select>
+
+
+
+	<!-- MyBoardList 검색 -->
+	<select id="selectMyOption" parameterType="map" resultMap="board-resultmap">
+		<choose>
+			<when test="option=='title'">
+			<![CDATA[
+			SELECT no,content, title, board_date, hit, member_id, group_no, reply_count
+			FROM (
+			SELECT rownum rnum, no, content, title, board_date, hit, member_id, group_no, reply_count
+			FROM (
+				SELECT b.no, b.content, b.title, b.board_date, b.hit, b.member_id, b.group_no, count(r.no) reply_count
+				FROM board b, reply r
+				WHERE b.no=r.board_no(+)
+				AND b.group_no=#{groupNo}
+				AND b.member_id=${memberId}
+				AND b.title LIKE '%'||#{key}||'%'
+				GROUP BY b.no, b.title, b.content, b.board_date, b.hit, b.member_id, b.group_no
+				ORDER BY b.no DESC
+			)
+			WHERE rownum <= #{endItemNo}
+		)
+		WHERE rnum >=#{beginItemNo}
+		]]>
+			</when>
+			<when test="option=='content'">
+			<![CDATA[
+			SELECT no,content, title, board_date, hit, member_id, group_no, reply_count
+			FROM (
+			SELECT rownum rnum, no, content, title, board_date, hit, member_id, group_no, reply_count
+			FROM (
+				SELECT b.no, b.content, b.title, b.board_date, b.hit, b.member_id, b.group_no, count(r.no) reply_count
+				FROM board b, reply r
+				WHERE b.no=r.board_no(+)
+				AND b.group_no=#{groupNo}
+				AND b.member_id=#{memberId}
+				AND b.content LIKE '%'||#{key}||'%'
+				GROUP BY b.no, b.title, b.content, b.board_date, b.hit, b.member_id, b.group_no
+				ORDER BY b.no DESC
+			)
+			WHERE rownum <= #{endItemNo}
+		)
+		WHERE rnum >=#{beginItemNo}
+		]]>
+			</when>
+		</choose>
+	</select>
+
+<!-- boardNo로 boardTitle  -->
+<select id="selectBoardTitle" parameterType="int" resultType="string">
+	SELECT title
+	FROM board
+	WHERE no=${value}
+</select>
+
 
 
 
@@ -184,9 +310,10 @@
 	<!-- BOARDPICTURE 등록 -->
 	<insert id="insertBoardPicture" parameterType="boardPicture">
 		<selectKey keyProperty="no" resultType="_int" order="BEFORE">
-			SELECT BOARD_PICTURE_NO_SEQ.nextval FROM dual
+			SELECT
+			BP_NO_SEQ.nextval FROM dual
 		</selectKey>
-		INSERT INTO board_Picture VALUES(
+		INSERT INTO board_picture VALUES(
 		#{no},#{route},#{boardNo}
 		)
 	</insert>
@@ -194,16 +321,18 @@
 
 	<!-- BoardPicture 삭제 -->
 	<delete id="deleteBPByBoardNo" parameterType="_int">
-		DELETE FROM board_picture
+		DELETE FROM
+		board_picture
 		WHERE board_no=${value}
 	</delete>
 
 	<!-- BoardPicture boardNo조회 -->
-	<select id="selectBPByBoardNo" parameterType="_int"
+	<select id="selectBPByBoardNo" parameterType="int"
 		resultMap="boardPicture-reusltmap">
 		SELECT no,route,board_no
 		FROM board_picture
-		WHERE board_no=${value}
+		WHERE
+		board_no=${value}
 	</select>
 
 </mapper>

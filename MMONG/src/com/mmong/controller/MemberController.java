@@ -32,14 +32,14 @@ public class MemberController {
 	 */
 	@RequestMapping("registerMember")
 	public ModelAndView registerMember(@ModelAttribute Member member, BindingResult errors) {		
-		User user = new User(member.getMemberId(), member.getMemberUser().getUserPwd(), "ROLE_1", 1);
-		member.setMemberUser(user);
+		User user = new User(member.getMemberId(), member.getUser().getUserPwd(), "ROLE_1", 1);
+		member.setUser(user);
 		
 		//요청 파라미터 검증
 		MemberRegisterValidator validator = new MemberRegisterValidator();
 		validator.validate(member, errors);
 		if(errors.hasErrors()){
-			return new ModelAndView("content/member/register_form");
+			return new ModelAndView("member/register_form.tiles");
 		}
 		
 		//비즈니스 로직처리 - 회원 추가
@@ -66,19 +66,20 @@ public class MemberController {
 	}
 	
 	/**
-	 * 회원가입 시 회원 핸드폰번호 중복확인하는 handler method
+	 * 회원가입 시 회원 이메일 중복확인하는 handler method
 	 * @param memberPhone
 	 * @return
 	 */
-	@RequestMapping("checkMemberPhone")
+	@RequestMapping("checkMemberEmail")
 	@ResponseBody
-	public String checkMemberPhone(@RequestParam(required=false) String memberPhone){
+	public String checkMemberEmail(@RequestParam(required=false) String memberEmail1, String memberEmail2){
+		String memberEmail = memberEmail1 +"@"+ memberEmail2;
 		//요청파라미터 검증
 		
 		//비즈니스 로직 처리 - 회원 조회
-		int checkPhone = memberService.checkMemberPhone(memberPhone);
+		int checkEmail = memberService.checkMemberEmail(memberEmail);
 		//응답
-		return String.valueOf(checkPhone);
+		return String.valueOf(checkEmail);
 	}
 	
 	/**
@@ -89,7 +90,7 @@ public class MemberController {
 	@RequestMapping("searchByRegisterId")
 	public ModelAndView searchByRegisterId(@RequestParam(required=false) String memberId) {
 		Member member = memberService.searchMemberById(memberId);
-		return new ModelAndView("content/member/request_success", "member", member);
+		return new ModelAndView("member/request_success.tiles", "member", member);
 	}
 	
 	/**
@@ -100,7 +101,7 @@ public class MemberController {
 	@RequestMapping("mypage")
 	public ModelAndView searchMemberInfoById(){
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return new ModelAndView("content/member/mypage", "member", member);
+		return new ModelAndView("member/mypage.tiles", "member", member);
 	}
 	
 }

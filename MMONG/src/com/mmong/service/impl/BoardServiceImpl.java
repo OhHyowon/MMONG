@@ -20,11 +20,9 @@ public class BoardServiceImpl implements BoardService{
 	private BoardDao dao;
 	
 	public int insertBoard(Board board){
-		System.out.println("서비스 의 보드" +board);
 		dao.insertBoard(board);
 		int boardNo=board.getNo();
-		
-		System.out.println("서비스의 boardNo : "+boardNo);
+	
 		return boardNo;
 	}
 	
@@ -36,7 +34,7 @@ public class BoardServiceImpl implements BoardService{
 		return dao.updateBoard(board);
 	}
 	
-	public Board selectNickNameByMemberId(String memberId,int boardNo){
+	public String selectNickNameByMemberId(String memberId,int boardNo){
 		return dao.selectNickNameByMemberId(memberId,boardNo);
 	}
 	
@@ -44,20 +42,20 @@ public class BoardServiceImpl implements BoardService{
 		dao.deleteBoard(boardNo,memberId);
 	}
 	
-	public HashMap<String,Object> selectAllBoard(int page){
+	public HashMap<String,Object> selectAllBoard(int page,int groupNo){
 		HashMap<String,Object> map= new HashMap<>();
 		
-		int totalCount = dao.selectBoardCount();
+		int totalCount = dao.selectBoardCount(groupNo);
 		
 		PagingBean pageBean = new PagingBean(totalCount, page);
-		List<Board> boardList = dao.selectAllBoard(pageBean.getBeginItemInPage(), pageBean.getEndItemInPage());
+		List<Board> boardList = dao.selectAllBoard(pageBean.getBeginItemInPage(), pageBean.getEndItemInPage(),groupNo);
 		List<String> nickNameList= new ArrayList<>();
 		
 		for(int i =0; i<boardList.size(); i++){
 			String memberId=boardList.get(i).getMemberId();
 			int boardNo=boardList.get(i).getNo();
-		
-			String nickname=selectNickNameByMemberId(memberId, boardNo).getMember().getNickName();
+			String nickname=selectNickNameByMemberId(memberId, boardNo);
+			
 			nickNameList.add(nickname);
 		}
 
@@ -70,24 +68,55 @@ public class BoardServiceImpl implements BoardService{
 		return map;
 	}
 	
-	public HashMap<String,Object> selectOption(int page, String option, String key){
+	public HashMap<String,Object> selectOption(int page, String option, String key,int groupNo){
 		HashMap<String,Object> map = new HashMap<>();
-		int totalCount = dao.selectBoardCount();
+		int totalCount = dao.selectOptionCount(groupNo,option,key);
 		
 		PagingBean pageBean = new PagingBean(totalCount,page);
-		List<Board> boardList = dao.selectOption(option, key, pageBean.getBeginItemInPage(), pageBean.getEndItemInPage());
-		List<String> nickNameList=null;
+		List<Board> boardList = dao.selectOption(option, key, pageBean.getBeginItemInPage(), pageBean.getEndItemInPage(), groupNo);
+		List<String> nickNameList=new ArrayList<>();
 		
 		for(int i =0; i<boardList.size(); i++){
-			boardList.get(i).getMemberId();
-			boardList.get(i).getNo();
-			String nickname=selectNickNameByMemberId(boardList.get(i).getMemberId(),boardList.get(i).getNo()).getMember().getNickName();
-			nickNameList.add(nickname);
+			String memberId=boardList.get(i).getMemberId();
+			int boardNo=boardList.get(i).getNo();
+			
+			String nickname=selectNickNameByMemberId(memberId, boardNo);
+			
+			nickNameList.add(i, nickname);
 		}
-
+		
 		map.put("pageBean", pageBean);
 		map.put("boardList", boardList);
 		map.put("nickNameList", nickNameList);
+		
+		return map;
+	}
+	
+	public HashMap<String,Object> selectMyBoardList(int page,String memberId,int groupNo){
+		HashMap<String,Object> map = new HashMap<>();
+		
+		int totalCount = dao.selectMyBoardCount(memberId,groupNo);
+		PagingBean pageBean = new PagingBean(totalCount, page);
+		
+		List<Board> myBoardList=dao.selectMyBoardList(pageBean.getBeginItemInPage(), pageBean.getEndItemInPage(),memberId,groupNo);
+		
+		map.put("pageBean", pageBean);
+		map.put("myBoardList", myBoardList);
+		
+		return map;
+	}
+	
+	public HashMap<String,Object> selectMyOption(int page,String option,String key,String memberId,int groupNo){
+		HashMap<String,Object> map=new HashMap<>();
+		
+		int totalCount = dao.selectMyBoardCount(memberId,groupNo);
+		PagingBean pageBean = new PagingBean(totalCount,page);
+		
+		List<Board> myBoardList=dao.selectMyOption(pageBean.getBeginItemInPage(),pageBean.getEndItemInPage(),option,key,memberId,groupNo);
+		
+		map.put("pageBean", pageBean);
+		map.put("myBoardList", myBoardList);
+		
 		
 		return map;
 	}
