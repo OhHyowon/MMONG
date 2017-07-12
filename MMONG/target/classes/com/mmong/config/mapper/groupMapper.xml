@@ -42,6 +42,26 @@
 		WHERE name like '%'||#{value}||'%'
 	</select>
 	
+	<!-- Leader 변경 -->
+	<update id="updateLeader" parameterType="map">
+		UPDATE small_group
+		SET leader =#{newLeader}
+		WHERE no=#{groupNo}
+	</update>
+	
+	<!-- group 삭제하기 -->
+	<delete id="deleteGroup" parameterType="int">
+		DELETE small_group
+		WHERE no=#{groupNo}
+	</delete>
+	
+	<!-- group 수정하기 -->
+	<update id="updateGroup" parameterType="group">
+		UPDATE small_group
+		SET 		name=#{name},
+					content=#{content}
+		WHERE	no=#{no}
+	</update>
 	
 	
 </mapper>

@@ -52,12 +52,12 @@ public class ReplyServiceImpl implements ReplyService{
 		dao.deleteReplyByBoardNo(boardNo);
 	}
 	
-	public HashMap<String,Object>selectMyReply(int page,String memberId){
+	public HashMap<String,Object>selectMyReply(int page,String memberId, int groupNo){
 		HashMap<String,Object> map= new HashMap<>();
 		
-		int totalCount = dao.selectMyReplyCount(memberId);
+		int totalCount = dao.selectMyReplyCount(memberId,groupNo);
 		PagingBean pageBean = new PagingBean(totalCount,page);
-		List<Reply> myReplyList=dao.selectMyReply(pageBean.getBeginItemInPage(),pageBean.getEndItemInPage(),memberId);	
+		List<Reply> myReplyList=dao.selectMyReply(pageBean.getBeginItemInPage(),pageBean.getEndItemInPage(),memberId,groupNo);	
 		List<String> boardTitle=new ArrayList<>();
 		List<Integer> boardNoList=new ArrayList<>();
 		

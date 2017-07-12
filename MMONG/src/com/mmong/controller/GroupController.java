@@ -1,14 +1,15 @@
 package com.mmong.controller;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -124,5 +125,62 @@ public class GroupController {
 	public List<Group> searchGroupByName(String groupName){
 		List<Group> selctedGroupByName = groupService.searchGroupByName(groupName);
 		return selctedGroupByName;
+	}
+	/**
+	 * 소모임 번호로 소모임 삭제하는 handler method
+	 * @param session
+	 * @return
+	 *  작성자 : 강여림
+	 */
+	@RequestMapping("deleteGroup")
+	@ResponseBody
+	public String deleteGroup(HttpSession session){
+		int groupNo=(int) session.getAttribute("groupNo");		
+		int count=groupMemberService.selectMemberIdCount(groupNo);
+		
+		if(count==1){
+			groupService.deleteGroup(groupNo);
+			return "1"; // 삭제완료
+		}else{
+		return "2"; // 삭제불가
+		}
+	}
+	/**
+	 * 소모임 정보 그대로 가져오기
+	 * @param session
+	 * @param map
+	 * @return
+	 * 작성자 : 강여림
+	 */
+	@RequestMapping("updateGroup1")
+	public String updateGroup1(HttpSession session,ModelMap map){
+		int groupNo=(int) session.getAttribute("groupNo");	
+		Group group=groupService.selectMyGroupByNo(groupNo);
+		
+		map.put("group", group);
+		return "/WEB-INF/view/content/group/updateGroup.jsp";
+	}
+	/**
+	 * 가져온 소모임 정보 DB에 수정하기
+	 * @param group
+	 * @param errors
+	 * @param session
+	 * @return
+	 * 작성자 : 강여림
+	 */
+	@RequestMapping("updateGroup2")
+	@ResponseBody
+	public String updateGroup2(@ModelAttribute Group group,
+												HttpSession session){
+
+		int groupNo=(int) session.getAttribute("groupNo");	
+		Group group2=groupService.selectMyGroupByNo(groupNo);
+		
+		group2.setName(group.getName());
+		group2.setContent(group.getContent());
+
+		groupService.updateGroup(group2);
+		
+		return "1";
 	}
 }
