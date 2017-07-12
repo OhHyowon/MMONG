@@ -63,8 +63,6 @@
 		view-name="group/board/board_menu.tiles" />
 
 
-
-
 	<!-- 세연 -->
 	<!-- 쪽지 관리 탭 -->
 	<mvc:view-controller path="/message.do" view-name="message/message.tiles" />

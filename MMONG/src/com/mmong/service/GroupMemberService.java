@@ -27,4 +27,26 @@ public interface GroupMemberService {
 	 * 작성자 : 이주현
 	 */
 	List<GroupMember> searchGroupMemberByGroupNo(int groupNo);
+	/**
+	 * 소모임에 이미 가입되어 있는지 확인하기
+	 * @param groupNo
+	 * @param memberId
+	 * @return
+	 * 작성자 : 강여림
+	 */
+	int selectCountNoByIdAndNo(int groupNo, String memberId);
+	/**
+	 * 소모임 참여자 멤버수 구하기
+	 * @param groupNo
+	 * @return
+	 * 작성자 : 강여림
+	 */
+	int selectMemberIdCount(int groupNo);
+	/**
+	 *	소모임 탈퇴
+	 * @param groupNo
+	 * @param memberId
+	 * 작성자 : 강여림
+	 */
+	void deleteGroupMember(int groupNo, String memberId);
 }

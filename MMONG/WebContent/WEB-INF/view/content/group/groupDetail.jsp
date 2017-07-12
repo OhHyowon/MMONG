@@ -17,7 +17,6 @@ $(document).ready(function(){
 	//소모임 가입 처리
 	$("#create").on("click", function(){
 		if(confirm("소모임에 가입하시겠습니까?")){
-			alert("완료");
 			$.ajax({
 				"url" : "/MMONG/groupMember/insertGroupMember.do",
 				"data" : {"no":0, "groupNo":$("#groupNo").val(), "memberId":$("#memberId").val(), "${_csrf.parameterName}":"${_csrf.token}"},
@@ -25,6 +24,8 @@ $(document).ready(function(){
 				"success":function(response) {
 					if(response=="가입완료"){
 						alert("가입이 완료되었습니다.");
+					}else{
+						alert("이미 가입된 소모임 입니다.");
 					}
 				}
 			});//ajax 끝
@@ -33,8 +34,33 @@ $(document).ready(function(){
 	
 	//주인장이 소모임 수정 버튼 클릭시
 	$("#editGroupBtn").on("click", function(){
-		alert("수정해야함~~");
+		alert("수정하기");
+		window.open("/MMONG/group/updateGroup1.do","모임 수정하기","top=100px, left=100px, height=220px, width=500px");
 	});
+	
+	$("#deleteBtn").on("click",function(){
+		var groupName=$("#groupName").val();
+	
+		if(!confirm("'"+groupName+"'"+" 소모임을 삭제하시겠습니까?")){
+			return
+		}else{
+			$.ajax({
+				url:"/MMONG/group/deleteGroup.do",
+				type:"post",
+				data:{"${_csrf.parameterName}":"${_csrf.token}"},
+				dataType:"text",
+				success:function(txt){
+					if(txt=="1"){
+						alert("삭제되었습니다.");
+						location.href="/MMONG/group/mygroup.do"
+					}else{
+						alert("소모임에 참여중인 멤버가 있습니다. 삭제 불가");
+					}
+				}
+			}); //ajax 끝
+		}
+	});
+	
 	
 	//소모임 하나 클릭했을 때 소모임 상세페이지로 이동 
 	$(".myGroup").on("click", function(){
@@ -65,7 +91,7 @@ $(document).ready(function(){
 <sec:authorize access="hasRole('ROLE_1')">
 	<input type="hidden" id="memberId" value="<sec:authentication property="principal.memberId"/>">
 </sec:authorize>
-
+<input type="hidden" id="groupName" value="${requestScope.group.name }">
 
 <!-- 소모임 정보 -->
 <p><b>모임 정보</b></p>
@@ -84,6 +110,7 @@ $(document).ready(function(){
       Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
       if(((Group)request.getAttribute("group")).getLeader().equals(member.getMemberId())){ //주인장은 가입하기 버튼 대신 소모임 정보수정 버튼 필요
          out.println("<button type='button' id='editGroupBtn'>소모임 수정하기</button>");
+      	 out.println("<input type='button' id='deleteBtn' value='소모임 삭제하기'>");
       }else{
          out.println("<button type='button' id='create'>가입하기</button>");
       }

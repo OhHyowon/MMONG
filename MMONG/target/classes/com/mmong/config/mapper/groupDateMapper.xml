@@ -75,11 +75,17 @@
 	WHERE member_id=#{value}
 </select>
 
-<!-- 일정 참여자 삭제 -->
+<!-- groupDate no에 맞는 일정 참여자 삭제 -->
 <delete id="deleteMeetmember" parameterType="meetMember">
 	DELETE meet_member
 	WHERE group_date_no=#{groupDateNo}
 	AND group_member_no=#{groupMemberNo}
+</delete>
+
+<!-- groupMemberNo에 맞는 일정 참여자 삭제 -->
+<delete id="deleteMeetMemberByGroupMemberNo" parameterType="int">
+	DELETE meet_member
+	WHERE group_member_no=#{groupMemberNo}
 </delete>
 
 <!-- 전체 일정 목록 -->

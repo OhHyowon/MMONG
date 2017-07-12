@@ -34,4 +34,23 @@ public interface GroupDao {
 	 * 작성자 : 이주현
 	 */
 	List<Group> searchGroupByName(String groupName);
+	/**
+	 * 모임장 변경
+	 * @param groupNo
+	 * @param newLeader
+	 * 작성자 : 강여림
+	 */
+	void updateLeader(int groupNo, String newLeader);
+	/**
+	 * 모임 번호로 모임 삭제하기
+	 * @param groupNo
+	 * 작성자 : 강여림
+	 */
+	void deleteGroup(int groupNo);
+	/**
+	 * 모임 수정
+	 * @param group
+	 * 작성자 : 강여림
+	 */
+	void updateGroup(Group group);
 }

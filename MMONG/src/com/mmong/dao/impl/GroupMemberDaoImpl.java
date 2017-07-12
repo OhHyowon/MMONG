@@ -1,5 +1,6 @@
 package com.mmong.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -32,6 +33,25 @@ public class GroupMemberDaoImpl implements GroupMemberDao {
 	@Override
 	public List<GroupMember> searchGroupMemberByGroupNo(int groupNo) {
 		return session.selectList(makeSql("searchGroupMemberByGroupNo"), groupNo);
+	}
+	
+	public int selectCountNoByIdAndNo(int groupNo, String memberId){
+		HashMap<String,Object> map = new HashMap<>();
+		map.put("groupNo", groupNo);
+		map.put("memberId", memberId);
+		
+		return session.selectOne(makeSql("selectCountNoByIdAndNo"),map);
+	}
+	
+	public int selectMemberIdCount(int groupNo){
+		return session.selectOne(makeSql("selectMemberIdCount"),groupNo);
+	}
+	
+	public void deleteGroupMember(int groupNo, String memberId){
+		HashMap<String,Object> map = new HashMap<>();
+		map.put("groupNo", groupNo);
+		map.put("memberId", memberId);
+		session.delete(makeSql("deleteGroupMember"),map);
 	}
 
 }

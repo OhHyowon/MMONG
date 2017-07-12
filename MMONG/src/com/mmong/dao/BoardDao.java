@@ -97,6 +97,5 @@ public interface BoardDao {
 	 * @param key
 	 * @return
 	 */
-	
 	public int selectOptionCount(int groupNo, String option, String key);
 }
