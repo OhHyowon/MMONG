@@ -10,7 +10,7 @@
 			</tr>
 			<tr>
 				<td>새 비밀번호 :</td>
-				<td><input type="password" name="adminUser.userPwd">
+				<td><input type="password" name="user.userPwd">
 				<td>
 			</tr>
 			<tr>
@@ -32,7 +32,7 @@
 			</tr>
 			<tr>
 				<td>권한 :</td>
-				<td><input type="text" name="adminUser.userAuthority" readonly value="${requestScope.administrator.adminUser.userAuthority}" style="background-color: #e2e2e2;"></td>
+				<td><input type="text" name="user.userAuthority" readonly value="${requestScope.administrator.user.userAuthority}" style="background-color: #e2e2e2;"></td>
 			</tr>
 			<tr>
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

@@ -9,14 +9,6 @@ public interface UserService {
 	 */
 	void registerUser(User user);
 	
-	/**
-	 * 사용자 id로 사용자를 조회하는 메소드
-	 * @param userId
-	 * @return 찾은 사용자
-	 */
-	User searchUserByUserId(String userId);
-	
-	
 ///////////////////////////////////////////////////////////////////
 	/**
 	 * 매개변수로 사용자 id 를 받아서 사용자 정보 수정

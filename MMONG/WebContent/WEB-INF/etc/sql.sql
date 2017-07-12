@@ -4,7 +4,10 @@ ALTER TABLE administrator DROP COLUMN admin_pwd;
 ALTER TABLE administrator DROP COLUMN admin_authority;
 
 ALTER TABLE GROUP_DATE CREATE COLUMN TITLE VARCHAR2(900);
+
 ALTER TABLE GROUP_DATE ADD member_Id varchar2(30)
+
+alter table reply add group_no number
 
 /* 사용자 0번 */
 DROP TABLE USERS;
@@ -283,3 +286,10 @@ CREATE SEQUENCE MESSAGE_NO_SEQ;
 		)
 		WHERE rnum >= 1
 	
+		
+		
+				SELECT no, content, reply_date, member_id, board_no
+				FROM reply
+				WHERE member_id='duflalrjdi'
+				AND 		group_no=21
+				ORDER BY reply_date DESC

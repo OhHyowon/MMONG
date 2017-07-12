@@ -71,12 +71,12 @@ public interface ReplyDao {
 	 * @return
 	 * 작성자 : 강여림
 	 */
-	public int selectMyReplyCount(String memberId);
+	public int selectMyReplyCount(String memberId, int groupNo);
 	/**
 	 * memberId로 내가 쓴 댓글 목록 가져오기
 	 * @param memberId
 	 * @return
 	 * 작성자 : 강여림
 	 */
-	public List<Reply> selectMyReply(int beginItemNo, int endItemNo,String memberId);
+	public List<Reply> selectMyReply(int beginItemNo, int endItemNo,String memberId,int groupNo);
 }

@@ -34,17 +34,11 @@ public class UserServiceImpl implements UserService {
 		userDao.registerUser(user);
 	}
 
-	@Override
-	public User searchUserByUserId(String userId) {
-		return null;
-	}
-
-	
-	
 	////////////////////////////////////////////////////////////////////////
 
 	@Override
 	public void updateUser(User user) {
+		user.setUserPwd(passwordEncoder.encode(user.getUserPwd())); //패스워드 인코딩처리
 		userDao.updateUser(user);
 	}
 

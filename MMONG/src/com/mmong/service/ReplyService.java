@@ -72,5 +72,5 @@ public interface ReplyService {
 	 * @return
 	 * 작성자 : 강여림
 	 */
-	public HashMap<String,Object>selectMyReply(int page,String memberId);
+	public HashMap<String,Object>selectMyReply(int page,String memberId,int groupNo);
 }
