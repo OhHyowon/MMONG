@@ -18,7 +18,7 @@ public class AdministratorRegisterValidator implements Validator  {
 	public void validate(Object target, Errors errors) {
 		/*
 		 * 필수 : adminId, adminName, adminPhone, adminEamil
-		 * 체크 : productId는 3글자 이상 10글자 미만
+		 * 체크 : adminId는 8글자 이상 12글자 이하
 		 * 
 		*/
 		Administrator admin = (Administrator)target;

@@ -33,18 +33,6 @@ public class AdminController {
 	
 	
 	
-	/**
-	 * 관리자 정보 조회 페이지로 이동시키는 handler method
-	 * @param 
-	 * @return
-	 */
-	@RequestMapping("mypage")
-	public ModelAndView AdminMypage(){
-		Administrator admin = (Administrator)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return new ModelAndView("admin/mypage.tiles", "administrator", admin);
-	}
-	
-	
 
 	
 /////////////// 이하 완료////////////////
@@ -83,11 +71,11 @@ public class AdminController {
 			admin.setUser(user);
 			
 		//1. 요청파라미터 검증
-		AdministratorRegisterValidator validator = new AdministratorRegisterValidator();
-		validator.validate(admin, errors);
-		if(errors.hasErrors()){
-			return  new ModelAndView("admin/register_form.tiles");
-		}
+//		AdministratorRegisterValidator validator = new AdministratorRegisterValidator();
+//		validator.validate(admin, errors);
+//		if(errors.hasErrors()){
+//			return  new ModelAndView("admin/register_form.tiles");
+//		}
 		//2.관리자 등록처리
 		userService.registerUser(user);
 		//Administrator의 vo에 user 속성 추가하는 작업
@@ -131,8 +119,6 @@ public class AdminController {
 		return String.valueOf(checkPhone);
 	}
 	
-	
-	
 	//register_form.jsp에서 register_success.jsp로 가기위한 컨트롤러
 	@RequestMapping("gotoRegisterSuccess")
 	public ModelAndView gotoRegisterSuccess(@RequestParam String adminId){
@@ -152,7 +138,6 @@ public class AdminController {
 	//(info_admin.jsp)에서 정보 수정하기(info_admin_update_form.jsp)로 이동하기 위한 컨트롤러
 	@RequestMapping("info_admin_update_form")
 	public ModelAndView UpdateAdminForm(@RequestParam String adminId){
-		
 		Administrator admin=null;
 			admin = adminService.searchAdministratorById(adminId);
 		return new ModelAndView("admin/info_admin_update_form.tiles", "administrator", admin);
@@ -160,9 +145,20 @@ public class AdminController {
 	
 	//(info_admin_update_form.jsp)에서 (mypage.jsp)로 이동하기 위한 컨트롤러					//관리자 enable 변경을 위한 업테이트 결과페이지는 무엇으로 할것인지
 	@RequestMapping("info_admin")
-	public ModelAndView updateAdminInfo(@ModelAttribute Administrator admin){
+	public ModelAndView updateAdminInfo(@ModelAttribute Administrator admin, BindingResult errors){
 		User user = new User(admin.getAdminId(),admin.getUser().getUserPwd(), admin.getUser().getUserAuthority(), 1);
+			admin.setUser(user);
 			userService.updateUser(user);
+			System.out.println("점검---1 "+user);
+//		//1. 요청파라미터 검증
+//		AdministratorRegisterValidator validator = new AdministratorRegisterValidator();   //validator 쓰면 에러발생 'adminUser'
+//		System.out.println("점검---2 "+validator);
+//		validator.validate(admin, errors);
+//		System.out.println("점검---4 "+admin);
+//		if(errors.hasErrors()){
+//			return  new ModelAndView("admin/register_form.tiles");
+//		}	
+		
 		Administrator newAdmin = new Administrator(admin.getAdminName(),admin.getAdminPhone(), admin.getAdminEmail(),admin.getAdminId(),user);
 			adminService.updateAdministrator(newAdmin);
 		return new ModelAndView("admin/mypage.tiles", "administrator", newAdmin);
@@ -178,7 +174,19 @@ public class AdminController {
 			
 		return new ModelAndView("redirect:/admin/searchAdmindById.do", "adminId", OutAdmin.getAdminId());
 	}
+
 	
+	/**
+	 * 관리자 정보 조회 페이지로 이동시키는 handler method
+	 * @param 
+	 * @return
+	 */
+	@RequestMapping("mypage")
+	public ModelAndView AdminMypage(){
+		Administrator admin = (Administrator)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Administrator ad = adminService.searchAdministratorById(admin.getAdminId());
+		return new ModelAndView("admin/mypage.tiles", "administrator", ad);
+	}
 	
 	
 	

@@ -16,6 +16,6 @@
 <form action="/MMONG/admin/changeAuthorityMember.do" method="post">
 	<input type="hidden" name="memberId" value="${requestScope.member.user.userId}">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-	<input type="submit" value="권한 변경하기">
+	<input type="submit" value="활동 정지/재개 변경">
 </form>
 <br>

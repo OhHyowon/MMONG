@@ -15,9 +15,9 @@ th, td{
 	padding-right: 5px;
 }
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
-																					/// member/register_form.jsp 그대로 가져옴.
+																				
 var sizeChk = true; //아이디 길이 체크값
 var idDuplicationChk = false; //아이디 중복검사 체크값
 var pwdChk = false; //비밀번호 값 검사 체크값

@@ -13,6 +13,22 @@ public interface MemberDao {
 	int registerMember(Member member);
 	
 	/**
+	 * 개인 회원정보 수정
+	 * @param member
+	 * @return
+	 * 작성자 : 이진우
+	 */
+	int updateMember(Member member);
+	
+	/**
+	 * 개인 회원 삭제
+	 * @param member
+	 * @return
+	 * 작성자 : 이진우
+	 */
+	int deleteMemberById(String memberId);
+	
+	/**
 	 * 개인 회원 조회
 	 * @param memberId
 	 * @return 해당 아이디의 Member 객체

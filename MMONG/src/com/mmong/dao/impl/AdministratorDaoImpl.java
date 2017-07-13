@@ -28,7 +28,6 @@ public class AdministratorDaoImpl implements AdministratorDao{
 		return session.update(makeSql("updateAdministrator"), administrator);
 	}
 
-	
 	@Override
 	public Administrator searchAdministratorById(String administratorId) {
 		return session.selectOne(makeSql("searchAdministratorById"), administratorId);

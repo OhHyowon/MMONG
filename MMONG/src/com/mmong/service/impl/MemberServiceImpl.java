@@ -12,12 +12,22 @@ import com.mmong.vo.Member;
 public class MemberServiceImpl implements MemberService {
 	@Autowired
 	private MemberDao memDao;
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+//	@Autowired
+//	private PasswordEncoder passwordEncoder;			<- 삭제해도 될 것 같은데??
 
 	@Override
 	public void registerMember(Member member){
 		memDao.registerMember(member);
+	}
+	
+	@Override
+	public void updateMember(Member member) {
+		memDao.updateMember(member);
+	}
+
+	@Override
+	public void deleteMemberById(String memberId) {
+		memDao.deleteMemberById(memberId);
 	}
 
 	@Override

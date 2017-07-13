@@ -19,7 +19,7 @@ public interface UserDao {
 	User searchUserByUserId(String userId);
 	
 	/**
-	 * userId의 사용자의 권한 조회 ( 0: 관리자, 1: 개인회원, 2:승인전매니저, 3:승인된매니저, 4:활동중지회원 )
+	 * userId의 사용자의 권한 조회 ( 0: 관리자, 1: 개인회원, 2:정지된 회원, 3:탈퇴한 회원)
 	 * @param userId
 	 * @return
 	 */
@@ -44,7 +44,6 @@ public interface UserDao {
 	 */
 	int updateUser(User user);	
 	
-	
 	//일반회원(member)의 권한이 'ROLE_1' 이면 'ROLE_2'로 변경 (update)
 	/**
 	* 일반회원(member)의 권한이  'ROLE_1'이면 'ROLE_2'로 변경 (update)
@@ -63,23 +62,30 @@ public interface UserDao {
 	*/
 	int updateAuthorityMemberToRun(String memberId);	
 	
-	
 	/**
-	 * 관리자(administrator)의 enable이 1 이면 0으로 변경한다
+	 * 사용자(관리자/회원)의 enable이 1 이면 0으로 변경한다
 	 * 필요 이유: 관리자 공지사항 게시글 보존을 위해 관리자 삭제 대신 필요
-	 * @param adminId
+	 * @param userId
 	 * @return
 	 * 작성자 : 이진우
 	 */
-	int updateAdministratorEnableToZero(String adminId);
-	
+	int updateUserEnableToZero(String userId);
 	
 	/**
 	* 관리자ID로 중복 ID 조회하는 메소드
 	* @param adminId
 	* @return 찾은 관리자 수 : 있으면 1, 없으면 0
+	* 작성자 : 이진우
 	*/
 	int checkUserId(String userId);
+
+	/**
+	 * 회원 탈퇴시 회원의 authority를 'ROLE_3' 상태로 변경
+	 * @param memberId
+	 * @return
+	 * 작성자 : 이진우
+	 */
+	int updateUserAuthorityToWithdrawal(String memberId);
 	
 	
 	////////////////////////////////////////////////////////

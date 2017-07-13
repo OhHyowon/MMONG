@@ -8,11 +8,27 @@
 								   #{memberName}, 
 								   #{nickName}, 
 								   #{memberPhone},
-								   #{memberAddress},
 								   #{memberEmail},
+								   #{memberAddress},								   
 								   #{memberPicture}
 								   )
 	</insert>
+	
+	<update id="updateMember" parameterType="Member">
+		UPDATE	member
+		SET 			member_name=#{memberName},
+						member_phone=#{memberPhone},
+						member_email=#{memberEmail},
+						nickname=#{nickName},
+						member_Address=#{memberAddress},
+						member_picture=#{memberPicture}
+		WHERE 	member_id=#{memberId}
+	</update>
+	
+	<delete id="deleteMemberById" parameterType="member">
+		DELETE FROM member WHERE member_id=#{value}
+	</delete>
+	
 	
 	<sql id="select-sql">
 		SELECT member_id memberId,
@@ -27,7 +43,7 @@
 	
 	
 	<!-- memberId로 Member객체 뽑고 싶을 때 Member객체 안에 User객체도 있으므로 연결해주는 ResultMap -->
-	<resultMap id="memeber-resultmap" type="member">
+	<resultMap id="member-resultmap" type="member">
 		<id column="member_id" property="memberId" />
 		<result column="member_name" property="memberName"/>
 		<result column="nickname" property="nickName"/>
@@ -36,7 +52,7 @@
 		<result column="member_email" property="memberEmail"/>
 		<result column="member_picture" property="memberPicture"/>
 	</resultMap>
-	<resultMap id="member-user-resultMap" type="member" extends="memeber-resultmap">
+	<resultMap id="member-user-resultMap" type="member" extends="member-resultmap">
 		<association property="user" javaType="com.mmong.vo.User">
 			<result column="user_id" property="userId"/>
 			<result column="user_pwd" property="userPwd"/>
@@ -46,10 +62,11 @@
 	</resultMap>
 	
 	<select id="searchMemberById" parameterType="java.lang.String" resultMap="member-user-resultMap">
-		SELECT m.member_id, m.member_name, m.nickname, m.member_phone, m.member_address, m.member_email, m.member_picture,
-		       u.user_id, u.user_pwd, u.user_authority, u.user_enable
-		FROM member m, users u
-		WHERE m.member_id = u.user_id AND m.member_id = #{value}
+		SELECT	 	m.member_id, m.member_name, m.nickname, m.member_phone, m.member_address, m.member_email, m.member_picture,
+		     		 	 u.user_id, u.user_pwd, u.user_authority, u.user_enable
+		FROM 		member m, users u
+		WHERE 	m.member_id = u.user_id 
+		AND 		m.member_id = #{value}
 	</select>
 	
 	<!-- 회원ID 중복조회 -->

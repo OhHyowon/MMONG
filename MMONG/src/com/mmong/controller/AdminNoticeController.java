@@ -107,16 +107,8 @@ public class AdminNoticeController {
 		
 		if(option.equals("제목")){
 			adminNoticeListByKeyword = adminNoticeService.selectAdminNoticeListByTitle(keyword);
-//			for(AdministratorNotice man : adminNoticeListByKeyword){
-//			System.out.println(man);
-//			}
-//			System.out.println("공지사항 제목 검색 조회");
 		}else if(option.equals("내용")){
 			adminNoticeListByKeyword = adminNoticeService.selectAdminNoticeListByContent(keyword);
-//			for(AdministratorNotice man : adminNoticeListByKeyword){
-//			System.out.println(man);
-//			}
-//			System.out.println("공지사항 내용 검색 조회");
 		}
 		return new ModelAndView("adminNotice/selectAdminNoticeList.tiles","adminNoticeList", adminNoticeListByKeyword);
 	}
