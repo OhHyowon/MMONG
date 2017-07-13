@@ -56,6 +56,7 @@
 		<li><a href="/MMONG/member/mypage.do">관리자 등록</a></li>	
 	</sec:authorize>
      
+     <!-- 건강 관리 목록 -->
      <sec:authorize access="hasRole('ROLE_1')">
     <li><a href="/MMONG/health/list.do">건강관리 목록</a></li>
     </sec:authorize>

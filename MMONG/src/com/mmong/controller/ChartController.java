@@ -85,13 +85,9 @@ public class ChartController {
 								@RequestParam int chartNo, 
 								@RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date chartDate){
 		
-		System.out.println("컨트롤러");
-		
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
-		System.out.println(chartContent);
-		System.out.println(chartNo);
-		System.out.println(chartDate);
+		member.getMemberId();
 		
 		Chart chart = new Chart(0,chartDate,member.getMemberId(),chartContent,chartNo);
 		

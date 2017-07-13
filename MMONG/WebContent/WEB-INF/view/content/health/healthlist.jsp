@@ -1,8 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<!DOCTYPE html>
-<html>
-<head>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
 function showPopup(){
@@ -30,7 +28,7 @@ function showPopup(){
 					var txt ="";
 					$.each(list, function(){
 						//this //하나의 회원정보 - <tr>
-						txt = txt+"<tr><td>"+this.no+"</td><td class='clickByHealth 'id='"+this.no+"'>"+this.content+"</td><td>"+'<input type="checkbox" name="chek" value='+this.no+'>'+"</td></tr>";
+						txt = txt+'<tr><td class="radioNo">'+this.no+"</td><td class='clickByHealth 'id='"+this.no+"'>"+this.content+"</td><td>"+'<input type="checkbox" name="chek" id="checkbx" value='+this.no+'>'+"</td></tr>";
 						
 					});	// end of each
 					$("#listTbody").html(txt);
@@ -40,10 +38,7 @@ function showPopup(){
 				"error":function(){
 					alert("에러")
 				}
-				
-			 
 		 }); // ajax 종료
-		 
 	 }); // end of radio
 	 
 	 //체크박스 전체 선택
@@ -60,6 +55,13 @@ function showPopup(){
 			});
 		};	// end of else
 	});
+	 
+	$(document).on("click",'#checkbx',function(){
+		if($("input[name=chek]").not(':checked').length>0){
+			$("#checkAll").prop("checked",false);
+		}
+	});
+		     
 	 
 	 // 체크해서 진료기록 조회하기 
 	 $(document).on("click", '#selectBtn:button',function() {
@@ -79,7 +81,7 @@ function showPopup(){
 					var txt ="";
 					$.each(list, function(){
 						//this //하나의 회원정보 - <tr>
-						txt = txt+'<tr><td size="20">'+this.healthNo+'</td><td>'+this.time+'</td><td>'
+						txt = txt+'<tr><td>'+this.healthNo+'</td><td>'+this.time+'</td><td>'
 						+this.content+'</td></tr>';
 					});	// end of each
 					$("#chartList").html(txt);
@@ -128,18 +130,21 @@ function showPopup(){
 			$(".chartList").remove();
 			$(".chartDetail").remove();
 			$(".chartAdd").remove();
+			$(".chartForm").remove();
+			$(".chartContentForm").remove();
 			 $.ajax({
 					"url":"/MMONG/chart/chartSelect.do",
 					"type":"post",
 					"data":{"chartNo":chartNo, "${_csrf.parameterName}":"${_csrf.token}"},
 					"dataType":"json",
 					"success":function(chart){
-							$(that).parent().after('<tr class="chartDetail"><td>'+chart.time+'</td><td size="80">'+chart.content+'</td><td align: "center" >'
-						+'&nbsp&nbsp<input type="button" value="삭제" class="chartDelete" id="'+chart.healthNo+'" >&nbsp&nbsp'
+							$(that).parent().after('<tr class="chartContentForm"><td>진료 날짜</td><td>'+chartNo+'번 건강정보에 대한 내 진료기록</td><td>수정,삭제 여부</td></tr>'
+						+'<tr class="chartDetail"><td  width=110>'+chart.time+'</td><td size="80">'+chart.content+'</td><td>'
+						+'&nbsp<input type="button" value="삭제" class="chartDelete" id="'+chart.healthNo+'" >&nbsp'
 						+'<input type="button" value="수정" class="chartMod" id="'+chartNo+'"></td></tr>');
 					},	// end of success
 					"error":function(){													
-						$(that).parent().after('<tr class="chartAdd"><td><input type=date id="chartDate"</td><td><textarea rows="2" cols="80" id="chartContent" name="textarea"></textarea>'+'</td><td>'
+						$(that).parent().after('<tr class="chartForm"><td>진료날짜 입력</td><td>진료내용을 입력해 주세요</td><td>등록 여부</td></tr><tr class="chartAdd"><td><input type=date id="chartDate"></td><td><textarea rows="2" cols="80" id="chartContent" name="textarea"></textarea>'+'</td><td>'
 								+'<input type="button" value="등록" class="insertChart" id="'+chartNo+'">'+'</td></tr>');
 					}
 			 }); // ajax 종료
@@ -156,21 +161,28 @@ function showPopup(){
 			var chartNo = $(this).attr('id');
 			var chartContent = $("#chartContent").val();
 			var chartDate = $("#chartDate").val();
-			
-			alert(chartNo);
-			alert(chartContent);
-			alert(chartDate);
 			 $.ajax({
 					"url":"/MMONG/chart/chartInsert.do",
 					"type":"post",
-					dataType:"json",
+					dataType:"text",
 					"data":{"chartNo":chartNo,"chartContent":chartContent,"chartDate":chartDate, "${_csrf.parameterName}":"${_csrf.token}"},
+					"beforeSend":function(){
+						if(!chartContent){
+							alert("내용을 입력하세요");
+							return false;
+						}
+						if(!chartDate){
+							alert("날짜를 선택해 주세요");
+							return false;
+						}
+					},
 					"success":function(){
 						alert("등록이 완료 되었습니다.")
 						location.reload();
-			 },
+			 		},
 					"error":function(xhr, code, msg){
-						alert("에러 : "+msg)
+							alert("로그인을 하셔야 이용 하실 수 있습니다."+msg)
+							location.reload();
 					}
 			 }); // ajax 종료
 		}); // end of insertChart
@@ -197,7 +209,8 @@ function showPopup(){
 		// 진료기록 수정폼 만들기
 		$("#healthlist").on('click','.chartMod',function(){
 			var chartNo = $(this).attr('id');
-			$(this).parent().parent().after('<tr class="chartModi"><td><input type=date id="chartModDate"</td><td>'+'<textarea rows="2" cols="100" id="chartContent" name="textarea"></textarea>'+'</td><td>'
+			$(this).parent().parent().after('<tr class="chartForm"><td>진료날짜 입력</td><td>수정할 진료내용을 입력해 주세요</td><td>등록 여부</td></tr>'+
+											'<tr><td><input type=date id="modeDate"></td><td>'+'<textarea rows="2" cols="80" id="chartContent" name="textarea"></textarea>'+'</td><td>'
 						+'<input type="button" value="등록" class="mod" id="'+chartNo+'">'+'</td></tr>');
 		}) // end of chartMod
 														
@@ -206,7 +219,7 @@ function showPopup(){
 		$("#healthlist").on('click','.mod',function(){
 			var healthNo = $(this).attr('id');
 			var content = $("textarea").val();
-			var chartDate = $("chartModDate").val();
+			var chartDate = $("#modeDate").val();
 			
 			alert(healthNo)
 			alert(content)
@@ -215,12 +228,22 @@ function showPopup(){
 				"url":"/MMONG/chart/chartModify.do",
 				"type":"post",
 				"data":{"healthNo":healthNo,"chartDate":chartDate,"content":content,"${_csrf.parameterName}":"${_csrf.token}"},
+				"beforeSend":function(){
+					if(!content){
+						alert("내용을 입력해 주세요");
+						return false;
+					}else if(!chartDate){
+						alert("날짜를 입력해 주세요");
+						return false;
+					}
+				},
 				"success":function(){
 					alert("수정이 완료 되었습니다.")
 					location.reload();
 				},
 				"error":function(){
 					alert("수정 실패!")
+					location.reload();
 				}
 			 }); // ajax 종료 
 		})	// end of .mod
@@ -243,39 +266,23 @@ border: 1px solid black;
 		/*손가락 나오게 하는거*/
 		cursor:pointer;
 	}
+	
+.chartDetail,.chartForm{
+	color : red;
+} 
+.chartContentForm{
+	color : blue;	
+	}
+
+.radioNo{
+	text-align: center;
+}
 </style>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-</head>
-<body>
+
 
 <h1>건강 관리</h1>
-<%-- ========================menu 영역 =================== --%>
-<ul>
-	<%-- 비회원 메뉴 --%>
-	<sec:authorize access="!isAuthenticated()">		
-		<li><a href="/MMONG/login_form.do">로그인</a></li>
-		<li><a href="/MMONG/member/register_form.do">회원가입</a></li>
-	</sec:authorize>
-	
-	<%-- 회원메뉴 --%>
-	<sec:authorize access="isAuthenticated()">
-		<li><a href="javascript:logout()">로그아웃</a>
-	</sec:authorize>	
-	
-	<%-- 회원 메뉴 : 개인회원 메뉴 /member로 시작 --%>
-	<sec:authorize access="hasRole('ROLE_1')">
-		<li><a href="/MMONG/member/mypage.do">회원 정보조회</a></li>
-	</sec:authorize>
-</ul>
-<%-- =======================menu 영역 끝=================== --%>
-
-<%-- =======================대menu 영역 =================== --%>
-<ul>
-		<li><a href="/MMONG/group/mygroup.do">소모임</a></li>
-		<li><a href="/MMONG/health/list.do">건강관리 목록</a></li>
-</ul>
-<%-- ======================대menu 영역 끝=================== --%>	
 
 
 <%-- ================건강관리 페이지 소메뉴=================== --%>
@@ -291,15 +298,17 @@ border: 1px solid black;
 <table id="healthlist">
 	<thead>
 		<tr>
-			<th>번호</th>
+			<th width=70>번호</th>
 			<th>내용</th>
-			<th>전체선택<input type="checkbox" id="checkAll"></th>
+			<th width=110>전체선택<input type="checkbox" id="checkAll"></th>
 		</tr>
 	</thead>
 	<tbody id="listTbody"></tbody>
 </table>
 
+<sec:authorize access="hasRole('ROLE_1')">
 <input type ="button" id="selectBtn" value="진료기록 검색"><br>
+</sec:authorize>
 
 <!-- 진료기록 리스트  -->
 <table id="chartTable">
@@ -313,17 +322,8 @@ border: 1px solid black;
 	<tbody id="chartList"></tbody>
 </table>
 
-
-
 <%-- ==============소모임 페이지 소메뉴 끝================== --%>
-
-
 <sec:authorize access="hasRole('ROLE_1')">
 <input type="button" value="건강 리스트 등록" onclick="showPopup();">
 <input type="button" value="건강 리스트 삭제" id="removeHealth" onsubmit="return confirm('삭제하시겠습니까?')">
 </sec:authorize>
-
-
-
-</body>
-</html>

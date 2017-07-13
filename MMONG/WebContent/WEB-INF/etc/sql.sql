@@ -2,6 +2,7 @@ ALTER TABLE member DROP COLUMN member_pwd;
 ALTER TABLE member DROP COLUMN member_authority;
 ALTER TABLE administrator DROP COLUMN admin_pwd;
 ALTER TABLE administrator DROP COLUMN admin_authority;
+ALTER TABLE GROUP_DATE ADD member_Id varchar2(30)
 
 ALTER TABLE GROUP_DATE CREATE COLUMN TITLE VARCHAR2(900);
 

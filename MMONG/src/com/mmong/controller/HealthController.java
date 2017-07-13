@@ -40,7 +40,7 @@ public class HealthController {
 		
 		validator.validate(health, errors);
 		if(errors.hasErrors()){
-			return "content/health/healthlist_regist";
+			return "health/healthlist_regist.tiles";
 		}
 		
 		String content = request.getParameter("content");
@@ -51,7 +51,7 @@ public class HealthController {
 		service.addHealthList(health2);
 		
 		
-		return "content/health/success";
+		return "health/success.tiles";
 	}
 	
 	@RequestMapping("modify")

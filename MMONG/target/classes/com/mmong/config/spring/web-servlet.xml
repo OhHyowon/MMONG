@@ -65,10 +65,9 @@
 
 	<!-- 규현 -->
 	<!-- 건강정보 목록 -->
-   	<mvc:view-controller path="/health/list.do" view-name="content/health/healthlist"/>
+   	<mvc:view-controller path="/health/list.do" view-name="health/healthlist.tiles"/>
    	<!-- 건강정보 등록 -->
-   	<mvc:view-controller path="/health/registform.do" view-name="content/health/healthlist_regist"/>
-
+   	<mvc:view-controller path="/health/registform.do" view-name="health/healthlist_regist.tiles"/>
 
 
 
