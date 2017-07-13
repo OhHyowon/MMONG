@@ -21,8 +21,6 @@
       <li><a href="/MMONG/login_form.do">로그인</a></li>
       <li><a href="/MMONG/member/register_form.do">회원가입</a></li>
       
-      <li><a href="/MMONG/calendar.do">달력</a></li>
-      
    </sec:authorize>
    
    <%-- 회원메뉴 --%>
@@ -35,6 +33,7 @@
       <li><a href="/MMONG/member/mypage.do">회원 정보조회</a></li>
 
   	  <li><a href="/MMONG/message.do">쪽지 관리</a></li>
+      <li><a href="/MMONG/calendar/calendar_main.do">달력</a></li>
    </sec:authorize>
 
 </ul>
@@ -47,23 +46,18 @@
 <%-- =======================대menu 영역 =================== --%>
 <ul>
 	<li><a href="/MMONG/group/mygroup.do">소모임</a></li>        
-         
-	<%-- 소모임 - 자유게시판 (임시) --%>
-	<sec:authorize access="hasRole('ROLE_1')">
-	  <li><a href="/MMONG/group/board/board_form.do">자유게시판 글쓰기</a></li>
-	  <li><a href="/MMONG/group/board/allBoardList.do">자유게시판 목록</a></li>
-	  <li><a href="/MMONG/group/board/myBoardList.do">내가 쓴 글목록</a></li>
-	  <li><a href="/MMONG/group/reply/myReplyList.do">내가 쓴 댓글목록</a></li>
-	</sec:authorize>
+       
    
    
    
-	<li><a href="/MMONG/">고객센터</a></li>
-	<%-- 고객센터 - 관리자 등록 (관리자메뉴)  --%>
+	<li><a href="/MMONG/admin/customerCenter.do">고객센터</a></li>
+	
+	<%-- 고객센터 - 관리자 등록 (임시) (관리자메뉴)  --%>
 	<sec:authorize access="hasRole('ROLE_0')">
-		<li><a href="/MMONG/member/mypage.do">관리자 등록</a></li>	
+		<li> <a href="/MMONG/admin/register_form.do">관리자 등록</a></li>	
+		<li><a href="/MMONG/admin/search_admin_form.do">관리자 찾기 폼</a></li>
+		<li><a href="/MMONG/admin/search_member_form.do">회원(member) 찾기 폼</a></li>
 	</sec:authorize>
-      
       
       
 </ul>   
@@ -82,5 +76,20 @@
 <sec:csrfInput/>
 </form>
 
+
+
+
+
+
+
+
+<%--=====================진우 테스트 영역 시작===================== --%> 
+
+
+
+
+
+
+<%--=====================진우 테스트 영역 끝===================== --%> 
 </body>
 </html>

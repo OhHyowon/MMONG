@@ -76,6 +76,8 @@ CREATE TABLE CALENDAR (
 	CONTENT VARCHAR2(3000) NOT NULL, /* 내용 */
 	TYPE NUMBER NOT NULL, /* 타입 */
 	SECRET NUMBER NOT NULL, /* 공개여부 */
+	START_DATE DATE NOT NULL, /* 시작 일시 */
+	END_DATE DATE NOT NULL, /* 종료 일시 */
 	EMOTION NUMBER, /* 감정상태 */
 	PICTURE VARCHAR2(900), /* 사진 */
 	MEMBER_ID VARCHAR2(30) CONSTRAINT MEMBER_ID_CALENDAR_FK REFERENCES MEMBER(MEMBER_ID) /* 회원아이디 */
@@ -83,6 +85,24 @@ CREATE TABLE CALENDAR (
 
 DROP SEQUENCE CALENDAR_NO_SEQ;
 CREATE SEQUENCE CALENDAR_NO_SEQ;
+ TO_DATE ('6/23/2011 23:59:59', 'mm/dd/yyyy hh24:mi:ss');
+
+INSERT INTO calendar VALUES ( 0, '제목', '내용', 1, 1, TO_DATE('6/23/2017 23:59:59', 'mm/dd/yyyy hh24:mi:ss'), 
+																				 TO_DATE('6/25/2017 23:59:59', 'mm/dd/yyyy hh24:mi:ss'),
+																				 1,
+																				 'pic',
+																				 'a1a2a3a4');
+);
+
+
+INSERT INTO calendar VALUES ( 0, '제목', '내용', 1, 1, '2017-01-01 00:00:00', 
+																				 '2017-01-01 00:00:00',
+																				 1,
+																				 'pic',
+																				 'a1a2a3a4');
+);
+
+
 
 /* 진료기록 6번*/
 DROP TABLE CHART;

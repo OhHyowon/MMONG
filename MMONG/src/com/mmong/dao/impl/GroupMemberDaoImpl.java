@@ -29,4 +29,9 @@ public class GroupMemberDaoImpl implements GroupMemberDao {
 		return session.selectList(makeSql("selectMeById"), memberId);
 	}
 
+	@Override
+	public List<GroupMember> searchGroupMemberByGroupNo(int groupNo) {
+		return session.selectList(makeSql("searchGroupMemberByGroupNo"), groupNo);
+	}
+
 }

@@ -1,14 +1,3 @@
-
-		
-
-SELECT gm.no, gm.group_no, gm.member_id,
-			   g.no, g.name, g.leader, g.picture, g.content
-		FROM group_member gm, small_group g
-		WHERE gm.group_no = g.no AND gm.member_id = wngus0424	
-
-
-
-
 /* 사용자 0번 */
 
 CREATE TABLE USERS (
@@ -80,12 +69,12 @@ CREATE TABLE CALENDAR (
 	CONTENT VARCHAR2(3000) NOT NULL, /* 내용 */
 	TYPE NUMBER NOT NULL, /* 타입 */
 	SECRET NUMBER NOT NULL, /* 공개여부 */
+	START_DATE DATE NOT NULL, /* 시작 일시 */
+	END_DATE DATE NOT NULL, /* 종료 일시 */
 	EMOTION NUMBER, /* 감정상태 */
 	PICTURE VARCHAR2(900), /* 사진 */
 	MEMBER_ID VARCHAR2(30) CONSTRAINT MEMBER_ID_CALENDAR_FK REFERENCES MEMBER(MEMBER_ID) /* 회원아이디 */
 );
-
-
 CREATE SEQUENCE CALENDAR_NO_SEQ;
 /* 진료기록 6번*/
 

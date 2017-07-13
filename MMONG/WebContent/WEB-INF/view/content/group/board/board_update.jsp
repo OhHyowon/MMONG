@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -25,9 +26,11 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-<jsp:include page="/index.do"/>
+
+<jsp:include page="/group/board/board_menu.do"/>
+
 <h2>게시글 수정</h2>
-<form action="/MMONG/group/board/boardUpdate2.do?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data" onsubmit="return confirm('수정하시겠습니까?');">
+<form action="/MMONG/group/board/boardUpdate2.do?${_csrf.parameterName}=${_csrf.token}&groupNo=${sessionScope.groupNo }" method="post" enctype="multipart/form-data" onsubmit="return confirm('수정하시겠습니까?');">
 제목 : <input type="text" name="title" value="${requestScope.board.title }"><form:errors path="board.title" deilimiter="&nbsp;&nbsp;"/><br>
 내용 : <br>
 <textarea rows='20' cols='100' name="content">${requestScope.board.content }</textarea><br>

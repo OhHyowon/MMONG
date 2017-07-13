@@ -1,23 +1,30 @@
 package com.mmong.vo;
 
 import java.io.Serializable;
+import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class Calendar implements Serializable {
 	private int no ;
-	private String title;
-	private String content;
-	private int type;
-	private int secret;
-	private int emotion;
-	private String picture;
+	private String title; // 제목
+ 	private String content; // 메모
+	private int type; // 일정 구분
+	private int secret; // 공개여부
+	private int emotion; // 기분
+	private String picture; // 사진 업로드
+	@DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm")
+	private Date startDate; // 시작 일시
+	@DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm")
+	private Date endDate; //종료 일시
 	
 	private String memberId;
 	private Member member;
 	
 	public Calendar(){}
-	
+
 	public Calendar(int no, String title, String content, int type, int secret, int emotion, String picture,
-			String memberId) {
+			Date startDate, Date endDate, String memberId) {
 		super();
 		this.no = no;
 		this.title = title;
@@ -26,11 +33,13 @@ public class Calendar implements Serializable {
 		this.secret = secret;
 		this.emotion = emotion;
 		this.picture = picture;
+		this.startDate = startDate;
+		this.endDate = endDate;
 		this.memberId = memberId;
 	}
-	
+
 	public Calendar(int no, String title, String content, int type, int secret, int emotion, String picture,
-			String memberId, Member member) {
+			Date startDate, Date endDate, String memberId, Member member) {
 		super();
 		this.no = no;
 		this.title = title;
@@ -39,6 +48,8 @@ public class Calendar implements Serializable {
 		this.secret = secret;
 		this.emotion = emotion;
 		this.picture = picture;
+		this.startDate = startDate;
+		this.endDate = endDate;
 		this.memberId = memberId;
 		this.member = member;
 	}
@@ -99,6 +110,22 @@ public class Calendar implements Serializable {
 		this.picture = picture;
 	}
 
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
 	public String getMemberId() {
 		return memberId;
 	}
@@ -116,23 +143,18 @@ public class Calendar implements Serializable {
 	}
 
 	@Override
-	public String toString() {
-		return "Calendar [no=" + no + ", title=" + title + ", content=" + content + ", type=" + type + ", secret="
-				+ secret + ", emotion=" + emotion + ", picture=" + picture + ", memberId=" + memberId + ", member="
-				+ member + "]";
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((content == null) ? 0 : content.hashCode());
 		result = prime * result + emotion;
+		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
 		result = prime * result + ((member == null) ? 0 : member.hashCode());
 		result = prime * result + ((memberId == null) ? 0 : memberId.hashCode());
 		result = prime * result + no;
 		result = prime * result + ((picture == null) ? 0 : picture.hashCode());
 		result = prime * result + secret;
+		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		result = prime * result + type;
 		return result;
@@ -154,6 +176,11 @@ public class Calendar implements Serializable {
 			return false;
 		if (emotion != other.emotion)
 			return false;
+		if (endDate == null) {
+			if (other.endDate != null)
+				return false;
+		} else if (!endDate.equals(other.endDate))
+			return false;
 		if (member == null) {
 			if (other.member != null)
 				return false;
@@ -173,6 +200,11 @@ public class Calendar implements Serializable {
 			return false;
 		if (secret != other.secret)
 			return false;
+		if (startDate == null) {
+			if (other.startDate != null)
+				return false;
+		} else if (!startDate.equals(other.startDate))
+			return false;
 		if (title == null) {
 			if (other.title != null)
 				return false;
@@ -182,9 +214,12 @@ public class Calendar implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
-	
-	
+
+	@Override
+	public String toString() {
+		return "Calendar [no=" + no + ", title=" + title + ", content=" + content + ", type=" + type + ", secret="
+				+ secret + ", emotion=" + emotion + ", picture=" + picture + ", startDate=" + startDate + ", endDate="
+				+ endDate + ", memberId=" + memberId + ", member=" + member + "]";
+	}
 
 }

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="com.mmong.config.mapper.administratorNoticeMapper">
+	
+	<resultMap type="administratorNotice" id="administratorNotice-resultmap">
+		<id column="no" property="no"/>
+		<result column="title" property="title"/>
+		<result column="content" property="content"/>
+		<result column="admin_date" property="adminDate"/>
+		<result column="admin_id" property="adminId"/>
+	</resultMap>
+ 
+ 
+	<sql id="select-sql-administratorNotice">
+		SELECT  no,
+					  title,
+					  content,
+					  admin_date adminDate,
+					  admin_id adminId
+	</sql>
+	
+	<insert id="insertAdminNotice" parameterType="administratorNotice">
+		<selectKey resultType="int" keyProperty="no" order="BEFORE"> 
+			SELECT administrator_notice_no_seq.nextval FROM dual
+		</selectKey>
+		INSERT INTO administrator_notice VALUES (#{no}, #{title}, #{content}, #{adminDate}, #{adminId})
+	</insert>
+	
+	<update id="updateAdminNotice" parameterType="AdministratorNotice">
+		UPDATE 	administrator_notice
+		SET			title=#{title},
+						content=#{content},
+						admin_date=#{adminDate},
+						admin_id=#{adminId}
+		WHERE 	no=#{no}
+	</update>
+	
+	<delete id="deleteAdminNoticeByNo" parameterType="administratorNotice">
+		DELETE FROM administrator_notice
+		WHERE no=#{no}
+	</delete>
+	
+	
+	<resultMap id="administratorNotice-administrator-resultMap" type="administratorNotice" extends="administratorNotice-resultmap">
+		<association property="administrator" resultMap="com.mmong.config.mapper.administratorMapper.administrator-resultmap"/>
+	</resultMap>
+	
+	<select id="viewAdminNoticeByNo" parameterType="int" resultMap="administratorNotice-administrator-resultMap">
+		SELECT	an.no, an.title, an.content, an.admin_date, an.admin_id,
+						a.admin_id, a.admin_name, a.admin_phone, a.admin_email
+		FROM 		administrator_notice an, administrator a
+		WHERE	an.admin_id(+)=a.admin_id
+		AND			an.no=#{value}
+	</select>
+	
+	<select id="selectAdminNoticeList" resultMap="administratorNotice-administrator-resultMap">
+		SELECT		an.no, an.title, an.content, an.admin_date, an.admin_id,
+						a.admin_id, a.admin_name, a.admin_phone, a.admin_email
+		FROM 		administrator_notice an, administrator a
+		WHERE	an.admin_id=a.admin_id(+)
+		ORDER BY an.no	
+	</select>
+	
+	
+	<!-- 제목으로 공지사항 조회 -->
+	<select id="selectAdminNoticeListByTitle" parameterType="string" resultMap="administratorNotice-administrator-resultMap">
+		SELECT		an.no, an.title, an.content, an.admin_date, an.admin_id,
+						a.admin_id, a.admin_name, a.admin_phone, a.admin_email
+		FROM 		administrator_notice an, administrator a
+		WHERE	an.title LIKE '%'||#{value}||'%'
+		ORDER BY an.no	
+	</select>
+	
+	<!-- 내용으로 공지사항 조회 -->
+	<select id="selectAdminNoticeListByContent" parameterType="string" resultMap="administratorNotice-administrator-resultMap">
+		SELECT		an.no, an.title, an.content, an.admin_date, an.admin_id,
+						a.admin_id, a.admin_name, a.admin_phone, a.admin_email
+		FROM 		administrator_notice an, administrator a
+		WHERE	an.content LIKE '%'||#{value}||'%'
+		ORDER BY an.no	
+	</select>
+
+	<!-- 페이징 매핑 -->
+	<select id="selectAdminNoticeListPaging" parameterType="map" resultType="AdministratorNotice">
+		<![CDATA[
+			SELECT rownum rnum, no, title, content, admin_date, admin_id
+			FROM(
+				 	SELECT rownum rnum, no, title, content, admin_date, admin_id
+				 	FROM(
+								SELECT		an.no, an.title, an.content, an.admin_date, an.admin_id,
+												a.admin_id, a.admin_name, a.admin_phone, a.admin_email
+								FROM 		administrator_notice an, administrator a
+								WHERE	an.admin_id=a.admin_id(+)
+								ORDER BY an.no DESC
+							  )
+					WHERE rownum <= #{endNoticeNo}
+					)
+			WHERE rownum >= #{beginNoticeNo}
+		]]>
+	</select>
+
+	<select id="selectAdminNoticeCount" resultType="_int">
+		SELECT COUNT(no) FROM administrator_notice
+	</select>
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

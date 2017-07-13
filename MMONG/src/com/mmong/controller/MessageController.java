@@ -33,6 +33,15 @@ public class MessageController {
 	@Autowired
 	private MessageService service;
 	
+	@RequestMapping("idNnickFromBoard")
+	public String idNnickFromBoard(@RequestParam String id, @RequestParam String nickname, ModelMap map){
+		
+		map.addAttribute("id", id);
+		map.addAttribute("nickname", nickname);
+		
+		return "/content/message/sendMessage";
+	}
+	
 	/**
 	 * 쪽지보내기
 	 * @param mess
@@ -41,15 +50,18 @@ public class MessageController {
 	 * @return
 	 */
 	@RequestMapping("insert")
-	public ModelAndView insertMessage(@ModelAttribute Message mess, BindingResult errors){
+	public ModelAndView insertMessage(@ModelAttribute Message mess, BindingResult errors, @RequestParam String id, @RequestParam String nickname, ModelMap map){
+		
+		System.out.println("insert");
 		
 		Date date = new Date();
-		//String receiveId = "b1b2b3b4";   ////대체될 줄!!!!!!!!!
-		String receiveId = "wngus0424";   ////대체될 줄!!!!!!!!!
-
+		String receiveId = id; 
+		
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String sendId = member.getMemberId();   
 
+		map.addAttribute("id", id);
+		map.addAttribute("nickname", nickname);
 		
 		Message message = new Message(0, date, mess.getTitle(), mess.getContent(), 0, sendId, receiveId);
 		
@@ -61,6 +73,7 @@ public class MessageController {
 		}
 
 		service.insertMessage(message);
+		
 		
 		RedirectView rv = new RedirectView("/MMONG/message/sendSuccess.do");
 		rv.setExposeModelAttributes(false);

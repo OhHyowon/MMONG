@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
 <html>
@@ -24,15 +23,14 @@ span.error{
 <h2>쪽지 보내기</h2><hr>
 
 <!-- 받는 아이디는 자유게시판에서 session scope를 통해 받아온다 -->
-<form action="/MMONG/message/insert.do" method="post">
+<form action="/MMONG/message/insert.do?id=${requestScope.id }&nickname=${requestScope.nickname }" method="post">
 	 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	
 	<table>
 	<tr>
 		<th>받는이</th>
-		<td><!-- session scope를 통해 전달받은 id & nick -->
-			받는이(이름)
-			<%-- ${sessionScope.receiveId }(${sessionScope.receiveNick }) --%>
+		<td>
+			${requestScope.id }(${requestScope.nickname })
 		</td>
 	</tr>
 	<tr>

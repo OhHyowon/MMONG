@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mmong.config.mapper.calendarMapper">
+
+<!--  
+type 변수 사용시,
+	0 : 개인 일정
+	1 : 진료 일정
+	2 : 소모임 일정
+	
+emotion 변수 사용시, (null 가능)
+	0 : 기쁨
+	1: 슬픔
+	2 : 화남
+	3 : 보통
+	4 : 우울
+	5 : null
+	
+secret 변수 사용시,
+	0 : 전체 공개글
+	1 : 비밀글
+-->
+
+<resultMap type="calendar" id="calendar_resultmap">
+	<id column="no" property="no"/>
+	<result column="title" property="title"/>
+	<result column="content" property="content"/>
+	<result column="type" property="type"/>
+	<result column="secret" property="secret"/>
+	<result column="start_date" property="startDate"/>
+	<result column="end_date" property="endDate"/>
+	<result column="emotion" property="emotion"/>
+	<result column="picture" property="picture"/>
+	<result column="member_id" property="memberId"/>
+</resultMap>
+
+<!-- 일정 추가 -->
+<insert id="insertSchedule" parameterType="calendar">
+	<selectKey resultType="int" keyProperty="no" order="BEFORE">
+		SELECT CALENDAR_NO_SEQ.nextval FROM dual
+	</selectKey>
+	INSERT INTO calendar VALUES (#{no}, #{title}, #{content}, #{type}, #{secret}, #{startDate}, #{endDate}, #{emotion}, #{picture}, #{memberId})
+</insert>
+
+<!-- 일정 전체 조회 -->
+<select id="selectSchedule" parameterType="string" resultMap="calendar_resultmap">
+	SELECT no, title, content, type, secret, start_date, end_date, emotion, picture
+	FROM calendar
+	WHERE member_id = #{value}
+</select>
+
+<!-- 일정 상세 조회 -->
+<select id="viewSchedule" parameterType="int" resultMap="calendar_resultmap">
+	SELECT no, title, content, type, secret, start_date, end_date, emotion, picture
+	FROM calendar
+	WHERE no = #{value}
+</select>
+
+<!-- 일정 삭제 -->
+<delete id="deleteSchedule" parameterType="int">
+	DELETE FROM calendar
+	WHERE no = #{value}
+</delete>
+
+<!-- 일정 수정 -->
+<update id="updateSchedule">
+	UPDATE calendar
+	SET
+		title=#{title}, 
+		content=#{content}, 
+		type=#{type}, 
+		secret=#{secret}, 
+		start_date=#{startDate}, 
+		end_date=#{endDate}, 
+		emotion=#{emotion}, 
+		picture=#{picture}
+	WHERE no=#{no}
+</update>
+
+</mapper>

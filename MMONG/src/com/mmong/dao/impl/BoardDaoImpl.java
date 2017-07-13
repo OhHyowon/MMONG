@@ -46,22 +46,25 @@ public class BoardDaoImpl implements BoardDao{
 		session.delete(makeSqlId("deleteBoard"),map);
 	}
 	
-	public int selectBoardCount(){
-		return session.selectOne(makeSqlId("selectBoardCount"));
+	public int selectBoardCount(int groupNo){
+	
+		return session.selectOne(makeSqlId("selectBoardCount"),groupNo);
 	}
 	
-	public List<Board> selectAllBoard(int beginItemNo, int endItemNo){
+	public List<Board> selectAllBoard(int beginItemNo, int endItemNo,int groupNo){
 		HashMap<String,Object>map = new HashMap<>();
 		
 		map.put("beginItemNo",beginItemNo);
 		map.put("endItemNo", endItemNo);
+		map.put("groupNo", groupNo);
 		
 		return session.selectList(makeSqlId("selectAllBoard"),map);
 	}
 	
-	public List<Board> selectOption(String option, String key, int beginItemNo, int endItemNo){		
+	public List<Board> selectOption(String option, String key, int beginItemNo, int endItemNo,int groupNo){		
 		HashMap<String,Object> map = new HashMap<>();
 		
+		map.put("groupNo", groupNo);
 		map.put("beginItemNo", beginItemNo);
 		map.put("endItemNo", endItemNo);
 		map.put("option", option);
@@ -71,21 +74,27 @@ public class BoardDaoImpl implements BoardDao{
 	}
 
 	@Override
-	public int selectMyBoardCount(String memberId) {
-		return session.selectOne(makeSqlId("selectMyBoardCount"),memberId);
+	public int selectMyBoardCount(String memberId,int groupNo) {
+		HashMap <String,Object> map=new HashMap<>();
+		
+		map.put("memberId", memberId);
+		map.put("groupNo",groupNo);
+		
+		return session.selectOne(makeSqlId("selectMyBoardCount"),map);
 	}
 	
-	public List<Board> selectMyBoardList(int beginItemNo, int endItemNo,String memberId){
+	public List<Board> selectMyBoardList(int beginItemNo, int endItemNo,String memberId,int groupNo){
 		HashMap<String,Object> map=new HashMap<>();
 		
 		map.put("beginItemNo",beginItemNo);
 		map.put("endItemNo", endItemNo);
 		map.put("memberId",memberId);
+		map.put("groupNo", groupNo);
 		
 		return session.selectList(makeSqlId("selectMyBoardList"),map);
 	}
 	
-	public List<Board>selectMyOption(int beginItemNo, int endItemNo,String option,String key,String memberId){
+	public List<Board>selectMyOption(int beginItemNo, int endItemNo,String option,String key,String memberId,int groupNo){
 		HashMap<String,Object> map=new HashMap<>();
 		
 		map.put("beginItemNo", beginItemNo);
@@ -93,6 +102,7 @@ public class BoardDaoImpl implements BoardDao{
 		map.put("memberId",memberId);
 		map.put("option",option);
 		map.put("key", key);
+		map.put("groupNo", groupNo);
 		
 		return session.selectList(makeSqlId("selectMyOption"),map);
 	}

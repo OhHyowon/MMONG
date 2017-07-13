@@ -19,4 +19,12 @@ public interface GroupMemberService {
 	 * 작성자 : 이주현 
 	 */
 	List<GroupMember> selectMeById(String memberId);
+	
+	/**
+	 * 해당 소모임에 소속된 참여멤버를 찾기
+	 * @param groupNo
+	 * @return 
+	 * 작성자 : 이주현
+	 */
+	List<GroupMember> searchGroupMemberByGroupNo(int groupNo);
 }

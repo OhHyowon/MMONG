@@ -44,14 +44,14 @@ public interface BoardDao {
 	 * 전체 게시글 갯수 조회
 	 * @return
 	 */
-	public int selectBoardCount();
+	public int selectBoardCount(int groupNo);
 	/**
 	 * 전체 게시글 조회
 	 * @param beginItemNo
 	 * @param endItemNo
 	 * @return
 	 */
-	public List<Board> selectAllBoard(int beginItemNo, int endItemNo);
+	public List<Board> selectAllBoard(int beginItemNo, int endItemNo,int groupNo);
 	/**
 	 * 검색된 게시글 조회
 	 * @param option
@@ -60,12 +60,12 @@ public interface BoardDao {
 	 * @param endItemNo
 	 * @return
 	 */
-	public List<Board> selectOption(String option, String key, int beginItemNo, int endItemNo);
+	public List<Board> selectOption(String option, String key, int beginItemNo, int endItemNo, int groupNo);
 	/**
 	 * 내가 쓴 게시글의 전체 갯수 조회
 	 * @return
 	 */
-	public int selectMyBoardCount(String memberId);
+	public int selectMyBoardCount(String memberId,int groupNo);
 	/**
 	 * 내가 쓴 게시글 목록 조회
 	 * @param beginItemNo
@@ -73,7 +73,7 @@ public interface BoardDao {
 	 * @param memberId
 	 * @return
 	 */
-	public List<Board> selectMyBoardList(int beginItemNo, int endItemNo,String memberId);
+	public List<Board> selectMyBoardList(int beginItemNo, int endItemNo,String memberId,int groupNo);
 	/**
 	 * 내가 쓴 게시물 검색해서 조회
 	 * @param beginItemNo
@@ -83,7 +83,7 @@ public interface BoardDao {
 	 * @param memberId
 	 * @return
 	 */
-	public List<Board>selectMyOption(int beginItemNo, int endItemNo,String option,String key,String memberId);
+	public List<Board>selectMyOption(int beginItemNo, int endItemNo,String option,String key,String memberId,int groupNo);
 	/**
 	 * boardNo으로 boardContent 조회
 	 * @param boardNo

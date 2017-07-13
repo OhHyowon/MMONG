@@ -57,7 +57,7 @@ $('document').ready(function(){
 		</tr>		
 		<tr>
 			<td colspan="2">    
-				<input type="button" id="createNone" value="생성">&nbsp; 
+				<input type="button" id="create" value="생성">&nbsp; 
 				<input type="reset" value="다시 작성">&nbsp;</td>
 			</td>
 		</tr>
