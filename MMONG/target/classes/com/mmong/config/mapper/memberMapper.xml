@@ -7,7 +7,7 @@
 		INSERT INTO member VALUES (#{memberId},
 								   #{memberName}, 
 								   #{nickName}, 
-								   #{memberPhone},
+								   #{memberPhone},		
 								   #{memberEmail},
 								   #{memberAddress},								   
 								   #{memberPicture}
@@ -81,6 +81,13 @@
 		SELECT count(*)
 		FROM member
 		WHERE member_phone = #{value}
+	</select>	
+	
+	<!-- 회원이메일 중복조회 -->
+	<select id="checkMemberEmail" parameterType="String" resultType="int">
+		SELECT count(*)
+		FROM member
+		WHERE member_email = #{value}
 	</select>	
 
 </mapper>

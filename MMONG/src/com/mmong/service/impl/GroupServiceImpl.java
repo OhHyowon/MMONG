@@ -33,4 +33,15 @@ public class GroupServiceImpl implements GroupService {
 		return groupDao.searchGroupByName(groupName);
 	}
 
+	public void updateLeader(int groupNo, String newLeader){
+		groupDao.updateLeader(groupNo,newLeader);
+	}
+	
+	public void deleteGroup(int groupNo){
+		groupDao.deleteGroup(groupNo);
+	}
+	
+	public void updateGroup(Group group){
+		groupDao.updateGroup(group);
+	}
 }

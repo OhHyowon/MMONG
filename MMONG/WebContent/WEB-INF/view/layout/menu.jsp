@@ -41,6 +41,7 @@
 	<li><a href="/MMONG/map/basic_map.do">기본 맵</a></li>
 	<li><a href="/MMONG/group/mygroup.do">소모임</a></li>
 	<li><a href="/MMONG/admin/customerCenter.do">고객센터</a></li>
+	<li><a href="/MMONG/health/list.do">건강관리</a></li>
 </ul> 
 <hr>  
 <%-- ======================대menu 영역 끝=================== --%>  

@@ -45,4 +45,9 @@ public class MemberServiceImpl implements MemberService {
 		return memDao.checkMemberPhone(memberPhone);
 	}
 
+	@Override
+	public int checkMemberEmail(String memberEmail) {
+		return memDao.checkMemberEmail(memberEmail);
+	}
+
 }

@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<script type="text/javascript" src="/PatcH/resource/jquery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
  <script src="/MMONG/resource/bootstrap/bootstrap.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){

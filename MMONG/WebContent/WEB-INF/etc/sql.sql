@@ -2,9 +2,13 @@ ALTER TABLE member DROP COLUMN member_pwd;
 ALTER TABLE member DROP COLUMN member_authority;
 ALTER TABLE administrator DROP COLUMN admin_pwd;
 ALTER TABLE administrator DROP COLUMN admin_authority;
+ALTER TABLE GROUP_DATE ADD member_Id varchar2(30)
 
 ALTER TABLE GROUP_DATE CREATE COLUMN TITLE VARCHAR2(900);
+
 ALTER TABLE GROUP_DATE ADD member_Id varchar2(30)
+
+alter table reply add group_no number
 
 /* 사용자 0번 */
 DROP TABLE USERS;
@@ -91,9 +95,9 @@ CREATE TABLE CHART (
 	NO NUMBER PRIMARY KEY,/* NO */
 	CHART_DATE DATE NOT NULL, /* 시간 */
 	WRITER VARCHAR2(30) NOT NULL, /* 작성자 */
-	CONTENT VARCHAR2(900) /* 내용 */
+	CONTENT VARCHAR2(900), /* 내용 */
+	HEALTH_NO NUMBER CONSTRAINT HEALTH_NO_CHART_FK REFERENCES HEALTH(NO) ON DELETE CASCADE /* 차트NO */
 );
-
 
 DROP SEQUENCE CHART_NO_SEQ;
 CREATE SEQUENCE CHART_NO_SEQ;
@@ -104,8 +108,7 @@ CREATE TABLE HEALTH (
 	NO NUMBER PRIMARY KEY, /* NO */
 	CONTENT VARCHAR2(900) NOT NULL, /* 내용 */
 	DONE NUMBER NOT NULL, /* 체크여부 0:안함(DEFAULT), 1:함*/
-	GENDER CHAR NOT NULL, /* 성별 */
-	CHART_NO NUMBER CONSTRAINT CHART_NO_HEALTH_FK REFERENCES CHART(NO) /* 차트NO */
+	GENDER CHAR NOT NULL /* 성별 */
 );
 
 DROP SEQUENCE HEALTH_NO_SEQ;
@@ -283,3 +286,10 @@ CREATE SEQUENCE MESSAGE_NO_SEQ;
 		)
 		WHERE rnum >= 1
 	
+		
+		
+				SELECT no, content, reply_date, member_id, board_no
+				FROM reply
+				WHERE member_id='duflalrjdi'
+				AND 		group_no=21
+				ORDER BY reply_date DESC

@@ -36,10 +36,11 @@ public interface MemberService {
 	int checkMemberId(String memberId);
 
 	/**
-	 * 회원 핸드폰 번호로 중복번호 조회하는 메소드
-	 * @param memberPhone
+	 * 회원 이메일 중복확인하는 메소드
+	 * @param memberEmail
 	 * @return 찾은 회원 수 : 있으면 1, 없으면 0
 	 */
 	int checkMemberPhone(String memberPhone);
 	
+	int checkMemberEmail(String memberEmail);
 }

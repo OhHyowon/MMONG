@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mmong.service.impl.GroupDateServiceImpl;
+import com.mmong.service.GroupDateService;
 import com.mmong.validation.GroupDateValidator;
 import com.mmong.vo.GroupDate;
 import com.mmong.vo.MeetMember;
@@ -29,10 +29,18 @@ import com.mmong.vo.Member;
 @RequestMapping("group/groupDate/")
 public class GroupDateController{
 	@Autowired
-	private GroupDateServiceImpl groupDateService;
+	private GroupDateService groupDateService;
 	
 	
-	/*일정 등록*/
+	/***
+	 * 일정 등록하는 handler method
+	 * @param groupDate
+	 * @param errors
+	 * @param session
+	 * @param map
+	 * @return
+	 * 작성자 : 강여림
+	 */
 	@RequestMapping("register")
 	public String groupDateInsert(@ModelAttribute GroupDate groupDate, BindingResult errors,
 													HttpSession session,ModelMap map){
@@ -41,7 +49,7 @@ public class GroupDateController{
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String memberId=member.getMemberId();
 	
-		int groupNo=(int) session.getAttribute("groupNo");
+		int groupNo=(int) session.getAttribute("groupNo"); // session에 있는 groupNo 가져옴
 		
 		GroupDateValidator vaildator=new GroupDateValidator();
 		vaildator.validate(groupDate, errors);
@@ -57,6 +65,14 @@ public class GroupDateController{
 		return "redirect:/group/groupDate/groupDateView.do?groupDateNo="+groupDateNo; // 완성되면 일정 상세보기 페이지로 바꾸기
 	}
 	
+	/***
+	 * 하나의 일정 상세보기 handler method
+	 * @param groupDateNo
+	 * @param session
+	 * @param map
+	 * @return
+	 * 작성자 : 강여림
+	 */
 	@RequestMapping("groupDateView")
 	public String selectGroupDate(int groupDateNo,HttpSession session, ModelMap map){
 		/*int groupDateNo=(int) session.getAttribute("groupDateNo");*/
@@ -81,7 +97,12 @@ public class GroupDateController{
 		return "group/groupDate/groupDate_view.tiles";
 	}
 	
-	
+	/***
+	 * 일정에 참여하는 멤버 등록하는 handler method
+	 * @param session
+	 * @return
+	 * 작성자 : 강여림
+	 */
 	@RequestMapping("registerMeet")
 	@ResponseBody
 	public String insertMeetMember(HttpSession session){
@@ -98,6 +119,12 @@ public class GroupDateController{
 		
 		return "1";
 	}
+	/**
+	 *	일정 참여 취소하는 handler method
+	 * @param session
+	 * @return
+	 * 작성자 : 강여림
+	 */
 	
 	@RequestMapping("cancelMeet")
 	@ResponseBody
@@ -114,15 +141,22 @@ public class GroupDateController{
 		
 		return "1";
 	}
-	
+	/**
+	 * 모든 일정 목록 보는handler method
+	 * @param page
+	 * @param option
+	 * @param key
+	 * @param session
+	 * @param map
+	 * @return
+	 * 작성자 : 강여림
+	 */
 	@RequestMapping("allGroupDateList")
 	public String allGroupDateList(@RequestParam(value="page", defaultValue="1")int page, 
 													@RequestParam (value="option", defaultValue="1")String option, 
 													@RequestParam  (value="key", defaultValue="1")String key,
 													HttpSession session, ModelMap map){
-		
-		
-		
+
 		HashMap<String,Object> pagingMap=null;
 
 		int groupNo=(int) session.getAttribute("groupNo");
@@ -133,7 +167,6 @@ public class GroupDateController{
 			try {
 				Date dateTime = new SimpleDateFormat("yyyy-MM-dd").parse(key);
 				pagingMap=groupDateService.selectGroupDateOption2(page,groupNo,dateTime,option);
-				
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -141,7 +174,6 @@ public class GroupDateController{
 			pagingMap=groupDateService.selectGroupDateOption(page,groupNo,key,option);
 		}
 
-		
 		map.addAttribute("groupNo", groupNo);
 		map.addAttribute("groupDateList", pagingMap.get("groupDateList"));
 		map.addAttribute("pageBean", pagingMap.get("pageBean"));
@@ -149,7 +181,13 @@ public class GroupDateController{
 		return "group/groupDate/groupDate_list.tiles";
 	}
 	
-	/* update - 1 일정 그대로 받아오기*/
+	/**
+	 * 입력된 일정 그대로 받아오는 handler method
+	 * @param groupDateNo
+	 * @param map
+	 * @return
+	 * 작성자 : 강여림
+	 */
 	@RequestMapping("updateGroupDate1")
 	public String updateGroupDate1(@RequestParam int groupDateNo,ModelMap map){
 		
@@ -161,7 +199,13 @@ public class GroupDateController{
 		return "group/groupDate/groupDate_update.tiles";
 	}
 	
-	/* update - 2 수정 된 일정 DB에 넣기*/
+	/**
+	 * 수정된 일정 DB에 넣는 handler method
+	 * @param groupDate
+	 * @param errors
+	 * @return
+	 * 작성자 : 강여림
+	 */
 	@RequestMapping("updateGroupDate2")
 	public String updateGroupDate2(@ModelAttribute GroupDate groupDate, BindingResult errors ){
 		
@@ -177,14 +221,17 @@ public class GroupDateController{
 		
 		return "group/groupDate/groupDate_view.tiles";
 	}
-	
+	/**
+	 * 일정 삭제하는 handler
+	 * @param session
+	 * @return
+	 * 작성자 : 강여림
+	 */
 	@RequestMapping("groupDateDelete")
 	@ResponseBody
 	public String groupDateDelete(HttpSession session){
 		int groupDateNo=(int) session.getAttribute("groupDateNo");
-		
 		groupDateService.deleteGroupDate(groupDateNo);
-		
 		return "1";
 	}
 }

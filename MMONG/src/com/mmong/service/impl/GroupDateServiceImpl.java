@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mmong.dao.impl.GroupDateDaoImpl;
+import com.mmong.dao.GroupDateDao;
 import com.mmong.paging.util.PagingBean;
 import com.mmong.service.GroupDateService;
 import com.mmong.vo.GroupDate;
@@ -16,7 +16,7 @@ import com.mmong.vo.MeetMember;
 @Service
 public class GroupDateServiceImpl implements GroupDateService{
 	@Autowired
-	private GroupDateDaoImpl dao; // 완성되면 impl 떼고 dao로 변경하기
+	private GroupDateDao dao;
 	
 	public int insertGroupDate(GroupDate groupDate){
 		dao.insertGroupDate(groupDate);
@@ -101,5 +101,9 @@ public class GroupDateServiceImpl implements GroupDateService{
 	
 	public void deleteGroupDate(int groupDateNo){
 		dao.deleteGroupDate(groupDateNo);
+	}
+	
+	public void deleteMeetMemberByGroupMemberNo(int groupMemberNo){
+		dao.deleteMeetMemberByGroupMemberNo(groupMemberNo);
 	}
 }

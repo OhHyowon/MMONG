@@ -54,8 +54,6 @@
 	<mvc:view-controller path="/group/board/board_menu.do" view-name="group/board/board_menu.tiles" />
 
 
-
-
 	<!-- 세연 -->
 	<!-- 쪽지 관리 탭 -->
 	<mvc:view-controller path="/message.do" view-name="message/message.tiles" />
@@ -66,8 +64,10 @@
 
 
 	<!-- 규현 -->
-
-
+	<!-- 건강정보 목록 -->
+   	<mvc:view-controller path="/health/list.do" view-name="health/healthlist.tiles"/>
+   	<!-- 건강정보 등록 -->
+   	<mvc:view-controller path="/health/registform.do" view-name="health/healthlist_regist.tiles"/>
 
 
 
@@ -88,8 +88,6 @@
 	<mvc:view-controller path="/admin/customerCenter.do" view-name="admin/customerCenter.tiles" />
 	<!-- 공지사항 글쓰기 폼 -->
 	<mvc:view-controller path="/adminNotice/insertAdminNotice_form.do" view-name="adminNotice/insertAdminNotice_form.tiles" />
-
-
 
 	<!-- ================ 타일 설정 =============== -->
 	<!-- TilesConfigurer -->
