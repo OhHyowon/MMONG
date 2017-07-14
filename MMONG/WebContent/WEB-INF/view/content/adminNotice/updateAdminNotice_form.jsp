@@ -6,11 +6,19 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	//수정버튼 확인
 	$("#updateBtn").on("click",function(){
+		if(!$("#title").val()){
+			alert("제목을 입력하세요");
+			return false;
+		}
+		if(!$("#content").val()){
+			alert("내용을 입력하세요");
+			return false;
+		}
 		if(confirm("수정하시겠습니까?")){
-			alert("수정완료")
+			alert("수정 완료");
 		}else{
+			alert("수정 취소");
 			return false;
 		}
 	});
@@ -25,7 +33,7 @@ $(document).ready(function(){
 
 
 <h3>공지사항 수정 폼</h3>
-<form action="/MMONG/adminNotice/updateAdminNotice.do" method="post">
+<form action="/MMONG/adminNotice/updateAdminNotice.do?adminNoticeNo=${requestScope.adminNotice.no}" method="post">
 		<table>
 			<tr>
                 <td>작성자: </td>
@@ -34,11 +42,11 @@ $(document).ready(function(){
             </tr>
 			<tr>
 				<td>제목 :</td>
-				<td><input type="text" name="title" value="${requestScope.adminNotice.title}" ><br></td>
+				<td><input type="text" id="title" name="title" value="${requestScope.adminNotice.title}" ><br></td>
 			</tr>
 			<tr>
 				<td>내용 :</td>
-				<td><textarea cols="80" rows="10"  name="content" >${requestScope.adminNotice.content}</textarea></td>
+				<td><textarea cols="80" rows="10" id="content" name="content" >${requestScope.adminNotice.content}</textarea></td>
 			</tr>
 			<tr> 
 				<input type="hidden" name="no" value="${requestScope.adminNotice.no}"/><br>

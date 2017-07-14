@@ -36,8 +36,10 @@ public class AdministratorServiceImpl implements AdministratorService {
 		return adminDao.checkAdminPhone(adminPhone);
 	}
 	
-	
-	
+	@Override
+	public int checkAdminEmail(String adminEmail) {
+		return adminDao.checkAdminEmail(adminEmail);
+	}
 	
 }
 
