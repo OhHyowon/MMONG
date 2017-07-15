@@ -52,8 +52,17 @@ public class ChartDaoImpl implements ChartDao{
 	 */
 	@Override
 	public Chart selectChartByNoAndWriter(Map map) {
-		// TODO Auto-generated method stub
+		
 		return session.selectOne(makeSqlId("selectChartByNoAndWriter"),map);
+	}
+	
+	/**
+	 *  id로 진료기록 조회
+	 */
+	@Override
+	public List<Chart> selectChartByWriter(String id) {
+		
+		return session.selectList(makeSqlId("selectChartByWriter"),id);
 	}
 
 

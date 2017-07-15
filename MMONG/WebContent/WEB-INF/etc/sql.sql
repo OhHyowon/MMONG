@@ -293,3 +293,11 @@ CREATE SEQUENCE MESSAGE_NO_SEQ;
 				WHERE member_id='duflalrjdi'
 				AND 		group_no=21
 				ORDER BY reply_date DESC
+				
+				
+		SELECT	no,
+				content,
+				done,
+				gender
+		 FROM	health
+		 ORDER BY 'no' DESC

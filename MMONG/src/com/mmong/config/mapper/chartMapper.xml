@@ -50,8 +50,19 @@
 			   health_no
 		  FROM chart	   
 		 WHERE writer= #{writer} and health_no = #{no}
+		 ORDER BY health_no
 </select>
 
-
+<!-- 멤버 아이디로 전체 조회  -->
+<select id="selectChartByWriter" parameterType="String"	resultMap="chart-resultmap">
+		SELECT no,
+			   chart_date,
+			   writer,
+			   content,
+			   health_no
+		  FROM chart	   
+		 WHERE writer= #{writer}
+		 ORDER BY health_no
+</select>
 
 </mapper>
