@@ -15,9 +15,9 @@ th, td{
 	padding-right: 5px;
 }
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
-																					/// member/register_form.jsp 그대로 가져옴.
+																				
 var sizeChk = true; //아이디 길이 체크값
 var idDuplicationChk = false; //아이디 중복검사 체크값
 var pwdChk = false; //비밀번호 값 검사 체크값
@@ -166,8 +166,55 @@ $(document).ready(function(){
 			 $("#emailMsg").hide();
 		 }
 	 });
+/* 	 
+	 ///이메일 중복 확인
+	 $("#emailAuth").on("click",function(){
+		$.ajax({
+			"url":"/MMONG/admin/checkAdminEmail.do",
+			"data":{"adminEmail1":$("#adminEmail1").val(), "adminEmail2":$("#adminEmail2").val()},
+			"dataType":"text",
+			"beforeSend":function(){
+				if($("#adminEmail1").val()==""||$("#adminEmail1").val()==""){
+					$("#emailMsg").empty();
+					$("#emailMsg").append("이메일을 입력하세요");
+					$("#emailMsg").show();
+					return false;
+				}
+			},
+			"success":function(response){
+				if(response==1){
+					$("#emailMsg").empty();
+					$("#emailMsg").append("이미 가입된 이메일 입니다.");
+					$("#emailMsg").show();
+				}else{
+					$("#emailMsg").hide();
+					emailAuthOpen();
+				}
+			}
+		});
+	 });
+	 
+	  */
+	 
 });//ready 함수의 끝
 
+
+/* //이메일 인증 컨트롤러 부르는 함수
+function emailAuthOpen(){
+	if($("#adminEmail1").val()==""||$("#adminEmail2").val()==""){
+		$("#emailMsg").empty();
+		$("#emailMsg").append("이메일을 입력하세요.");
+		$("#emailMsg").show();
+		return;
+	}else{
+		$("#adminEmail").val($("#adminEmail1").val() + "@" + $("#adminEmail2").val()); //이메일 @ 전후로 합쳐서 hidden태그에 넣기
+		var adminEmail=$("adminEmail").val();
+		window.open("/MMONG/sendMail/auth.do?adminEmail="+$("#adminEmail").val(), '소모임 만들기', 'top=100px, left=100px, height=220px, width=500px');
+	}
+	
+}
+
+ */
 
 
 
@@ -242,7 +289,7 @@ function formChk() {
 
 function formSubmit(){
     if(formChk()){ // formChk 값이 true일경우만 submit
-    	$("#adminEmail").val($("#adminEmail1").val() + "@" + $("#adminEmail2").val()); //이메일 @ 전후로 합쳐서 hidden태그에 넣기
+    	$("#adminEmail").val($("#adminEmail1").val() + "@" + $("#adminEmail2").val());
     	$("#insert").submit();
     }
 }
@@ -325,9 +372,12 @@ function formSubmit(){
 		
 		<tr>	
 			<th>이메일</th>
-			<td><input type="text" id="adminEmail1" name="adminEmail1" value="${param.adminEmail1 }"> @ 
+			<td><%-- <form> --%>
+				<input type="text" id="adminEmail1" name="adminEmail1" value="${param.adminEmail1 }"> @ 
 				<input type="text" id="adminEmail2" name="adminEmail2" value="${param.adminEmail2 }">
-				<input type="hidden" id="adminEmail" name="adminEmail" value="${param.adminEmail }"> </td>
+				<input type="hidden" id="adminEmail" name="adminEmail" value="${param.adminEmail }">
+				<!-- <input type="button" id="emailAuth" value="이메일 인증하기"/> -->
+				<%-- </form> --%></td>
 		</tr>
 		<tr>
 			<td></td>

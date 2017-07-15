@@ -23,4 +23,8 @@ enable : ${requestScope.administrator.user.userEnable}<br>
 </form>
 <br>
 
+<<<<<<< HEAD
 </section>
+=======
+ 
+>>>>>>> a537eee2acff70d4c6aeb31463ac59d50205a4a0

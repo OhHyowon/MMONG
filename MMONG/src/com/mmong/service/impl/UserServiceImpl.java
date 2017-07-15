@@ -77,12 +77,33 @@ public class UserServiceImpl implements UserService {
 		Administrator admin = null;
 		admin = adminDao.searchAdministratorById(adminId);
 		if(admin.getUser().getUserEnable()==1){
-			userDao.updateAdministratorEnableToZero(admin.getAdminId());
+			userDao.updateUserEnableToZero(admin.getAdminId());
 		}
 	}
 		
 	////////////////////////////////////////////////////////////////////////
 	
+	//회원 enable 1 -> 0
+	@Override
+	public void changeMemberEnableToZero(String memberId) {
+		Member member = null;
+		member = memberDao.searchMemberById(memberId);
+		if(member.getUser().getUserEnable()==1){
+			userDao.updateUserEnableToZero(member.getMemberId());
+		}
+	}
+	
+	//'회원 탈퇴하기' 이것과 위의 'changeMemberEnableToZero'메소드 중 택1
+	@Override
+	public void changeAuthorityMemberToWithdrawal(String memberId) {
+		Member member = null;
+		member = memberDao.searchMemberById(memberId);
+		if(member.getUser().getUserAuthority().equals("ROLE_1")){
+			userDao.updateUserAuthorityToWithdrawal(member.getMemberId());
+		}
+	}
+
+	//회원가입시 아이디 중복검사 위해 필요
 	@Override
 	public int checkUserId(String userId) {
 		return userDao.checkUserId(userId);
@@ -90,7 +111,7 @@ public class UserServiceImpl implements UserService {
 
 		
 	////////////////////////////////////////////////////////////////////////
-		
+	
 	
 	
 	

@@ -66,6 +66,12 @@
 		WHERE admin_phone = #{value}
 	</select>	
  	
+ 	<!-- 관리자 이메일 중복조회 -->
+	<select id="checkAdminEmail" parameterType="String" resultType="int">
+		SELECT count(*)
+		FROM administrator
+		WHERE admin_email = #{value}
+	</select>	
  	
  </mapper>
  
