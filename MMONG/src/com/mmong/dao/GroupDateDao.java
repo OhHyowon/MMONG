@@ -135,6 +135,24 @@ public interface GroupDateDao {
 	 * 작성자 : 강여림
 	 */
 	public void deleteMeetMemberByGroupMemberNo(int groupMemberNo);
-	
+	/**
+	 * groupNo으로 일정 참여 no 조회하는 메소드 (소모임 삭제시 필요)
+	 * @param groupNo
+	 * @return
+	 * 작성자 : 강여림
+	 */
+	public List<Integer> selectNoByGroupNo(int groupNo);
+	/**
+	 * groupNo으로 일정 전체 삭제하는 메소드 (소모임 삭제시 필요)
+	 * @param groupNo
+	 * 작성자 : 강여림
+	 */
+	public void deleteGroupDateByGroupNo(int groupNo);
+	/**
+	 * groupDateNo로 일정 참여자 삭제하는 메소드 (소모임 삭제시 필요)
+	 * @param groupDateNo
+	 * 작성자 : 강여림
+	 */
+	public void deleteMeetMemberByGroupDateNo(int groupDateNo);
 	
 }

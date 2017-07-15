@@ -3,7 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
-<h3>고객 센터</h3>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i>고객센터
+		</h3>
 
 <%-- ================고객센터페이지 소메뉴=================== --%>
 <ul>	
@@ -28,7 +31,7 @@
 <hr>
 
 
-
+</section>
 
 
 

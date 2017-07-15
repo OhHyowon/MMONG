@@ -1,6 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 
-<h3>검색한 관리자 정보조회</h3>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 검색한 관리자 정보 조회
+		</h3>
 관리자 ID : ${requestScope.administrator.adminId }<br>
 권한 : ${requestScope.administrator.user.userAuthority}<br>
 이름 : ${requestScope.administrator.adminName}<br>
@@ -24,7 +27,7 @@ enable : ${requestScope.administrator.user.userEnable}<br>
 </form>
 
 
-
+</section>
 
 
 

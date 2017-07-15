@@ -2,11 +2,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+
 
 <style type="text/css">
 a:link{
@@ -86,9 +82,10 @@ $(document).ready(function(){
 
 </script>
 
-</head>
-<body>
-<h2>보낸 쪽지함</h2>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 보낸 쪽지함
+		</h3>
 
 	<table>
 		<thead>
@@ -203,7 +200,4 @@ $(document).ready(function(){
 		<input type="text" name="search">
 		<input type="submit" value="검색">
 	</form>
-
-
-</body>
-</html>
+</section>

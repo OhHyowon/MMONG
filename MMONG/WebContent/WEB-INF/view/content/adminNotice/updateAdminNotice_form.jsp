@@ -2,7 +2,10 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<h3>공지사항 수정 폼</h3>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 공지사항 수정 폼
+		</h3>
 <form action="/MMONG/adminNotice/updateAdminNotice.do" method="post">
 		<table>
 			<tr>
@@ -28,3 +31,4 @@
 		</table>
 	</form>
 	<input type="button" value="목록 " onclick="location.href='/MMONG/adminNotice/selectAdminNoticeList.do'"/>
+</section>

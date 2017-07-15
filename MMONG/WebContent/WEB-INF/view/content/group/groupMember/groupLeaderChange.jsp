@@ -15,6 +15,7 @@ $(document).ready(function(){
 				success:function(txt){
 					if(txt=="1"){
 						alert("모임장이 변경되었습니다.");
+						opener.parent.location.reload();
 						window.close();
 					}else if(txt=="2"){
 						alert("현재 모임장 입니다.");

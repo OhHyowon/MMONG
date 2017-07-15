@@ -1,7 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<h3>관리자 마이페이지</h3>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i>관리자 마이 페이지
+		</h3>
  
 관리자 ID : <sec:authentication property="principal.adminId"/><br>
 권한 : ${requestScope.administrator.user.userAuthority}<br>
@@ -20,3 +23,4 @@ enable : ${requestScope.administrator.user.userEnable}<br>
 </form>
 <br>
 
+</section>

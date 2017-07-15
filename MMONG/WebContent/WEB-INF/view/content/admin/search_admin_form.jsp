@@ -1,6 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 
-<h3>관리자 찾기 폼</h3>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 관리자 찾기 폼
+		</h3>
+		
 <form action="/MMONG/admin/searchAdmindById.do" method="post">
 	<table>
 		<tr>
@@ -15,3 +19,4 @@
 		</tr>
 	</table>
 </form>
+</section>

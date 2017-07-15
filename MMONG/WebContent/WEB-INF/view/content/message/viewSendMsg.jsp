@@ -1,14 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-<h2>보낸 쪽지 내용 보기</h2>
+
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 보낸 쪽지 내용 보기
+		</h3>
 
 <table>
 	<tr><td>보낸이</td><td>${requestScope.message.receiveId }(${requestScope.message.member.nickName })</td></tr>
@@ -18,6 +15,4 @@
 </table>
 
 <input type="button" value="확인" onclick="javascript:history.back(-1)">
-
-</body>
-</html>
+</section>

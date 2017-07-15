@@ -2,11 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+
 <style type="text/css">
 
 span, td, th{
@@ -19,9 +15,11 @@ span.error{
 
 </style>
 
-</head>
-<body>
-<h2>쪽지 보내기</h2><hr>
+
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 쪽지보내기
+		</h3>
 
 <!-- 받는 아이디는 자유게시판에서 session scope를 통해 받아온다 -->
 <form action="/MMONG/message/insert.do" method="post">
@@ -52,6 +50,4 @@ span.error{
 	</tr>
 </table>
 </form>
- 
-</body>
-</html>
+ </section>

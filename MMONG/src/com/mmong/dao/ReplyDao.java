@@ -79,4 +79,10 @@ public interface ReplyDao {
 	 * 작성자 : 강여림
 	 */
 	public List<Reply> selectMyReply(int beginItemNo, int endItemNo,String memberId,int groupNo);
+	/**
+	 * groupNo로 댓글 다 삭제하기 (소모임 삭제시 필요)
+	 * @param groupNo
+	 * 작성자 : 강여림
+	 */
+	public void deleteReplyByGroupNo(int groupNo);
 }

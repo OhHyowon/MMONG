@@ -30,7 +30,6 @@ public class GroupDateDaoImpl implements GroupDateDao{
 	}
 	
 	public int selectMemberNo(String memberId, int groupNo){
-		System.out.println("groupDae DAO 들어옴");
 		HashMap<String,Object> map = new HashMap<>();
 		
 		map.put("memberId", memberId);
@@ -89,7 +88,7 @@ public class GroupDateDaoImpl implements GroupDateDao{
 		map.put("groupNo", groupNo);
 		map.put("option", option);
 		map.put("key", key);
-		
+	
 		return session.selectList(makeSqlId("selectOptionGroupDate"),map);
 	}
 	
@@ -124,6 +123,21 @@ public class GroupDateDaoImpl implements GroupDateDao{
 	public void deleteMeetMemberByGroupMemberNo(int groupMemberNo){
 		session.delete(makeSqlId("deleteMeetMemberByGroupMemberNo"), groupMemberNo);
 	}
+	
+	public List<Integer> selectNoByGroupNo(int groupNo){
+		return session.selectList(makeSqlId("selectNoByGroupNo"),groupNo);
+	}
+	
+	public void deleteGroupDateByGroupNo(int groupNo){
+		session.delete(makeSqlId("deleteGroupDateByGroupNo"),groupNo);
+	}
+
+	@Override
+	public void deleteMeetMemberByGroupDateNo(int groupDateNo) {
+		session.delete(makeSqlId("deleteMeetMemberByGroupDateNo"),groupDateNo);
+		
+	}
 }
+
 
 

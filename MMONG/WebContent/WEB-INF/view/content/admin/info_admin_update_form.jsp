@@ -1,6 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 
-<h3>관리자 정보 수정하기</h3>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 관리자 정보 수정하기
+		</h3>
 
 	<form action="/MMONG/admin/info_admin.do" method="post">
 		<table>
@@ -41,3 +44,5 @@
 			</tr>
 		</table>
 	</form>
+
+	</section>

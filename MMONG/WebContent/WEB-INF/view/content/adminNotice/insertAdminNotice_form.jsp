@@ -1,7 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<h3>공지사항 글쓰기</h3>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 공지사항 글쓰기
+		</h3>
 <table>
         <form action="/MMONG/adminNotice/insertAdminNotice.do" method="post" >
         		
@@ -30,4 +33,4 @@
             </tr>
         </form>
 </table>
-
+</section>

@@ -1,12 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	<h2>받은 쪽지 내용 보기</h2>
+
+		<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 받은 쪽지 내용 보기
+		</h3>
 
 	<form action="/MMONG/message/selectMsgIdNick.do?no=${requestScope.message.no}" method="post">
 		 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -21,5 +18,4 @@
 		<input type="submit" value="답장">
 		<input type="button" value="확인" onclick="location.href='/MMONG/message/selectReceiveMsg.do'">
 	</form>
-</body>
-</html>
+	</section>

@@ -120,6 +120,7 @@ public class PagingBean {
 	 * @return 보려는 페이지가 속한 페이지 그룹의 시작 페이지 번호.
 	 */
 	public int getBeginPage(){
+		if(totalItems==0) return 0;
 		return (getCurrentPageGroup()-1)*pagesPerPagegroup+1;
 	}
 	/**
@@ -129,6 +130,7 @@ public class PagingBean {
 	 * @return 보려는 페이지가 속한 페이지 그룹의 마지막 페이지 번호
 	 */
 	public int getEndPage(){
+		if(totalItems==0) return 0;
 		int endPageNo =getCurrentPageGroup()*pagesPerPagegroup;
 		if(endPageNo>getTotalPage()){//마지막page가 총 page수 보다 크다면
 			endPageNo = getTotalPage();

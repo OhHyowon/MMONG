@@ -122,6 +122,9 @@ SELECT no, content, reply_date, member_id, board_no
 ]]>
 </select>
 
-
-
+<!-- groupNo으로 리플 지우기 -->
+<delete id="deleteReplyByGroupNo" parameterType="int">
+	DELETE reply
+	WHERE group_no=#{value}
+</delete>
 </mapper>

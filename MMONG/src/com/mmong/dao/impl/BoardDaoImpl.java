@@ -121,4 +121,12 @@ public class BoardDaoImpl implements BoardDao{
 		return session.selectOne(makeSqlId("selectOptionCount"),map);
 		
 	}
+	
+	public List<Integer> selectBoardNoByGroupNo(int groupNo){
+		return session.selectList(makeSqlId("selectBoardNoByGroupNo"),groupNo);
+	}
+	
+	public void deleteBoardByGroupNo(int groupNo){
+		session.delete(makeSqlId("deleteBoardByGroupNo"),groupNo);
+	}
 }

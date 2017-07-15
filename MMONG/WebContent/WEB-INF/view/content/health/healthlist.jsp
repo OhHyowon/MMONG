@@ -282,7 +282,10 @@ border: 1px solid black;
 <title>Insert title here</title>
 
 
-<h1>건강 관리</h1>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 건강관리
+		</h3>
 
 
 <%-- ================건강관리 페이지 소메뉴=================== --%>
@@ -327,3 +330,4 @@ border: 1px solid black;
 <input type="button" value="건강 리스트 등록" onclick="showPopup();">
 <input type="button" value="건강 리스트 삭제" id="removeHealth" onsubmit="return confirm('삭제하시겠습니까?')">
 </sec:authorize>
+</section>

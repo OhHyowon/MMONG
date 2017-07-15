@@ -41,7 +41,10 @@
 </script>
 
 
-<h3>소모임 페이지 - 소모임 상세 페이지</h3>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i>소모임 참여 멤버
+		</h3>
 <%-- =============소모임 상세페이지 소메뉴 : 밑에 세메뉴안에도 이것 포함시키기! ================ --%>
 <ul>
 	<li><a href="/MMONG/group/groupDate/allGroupDateList.do">모임 일정
@@ -97,3 +100,4 @@
 	style="display: none">
 	<sec:csrfInput />
 </form>
+</section>

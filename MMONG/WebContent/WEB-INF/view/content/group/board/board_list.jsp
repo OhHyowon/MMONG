@@ -2,25 +2,26 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <style type="text/css">
 a:link {
 	/*방문하지 않은 링크 설정.*/
 	text-decoration: none; /*밑줄 안나오도록 처리.*/
-	color: green;
+/* 	color: green; */
 }
 
 a:visited {
 	/*방문한 링크 설정*/
 	text-decoration: none;
-	color: green;
+	/* color: green; */
 }
 
 a:hover {
 	/*마우스 포인터가 올라간 시점의 설정.*/
 	text-decoration: underline;
-	color: red;
+	color: black;
 }
 
 a:active {
@@ -77,7 +78,19 @@ $(document).ready(function(){
 
 </script>
 
-<h3>소모임 페이지 - 소모임 상세 페이지</h3>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i>자유게시판
+		</h3>
+	
+
+	
+<c:choose>
+	<c:when test="${requestScope.check == 1}"> <!-- check가 1이면 볼 권한 있음 -->
+
+
+
+
 <%-- =============소모임 상세페이지 소메뉴 : 밑에 세메뉴안에도 이것 포함시키기! ================ --%>
 <ul>
 	<li><a href="/MMONG/group/groupDate/allGroupDateList.do">모임 일정 목록</a></li> <!-- 소모임 상세페이지 첫 화면 -->
@@ -87,16 +100,16 @@ $(document).ready(function(){
 <%-- =============소모임 상세페이지 소메뉴 끝================ --%>
 <hr>
 
-<h3>자유게시판 메뉴</h3>
 <ul>
 	<li><a href="/MMONG/group/board/board_form.do">게시글작성</a></li>
 	<li><a href="/MMONG/group/board/myBoardList.do">내가 쓴 글 보기</a>
 	<li><a href="/MMONG/group/reply/myReplyList.do">내가 쓴 댓글 보기</a>
 </ul>
 
+<c:choose>
+	<c:when test='${fn:length(requestScope.boardList)!=0 }'>
 
-
-	<h2>게시판 전체 목록</h2>
+	<h3>게시판 전체 목록</h3>
 	<table>
 		<thead>
 			<tr>
@@ -144,7 +157,7 @@ $(document).ready(function(){
 
 
  <%-- 검색 창 --%>
-	<form action="/MMONG/group/board/allBoardList.do">
+	<form action="/MMONG/group/board/allBoardListByKey.do">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<select name="option">
 			<option value="title">제목</option>
@@ -206,3 +219,20 @@ $(document).ready(function(){
 			href="/MMONG/group/board/allBoardList.do?page=${requestScope.pageBean.totalPage}&groupNo=${sessionScope.groupNo}">마지막
 			페이지</a>
 	</p>
+	</c:when>
+		<c:otherwise>
+			등록된 게시물이 없습니다. 
+		</c:otherwise>
+	</c:choose>
+	
+	
+	
+	
+	
+	
+		</c:when>
+		<c:otherwise>
+			모임 참여자만 볼 수 있습니다. 모임 참여 해주세요 ^_^
+		</c:otherwise>
+</c:choose>
+	</section>

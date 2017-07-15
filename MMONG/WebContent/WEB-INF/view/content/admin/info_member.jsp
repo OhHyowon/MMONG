@@ -1,6 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 
-<h3>회원(member) 정보</h3>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 회원 정보
+		</h3>
 회원 ID : ${requestScope.member.user.userId}<br>
 회원 이름 : ${requestScope.member.memberName}<br>
 닉네임 : ${requestScope.member.nickName}<br>
@@ -19,3 +22,5 @@
 	<input type="submit" value="권한 변경하기">
 </form>
 <br>
+
+</section>
