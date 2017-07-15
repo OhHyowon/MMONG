@@ -68,8 +68,9 @@
    	<mvc:view-controller path="/health/list.do" view-name="health/healthlist.tiles"/>
    	<!-- 건강정보 등록 -->
    	<mvc:view-controller path="/health/registform.do" view-name="health/healthlist_regist.tiles"/>
-
-
+	<!-- 날씨 조회 -->
+	<mvc:view-controller path="/weather/list.do" view-name="weather/weather.tiles"/>
+	
 
 
 	<!-- 진우 -->
