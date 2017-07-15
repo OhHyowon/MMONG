@@ -148,17 +148,14 @@ public class MemberController {
 	
 	/////////////////////// 삭제 미완성 -- 조인한게 걸림돌 --- 권한을 'ROLE_3'으로 수정  /////////////////
 	
-	
-	
-	
-	//일반회원(member) 권한 변경하기(탈퇴처리)
-	@RequestMapping("change_authority_member")
-	public String MemberWithdrawal(@RequestParam String memberId){
+	//회원탈퇴('ROLE_3')로 권한변경
+	@RequestMapping("memberWithdrawal")
+	public String memberWithdrawal(@RequestParam String memberId){
 			Member mem = null;
 			String deleteEmail = UUID.randomUUID().toString().replaceAll("-", "");
 			mem = memberService.searchMemberById(memberId);
 			if(mem.getUser().getUserAuthority().equals("ROLE_1")){//권한이 'ROLE_1'인 경우 'ROLE_3'(탈퇴상태)로 바꾸기
-				userService.changeAuthorityMemberToWithdrawal(memberId);
+				userService.changeUserAuthorityToWithdrawal(mem.getMemberId());
 				Member deleteMem = new Member(mem.getMemberId(),"이름삭제","닉넴삭제","번호삭제", deleteEmail,"주소삭제","사진삭제");
 				memberService.updateMember(deleteMem);
 			}

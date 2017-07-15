@@ -50,13 +50,3 @@ public interface AdministratorDao {
 	
 	
 }
-
-
-
-
-
-
-
-
-
-

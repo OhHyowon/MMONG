@@ -55,8 +55,14 @@ public class UserDaoImpl implements UserDao{
 	}
 
 	@Override
-	public int updateAuthorityMemberToStop(String memberId) {
-		return session.update(makeSql("updateAuthorityMemberToStop"), memberId);
+	public int updateUserAuthorityToStop(String userId) {
+		return session.update(makeSql("updateUserAuthorityToStop"), userId);
+	}
+	
+	
+	@Override
+	public int updateAuthorityAdminToRun(String adminId) {
+		return session.update(makeSql("updateAuthorityAdminToRun"), adminId);
 	}
 
 	@Override
@@ -64,14 +70,10 @@ public class UserDaoImpl implements UserDao{
 		return session.update(makeSql("updateAuthorityMemberToRun"), memberId);
 	}
 	
-	@Override
-	public int updateUserEnableToZero(String userId) {
-		return session.update(makeSql("updateUserEnableToZero"), userId);
-	}
 
 	@Override
-	public int updateUserAuthorityToWithdrawal(String memberId) {
-		return session.update(makeSql("updateUserAuthorityToWithdrawal"), memberId);
+	public int updateUserAuthorityToWithdrawal(String userId) {
+		return session.update(makeSql("updateUserAuthorityToWithdrawal"), userId);
 	}
 	
 	/////////////////////////////////////////////////

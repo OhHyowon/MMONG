@@ -1,4 +1,3 @@
-<<<<<<< HEAD
  <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>   
  
 <div class="sidebar-toggle-box">
@@ -83,7 +82,14 @@
             <div class="top-menu">
             	<ul class="nav pull-right top-menu">
                  <sec:authorize access="isAuthenticated()">
-    				<li><a class="logout" href="/MMONG/member/mypage.do">MyPage</a>
+                 	<sec:authorize access="hasRole('ROLE_1')">
+    					<li><a class="logout" href="/MMONG/member/mypage.do">MyPage</a></li>
+    				</sec:authorize>
+    				<sec:authorize access="hasRole('ROLE_0')">
+    					<li><a class="logout" href="/MMONG/admin/mypage.do">MyPage</a></li>
+    				</sec:authorize>
+    				
+    				
           		 </sec:authorize>
            		 <sec:authorize access="isAuthenticated()">
     				<li><a class="logout" href="javascript:logout()">Logout</a>
@@ -96,7 +102,3 @@
             	
             	
             </div>
-=======
-<%@page contentType="text/html; charset=UTF-8"%>
-<a href="/MMONG/index.do"><h2> ♥MMONG♥ </h2></a>
->>>>>>> a537eee2acff70d4c6aeb31463ac59d50205a4a0
