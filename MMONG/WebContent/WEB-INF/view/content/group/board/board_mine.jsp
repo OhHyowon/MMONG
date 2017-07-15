@@ -9,19 +9,19 @@
 a:link {
 	/*방문하지 않은 링크 설정.*/
 	text-decoration: none; /*밑줄 안나오도록 처리.*/
-	color: green;
+	/* color: green; */
 }
 
 a:visited {
 	/*방문한 링크 설정*/
 	text-decoration: none;
-	color: green;
+	/* color: green; */
 }
 
 a:hover {
 	/*마우스 포인터가 올라간 시점의 설정.*/
 	text-decoration: underline;
-	color: red;
+	color: black;
 }
 
 a:active {
@@ -93,7 +93,10 @@ td {
 		});
 	</script>
 
-<h3>소모임 페이지 - 소모임 상세 페이지</h3>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i>내가 쓴 게시물 목록
+		</h3>
 <%-- =============소모임 상세페이지 소메뉴 : 밑에 세메뉴안에도 이것 포함시키기! ================ --%>
 <ul>
 	<li><a href="/MMONG/group/groupDate/allGroupDateList.do">모임 일정 목록</a></li> <!-- 소모임 상세페이지 첫 화면 -->
@@ -110,7 +113,6 @@ td {
 	<li><a href="/MMONG/group/reply/myReplyList.do">내가 쓴 댓글 보기</a>
 </ul>
 
-	<h3>내가 쓴 게시물 목록</h3>
 	<table>
 		<thead>
 			<tr>
@@ -220,3 +222,4 @@ td {
 			href="/MMONG/group/board/myBoardList.do?page=${requestScope.pageBean.totalPage}&groupNo=${sessionScope.groupNo }">마지막
 			페이지</a>
 	</p>
+</section>

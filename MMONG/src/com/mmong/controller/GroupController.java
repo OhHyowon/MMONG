@@ -9,14 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mmong.service.BoardPictureService;
+import com.mmong.service.BoardService;
+import com.mmong.service.GroupDateService;
 import com.mmong.service.GroupMemberService;
 import com.mmong.service.GroupService;
+import com.mmong.service.ReplyService;
 import com.mmong.vo.Group;
 import com.mmong.vo.GroupMember;
 import com.mmong.vo.Member;
@@ -28,6 +31,14 @@ public class GroupController {
 	private GroupService groupService;
 	@Autowired
 	private GroupMemberService groupMemberService;
+	@Autowired
+	private ReplyService replyService;
+	@Autowired
+	private BoardService boardService;
+	@Autowired
+	private BoardPictureService BPService;
+	@Autowired
+	private GroupDateService groupDateService;
 	
 	/**
 	 * 소모임 대메뉴 여는 handler method
@@ -139,7 +150,21 @@ public class GroupController {
 		int count=groupMemberService.selectMemberIdCount(groupNo);
 		
 		if(count==1){
-			groupService.deleteGroup(groupNo);
+			replyService.deleteReplyByGroupNo(groupNo); // 리플 삭제
+			List<Integer> boardNolist = boardService.selectBoardNoByGroupNo(groupNo); 
+			for(int i =0; i<boardNolist.size(); i++){
+				int boardNo=boardNolist.get(i);
+				BPService.deleteBPByBoardNo(boardNo); // 게시판에 올렸던 사진들 삭제
+			}
+			boardService.deleteBoardByGroupNo(groupNo); // 게시판 삭제
+			
+			List<Integer> groupDateNoList=groupDateService.selectNoByGroupNo(groupNo); 
+			for(int i=0; i<groupDateNoList.size(); i++){ 
+				int groupDateNo=groupDateNoList.get(i); // 소모임에 등록된 일정번호 조회
+				groupDateService.deleteMeetMemberByGroupDateNo(groupDateNo); // 일정 참여 멤버 삭제
+			}
+			groupDateService.deleteGroupDateByGroupNo(groupNo); // 일정 삭제
+			groupService.deleteGroup(groupNo); // 소모임 삭제
 			return "1"; // 삭제완료
 		}else{
 		return "2"; // 삭제불가

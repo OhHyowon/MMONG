@@ -98,4 +98,14 @@ public interface BoardDao {
 	 * @return
 	 */
 	public int selectOptionCount(int groupNo, String option, String key);
+	/**
+	 * groupNo으로 전체 boardNo 조회 (소모임 삭제시 필요)
+	 * @param groupNo
+	 * @return
+	 */
+	public List<Integer> selectBoardNoByGroupNo(int groupNo);
+	/**
+	 * groupNo으로 board 삭제 (소모임 삭제시 필요)
+	 */
+	public void deleteBoardByGroupNo(int groupNo);
 }

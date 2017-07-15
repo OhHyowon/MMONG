@@ -1,6 +1,7 @@
 package com.mmong.service;
 
 import java.util.HashMap;
+import java.util.List;
 
 import com.mmong.vo.Board;
 /**
@@ -83,6 +84,17 @@ public interface BoardService {
 	 * 작성자 : 강여림
 	 */
 	public HashMap<String,Object> selectMyOption(int page,String option,String key,String memberId,int groupNo);
-	
+	/**
+	 * groupNo로 boardNo 리스트로 다 가져오기
+	 * @param groupNo
+	 * @return
+	 * 작성자 : 강여림
+	 */
+	public List<Integer>selectBoardNoByGroupNo(int groupNo);
+	/**
+	 * groupNo으로 board삭제 하기
+	 * @param groupNo
+	 */
+	public void deleteBoardByGroupNo(int groupNo);
 	
 }

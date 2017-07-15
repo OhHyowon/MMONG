@@ -2,7 +2,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<h3>공지사항 상세조회 페이지</h3>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 공지사항 상세조회 페이지
+		</h3>
 <table>
 			<tr>
 				 <th>공지사항 번호: </th>
@@ -47,3 +50,5 @@
 
 <input type="button" value="메인페이지" onclick="location.href='/MMONG/index.do' ">
 <input type="button" value="목록" onclick="location.href='/MMONG/adminNotice/selectAdminNoticeList.do' ">
+
+</section>

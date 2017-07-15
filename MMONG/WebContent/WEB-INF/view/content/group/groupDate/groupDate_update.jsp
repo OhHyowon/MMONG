@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript"
@@ -16,12 +17,15 @@
 </style>
 
 
-<h3>일정 수정</h3>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i>일정 수정
+		</h3>
 
 <form action="/MMONG/group/groupDate/updateGroupDate2.do" method="post">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 일정 이름 : <input type="text" name="title" value="${requestScope.groupDate.title }"><span class="error"><form:errors path="groupDate.title" deilimiter="&nbsp;&nbsp;"/></span><br>
-날짜 : <input type="datetime-local" name="groupDate" value="${requetScope.groupDate.groupDate }"> <span class="error"><form:errors path="groupDate.groupDate" deilimiter="&nbsp;&nbsp;"/></span><br>
+날짜 : <input type="datetime-local" name="groupDate" value="<fmt:formatDate value="${requestScope.groupDate.groupDate }" pattern="yyyy-MM-dd'T'HH:mm"/>"> <span class="error"><form:errors path="groupDate.groupDate" deilimiter="&nbsp;&nbsp;"/></span><br>
 장소 : <input type="text" name="place" id="keyword" value="${requestScope.groupDate.place }"><input type="button" value="검색" id="searchPOI">
 <div id="map_div" style="position: relative;">
 	<div id="result_list_div" style="position: absolute; left: 400px; top: 0px;width: 300px; display: flex;">
@@ -31,3 +35,5 @@
 <input type="button" value="취소" onclick="location.href='/MMONG/group/groupDate/allGroupDateList.do'">
 
 </form>
+
+</section>

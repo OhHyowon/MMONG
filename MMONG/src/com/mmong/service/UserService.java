@@ -36,7 +36,7 @@ public interface UserService {
 	
 	//일반회원(member) 활동상태(4) <- 중지상태(1)
 	/**
-	* 일반회원 (member)의 권한을 '일반회원(1)'로 변경한다.
+	* 일반회원(member)의 권한을 '일반회원(1)'로 변경한다.
 	* @param memberId
 	* @return
 	*/
@@ -50,6 +50,14 @@ public interface UserService {
 	* @param adminId
 	*/
 	void changeAdminEnableToZero(String adminId);	
+	
+	//회원(member) enable 1 -> 0
+	/**
+	* 일반회원(member)의 enable을 0으로 변경해서 접근을 막는다.
+	* @param memberId
+	*/
+	void changeMemberEnableToZero(String memberId);	
+	
 		
 	///////////////////////////////////////////////////////////////////
 	/**
@@ -58,6 +66,14 @@ public interface UserService {
 	 * @return 찾은 관리자 수 : 있으면 1, 없으면 0
 	 */
 	int checkUserId(String userId);
+
+	
+	
+	/**
+	 * 회원탈퇴시 회원의 ROLE_1을 ROLE_3(탈퇴상태)로 변경시킨다.
+	 * @param memberId
+	 */
+	void changeAuthorityMemberToWithdrawal(String memberId);
 	
 	///////////////////////////////////////////////////////////////////
 	

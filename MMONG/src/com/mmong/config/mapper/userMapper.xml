@@ -64,6 +64,19 @@
 		WHERE user_id=#{userId}
 	</delete>
 
+<!-- 사용자(관리자/회원) enable 변경 -->
+	<update id="updateUserEnableToZero" parameterType="user">
+		UPDATE 	users
+		SET 			user_enable=0
+		WHERE 	user_id=#{value}
+	</update>
+	
+	<!-- 관리자ID 중복조회 -->
+	<select id="checkUserId" parameterType="String" resultType="int">
+		SELECT count(*)
+		FROM	 users
+		WHERE user_id = #{value}
+	</select>
 
  	<!-- user 권한 변경 -->
  	<!-- 일반회원 권한 변경 (ROLE_1 -> ROLE_2) -->
@@ -79,23 +92,14 @@
  	SET 			user_authority='ROLE_1'
  	WHERE 	user_id=#{value}
  	</update>
-
-
-	<!-- 관리자 enable 변경 -->
-	<update id="updateAdministratorEnableToZero" parameterType="user">
-		UPDATE users
-		SET 		user_enable=0
-		WHERE user_id=#{value}
+ 	
+	<!-- 회원 탈퇴 -->
+	<update id="updateUserAuthorityToWithdrawal" parameterType="user">
+	UPDATE 	users
+	SET 			user_authority='ROLE_3'
+	WHERE 	user_id=#{value}
 	</update>
 
-<!-- ################################################## -->	
-	
-	<!-- 관리자ID 중복조회 -->
-	<select id="checkUserId" parameterType="String" resultType="int">
-		SELECT count(*)
-		FROM	 users
-		WHERE user_id = #{value}
-	</select>
 
 <!-- ################################################## -->
 	

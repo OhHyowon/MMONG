@@ -23,10 +23,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.mmong.service.BoardPictureService;
 import com.mmong.service.BoardService;
+import com.mmong.service.GroupMemberService;
 import com.mmong.service.ReplyService;
 import com.mmong.validation.BoardRegisterValidator;
 import com.mmong.vo.Board;
 import com.mmong.vo.BoardPicture;
+import com.mmong.vo.GroupMember;
 import com.mmong.vo.Member;
 import com.mmong.vo.Reply;
 
@@ -39,6 +41,9 @@ public class BoardController {
 	private BoardPictureService BPService; 
 	@Autowired
 	private ReplyService replyService;
+	@Autowired
+	private GroupMemberService GMService;	
+	
 	
 	
 	/**
@@ -320,22 +325,28 @@ public class BoardController {
 	 * @return
 	 */
 	@RequestMapping("allBoardList")
-	public String showAllBoardList(@RequestParam(value="page", defaultValue="1")int page, 
-													@RequestParam (value="option", defaultValue="1")String option, 
-													@RequestParam  (value="key", defaultValue="1")String key, 
-													HttpSession session,
-													ModelMap map) {
+	public String showAllBoardList(@RequestParam(value="page", defaultValue="1")int page,
+													HttpSession session, ModelMap map) {
 		
 		HashMap<String,Object> pagingMap =null;
 		
 		int groupNo=(int) session.getAttribute("groupNo");
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String memberId=member.getMemberId();
 		
-		if(option.equals("1")){ // option 선택을 안했을 때
-			pagingMap=boardService.selectAllBoard(page,groupNo); 
-		}else{ // option 선택했을 때
-			pagingMap=boardService.selectOption(page,option,key,groupNo);
+		// groupMember에 groupNo으로 조회했을 때 memberId가 본인이 있으면 1, 없으면 0
+		int check=0;
+		List<GroupMember> groupMemerList=GMService.searchGroupMemberByGroupNo(groupNo);
+		for(int i =0; i<groupMemerList.size();i++){
+			String groupMemberId=groupMemerList.get(i).getMemberId();
+			if(groupMemberId.equals(memberId)){
+				check=1;
+			}
 		}
 		
+		pagingMap=boardService.selectAllBoard(page,groupNo); 
+		
+		map.addAttribute("check", check);
 		map.addAttribute("groupNo", groupNo);
 		map.addAttribute("nickNameList", pagingMap.get("nickNameList"));
 		map.addAttribute("boardList", pagingMap.get("boardList"));
@@ -343,6 +354,52 @@ public class BoardController {
 	
 		return "group/board/board_list.tiles";
 	}
+	
+	@RequestMapping("allBoardListByKey")
+	public String showAllBoardListByKey(@RequestParam(value="page", defaultValue="1")int page,
+															@RequestParam (value="option", defaultValue="1")String option, 
+															@RequestParam  (value="key", defaultValue="1")String key, 
+															HttpSession session,
+															ModelMap map){
+		HashMap<String,Object> pagingMap =null;
+		
+		int groupNo=(int) session.getAttribute("groupNo");
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String memberId=member.getMemberId();
+		
+		// groupMember에 groupNo으로 조회했을 때 memberId가 본인이 있으면 1, 없으면 0
+		int check=0;
+		List<GroupMember> groupMemerList=GMService.searchGroupMemberByGroupNo(groupNo);
+		for(int i =0; i<groupMemerList.size();i++){
+			String groupMemberId=groupMemerList.get(i).getMemberId();
+			if(groupMemberId.equals(memberId)){
+				check=1;
+			}
+		}
+		
+		pagingMap=boardService.selectOption(page,option,key,groupNo);
+		
+		map.addAttribute("option", option);
+		map.addAttribute("key", key);
+		map.addAttribute("check", check);
+		map.addAttribute("groupNo", groupNo);
+		map.addAttribute("nickNameList", pagingMap.get("nickNameList"));
+		map.addAttribute("boardList", pagingMap.get("boardList"));
+		map.addAttribute("pageBean", pagingMap.get("pageBean"));
+		
+		return "group/board/board_list_byKey.tiles";
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	/**
 	 * 내가 쓴 게시물 목록 조회하는 handler method
@@ -403,8 +460,4 @@ public class BoardController {
 	
 		return "1";
 	}
-	
-
-
-
 }

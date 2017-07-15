@@ -313,7 +313,12 @@ function formSubmit(){
 
 </script>
 
-<h3>회원가입</h3>
+<section id="main-content">
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 회원가입
+		</h3>
+		
 <form name="registerForm" id="register" action="/MMONG/member/registerMember.do" method="post">
 	<table>	
 		<tr>
@@ -424,7 +429,8 @@ function formSubmit(){
 	</table>
 	<sec:csrfInput/>
 </form>
-
+	</section>
+</section>
 
 
 

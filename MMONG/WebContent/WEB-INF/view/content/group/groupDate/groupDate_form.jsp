@@ -118,9 +118,11 @@ window.onload = function() {
 }
 </style>
 
-
-
-<h2>일정 등록 form</h2>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i>일정 등록
+		</h3>
+		
 <form action="/MMONG/group/groupDate/register.do?${_csrf.parameterName}=${_csrf.token}" method="post" onsubmit="return confirm('등록하시겠습니까?');">
 일정 이름 : <input type="text" name="title"><span class="error"><form:errors path="groupDate.title" deilimiter="&nbsp;&nbsp;"/></span><br>
 날짜 : <input type="datetime-local" name="groupDate"> <span class="error"><form:errors path="groupDate.groupDate" deilimiter="&nbsp;&nbsp;"/></span><br>
@@ -131,3 +133,5 @@ window.onload = function() {
 </div>
 <input type="submit" value="등록">
 </form>
+
+</section>

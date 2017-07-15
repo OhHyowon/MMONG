@@ -106,4 +106,18 @@ public class GroupDateServiceImpl implements GroupDateService{
 	public void deleteMeetMemberByGroupMemberNo(int groupMemberNo){
 		dao.deleteMeetMemberByGroupMemberNo(groupMemberNo);
 	}
+
+	@Override
+	public List<Integer> selectNoByGroupNo(int groupNo) {
+		return dao.selectNoByGroupNo(groupNo);
+	}
+	
+	public void deleteGroupDateByGroupNo(int groupNo){
+		dao.deleteGroupDateByGroupNo(groupNo);
+	}
+
+	@Override
+	public void deleteMeetMemberByGroupDateNo(int groupDateNo) {
+		dao.deleteMeetMemberByGroupDateNo(groupDateNo);
+	}
 }

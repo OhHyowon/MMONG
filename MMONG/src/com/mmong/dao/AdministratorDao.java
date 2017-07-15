@@ -20,7 +20,6 @@ public interface AdministratorDao {
 	 * @return
 	 */
 	int updateAdministrator(Administrator administrator);
-	
 
 	/**
 	 * 매개변수로 받은 administratorId와 일치하는 administrator data를 select하는 메소드
@@ -30,22 +29,22 @@ public interface AdministratorDao {
 	 */
 	Administrator searchAdministratorById(String administratorId);
 	
-	
-	////////////////////////////수정///////////////////////////////////////////////////
-	
-	
 	/**
 	* 관리자 핸드폰 번호로 중복번호 조회하는 메소드
 	* @param adminPhone
 	* @return 찾은 관리자 수 : 있으면 1, 없으면 0
 	*/
 	int checkAdminPhone(String adminPhone);
+
+	/**
+	 * 회원 이메일로 중복 조회하는 메소드
+	 * @param memberEmail
+	 * @return 찾은 회원 수 : 있으면 1, 없으면 0
+	 */
+	int checkAdminEmail(String adminEmail);
 	
 
-	
-	
-	
-	
+
 	
 	
 	

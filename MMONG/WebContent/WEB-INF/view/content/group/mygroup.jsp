@@ -19,7 +19,10 @@ $(document).ready(function(){
 });
 </script>
 
-<h3>소모임 페이지</h3>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 소모임 페이지
+		</h3>
 
 <!-- 나의 소모임 뿌리기 -->
 <p><b>나의 소모임</b></p>
@@ -53,4 +56,6 @@ $(document).ready(function(){
 </sec:authorize>
 
 
+	</section>
+	<! --wrapper -->
 

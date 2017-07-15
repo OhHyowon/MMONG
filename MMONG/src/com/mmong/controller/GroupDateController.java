@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mmong.service.GroupDateService;
+import com.mmong.service.GroupMemberService;
 import com.mmong.validation.GroupDateValidator;
 import com.mmong.vo.GroupDate;
+import com.mmong.vo.GroupMember;
 import com.mmong.vo.MeetMember;
 import com.mmong.vo.Member;
 
@@ -30,6 +32,8 @@ import com.mmong.vo.Member;
 public class GroupDateController{
 	@Autowired
 	private GroupDateService groupDateService;
+	@Autowired
+	private GroupMemberService GMService;	
 	
 	
 	/***
@@ -60,7 +64,9 @@ public class GroupDateController{
 		groupDate.setMemberId(memberId); // 로그인한 사람이 일정 등록자
 		groupDate.setGroupNo(groupNo); // 세션에서 받은 groupNo 
 		
+		int memberNo=groupDateService.selectMemberNo(memberId,groupNo);
 		int groupDateNo=groupDateService.insertGroupDate(groupDate); // 등록한 일정 No
+		groupDateService.insertMeetMember(new MeetMember(groupDateNo, memberNo)); //일정 만든 사람이 최초 일정 참여자
 		
 		return "redirect:/group/groupDate/groupDateView.do?groupDateNo="+groupDateNo; // 완성되면 일정 상세보기 페이지로 바꾸기
 	}
@@ -152,33 +158,88 @@ public class GroupDateController{
 	 * 작성자 : 강여림
 	 */
 	@RequestMapping("allGroupDateList")
-	public String allGroupDateList(@RequestParam(value="page", defaultValue="1")int page, 
-													@RequestParam (value="option", defaultValue="1")String option, 
-													@RequestParam  (value="key", defaultValue="1")String key,
+	public String allGroupDateList(@RequestParam(value="page", defaultValue="1")int page,
 													HttpSession session, ModelMap map){
 
 		HashMap<String,Object> pagingMap=null;
-
 		int groupNo=(int) session.getAttribute("groupNo");
 		
-		if(option.equals("1")){
-			pagingMap=groupDateService.selectAllGroupDateList(page,groupNo);
-		}else if(option.equals("dateTime")){
-			try {
-				Date dateTime = new SimpleDateFormat("yyyy-MM-dd").parse(key);
-				pagingMap=groupDateService.selectGroupDateOption2(page,groupNo,dateTime,option);
-			} catch (ParseException e) {
-				e.printStackTrace();
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String memberId=member.getMemberId();
+		
+		// groupMember에 groupNo으로 조회했을 때 memberId가 본인이 있으면 1, 없으면 0
+		int check=0;
+		List<GroupMember> groupMemerList=GMService.searchGroupMemberByGroupNo(groupNo);
+		for(int i =0; i<groupMemerList.size();i++){
+			String groupMemberId=groupMemerList.get(i).getMemberId();
+			if(groupMemberId.equals(memberId)){
+				check=1;
 			}
-		}else{
-			pagingMap=groupDateService.selectGroupDateOption(page,groupNo,key,option);
 		}
-
+		
+		pagingMap=groupDateService.selectAllGroupDateList(page,groupNo);
+			
+		map.addAttribute("check", check);
 		map.addAttribute("groupNo", groupNo);
 		map.addAttribute("groupDateList", pagingMap.get("groupDateList"));
 		map.addAttribute("pageBean", pagingMap.get("pageBean"));
+
 		
 		return "group/groupDate/groupDate_list.tiles";
+	}
+	/**
+	 * 검색했을 때의 일정 목록 보는 handler method
+	 * @param page
+	 * @param option
+	 * @param key
+	 * @param map
+	 * @param session
+	 * @return
+	 * 작성자 : 강여림
+	 */
+	@RequestMapping("allGroupDateListByKey")
+	public String allGroupDateListByKey(@RequestParam(value="page", defaultValue="1")int page, 
+															@RequestParam String option, 
+															@RequestParam  (value="key", defaultValue="1")String key,
+															ModelMap map,HttpSession session){
+		
+		HashMap<String,Object> pagingMap=null;
+		int groupNo=(int) session.getAttribute("groupNo");
+		
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String memberId=member.getMemberId();
+		
+		// groupMember에 groupNo으로 조회했을 때 memberId가 본인이 있으면 1, 없으면 0
+		int check=0;
+		List<GroupMember> groupMemerList=GMService.searchGroupMemberByGroupNo(groupNo);
+		for(int i =0; i<groupMemerList.size();i++){
+			String groupMemberId=groupMemerList.get(i).getMemberId();
+			if(groupMemberId.equals(memberId)){
+				check=1;
+			}
+		}
+		
+		if(option.equals("dateTime")){
+			Date dateTime;
+			try {
+				dateTime = new SimpleDateFormat("yyyy-MM-dd").parse(key);
+				pagingMap=groupDateService.selectGroupDateOption2(page,groupNo,dateTime,option);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else{
+			pagingMap=groupDateService.selectGroupDateOption(page,groupNo,option,key);
+		}
+		
+		map.addAttribute("option", option);
+		map.addAttribute("key", key);
+		map.addAttribute("check", check);
+		map.addAttribute("groupNo", groupNo);
+		map.addAttribute("groupDateList", pagingMap.get("groupDateList"));
+		map.addAttribute("pageBean", pagingMap.get("pageBean"));
+	
+		return "group/groupDate/groupDate_list_byKey.tiles";
 	}
 	
 	/**
@@ -190,9 +251,7 @@ public class GroupDateController{
 	 */
 	@RequestMapping("updateGroupDate1")
 	public String updateGroupDate1(@RequestParam int groupDateNo,ModelMap map){
-		
-		System.out.println("수정1"+groupDateNo);
-		
+				
 		GroupDate groupDate=groupDateService.selectGroupDate(groupDateNo);
 		map.addAttribute("groupDate", groupDate);
 		
@@ -208,9 +267,7 @@ public class GroupDateController{
 	 */
 	@RequestMapping("updateGroupDate2")
 	public String updateGroupDate2(@ModelAttribute GroupDate groupDate, BindingResult errors ){
-		
-		System.out.println("수정2 "+groupDate);
-		
+				
 		GroupDateValidator vaildator=new GroupDateValidator();
 		vaildator.validate(groupDate, errors);
 		if(errors.hasErrors()){
@@ -218,7 +275,6 @@ public class GroupDateController{
 		}
 		
 		groupDateService.upDateGroupDate(groupDate); // DB에 수정된 일정 넣기
-		
 		return "group/groupDate/groupDate_view.tiles";
 	}
 	/**
@@ -231,6 +287,7 @@ public class GroupDateController{
 	@ResponseBody
 	public String groupDateDelete(HttpSession session){
 		int groupDateNo=(int) session.getAttribute("groupDateNo");
+		groupDateService.deleteMeetMemberByGroupDateNo(groupDateNo);
 		groupDateService.deleteGroupDate(groupDateNo);
 		return "1";
 	}

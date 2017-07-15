@@ -8,19 +8,19 @@
 a:link {
 	/*방문하지 않은 링크 설정.*/
 	text-decoration: none; /*밑줄 안나오도록 처리.*/
-	color: gray;
+	/* color: gray; */
 }
 
 a:visited {
 	/*방문한 링크 설정*/
 	text-decoration: none;
-	color: gray;
+	/* color: gray; */
 }
 
 a:hover {
 	/*마우스 포인터가 올라간 시점의 설정.*/
 	text-decoration: underline;
-	color: red;
+	color: black;
 }
 
 a:active {
@@ -98,7 +98,11 @@ $(document).ready(function(){
 	
 </script>
 
-<h3>소모임 페이지 - 소모임 상세 페이지</h3>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i>내가 쓴 댓글 목록
+		</h3>
+		
 <%-- =============소모임 상세페이지 소메뉴 : 밑에 세메뉴안에도 이것 포함시키기! ================ --%>
 <ul>
 	<li><a href="/MMONG/group/groupDate/allGroupDateList.do">모임 일정 목록</a></li> <!-- 소모임 상세페이지 첫 화면 -->
@@ -115,8 +119,6 @@ $(document).ready(function(){
 	<li><a href="/MMONG/group/reply/myReplyList.do">내가 쓴 댓글 보기</a>
 </ul>
 
-
-<h3>내가 쓴 댓글 목록</h3>
 <table>
 	<thead>
 		<tr>
@@ -132,7 +134,7 @@ $(document).ready(function(){
 			<td><input type="checkbox" class="check" value="${reply.no }"></td>
 			<td>
 				<label><fmt:formatDate value="${reply.replyDate }" pattern="yyyy-MM-dd HH:mm" /></label><br>
-				<a id="notcolor" href="/MMONG/group/board/board_view.do?boardNo=${requestScope.boardNoList[idx.index] }">${reply.content }</a><br>
+				<a id="notcolor" href="/MMONG/group/board/board_view.do?boardNo=${requestScope.boardNoList[idx.index] }"><strong>${reply.content }</strong></a><br>
 				<label><a href="/MMONG/group/board/board_view.do?boardNo=${requestScope.boardNoList[idx.index] }">원문제목:${requestScope.boardTitle[idx.index]}</a></label><br>
 			</td>
 		<tr>
@@ -192,4 +194,4 @@ $(document).ready(function(){
 			href="/MMONG/group/reply/myReplyList.do?page=${requestScope.pageBean.totalPage}">마지막
 			페이지</a>
 	</p>
-
+</section>

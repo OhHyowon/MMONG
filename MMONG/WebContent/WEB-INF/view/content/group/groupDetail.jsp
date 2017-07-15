@@ -22,8 +22,9 @@ $(document).ready(function(){
 				"data" : {"no":0, "groupNo":$("#groupNo").val(), "memberId":$("#memberId").val(), "${_csrf.parameterName}":"${_csrf.token}"},
 				"dataType" : "text",
 				"success":function(response) {
-					if(response=="가입완료"){
+					if(response=="1"){
 						alert("가입이 완료되었습니다.");
+						opener.parent.location.reload();
 					}else{
 						alert("이미 가입된 소모임 입니다.");
 					}
@@ -69,15 +70,19 @@ $(document).ready(function(){
 });
 </script>
 
-<h3>소모임 페이지 - 소모임 상세 페이지 </h3>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 소모임 페이지
+		</h3>
 
 <%-- =============소모임 상세페이지 소메뉴 : 밑에 세메뉴안에도 이것 포함시키기! ================ --%>
+  <sec:authorize access="hasRole('ROLE_1')"> 
 <ul>
-	
 	<li><a href="/MMONG/group/groupDate/allGroupDateList.do">모임 일정 목록</a></li> <!-- 소모임 상세페이지 첫 화면 -->
 	<li><a href="/MMONG/group/board/allBoardList.do">자유게시판</a></li>
 	<li><a href="/MMONG/groupMember/searchGroupMember.do">참여 멤버 목록</a></li>
 </ul>
+</sec:authorize>
 <%-- =============소모임 상세페이지 소메뉴 끝================ --%>
 
 
@@ -125,3 +130,5 @@ $(document).ready(function(){
 
 <!-- 모임 일정 목록 -->
 <p><b>모임 일정</b></p>
+
+</section>

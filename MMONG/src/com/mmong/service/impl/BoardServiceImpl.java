@@ -120,4 +120,14 @@ public class BoardServiceImpl implements BoardService{
 		
 		return map;
 	}
+
+	@Override
+	public List<Integer> selectBoardNoByGroupNo(int groupNo) {
+		List<Integer> list=dao.selectBoardNoByGroupNo(groupNo);
+		return list;
+	}
+	
+	public void deleteBoardByGroupNo(int groupNo){
+		dao.deleteBoardByGroupNo(groupNo);
+	}
 }

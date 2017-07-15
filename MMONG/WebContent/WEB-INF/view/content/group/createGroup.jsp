@@ -44,7 +44,10 @@ $('document').ready(function(){
 </head>
 <body>
 
-<h3>소모임 만들기</h3>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 소모임 만들기
+		</h3>
 
 <form id="createGroup">
 	<table>	
@@ -66,6 +69,6 @@ $('document').ready(function(){
 	</table>
 	<input type="hidden"  id="token" name="${_csrf.parameterName}"   value="${_csrf.token}"/>
 </form>
-
+</section>
 </body>
 </html>

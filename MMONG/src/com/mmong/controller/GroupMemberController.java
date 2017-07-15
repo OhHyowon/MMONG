@@ -43,15 +43,14 @@ public class GroupMemberController {
 		int groupNo=groupMember.getGroupNo();
 		String memberId=member.getMemberId();
 		
-		
 		int count=groupMemberService.selectCountNoByIdAndNo(groupNo,memberId);
 		
 		if(count==1){
 			return "2"; // 가입된 소모임에 본인이 count 되는것(중복)
 		}else{
 		groupMemberService.insertGroupMember(groupMember);
+			return "1";
 		}
-		return "가입완료";
 	}
 	
 	/**

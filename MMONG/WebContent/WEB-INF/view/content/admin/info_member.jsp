@@ -1,6 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 
-<h3>회원(member) 정보</h3>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 회원 정보
+		</h3>
 회원 ID : ${requestScope.member.user.userId}<br>
 회원 이름 : ${requestScope.member.memberName}<br>
 닉네임 : ${requestScope.member.nickName}<br>
@@ -16,6 +19,8 @@
 <form action="/MMONG/admin/changeAuthorityMember.do" method="post">
 	<input type="hidden" name="memberId" value="${requestScope.member.user.userId}">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-	<input type="submit" value="권한 변경하기">
+	<input type="submit" value="활동 정지/재개 변경">
 </form>
 <br>
+
+</section>
