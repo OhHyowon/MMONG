@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mmong.config.mapper.healthMapper">
+
+
+	<resultMap id="health-resultmap" type="health">
+		<id column="no" property="no"/>
+		<result column="content" property="content"/>
+		<result column="done" property="done"/>
+		<result column="gender" property="gender"/>
+	</resultMap>
+
+
+<!-- 건강기록 등록  -->
+<insert id="insertHealthList" parameterType="health">
+	<selectKey keyProperty="no" resultType="_int" order="BEFORE">
+		SELECT health_no_seq.nextval
+		FROM dual
+	</selectKey>		
+		INSERT INTO health
+		VALUES(
+				#{no},
+				#{content},
+				#{done},
+				#{gender}
+				)
+</insert>
+
+<!-- 건강기록 업데이트  -->
+<update id="updateHealthList" parameterType="health">
+		UPDATE health
+		SET no = #{no},
+			content = #{content},
+			done = #{done},
+			gender = #{gender},
+			chart_no = #{chartNo}
+		WHERE no = #{no}
+</update>
+
+<!--전체 건강기록 조회  -->
+<select id="selectByAllHealth" resultMap="health-resultmap">
+		SELECT	no,
+				content,
+				done,
+				gender
+		 FROM	health
+</select>
+
+<!-- 성별로 건강기록 조회 -->
+<select id="selectByGender" parameterType="map" resultMap="health-resultmap">
+		SELECT	no,
+				content,
+				done,
+				gender
+		 FROM	health
+		 WHERE  gender = '${gen}'
+		 
+</select>
+
+
+<select id="deleteHealthByNo" parameterType="int">
+		DELETE health
+		WHERE no = #{no}
+</select>
+
+</mapper>

@@ -34,4 +34,23 @@ public interface GroupService {
 	 * 작성자 : 이주현
 	 */
 	List<Group> searchGroupByName(String groupName);
+	/**
+	 * 모임장 변경하는 메소드
+	 * @param groupNo
+	 * @param newLeader
+	 * 작성자 : 강여림
+	 */
+	void updateLeader(int groupNo, String newLeader);
+	/**
+	 * 모임 삭제하는 메소드
+	 * @param groupNo
+	 * 작성자 : 강여림
+	 */
+	void deleteGroup(int groupNo);
+	/**
+	 * 모임 수정하는 메소드
+	 * @param group
+	 * 작성자 : 강여림
+	 */
+	void updateGroup(Group group);
 }

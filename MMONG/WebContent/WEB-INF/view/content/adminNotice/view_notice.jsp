@@ -1,14 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-<h2>공지사항 상세조회 페이지</h2>
+
+<h3>공지사항 상세조회 페이지</h3>
 <table>
 			<tr>
 				 <th>공지사항 번호: </th>
@@ -20,7 +14,7 @@
 			</tr>
         	<tr>
                 <th>작성자: </th>
-                <td>${requestScope.adminNotice.administrator.adminId}"</td>
+                <td>${requestScope.adminNotice.administrator.adminId}</td>
             </tr>
             <tr>
                 <th>제목: </th>
@@ -40,9 +34,7 @@
 						<input type="hidden" name="adminNoticeNo" value="${requestScope.adminNotice.no }"/>
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 						<input type="submit" value="수정">
-					</form>
-            </tr>
-            <tr>
+					</form>&nbsp;
 				<form action="/MMONG/adminNotice/deleteAdminNotice.do" method="post">
 						<input type="hidden" name="adminNoticeNo" value="${requestScope.adminNotice.no }"/>
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -55,7 +47,3 @@
 
 <input type="button" value="메인페이지" onclick="location.href='/MMONG/index.do' ">
 <input type="button" value="목록" onclick="location.href='/MMONG/adminNotice/selectAdminNoticeList.do' ">
-
-
-</body>
-</html>

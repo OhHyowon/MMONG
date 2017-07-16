@@ -30,4 +30,15 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 		return groupMemberDao.searchGroupMemberByGroupNo(groupNo);
 	}
 
+	public int selectCountNoByIdAndNo(int groupNo, String memberId){
+		return groupMemberDao.selectCountNoByIdAndNo(groupNo,memberId);
+	}
+	
+	public int selectMemberIdCount(int groupNo){
+		return groupMemberDao.selectMemberIdCount(groupNo);
+	}
+	
+	public void deleteGroupMember(int groupNo, String memberId){
+		groupMemberDao.deleteGroupMember(groupNo,memberId);
+	}
 }

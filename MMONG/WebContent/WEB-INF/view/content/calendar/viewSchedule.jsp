@@ -21,6 +21,7 @@ $(document).ready(function(){
 			return;
 		}else{
 			var no =  $("#no").val();
+			alert(no);
 			$.ajax({
 				url:"/MMONG/calendar/delete.do",
 				type:"post",
@@ -64,24 +65,24 @@ $(document).ready(function(){
 		</td> 
 	</tr>
 	<c:choose> 
- 		<c:when test="${requestScope.eventInfo.emotion ne 5}">
+ 		<c:when test="${requestScope.eventInfo.emotion ne 0}">
 			<tr>
 				<th>기분</th>
 				<td> <!-- 이모티콘으로 변환 필요!!! -->
 					<c:choose>
-						<c:when test="${requestScope.eventInfo.emotion eq 0}">
+						<c:when test="${requestScope.eventInfo.emotion eq 1}">
 							기쁨
 						</c:when>
-						<c:when test="${requestScope.eventInfo.emotion eq 1}">
+						<c:when test="${requestScope.eventInfo.emotion eq 2}">
 							슬픔
 						</c:when>
-						<c:when test="${requestScope.eventInfo.emotion eq 2}">
+						<c:when test="${requestScope.eventInfo.emotion eq 3}">
 							화남
 						</c:when>
-						<c:when test="${requestScope.eventInfo.emotion eq 3}">
+						<c:when test="${requestScope.eventInfo.emotion eq 4}">
 							보통
 						</c:when>
-						<c:when test="${requestScope.eventInfo.emotion eq 4}">
+						<c:when test="${requestScope.eventInfo.emotion eq 5}">
 							우울
 						</c:when>
 					</c:choose>
@@ -115,6 +116,6 @@ $(document).ready(function(){
 	<input type="button" value="삭제" id="delete"> 
 	<input type="button" value="확인" id="ok">
 
-	<input type="hidden" name="no" value="${requestScope.eventInfo.no }">
+	<input type="hidden" id="no" value="${requestScope.eventInfo.no }">
 </body>
 </html>

@@ -3,9 +3,13 @@ package com.mmong.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,15 +38,23 @@ public class GroupController {
 	@RequestMapping("mygroup")
 	public ModelAndView searchMyGroupById(){
 		if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")){ //로그인 안 한 사용자는 myGroup을 없이 전달 
-			return new ModelAndView("/content/group/mygroup");
+			return new ModelAndView("group/mygroup.tiles");
 		}else{
-			Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			List<GroupMember> gms = groupMemberService.selectMeById(member.getMemberId());
-			List<Group> myGroup = new ArrayList();
-			for(GroupMember gm : gms){
-				myGroup.add(groupService.selectMyGroupByNo(gm.getGroupNo()));
-			}
-			return new ModelAndView("/content/group/mygroup", "myGroup", myGroup);
+			List authList = (List)SecurityContextHolder.getContext().getAuthentication().getAuthorities(); //로그인한 사용자 권한정보 리스트
+			String au = String.valueOf(authList.get(0)); 
+
+			if(au.equals("ROLE_1")){//로그인한 사용자가 회원
+				Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+				List<GroupMember> gms = groupMemberService.selectMeById(member.getMemberId());
+				List<Group> myGroup = new ArrayList();
+				for(GroupMember gm : gms){
+					myGroup.add(groupService.selectMyGroupByNo(gm.getGroupNo()));
+				}
+				return new ModelAndView("group/mygroup.tiles", "myGroup", myGroup);				
+			}else{//로그인한 사용자가 관리자
+				List myGroup = new ArrayList(); //빈 myGroup 전달
+				return new ModelAndView("group/mygroup.tiles", "myGroup", myGroup);	
+			}		
 		}
 	}
 	
@@ -52,10 +64,9 @@ public class GroupController {
 	 * @return
 	 * 작성자 : 이주현
 	 */
-	
 	@RequestMapping("createGroup")
 	public ModelAndView openCreateGroupWindow(){
-		return new ModelAndView("/content/group/createGroup");
+		return new ModelAndView("group/createGroup.tiles");
 	}
 	
 	/**
@@ -89,7 +100,7 @@ public class GroupController {
 	@RequestMapping("groupDetail")
 	public ModelAndView searchMyGroupDetailById(String groupNo){
 		Group selectedGroup = groupService.selectMyGroupByNo(Integer.parseInt(groupNo));		
-		return new ModelAndView("/content/group/groupDetail", "group", selectedGroup);
+		return new ModelAndView("group/groupDetail.tiles", "group", selectedGroup);
 	}
 	
 	/**
@@ -100,7 +111,7 @@ public class GroupController {
 	@RequestMapping("searchGroup")
 	public ModelAndView selectAllGroup(){
 		List<Group> groupList = groupService.selectAllGroup();
-		return new ModelAndView("/content/group/searchGroup", "allGroup", groupList);
+		return new ModelAndView("group/searchGroup.tiles", "allGroup", groupList);
 	}
 	
 	/**
@@ -114,5 +125,62 @@ public class GroupController {
 	public List<Group> searchGroupByName(String groupName){
 		List<Group> selctedGroupByName = groupService.searchGroupByName(groupName);
 		return selctedGroupByName;
+	}
+	/**
+	 * 소모임 번호로 소모임 삭제하는 handler method
+	 * @param session
+	 * @return
+	 *  작성자 : 강여림
+	 */
+	@RequestMapping("deleteGroup")
+	@ResponseBody
+	public String deleteGroup(HttpSession session){
+		int groupNo=(int) session.getAttribute("groupNo");		
+		int count=groupMemberService.selectMemberIdCount(groupNo);
+		
+		if(count==1){
+			groupService.deleteGroup(groupNo);
+			return "1"; // 삭제완료
+		}else{
+		return "2"; // 삭제불가
+		}
+	}
+	/**
+	 * 소모임 정보 그대로 가져오기
+	 * @param session
+	 * @param map
+	 * @return
+	 * 작성자 : 강여림
+	 */
+	@RequestMapping("updateGroup1")
+	public String updateGroup1(HttpSession session,ModelMap map){
+		int groupNo=(int) session.getAttribute("groupNo");	
+		Group group=groupService.selectMyGroupByNo(groupNo);
+		
+		map.put("group", group);
+		return "/WEB-INF/view/content/group/updateGroup.jsp";
+	}
+	/**
+	 * 가져온 소모임 정보 DB에 수정하기
+	 * @param group
+	 * @param errors
+	 * @param session
+	 * @return
+	 * 작성자 : 강여림
+	 */
+	@RequestMapping("updateGroup2")
+	@ResponseBody
+	public String updateGroup2(@ModelAttribute Group group,
+												HttpSession session){
+
+		int groupNo=(int) session.getAttribute("groupNo");	
+		Group group2=groupService.selectMyGroupByNo(groupNo);
+		
+		group2.setName(group.getName());
+		group2.setContent(group.getContent());
+
+		groupService.updateGroup(group2);
+		
+		return "1";
 	}
 }

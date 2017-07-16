@@ -1,16 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-<h2>회원(member) 정보</h2>
-회원 ID : ${requestScope.member.memberUser.userId}<br>
+
+<h3>회원(member) 정보</h3>
+회원 ID : ${requestScope.member.user.userId}<br>
 회원 이름 : ${requestScope.member.memberName}<br>
 닉네임 : ${requestScope.member.nickName}<br>
-권한 : ${requestScope.member.memberUser.userAuthority}<br>
+권한 : ${requestScope.member.user.userAuthority}<br>
 전화번호 :${requestScope.member.memberPhone}<br>
 이메일 : ${requestScope.member.memberEmail}<br>
 주소 :${requestScope.member.memberAddress}<br>
@@ -20,11 +14,8 @@
 <a href="/MMONG/index.do">메인페이지</a>
 
 <form action="/MMONG/admin/changeAuthorityMember.do" method="post">
-	<input type="hidden" name="memberId" value="${requestScope.member.memberUser.userId}">
+	<input type="hidden" name="memberId" value="${requestScope.member.user.userId}">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-	<input type="submit" value="권한 변경하기">
+	<input type="submit" value="활동 정지/재개 변경">
 </form>
 <br>
-
-</body>
-</html>

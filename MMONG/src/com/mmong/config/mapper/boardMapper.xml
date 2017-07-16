@@ -111,6 +111,9 @@
 	]]>
 	</select>
 
+
+
+
 	<!-- option에 따른 List -->
 	<select id="selectOption" parameterType="map" resultMap="board-resultmap">
 		<choose>
@@ -175,6 +178,29 @@
 		</choose>
 	</select>
 
+<!-- option에 따른 total Count -->
+<select id="selectOptionCount" parameterType="map" resultType="int">
+	<choose>
+		<when test="option=='title'">
+			SELECT COUNT(no)
+			FROM board
+			WHERE title LIKE '%'||#{key}||'%'
+			AND group_no=#{groupNo}
+		</when>
+		<when test="option=='content'">
+			SELECT COUNT(no)
+			FROM board
+			WHERE content LIKE '%'||#{key}||'%'
+			AND group_no=#{groupNo}
+		</when>
+		<otherwise>
+			SELECT COUNT(no)
+			FROM board
+			WHERE member_id LIKE '%'||#{key}||'%'		
+			AND group_no=#{groupNo}
+		</otherwise>
+	</choose>
+</select>
 
 
 	<!-- 전체 board List 갯수 -->

@@ -41,4 +41,28 @@
 		FROM group_member
 		WHERE group_no = #{value}
 	</select>
+	
+	<!-- 소모임no과 memberId로 카운트 -->
+	<select id="selectCountNoByIdAndNo" parameterType="map" resultType="int">
+		SELECT COUNT(no)
+		FROM group_member
+		WHERE group_no=#{groupNo}
+		AND member_id=#{memberId}
+	</select>
+	
+	<!-- 소모임 no으로 memberId 카운트 -->
+	<select id="selectMemberIdCount" parameterType="int" resultType="int">
+		SELECT COUNT(member_id)
+		FROM group_member
+		WHERE group_no=#{groupNo}
+	</select>
+	
+	<!-- groupNo,memerId로 소모임 나가기 -->
+	<delete id="deleteGroupMember" parameterType="map">
+		DELETE group_member
+		WHERE group_no=#{groupNo}
+		AND member_id=#{memberId}
+	</delete>
+	
+	
 </mapper>

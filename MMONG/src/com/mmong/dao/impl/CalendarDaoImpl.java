@@ -22,7 +22,6 @@ public class CalendarDaoImpl implements CalendarDao{
 
 	@Override
 	public int insertSchedule(Calendar calendar) {
-		System.out.println("dao"+calendar);
 		return session.insert(makeSqlId("insertSchedule"), calendar);
 	}
 
@@ -43,8 +42,6 @@ public class CalendarDaoImpl implements CalendarDao{
 
 	@Override
 	public void updateSchedule(Calendar calendar) {
-		System.out.println("dao");
-		System.out.println(calendar);
 		session.update(makeSqlId("updateSchedule"), calendar);
 	}
 	

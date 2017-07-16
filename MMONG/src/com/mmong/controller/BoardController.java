@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mmong.service.impl.BoardPictureServiceImpl;
-import com.mmong.service.impl.BoardServiceImpl;
-import com.mmong.service.impl.ReplyServiceImpl;
+import com.mmong.service.BoardPictureService;
+import com.mmong.service.BoardService;
+import com.mmong.service.ReplyService;
 import com.mmong.validation.BoardRegisterValidator;
 import com.mmong.vo.Board;
 import com.mmong.vo.BoardPicture;
@@ -34,24 +34,34 @@ import com.mmong.vo.Reply;
 @RequestMapping("group/board/")
 public class BoardController {
 	@Autowired
-	private BoardServiceImpl boardService; // 완성되면 Impl말고 service로 바꾸기
+	private BoardService boardService; 
 	@Autowired
-	private BoardPictureServiceImpl BPService; // 완성되면 Impl말고 service로 바꾸기
+	private BoardPictureService BPService; 
 	@Autowired
-	private ReplyServiceImpl replyService;
+	private ReplyService replyService;
 	
 	
-	/* 게시물 등록 */
+	/**
+	 * 게시물 한개 등록 하는 handler method
+	 * @param upImage
+	 * @param board
+	 * @param errors
+	 * @param request
+	 * @param session
+	 * @param map
+	 * @return
+	 * 작성자 : 강여림
+	 */
 	@RequestMapping("register")
 	public String registerBoard(@RequestParam List<MultipartFile> upImage, 
 											@ModelAttribute Board board, BindingResult errors, 
 											HttpServletRequest request, HttpSession session, 
-											ModelMap map) throws Exception {
+											ModelMap map){
 		
 		BoardRegisterValidator validator = new BoardRegisterValidator();
 		validator.validate(board, errors);
 		if (errors.hasErrors()) {
-			return "content/group/board/board_form";
+			return "group/board/board_form.tiles";
 		}
 		
 		int groupNo=(int) session.getAttribute("groupNo");
@@ -61,7 +71,7 @@ public class BoardController {
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String memberId=member.getMemberId();
 		 
-		// 시퀀스로 들어갈 no=0, 처음 들어갈 조횟수 hit=0
+		// 처음 들어갈 조횟수 hit=0
 		Date date = new Date();
 
 		board.setHit(0);
@@ -82,7 +92,13 @@ public class BoardController {
 			MultipartFile mFile = upImage.get(i);
 			if (mFile != null && !mFile.isEmpty()) {
 				nameList.add(mFile.getOriginalFilename());
-				mFile.transferTo(new File(destDir, mFile.getOriginalFilename()));
+				try {
+					mFile.transferTo(new File(destDir, mFile.getOriginalFilename()));
+				} catch (IllegalStateException e) {					
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		
@@ -99,11 +115,18 @@ public class BoardController {
 		map.addAttribute("nickname", nickname);
 		map.addAttribute("groupNo", groupNo);
 
-		
 		return "redirect:/group/board/board_view.do?boardNo="+boardNo;
 	}
 
-	/* 게시물 그대로 받아오기 */
+	/**
+	 * 게시물 그대로 받아오는 handler method
+	 * @param nameList
+	 * @param boardNo
+	 * @param request
+	 * @param map
+	 * @return
+	 * 작성자 : 강여림
+	 */
 	@RequestMapping("boardUpdate1")
 	public String updateBoard1(@RequestParam String[] nameList, @RequestParam int boardNo, HttpServletRequest request,
 			ModelMap map) {
@@ -112,7 +135,7 @@ public class BoardController {
 			Board board = boardService.selectBoard(boardNo);
 
 			map.addAttribute("board", board);
-			return "content/group/board/board_update";
+			return "group/board/board_update.tiles";
 		}
 
 		Board board = boardService.selectBoard(boardNo);
@@ -120,10 +143,20 @@ public class BoardController {
 		map.addAttribute("nameList", nameList);
 		map.addAttribute("board", board);
 
-		return "content/group/board/board_update";
+		return "group/board/board_update.tiles";
 	}
 
-	/* 게시물 수정 -2 수정된 글 DB에 넣기 */
+	/**
+	 * 수정된 게시물 DB에 넣는 handler method
+	 * @param upImage
+	 * @param board
+	 * @param errors
+	 * @param imgCheck
+	 * @param request
+	 * @param map
+	 * @return
+	 * 작성자 : 강여림
+	 */
 	@RequestMapping("boardUpdate2")
 	public String updateBoard2(@RequestParam List<MultipartFile> upImage,
 															@ModelAttribute Board board, BindingResult errors,
@@ -135,7 +168,7 @@ public class BoardController {
 		BoardRegisterValidator validator=new BoardRegisterValidator();
 		validator.validate(board,errors);
 		if(errors.hasErrors()){
-			return "content/group/board/board_update";
+			return "group/board/board_update.tiles";
 		}
 
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -198,10 +231,17 @@ public class BoardController {
 		map.addAttribute("nameList", nameList);
 		map.addAttribute("nickname", nickname);
 		
-		return "content/group/board/board_view";
+		return "group/board/board_view.tiles";
 	}
 	
-	/*게시글 삭제*/
+	/**
+	 * 게시글 삭제하는 handler method
+	 * @param boardNo
+	 * @param request
+	 * @param session
+	 * @return
+	 * 작성자 : 강여림
+	 */
 	@RequestMapping("boardDelete")
 	@ResponseBody
 	public String deleteBoard(@RequestParam int boardNo,
@@ -224,7 +264,13 @@ public class BoardController {
 		return "1";
 	}
 	
-	/*게시글 조회*/
+	/**
+	 * 게시물 한개 조회하는 handler method
+	 * @param boardNo
+	 * @param map
+	 * @return
+	 * 작성자 : 강여림
+	 */
 	@RequestMapping("board_view")
 	public String boardView(int boardNo,ModelMap map){
 
@@ -234,7 +280,6 @@ public class BoardController {
 		board.setHit(hit);
 		
 		boardService.updateBoard(board);
-			
 		board=boardService.selectBoard(boardNo);
 		
 		// 사진 찾기
@@ -247,9 +292,7 @@ public class BoardController {
 		}
 	
 		String memberId=board.getMemberId(); // 게시판 쓴 사람의 Id
-		
 		String boardNickname=boardService.selectNickNameByMemberId(memberId, boardNo);
-
 		List<Reply> replyList = replyService.selectReplyByBoardNo(boardNo); 
 		
 		int replyNo;
@@ -259,18 +302,25 @@ public class BoardController {
 			String replyMemberId=replyService.selectMemberId(replyNo); // 리플 쓴 사람의 Id
 			replyNickname.add(replyService.selectNickNameByNo(replyNo, replyMemberId));
 		}
-		
-
+	
 		map.addAttribute("replyList", replyList);
 		map.addAttribute("nameList", nameList);
 		map.addAttribute("board", board);
 		map.addAttribute("boardNickname", boardNickname);
 		map.addAttribute("replyNickname", replyNickname);
 		
-		return "content/group/board/board_view";
+		return "group/board/board_view.tiles";
 	}
 	
-	/*게시글 목록*/
+	/**
+	 * 전체 게시물 조회하는 handler method
+	 * @param page
+	 * @param option
+	 * @param key
+	 * @param session
+	 * @param map
+	 * @return
+	 */
 	@RequestMapping("allBoardList")
 	public String showAllBoardList(@RequestParam(value="page", defaultValue="1")int page, 
 													@RequestParam (value="option", defaultValue="1")String option, 
@@ -280,7 +330,6 @@ public class BoardController {
 		
 		HashMap<String,Object> pagingMap =null;
 		
-		
 		int groupNo=(int) session.getAttribute("groupNo");
 		
 		if(option.equals("1")){ // option 선택을 안했을 때
@@ -289,17 +338,23 @@ public class BoardController {
 			pagingMap=boardService.selectOption(page,option,key,groupNo);
 		}
 		
-		
-		
 		map.addAttribute("groupNo", groupNo);
 		map.addAttribute("nickNameList", pagingMap.get("nickNameList"));
 		map.addAttribute("boardList", pagingMap.get("boardList"));
 		map.addAttribute("pageBean", pagingMap.get("pageBean"));
 	
-		return "content/group/board/board_list";
+		return "group/board/board_list.tiles";
 	}
 	
-	/*내가 쓴 게시글 목록*/
+	/**
+	 * 내가 쓴 게시물 목록 조회하는 handler method
+	 * @param page
+	 * @param option
+	 * @param key
+	 * @param session
+	 * @param map
+	 * @return
+	 */
 	@RequestMapping("myBoardList")
 	public String myBoardList(@RequestParam(value="page", defaultValue="1")int page, 
 											@RequestParam (value="option", defaultValue="1")String option, 
@@ -324,10 +379,14 @@ public class BoardController {
 		map.addAttribute("myBoardList", pagingMap.get("myBoardList"));
 		map.addAttribute("pageBean", pagingMap.get("pageBean"));
 		
-		return "content/group/board/board_mine";
+		return "group/board/board_mine.tiles";
 	}
 	
-	/*내가 쓴 게시글 목록 중 선택 삭제*/
+	/**
+	 * 내가 쓴 게시물 목록 중 선택 삭제 하는 handler method
+	 * @param boardNoList
+	 * @return
+	 */
 	@RequestMapping(value="deleteMyBoardList",produces="html/text;charset=UTF-8;" )
 	@ResponseBody
 	public String deleteMyboardList(@RequestParam List<Integer> boardNoList){

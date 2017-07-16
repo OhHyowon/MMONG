@@ -38,8 +38,6 @@ public class CalendarServiceImpl implements CalendarService{
 
 	@Override
 	public void updateSchedule(Calendar calendar) {
-		System.out.println("service");
-		System.out.println(calendar);
 		dao.updateSchedule(calendar);
 	}
 

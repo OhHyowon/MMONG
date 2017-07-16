@@ -39,7 +39,7 @@ public class MessageController {
 		map.addAttribute("id", id);
 		map.addAttribute("nickname", nickname);
 		
-		return "/content/message/sendMessage";
+		return "message/sendMessage.tiles";
 	}
 	
 	/**
@@ -69,7 +69,7 @@ public class MessageController {
 		valid.validate(message, errors);
 		
 		if(errors.hasErrors()){
-			return new ModelAndView("/content/message/sendMessage");
+			return new ModelAndView("message/sendMessage.tiles");
 		}
 
 		service.insertMessage(message);
@@ -100,7 +100,7 @@ public class MessageController {
 		map.addAttribute("receiveList", pagebeanMap.get("list"));
 		map.addAttribute("pageBean", pagebeanMap.get("pageBean"));
 		
-		return "content/message/selectReceiveMsgList";
+		return "message/selectReceiveMsgList.tiles";
 	}
 	
 	/**
@@ -124,7 +124,7 @@ public class MessageController {
 		map.addAttribute("sendList", pagebeanMap.get("list"));
 		map.addAttribute("pageBean", pagebeanMap.get("pageBean"));
 		
-		return "content/message/selectSendMsgList";
+		return "message/selectSendMsgList.tiles";
 	}
 	
 	
@@ -163,7 +163,7 @@ public class MessageController {
 		Message message = service.viewReceiveMsg(no);
 		
 		map.addAttribute("message", message);
-		return "content/message/viewReceiveMsg";
+		return "message/viewReceiveMsg.tiles";
 	}
 	
 	/**
@@ -179,7 +179,7 @@ public class MessageController {
 		
 		map.addAttribute("message", message);
 		
-		return "content/message/viewSendMsg";
+		return "message/viewSendMsg.tiles";
 	}
 	
 	/**
@@ -194,7 +194,7 @@ public class MessageController {
 
 		map.addAttribute("message", message);
 		map.addAttribute("no", no);
-		return "content/message/replyMessage";
+		return "message/replyMessage.tiles";
 	}
 	
 	/**
@@ -217,7 +217,7 @@ public class MessageController {
 			Message msg = service.selectMsgIdNick(no);
 			map.addAttribute("message", msg);
 			map.addAttribute("no", no);
-			return new ModelAndView("/content/message/replyMessage");
+			return new ModelAndView("message/replyMessage.tiles");
 		}
 		
 		service.insertMessage(message);
@@ -258,7 +258,7 @@ public class MessageController {
 		map.addAttribute("search_opt", searchOpt);
 		map.addAttribute("search_txt", search);
 		
-		return "content/message/searchSendMsgResult"; 
+		return "message/searchSendMsgResult.tiles"; 
 	}
 	
 	/**
@@ -291,6 +291,6 @@ public class MessageController {
 		map.addAttribute("search_opt", searchOpt);
 		map.addAttribute("search_txt", search);
 		
-		return  "content/message/searchReceiveMsgResult"; 
+		return  "message/searchReceiveMsgResult.tiles"; 
 	}
 }

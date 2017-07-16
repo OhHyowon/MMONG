@@ -2,14 +2,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-<h2>공지사항 목록</h2>
+
+<h3>공지사항 목록</h3>
 <table border="1">
 		<thead>
 				<tr>
@@ -31,11 +25,11 @@
 		</tbody>
 </table>
 
-<form action="/MMONG/adminNotice/selectAdminNoticeByKeyword.do" method="post">
+<form action="/MMONG/adminNotice/selectAdminNoticeList.do" method="post">
 	<select name="option">
-					<option>제목</option>
+					<option value="title">제목</option>
 					<!-- <option>제목+내용</option> -->
-					<option>내용</option>
+					<option value="content">내용</option>
 	</select>
 	<input type="text" name="keyword">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -57,7 +51,7 @@
 														페이징 처리
 			###################################################### --%>
 	<!-- 첫페이지로 이동 -->
-	<a href="selectAdminNoticeList.do?page=1">첫 페이지</a>
+	<a href="/MMONG/adminNotice/selectAdminNoticeList.do?page=1">첫 페이지</a>
 
 	<!--
 		이전 페이지 그룹 처리.
@@ -66,7 +60,7 @@
 	<c:choose>
 		<c:when test="${requestScope.pageBean.previousPageGroup }">
 					<!-- 이전 페이지 그룹이 있다면 : isPreviousPageGroup() -->
-					<a href="selectAdminNoticeList.do?page=${requestScope.pageBean.beginPage - 1} ">◀</a>
+					<a href="/MMONG/adminNotice/selectAdminNoticeList.do?page=${requestScope.pageBean.beginPage - 1} ">◀</a>
 		</c:when>
 		<c:otherwise>
 					◀
@@ -83,7 +77,7 @@
 			<c:choose>
 					<c:when test="${requestScope.pageBean.page != page }">
 							<!-- 현재페이지가 아니라면 -->
-								<a href="selectAdminNoticeList.do?page=${page}">${page }&nbsp;&nbsp;</a>
+								<a href="/MMONG/adminNotice/selectAdminNoticeList.do?page=${page}">${page }&nbsp;&nbsp;</a>
 					</c:when>
 					<c:otherwise>
 								[${page }] &nbsp;&nbsp;
@@ -99,7 +93,7 @@
 	<c:choose>
 		<c:when test="${requestScope.pageBean.nextPageGroup }">
 					<!-- 다음 페이지 그룹이 있다면 : isNextPageGroup() -->
-					<a href="MMONG/adminNotice/selectAdminNoticeList?page=${requestScope.pageBean.endPage + 1 }">▶</a>
+					<a href="/MMONG/adminNotice/MMONG/adminNotice/selectAdminNoticeList?page=${requestScope.pageBean.endPage + 1 }">▶</a>
 		</c:when>
 		<c:otherwise>
 					▶
@@ -107,25 +101,11 @@
 	</c:choose>
 	
 	<!-- 마지막 페이지로 이동 -->
-	<a href="selectAdminNoticeList.do?page=${requestScope.pageBean.totalPage}">마지막 페이지</a>
+	<a href="/MMONG/adminNotice/selectAdminNoticeList.do?page=${requestScope.pageBean.totalPage}">마지막 페이지</a>
 
 
 </p>
 	
-	
-	
-	
-
-</body>
-</html>
-
-
-
-
-
-
-
-
 
 
 

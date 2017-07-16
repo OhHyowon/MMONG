@@ -33,4 +33,18 @@ public interface AdministratorService {
 	* 
 	*/
 	Administrator searchAdministratorById(String adminId);
+	
+	////////////////수정///////////////////////////
+	
+	/**
+	 * 관리자 핸드폰 번호로 중복번호 조회하는 메소드
+	 * @param adminPhone
+	 * @return 찾은 관리자 수 : 있으면 1, 없으면 0
+	 */
+	int checkAdminPhone(String adminPhone);
+	
+		
+	
+	
+	
 }

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -36,9 +37,9 @@ $(document).ready(function(){
 			<td>일정 구분</td>
 			<td>
 			<div>
-				<label>개인 <input type="radio" name="schedule" value="privateSch" checked="true"></label>
-		  		<label>진료 <input type="radio" name="schedule" value="hospitalSch"></label>
-		  		<label>소모임 <input type="radio" name="schedule" value="groupSch"></label>
+		  		<label>개인 <input type="radio" name="schedule" value=0 checked="true"></label>
+		  		<label>진료 <input type="radio" name="schedule" value=1></label>
+		  		<label>소모임 <input type="radio" name="schedule" value=2></label>
 		  		</div>
 			</td>
 		</tr>
@@ -46,11 +47,11 @@ $(document).ready(function(){
 			<td>기분</td>  
 			<td>
 				<div>
-					<label>기쁨 <input type="checkbox" name="emotion" value="happy"></label>
-		  			<label>슬픔 <input type="checkbox" name="emotion" value="sad"></label>
-		  			<label>화남 <input type="checkbox" name="emotion" value="angry"></label>
-		  			<label>보통 <input type="checkbox" name="emotion" value="soso"></label>
-		  			<label>우울 <input type="checkbox" name="emotion" value="gloomy"></label>
+		  			<label>기쁨 <input type="checkbox" name="emotion" value=1></label>
+		  			<label>슬픔 <input type="checkbox" name="emotion" value=2></label>
+		  			<label>화남 <input type="checkbox" name="emotion" value=3></label>
+		  			<label>보통 <input type="checkbox" name="emotion" value=4></label>
+		  			<label>우울 <input type="checkbox" name="emotion" value=5></label>
 		  		</div>
 			</td>
 		</tr>
@@ -61,15 +62,18 @@ $(document).ready(function(){
 		</tr>
 		<tr>
 			<td>시작 일시</td>
-			<td><input type="datetime-local" name="startDate"></td>
+			<td><input type="datetime-local" name="startDate" value="<fmt:formatDate value="${requestScope.insertInfo.startDate }" pattern="yyyy-MM-dd'T'HH:mm"/>">
+					<span class="error"><form:errors path="calendar.startDate"/></span></td>
 		</tr>
 		<tr> <!-- 시작일시 이전꺼 선택못하게 하기 -->
 			<td>종료 일시</td>
-			<td><input type="datetime-local" name="endDate" id="endDate"></td> 
+			<td><input type="datetime-local" name="endDate" value="<fmt:formatDate value="${requestScope.insertInfo.endDate }" pattern="yyyy-MM-dd'T'HH:mm"/>">
+					<span class="error"><form:errors path="calendar.endDate"/></span></td> 
 		</tr>
 		<tr>
 			<td>메모</td>
-			<td><input type="text" name="content"  value="${param.content }"></td> 
+			<td><input type="text" name="content"  value="${param.content }">
+					<span class="error"><form:errors path="calendar.content"/></span></td> 
 		</tr>
 		<tr>
 			<td>이미지 업로드</td>
@@ -77,15 +81,7 @@ $(document).ready(function(){
 				<input type="file" name="upImage"><br>
 			</td>	
 		</tr>
-		<tr>
-			<td>공개여부</td>
-			<td>
-			<div>
-				<label>전체공개 <input type="radio" name="secret" value="open" checked="true"></label>
-			    <label>비밀글 <input type="radio" name="secret" value="secret"></label>
-			    </div>
-			</td>
-		</tr>
+		
 	</table>
 	
 	<input type="submit" value="확인">

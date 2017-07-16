@@ -11,7 +11,7 @@ public class Member implements Serializable {
 	private String memberAddress;
 	private String memberPicture;
 	
-	private User memberUser;
+	private User user;
 	
 	public Member(){}
 
@@ -25,7 +25,7 @@ public class Member implements Serializable {
 		this.memberEmail = memberEmail;
 		this.memberAddress = memberAddress;
 		this.memberPicture = memberPicture;
-		this.memberUser = memberUser;
+		this.user = memberUser;
 	}
 
 	public Member(String memberId, String memberName, String nickName, String memberPhone, String memberEmail,
@@ -50,7 +50,7 @@ public class Member implements Serializable {
 		result = prime * result + ((memberName == null) ? 0 : memberName.hashCode());
 		result = prime * result + ((memberPhone == null) ? 0 : memberPhone.hashCode());
 		result = prime * result + ((memberPicture == null) ? 0 : memberPicture.hashCode());
-		result = prime * result + ((memberUser == null) ? 0 : memberUser.hashCode());
+		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		result = prime * result + ((nickName == null) ? 0 : nickName.hashCode());
 		return result;
 	}
@@ -94,10 +94,10 @@ public class Member implements Serializable {
 				return false;
 		} else if (!memberPicture.equals(other.memberPicture))
 			return false;
-		if (memberUser == null) {
-			if (other.memberUser != null)
+		if (user == null) {
+			if (other.user != null)
 				return false;
-		} else if (!memberUser.equals(other.memberUser))
+		} else if (!user.equals(other.user))
 			return false;
 		if (nickName == null) {
 			if (other.nickName != null)
@@ -163,19 +163,19 @@ public class Member implements Serializable {
 		this.memberPicture = memberPicture;
 	}
 
-	public User getMemberUser() {
-		return memberUser;
+	public User getUser() {
+		return user;
 	}
 
-	public void setMemberUser(User memberUser) {
-		this.memberUser = memberUser;
+	public void setUser(User memberUser) {
+		this.user = memberUser;
 	}
 
 	@Override
 	public String toString() {
 		return "Member [memberId=" + memberId + ", memberName=" + memberName + ", nickName=" + nickName
 				+ ", memberPhone=" + memberPhone + ", memberEmail=" + memberEmail + ", memberAddress=" + memberAddress
-				+ ", memberPicture=" + memberPicture + ", memberUser=" + memberUser + "]";
+				+ ", memberPicture=" + memberPicture + ", memberUser=" + user + "]";
 	}
 	
 	

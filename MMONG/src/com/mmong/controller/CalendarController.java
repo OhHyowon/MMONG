@@ -34,39 +34,11 @@ public class CalendarController {
 	private CalendarService service;
 	
 	@RequestMapping("insert")
-	public ModelAndView insertSchedule(@RequestParam String schedule, @RequestParam(value="emotion", defaultValue="5") String emotion, @RequestParam String secret, @RequestParam MultipartFile upImage, @ModelAttribute Calendar calendar, BindingResult errors, HttpServletRequest request, ModelMap map){
+	public ModelAndView insertSchedule(@RequestParam MultipartFile upImage, @ModelAttribute Calendar calendar, BindingResult errors, HttpServletRequest request, ModelMap map){
 		
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String memberId = member.getMemberId();
-		
-		if(schedule.equals("privateSch")){
-			calendar.setType(0);
-		}else if(schedule.equals("hospitalSch")){
-			calendar.setType(1);
-		}else{
-			calendar.setType(2);
-		}
-		
-		if(emotion.equals("happy")){
-			calendar.setEmotion(0);
-		}else if(emotion.equals("sad")){
-			calendar.setEmotion(1);
-		}else if(emotion.equals("angry")){
-			calendar.setEmotion(2);
-		}else if(emotion.equals("soso")){
-			calendar.setEmotion(3);
-		}else if(emotion.equals("gloomy")){
-			calendar.setEmotion(4);
-		}else if(emotion.equals("5")){
-			calendar.setEmotion(5);
-		}
-		
-		if(secret.equals("open")){
-			calendar.setSecret(0);
-		}else{
-			calendar.setSecret(1);
-		}
-		
+	
 		String destDir = request.getServletContext().getRealPath("/up_image"); // 진짜경로
 		if(upImage!=null && !upImage.isEmpty()){
 			String fileName = upImage.getOriginalFilename();
@@ -89,7 +61,8 @@ public class CalendarController {
 		valid.validate(calendar, errors);
 		
 		if(errors.hasErrors()){
-			return new ModelAndView("/content/calendar/insertSchedule");
+			map.addAttribute("insertInfo", calendar);
+			return new ModelAndView("calendar/insertSchedule.tiles");
 		}
 		
 		service.insertSchedule(calendar);
@@ -130,7 +103,7 @@ public class CalendarController {
 		Calendar eventInfo = service.viewSchedule(eventNo);
 		map.addAttribute("eventInfo", eventInfo);
 		
-		return "content/calendar/viewSchedule";
+		return "calendar/viewSchedule.tiles";
 	}
 
 	/**
@@ -141,6 +114,7 @@ public class CalendarController {
 	@RequestMapping("delete")
 	@ResponseBody
 	public String deleteSchedule(@RequestParam int no){
+		
 		service.deleteSchedule(no);
 		
 		return "1";
@@ -158,7 +132,7 @@ public class CalendarController {
 		Calendar calendar = service.viewSchedule(no);
 		map.addAttribute("updateInfo", calendar);
 		
-		return "content/calendar/updateSchedule";
+		return "calendar/updateSchedule.tiles";
 	}
 	
 	/**
@@ -166,46 +140,20 @@ public class CalendarController {
 	 * @return
 	 */
 	@RequestMapping("update")
-	public ModelAndView updateSchedule(@RequestParam int no, @RequestParam String savedImg, @RequestParam(value="delete", defaultValue="non") String delete, @RequestParam String schedule, @RequestParam(value="emotion", defaultValue="5") String emotion, @RequestParam String secret, @RequestPart(value = "upImage", required=false) MultipartFile upImage, @ModelAttribute Calendar calendar, BindingResult errors, HttpServletRequest request, ModelMap map){
+	public ModelAndView updateSchedule(@RequestParam int no, @RequestParam String savedImg,
+			@RequestParam(value="delete", defaultValue="0") String delete, 
+			@RequestPart(value = "upImage", required=false) MultipartFile upImage, 
+			@ModelAttribute Calendar calendar, BindingResult errors, HttpServletRequest request, ModelMap map){
 		
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String memberId = member.getMemberId();
-		
-		if(schedule.equals("privateSch")){
-			calendar.setType(0);
-		}else if(schedule.equals("hospitalSch")){
-			calendar.setType(1);
-		}else{
-			calendar.setType(2);
-		}
-		
-		if(emotion.equals("happy")){
-			calendar.setEmotion(0);
-		}else if(emotion.equals("sad")){
-			calendar.setEmotion(1);
-		}else if(emotion.equals("angry")){
-			calendar.setEmotion(2);
-		}else if(emotion.equals("soso")){
-			calendar.setEmotion(3);
-		}else if(emotion.equals("gloomy")){
-			calendar.setEmotion(4);
-		}else if(emotion.equals("5")){
-			calendar.setEmotion(5);
-		}
-		
-		if(secret.equals("open")){
-			calendar.setSecret(0);
-		}else{
-			calendar.setSecret(1);
-		}
-		
+
 		String destDir = request.getServletContext().getRealPath("/up_image"); // 진짜경로
 		if(upImage!=null && !upImage.isEmpty()){ // 이미지를 수정했으면
-	//	if(!upImage.equals("non")){
 			String fileName = upImage.getOriginalFilename();
 			try {
 				upImage.transferTo(new File(destDir, fileName));
-			} catch (IllegalStateException e) { ///////////Exception 선언~~~필용오요요요요요요ㅛㅇ
+			} catch (IllegalStateException e) { 
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -213,7 +161,7 @@ public class CalendarController {
 				e.printStackTrace();
 			}
 			calendar.setPicture(fileName);
-		}else if(delete.equals("delete")){ //사진을 삭제
+		}else if(delete.equals("1")){ //사진을 삭제
 			calendar.setPicture(null);
 		}else{ // 이미지를 수정&삭제하지 않았으면
 			calendar.setPicture(savedImg);
@@ -227,7 +175,7 @@ public class CalendarController {
 		
 		if(errors.hasErrors()){
 			map.addAttribute("updateInfo", calendar);
-			return new ModelAndView("/content/calendar/updateSchedule");
+			return new ModelAndView("calendar/updateSchedule.tiles");
 		}
 		
 		service.updateSchedule(calendar);

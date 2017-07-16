@@ -22,7 +22,7 @@ $(document).ready(function(){
 		$("#pic").empty();
 		$("#pic").append("현재 이미지　없음");
 		$("#file").empty();
-		$("#file").append("<input type='hidden' name='delete' value='delete'>");
+		$("#file").append("<input type='hidden' name='delete' value=1>");
 	 });
 });
 
@@ -47,23 +47,23 @@ span.error{
 			<c:choose>
 				<c:when test="${requestScope.updateInfo.type eq 0}">
 					<div>
-						<label>개인 <input type="radio" name="schedule" value="privateSch" checked="true"></label>
-		  				<label>진료 <input type="radio" name="schedule" value="hospitalSch"></label>
-		  				<label>소모임 <input type="radio" name="schedule" value="groupSch"></label>
+						<label>개인 <input type="radio" name="schedule" value=0 checked="true"></label>
+		  				<label>진료 <input type="radio" name="schedule" value=1></label>
+		  				<label>소모임 <input type="radio" name="schedule" value=2></label>
 		  			</div>
 				</c:when>
 				<c:when test="${requestScope.updateInfo.type eq 1}">
 					<div>
-						<label>개인 <input type="radio" name="schedule" value="privateSch"></label>
-		  				<label>진료 <input type="radio" name="schedule" value="hospitalSch" checked="true"></label>
-		  				<label>소모임 <input type="radio" name="schedule" value="groupSch"></label>
+						<label>개인 <input type="radio" name="schedule" value=0></label>
+		  				<label>진료 <input type="radio" name="schedule" value=1 checked="true"></label>
+		  				<label>소모임 <input type="radio" name="schedule" value=2></label>
 		  			</div>
 				</c:when>
 				<c:otherwise>
 					<div>
-						<label>개인 <input type="radio" name="schedule" value="privateSch"></label>
-		  				<label>진료 <input type="radio" name="schedule" value="hospitalSch"></label>
-		  				<label>소모임 <input type="radio" name="schedule" value="groupSch" checked="true"></label>
+						<label>개인 <input type="radio" name="schedule" value=0></label>
+		  				<label>진료 <input type="radio" name="schedule" value=1></label>
+		  				<label>소모임 <input type="radio" name="schedule" value=2 checked="true"></label>
 		  			</div>
 				</c:otherwise>
 			</c:choose>
@@ -73,58 +73,58 @@ span.error{
 		<th>기분</th>
 		<td> <!-- 이모티콘으로 변환 필요!!! -->
 			<c:choose>
-				<c:when test="${requestScope.updateInfo.emotion eq 0}">
-					<div>
-						<label>기쁨 <input type="checkbox" name="emotion" value="happy" checked="checked"></label>
-			  			<label>슬픔 <input type="checkbox" name="emotion" value="sad"></label>
-			  			<label>화남 <input type="checkbox" name="emotion" value="angry"></label>
-			  			<label>보통 <input type="checkbox" name="emotion" value="soso"></label>
-			  			<label>우울 <input type="checkbox" name="emotion" value="gloomy"></label>
-		  			</div>
-				</c:when>
 				<c:when test="${requestScope.updateInfo.emotion eq 1}">
 					<div>
-						<label>기쁨 <input type="checkbox" name="emotion" value="happy"></label>
-			  			<label>슬픔 <input type="checkbox" name="emotion" value="sad" checked="checked"></label>
-			  			<label>화남 <input type="checkbox" name="emotion" value="angry"></label>
-			  			<label>보통 <input type="checkbox" name="emotion" value="soso"></label>
-			  			<label>우울 <input type="checkbox" name="emotion" value="gloomy"></label>
+						<label>기쁨 <input type="checkbox" name="emotion" value=1 checked="checked"></label>
+			  			<label>슬픔 <input type="checkbox" name="emotion" value=2></label>
+			  			<label>화남 <input type="checkbox" name="emotion" value=3></label>
+			  			<label>보통 <input type="checkbox" name="emotion" value=4></label>
+			  			<label>우울 <input type="checkbox" name="emotion" value=5></label>
 		  			</div>
 				</c:when>
 				<c:when test="${requestScope.updateInfo.emotion eq 2}">
 					<div>
-						<label>기쁨 <input type="checkbox" name="emotion" value="happy"></label>
-			  			<label>슬픔 <input type="checkbox" name="emotion" value="sad"></label>
-			  			<label>화남 <input type="checkbox" name="emotion" value="angry" checked="checked"></label>
-			  			<label>보통 <input type="checkbox" name="emotion" value="soso"></label>
-			  			<label>우울 <input type="checkbox" name="emotion" value="gloomy"></label>
+						<label>기쁨 <input type="checkbox" name="emotion" value=1></label>
+			  			<label>슬픔 <input type="checkbox" name="emotion" value=2 checked="checked"></label>
+			  			<label>화남 <input type="checkbox" name="emotion" value=3></label>
+			  			<label>보통 <input type="checkbox" name="emotion" value=4></label>
+			  			<label>우울 <input type="checkbox" name="emotion" value=5></label>
 		  			</div>
 				</c:when>
 				<c:when test="${requestScope.updateInfo.emotion eq 3}">
 					<div>
-						<label>기쁨 <input type="checkbox" name="emotion" value="happy"></label>
-			  			<label>슬픔 <input type="checkbox" name="emotion" value="sad"></label>
-			  			<label>화남 <input type="checkbox" name="emotion" value="angry"></label>
-			  			<label>보통 <input type="checkbox" name="emotion" value="soso" checked="checked"></label>
-			  			<label>우울 <input type="checkbox" name="emotion" value="gloomy"></label>
+						<label>기쁨 <input type="checkbox" name="emotion" value=1></label>
+			  			<label>슬픔 <input type="checkbox" name="emotion" value=2></label>
+			  			<label>화남 <input type="checkbox" name="emotion" value=3 checked="checked"></label>
+			  			<label>보통 <input type="checkbox" name="emotion" value=4></label>
+			  			<label>우울 <input type="checkbox" name="emotion" value=5></label>
 		  			</div>
 				</c:when>
 				<c:when test="${requestScope.updateInfo.emotion eq 4}">
 					<div>
-						<label>기쁨 <input type="checkbox" name="emotion" value="happy"></label>
-			  			<label>슬픔 <input type="checkbox" name="emotion" value="sad"></label>
-			  			<label>화남 <input type="checkbox" name="emotion" value="angry"></label>
-			  			<label>보통 <input type="checkbox" name="emotion" value="soso"></label>
-			  			<label>우울 <input type="checkbox" name="emotion" value="gloomy" checked="checked"></label>
+						<label>기쁨 <input type="checkbox" name="emotion" value=1></label>
+			  			<label>슬픔 <input type="checkbox" name="emotion" value=2></label>
+			  			<label>화남 <input type="checkbox" name="emotion" value=3></label>
+			  			<label>보통 <input type="checkbox" name="emotion" value=4 checked="checked"></label>
+			  			<label>우울 <input type="checkbox" name="emotion" value=5></label>
+		  			</div>
+				</c:when>
+				<c:when test="${requestScope.updateInfo.emotion eq 5}">
+					<div>
+						<label>기쁨 <input type="checkbox" name="emotion" value=1></label>
+			  			<label>슬픔 <input type="checkbox" name="emotion" value=2></label>
+			  			<label>화남 <input type="checkbox" name="emotion" value=3></label>
+			  			<label>보통 <input type="checkbox" name="emotion" value=4></label>
+			  			<label>우울 <input type="checkbox" name="emotion" value=5 checked="checked"></label>
 		  			</div>
 				</c:when>
 				<c:otherwise>
 					<div>
-						<label>기쁨 <input type="checkbox" name="emotion" value="happy"></label>
-			  			<label>슬픔 <input type="checkbox" name="emotion" value="sad"></label>
-			  			<label>화남 <input type="checkbox" name="emotion" value="angry"></label>
-			  			<label>보통 <input type="checkbox" name="emotion" value="soso"></label>
-			  			<label>우울 <input type="checkbox" name="emotion" value="gloomy"></label>
+						<label>기쁨 <input type="checkbox" name="emotion" value=1></label>
+			  			<label>슬픔 <input type="checkbox" name="emotion" value=2></label>
+			  			<label>화남 <input type="checkbox" name="emotion" value=3></label>
+			  			<label>보통 <input type="checkbox" name="emotion" value=4></label>
+			  			<label>우울 <input type="checkbox" name="emotion" value=5></label>
 		  			</div>
 				</c:otherwise>
 			</c:choose>
@@ -137,15 +137,18 @@ span.error{
 	</tr>
 	<tr>
 		<td>시작 일시</td>
-		<td><input type="datetime-local" name="startDate" value="<fmt:formatDate value="${requestScope.updateInfo.startDate }" pattern="yyyy-MM-dd'T'HH:mm"/>"></td>
+		<td><input type="datetime-local" name="startDate" value="<fmt:formatDate value="${requestScope.updateInfo.startDate }" pattern="yyyy-MM-dd'T'HH:mm"/>">
+				<span class="error"><form:errors path="calendar.startDate"/></span></td>
 	</tr>
 	<tr> <!-- 시작일시 이전꺼 선택못하게 하기 -->
 		<td>종료 일시</td>
-		<td><input type="datetime-local" name="endDate" id="endDate"  value="<fmt:formatDate value="${requestScope.updateInfo.endDate }" pattern="yyyy-MM-dd'T'HH:mm"/>"></td> 
+		<td><input type="datetime-local" name="endDate"  value="<fmt:formatDate value="${requestScope.updateInfo.endDate }" pattern="yyyy-MM-dd'T'HH:mm"/>">
+				<span class="error"><form:errors path="calendar.endDate"/></span></td> 
 	</tr>
 	<tr>
 		<th>메모</th>
-		<td><input type="text" name="content"  value="${requestScope.updateInfo.content }"></td>
+		<td><input type="text" name="content"  value="${requestScope.updateInfo.content }">
+		<span class="error"><form:errors path="calendar.content"/></span></td>
 	</tr>
 	<tr>
 		<th>이미지</th>
@@ -165,15 +168,6 @@ span.error{
 			<div id="file"></div>
 		</td>
 	</tr>
-	<tr>
-			<td>공개여부</td>
-			<td>
-			<div>
-				<label>전체공개 <input type="radio" name="secret" value="open" checked="true"></label>
-			    <label>비밀글 <input type="radio" name="secret" value="secret"></label>
-			    </div>
-			</td>
-		</tr>
 </table>
 	<input type="hidden" value="${requestScope.updateInfo.picture }" name="savedImg">
 

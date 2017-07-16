@@ -45,7 +45,7 @@ span.error{
 	<tr>
 		<td colspan="2">
 			<input type="submit" value="전송">
-			<input type="button" value="취소" onclick="location.href='/MMONG/message.do'">
+			<input type="button" value="취소" onclick="location.href='/MMONG/message/message.do'">
 		</td>
 	</tr>
 </table>

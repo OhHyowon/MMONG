@@ -2,8 +2,13 @@ ALTER TABLE member DROP COLUMN member_pwd;
 ALTER TABLE member DROP COLUMN member_authority;
 ALTER TABLE administrator DROP COLUMN admin_pwd;
 ALTER TABLE administrator DROP COLUMN admin_authority;
+ALTER TABLE GROUP_DATE ADD member_Id varchar2(30)
 
 ALTER TABLE GROUP_DATE CREATE COLUMN TITLE VARCHAR2(900);
+
+ALTER TABLE GROUP_DATE ADD member_Id varchar2(30)
+
+alter table reply add group_no number
 
 /* 사용자 0번 */
 DROP TABLE USERS;
@@ -75,7 +80,6 @@ CREATE TABLE CALENDAR (
 	TITLE VARCHAR2(300) NOT NULL, /* 제목 */
 	CONTENT VARCHAR2(3000) NOT NULL, /* 내용 */
 	TYPE NUMBER NOT NULL, /* 타입 */
-	SECRET NUMBER NOT NULL, /* 공개여부 */
 	START_DATE DATE NOT NULL, /* 시작 일시 */
 	END_DATE DATE NOT NULL, /* 종료 일시 */
 	EMOTION NUMBER, /* 감정상태 */
@@ -85,37 +89,6 @@ CREATE TABLE CALENDAR (
 
 DROP SEQUENCE CALENDAR_NO_SEQ;
 CREATE SEQUENCE CALENDAR_NO_SEQ;
- TO_DATE ('6/23/2011 23:59:59', 'mm/dd/yyyy hh24:mi:ss');
-
-INSERT INTO calendar VALUES ( 0, '제목', '내용', 1, 1, TO_DATE('6/23/2017 23:59:59', 'mm/dd/yyyy hh24:mi:ss'), 
-																				 TO_DATE('6/25/2017 23:59:59', 'mm/dd/yyyy hh24:mi:ss'),
-																				 1,
-																				 'pic',
-																				 'a1a2a3a4');
-);
-
-
-INSERT INTO calendar VALUES ( 0, '제목', '내용', 1, 1, '2017-01-01 00:00:00', 
-																				 '2017-01-01 00:00:00',
-																				 1,
-																				 'pic',
-																				 'a1a2a3a4');
-);
-
-
-
-/* 진료기록 6번*/
-DROP TABLE CHART;
-CREATE TABLE CHART (
-	NO NUMBER PRIMARY KEY,/* NO */
-	CHART_DATE DATE NOT NULL, /* 시간 */
-	WRITER VARCHAR2(30) NOT NULL, /* 작성자 */
-	CONTENT VARCHAR2(900) /* 내용 */
-);
-
-
-DROP SEQUENCE CHART_NO_SEQ;
-CREATE SEQUENCE CHART_NO_SEQ;
 
 /* 건강정보 6번*/
 DROP TABLE HEALTH;
@@ -123,13 +96,25 @@ CREATE TABLE HEALTH (
 	NO NUMBER PRIMARY KEY, /* NO */
 	CONTENT VARCHAR2(900) NOT NULL, /* 내용 */
 	DONE NUMBER NOT NULL, /* 체크여부 0:안함(DEFAULT), 1:함*/
-	GENDER CHAR NOT NULL, /* 성별 */
-	CHART_NO NUMBER CONSTRAINT CHART_NO_HEALTH_FK REFERENCES CHART(NO) /* 차트NO */
+	GENDER CHAR NOT NULL /* 성별 */
 );
 
 DROP SEQUENCE HEALTH_NO_SEQ;
 CREATE SEQUENCE HEALTH_NO_SEQ;
 
+
+/* 진료기록 7번*/
+DROP TABLE CHART;
+CREATE TABLE CHART (
+	NO NUMBER PRIMARY KEY,/* NO */
+	CHART_DATE DATE NOT NULL, /* 시간 */
+	WRITER VARCHAR2(30) NOT NULL, /* 작성자 */
+	CONTENT VARCHAR2(900), /* 내용 */
+	HEALTH_NO NUMBER CONSTRAINT HEALTH_NO_CHART_FK REFERENCES HEALTH(NO) ON DELETE CASCADE /* 차트NO */
+);
+
+DROP SEQUENCE CHART_NO_SEQ;
+CREATE SEQUENCE CHART_NO_SEQ;
 
 
 /* 날씨메세지 8번 */
@@ -172,7 +157,9 @@ DROP TABLE GROUP_DATE;
 CREATE TABLE GROUP_DATE (
 	NO NUMBER PRIMARY KEY,/* NO */
 	MEET_DATE DATE NOT NULL, /* 날짜 */
-	PLACE VARCHAR2(900), /* 장소 */
+	PLACE VARCHAR2(900) NOT NULL, /* 장소 */
+	TITLE VARCHAR2(900) NOT NULL, /* 일정이름 */
+	member_Id varchar2(30) NOT NULL,
 	GROUP_NO NUMBER CONSTRAINT GROUP_NO_MEET_DATE_FK REFERENCES SMALL_GROUP(NO) /* 소모임NO */
 );
 DROP SEQUENCE GROUP_DATE_NO_SEQ;
@@ -253,3 +240,57 @@ CREATE TABLE MESSAGE (
 DROP SEQUENCE MESSAGE_NO_SEQ;
 CREATE SEQUENCE MESSAGE_NO_SEQ;
 
+
+
+	SELECT no
+	FROM group_member
+	WHERE member_id='duflalrjdi'
+	AND group_no=0
+
+	SELECT no
+	FROM GROUP_DATE
+	WHERE '2017-01-01' <= meet_date
+	
+	
+			SELECT COUNT(no)
+			FROM board
+			WHERE title LIKE '%뭐%'
+			AND group_no=0
+	
+			SELECT COUNT(no)
+			FROM group_date
+			WHERE group_no=0
+			AND title LIKE '%ㅋ%'
+			
+			SELECT COUNT(no)
+			FROM group_date
+			WHERE group_no=0
+			AND place LIKE '%청담%'
+			
+			SELECT COUNT(no)
+			FROM group_date
+			WHERE group_no=0
+			AND place LIKE '%산%'
+			
+			
+			SELECT no, meet_date, place, title, group_no, member_id
+	FROM (
+		SELECT rownum rnum, no, meet_date, place, title, group_no, member_id
+		FROM( 
+			SELECT  no, meet_date, place, title, group_no, member_id
+			FROM group_date
+			WHERE group_no=0
+			AND place LIKE '%산%'
+			ORDER BY meet_date DESC
+			)
+			WHERE rownum <= 10
+		)
+		WHERE rnum >= 1
+	
+		
+		
+				SELECT no, content, reply_date, member_id, board_no
+				FROM reply
+				WHERE member_id='duflalrjdi'
+				AND 		group_no=21
+				ORDER BY reply_date DESC

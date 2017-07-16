@@ -63,6 +63,15 @@ public interface AdministratorNoticeService {
 	 * @return Map 내에 그 페이지에서 보여줄 공지사항들을 담은 List와 PaingBean 객체를 리턴
 	 */
 	Map<String, Object> selectAdminNoticeListPaging(int page);
+
+	/**
+	 * page 기준으로 관리자 공지사항들중 검색조건을 만족하는 공지사항을 조회하는 메소드.
+	 * @param page
+	 * @param option		검색 조건
+	 * @param keyword	검색 키워드
+	 * @return
+	 */
+	Map<String, Object> selectOptionNoitceList(int page, String option, String keyword);
 	
 	
 	

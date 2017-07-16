@@ -90,4 +90,12 @@ public interface BoardDao {
 	 * @return
 	 */
 	public String selectBoardTitle(int boardNo);
+	/***
+	 * option 창에 따른 전체 게시물 수
+	 * @param groupNo
+	 * @param option
+	 * @param key
+	 * @return
+	 */
+	public int selectOptionCount(int groupNo, String option, String key);
 }

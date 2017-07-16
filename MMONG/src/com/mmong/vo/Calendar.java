@@ -10,7 +10,6 @@ public class Calendar implements Serializable {
 	private String title; // 제목
  	private String content; // 메모
 	private int type; // 일정 구분
-	private int secret; // 공개여부
 	private int emotion; // 기분
 	private String picture; // 사진 업로드
 	@DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm")
@@ -23,14 +22,13 @@ public class Calendar implements Serializable {
 	
 	public Calendar(){}
 
-	public Calendar(int no, String title, String content, int type, int secret, int emotion, String picture,
-			Date startDate, Date endDate, String memberId) {
+	public Calendar(int no, String title, String content, int type, int emotion, String picture, Date startDate,
+			Date endDate, String memberId) {
 		super();
 		this.no = no;
 		this.title = title;
 		this.content = content;
 		this.type = type;
-		this.secret = secret;
 		this.emotion = emotion;
 		this.picture = picture;
 		this.startDate = startDate;
@@ -38,14 +36,13 @@ public class Calendar implements Serializable {
 		this.memberId = memberId;
 	}
 
-	public Calendar(int no, String title, String content, int type, int secret, int emotion, String picture,
-			Date startDate, Date endDate, String memberId, Member member) {
+	public Calendar(int no, String title, String content, int type, int emotion, String picture, Date startDate,
+			Date endDate, String memberId, Member member) {
 		super();
 		this.no = no;
 		this.title = title;
 		this.content = content;
 		this.type = type;
-		this.secret = secret;
 		this.emotion = emotion;
 		this.picture = picture;
 		this.startDate = startDate;
@@ -84,14 +81,6 @@ public class Calendar implements Serializable {
 
 	public void setType(int type) {
 		this.type = type;
-	}
-
-	public int getSecret() {
-		return secret;
-	}
-
-	public void setSecret(int secret) {
-		this.secret = secret;
 	}
 
 	public int getEmotion() {
@@ -153,7 +142,6 @@ public class Calendar implements Serializable {
 		result = prime * result + ((memberId == null) ? 0 : memberId.hashCode());
 		result = prime * result + no;
 		result = prime * result + ((picture == null) ? 0 : picture.hashCode());
-		result = prime * result + secret;
 		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		result = prime * result + type;
@@ -198,8 +186,6 @@ public class Calendar implements Serializable {
 				return false;
 		} else if (!picture.equals(other.picture))
 			return false;
-		if (secret != other.secret)
-			return false;
 		if (startDate == null) {
 			if (other.startDate != null)
 				return false;
@@ -217,9 +203,9 @@ public class Calendar implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Calendar [no=" + no + ", title=" + title + ", content=" + content + ", type=" + type + ", secret="
-				+ secret + ", emotion=" + emotion + ", picture=" + picture + ", startDate=" + startDate + ", endDate="
-				+ endDate + ", memberId=" + memberId + ", member=" + member + "]";
+		return "Calendar [no=" + no + ", title=" + title + ", content=" + content + ", type=" + type + ", emotion="
+				+ emotion + ", picture=" + picture + ", startDate=" + startDate + ", endDate=" + endDate + ", memberId="
+				+ memberId + ", member=" + member + "]";
 	}
 
 }

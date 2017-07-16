@@ -23,6 +23,16 @@ public class MemberDaoImpl implements MemberDao {
 	}
 	
 	@Override
+	public int updateMember(Member member) {
+		return session.update(makeSql("updateMember"), member);
+	}
+	
+	@Override
+	public int deleteMemberById(String memberId) {
+		return session.delete(makeSql("deleteMemberById"), memberId);
+	}
+
+	@Override
 	public Member searchMemberById(String memberId) {
 		return session.selectOne(makeSql("searchMemberById"), memberId);
 	}
@@ -35,6 +45,11 @@ public class MemberDaoImpl implements MemberDao {
 	@Override
 	public int checkMemberPhone(String memberPhone) {
 		return session.selectOne(makeSql("checkMemberPhone"), memberPhone);
+	}
+	
+	@Override
+	public int checkMemberEmail(String memberEmail) {
+		return session.selectOne(makeSql("checkMemberEmail"), memberEmail);
 	}
 
 }

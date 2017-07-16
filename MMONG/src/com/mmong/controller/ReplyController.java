@@ -45,13 +45,14 @@ public class ReplyController {
 											HttpServletRequest request,
 											HttpSession session,
 											ModelMap map){
-		
+		int groupNo=(int) session.getAttribute("groupNo");
 		ReplyRegisterValidator validator = new ReplyRegisterValidator();
 		validator.validate(reply, errors);
 		if(errors.hasErrors()){
 			
 			Board board = boardService.selectBoard(boardNo);
-
+			
+			
 			boardService.updateBoard(board);
 			board=boardService.selectBoard(boardNo);
 
@@ -82,7 +83,7 @@ public class ReplyController {
 			map.addAttribute("board", board);
 			map.addAttribute("boardNickname", boardNickname);
 		
-			return "content/group/board/board_view";
+			return "group/board/board_view.tiles";
 		}
 		
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -90,6 +91,7 @@ public class ReplyController {
 
 		Date date = new Date();
 		
+		reply.setGroupNo(groupNo);
 		reply.setMemberId(loginId);
 		reply.setReplyDate(date);
 		reply.setBoardNo(boardNo);
@@ -107,8 +109,6 @@ public class ReplyController {
 			String replyMemberId=replyService.selectMemberId(replyNo); // 리플 쓴 사람의 Id
 			replyNickname.add(replyService.selectNickNameByNo(replyNo, replyMemberId));
 		}
-		
-
 		
 		map.addAttribute("replyNickname",replyNickname);
 		map.addAttribute("replyList", replyList);
@@ -159,7 +159,7 @@ public class ReplyController {
 			map.addAttribute("board", board);
 			map.addAttribute("boardNickname", boardNickname);
 		
-			return "content/group/board/board_view";
+			return "group/board/board_view.tiles";
 		}
 		
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -205,22 +205,22 @@ public class ReplyController {
 	
 	/*내가 쓴 리플 목록*/
 	@RequestMapping("myReplyList")
-	public String  selectMyReply(@RequestParam(value="page", defaultValue="1")int page,ModelMap map){
+	public String  selectMyReply(@RequestParam(value="page", defaultValue="1")int page,HttpSession session,ModelMap map){
 		
-
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String memberId=member.getMemberId();
+		int groupNo=(int) session.getAttribute("groupNo");
 		
 		HashMap<String,Object> pagingMap=null;
 		
-		pagingMap=replyService.selectMyReply(page,memberId);
+		pagingMap=replyService.selectMyReply(page,memberId,groupNo);
 		
 		map.addAttribute("boardNoList", pagingMap.get("boardNoList"));
 		map.addAttribute("boardTitle", pagingMap.get("boardTitle"));
 		map.addAttribute("myReplyList", pagingMap.get("myReplyList"));
 		map.addAttribute("pageBean", pagingMap.get("pageBean"));
 		
-		return "content/group/board/reply_mine";
+		return "group/board/reply_mine.tiles";
 	}
 	
 	/*내가 쓴 리플 선택 삭제*/
@@ -238,7 +238,6 @@ public class ReplyController {
 			replyService.deleteReply(replyNo, memberId);
 		}
 		
-		System.out.println("댓글 삭제 완료");
 		return "1";
 	}
 }

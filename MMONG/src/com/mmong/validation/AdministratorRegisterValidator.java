@@ -18,28 +18,28 @@ public class AdministratorRegisterValidator implements Validator  {
 	public void validate(Object target, Errors errors) {
 		/*
 		 * 필수 : adminId, adminName, adminPhone, adminEamil
-		 * 체크 : productId는 3글자 이상 10글자 미만
+		 * 체크 : adminId는 8글자 이상 12글자 이하
 		 * 
 		*/
 		Administrator admin = (Administrator)target;
 		
 		//User객체 검증 
-				User user = admin.getAdminUser();
+				User user = admin.getUser();
 				errors.pushNestedPath("adminUser");		
 				try{
 				//userId 필수 입력, 8글자 이상 12글자 이하
 					//에러메세지 하나만 띄우기 위해 if-else if 사용
-					if(admin.getAdminUser().getUserId()==null || admin.getAdminUser().getUserId().equals("")){
+					if(admin.getUser().getUserId()==null || admin.getUser().getUserId().equals("")){
 						errors.rejectValue("userId", "required");
-					}else if(admin.getAdminUser().getUserId()!=null && (admin.getAdminUser().getUserId().length()<8)||admin.getAdminUser().getUserId().length()>12) {
+					}else if(admin.getUser().getUserId()!=null && (admin.getUser().getUserId().length()<8)||admin.getUser().getUserId().length()>12) {
 						errors.rejectValue("userId", "size");
-					}		
+					}
 					
 				//userPwd 필수입력, 8글자 이상 16글자 이하
 					//에러메세지 하나만 띄우기 위해 if-else if 사용
-					if(admin.getAdminUser().getUserPwd()==null || admin.getAdminUser().getUserPwd().equals("")) {
+					if(admin.getUser().getUserPwd()==null || admin.getUser().getUserPwd().equals("")) {
 						errors.rejectValue("userPwd", "required");
-					}else if(admin.getAdminUser().getUserPwd()!=null && (admin.getAdminUser().getUserPwd().length()<8)||admin.getAdminUser().getUserPwd().length()>16) {
+					}else if(admin.getUser().getUserPwd()!=null && (admin.getUser().getUserPwd().length()<8)||admin.getUser().getUserPwd().length()>16) {
 						errors.rejectValue("userPwd", "size");
 					}
 				}finally{

@@ -9,16 +9,12 @@ type 변수 사용시,
 	2 : 소모임 일정
 	
 emotion 변수 사용시, (null 가능)
-	0 : 기쁨
-	1: 슬픔
-	2 : 화남
-	3 : 보통
-	4 : 우울
-	5 : null
-	
-secret 변수 사용시,
-	0 : 전체 공개글
-	1 : 비밀글
+	0 : null
+	1 : 기쁨
+	2: 슬픔
+	3 : 화남
+	4 : 보통
+	5 : 우울
 -->
 
 <resultMap type="calendar" id="calendar_resultmap">
@@ -26,7 +22,6 @@ secret 변수 사용시,
 	<result column="title" property="title"/>
 	<result column="content" property="content"/>
 	<result column="type" property="type"/>
-	<result column="secret" property="secret"/>
 	<result column="start_date" property="startDate"/>
 	<result column="end_date" property="endDate"/>
 	<result column="emotion" property="emotion"/>
@@ -39,19 +34,19 @@ secret 변수 사용시,
 	<selectKey resultType="int" keyProperty="no" order="BEFORE">
 		SELECT CALENDAR_NO_SEQ.nextval FROM dual
 	</selectKey>
-	INSERT INTO calendar VALUES (#{no}, #{title}, #{content}, #{type}, #{secret}, #{startDate}, #{endDate}, #{emotion}, #{picture}, #{memberId})
+	INSERT INTO calendar VALUES (#{no}, #{title}, #{content}, #{type}, #{startDate}, #{endDate}, #{emotion}, #{picture}, #{memberId})
 </insert>
 
 <!-- 일정 전체 조회 -->
 <select id="selectSchedule" parameterType="string" resultMap="calendar_resultmap">
-	SELECT no, title, content, type, secret, start_date, end_date, emotion, picture
+	SELECT no, title, content, type, start_date, end_date, emotion, picture
 	FROM calendar
 	WHERE member_id = #{value}
 </select>
 
 <!-- 일정 상세 조회 -->
 <select id="viewSchedule" parameterType="int" resultMap="calendar_resultmap">
-	SELECT no, title, content, type, secret, start_date, end_date, emotion, picture
+	SELECT no, title, content, type, start_date, end_date, emotion, picture
 	FROM calendar
 	WHERE no = #{value}
 </select>
@@ -69,7 +64,6 @@ secret 변수 사용시,
 		title=#{title}, 
 		content=#{content}, 
 		type=#{type}, 
-		secret=#{secret}, 
 		start_date=#{startDate}, 
 		end_date=#{endDate}, 
 		emotion=#{emotion}, 

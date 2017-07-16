@@ -48,6 +48,12 @@ public class UserDaoImpl implements UserDao{
 	public int updateUser(User user) {
 		return session.update(makeSql("updateUser"), user);
 	}	
+	
+	@Override
+	public int checkUserId(String userId) {
+	return session.selectOne(makeSql("checkUserId"), userId);
+	}
+
 	@Override
 	public int updateAuthorityMemberToStop(String memberId) {
 		return session.update(makeSql("updateAuthorityMemberToStop"), memberId);
@@ -59,9 +65,20 @@ public class UserDaoImpl implements UserDao{
 	}
 	
 	@Override
-	public int updateAdministratorEnableToZero(String adminId) {
-		return session.update(makeSql("updateAdministratorEnableToZero"), adminId);
+	public int updateUserEnableToZero(String userId) {
+		return session.update(makeSql("updateUserEnableToZero"), userId);
 	}
-/////////////////////////////////////////////////
+
+	@Override
+	public int updateUserAuthorityToWithdrawal(String memberId) {
+		return session.update(makeSql("updateUserAuthorityToWithdrawal"), memberId);
+	}
+	
+	/////////////////////////////////////////////////
+	
+		
+	
+	
+	
 	
 }

@@ -1,12 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-<h2>회원 찾기</h2>
+
+<h3>회원 찾기</h3>
 <form action="/MMONG/admin/searchMemberById.do" method="post">
 	<table>
 		<tr>
@@ -21,6 +15,3 @@
 		</tr>
 	</table>
 </form>
-
-</body>
-</html>

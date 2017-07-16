@@ -25,4 +25,26 @@ public interface GroupMemberDao {
 	 * 작성자 : 이주현
 	 */
 	List<GroupMember> searchGroupMemberByGroupNo(int groupNo);
+	/***
+	 * 소모임NO와 memberId로 no 카운트
+	 * @param groupNo
+	 * @param memberId
+	 * @return
+	 * 작성자 : 강여림
+	 */
+	int selectCountNoByIdAndNo(int groupNo, String memberId);
+	/**
+	 * 소모임NO으로 모인 memberId 카운트
+	 * @param groupNo
+	 * @return
+	 * 작성자 : 강여림
+	 */
+	int selectMemberIdCount(int groupNo);
+	/**
+	 * 소모임NO과 memberId로 삭제
+	 * @param groupNo
+	 * @param memberId
+	 * 작성자 : 강여림
+	 */
+	void deleteGroupMember(int groupNo, String memberId);
 }
