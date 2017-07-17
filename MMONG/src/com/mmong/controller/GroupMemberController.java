@@ -10,12 +10,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mmong.service.GroupMemberService;
 import com.mmong.service.GroupService;
+import com.mmong.service.MemberService;
 import com.mmong.service.impl.GroupDateServiceImpl;
 import com.mmong.vo.GroupMember;
 import com.mmong.vo.Member;
@@ -30,6 +32,9 @@ public class GroupMemberController {
 	private GroupService groupService;
 	@Autowired
 	private GroupDateServiceImpl groupDateService;
+	@Autowired
+	private MemberService memberService;
+	
 	/**
 	 * 소모임에 소속된 모임멤버 추가시키는 handler method
 	 * @param groupMember
@@ -142,5 +147,14 @@ public class GroupMemberController {
 		groupMemberService.deleteGroupMember(groupNo,memberId);
 		
 		return "1";
+	}
+	
+	@RequestMapping("searchAllMember")
+	@ResponseBody
+	public List<Member> searchGroupMember(@RequestParam String memberId){
+		System.out.println(memberId);
+		List<Member> members = memberService.searchManyMemberById(memberId);
+		System.out.println(members);
+		return members;
 	}
 }
