@@ -37,6 +37,11 @@ public class AlertDaoImpl implements AlertDao {
 		return session.update(makeSqlId("updateAlertStateByNo"), alert);
 	}
 	
+	@Override
+	public int insertAlert(Alert alert) {
+		return session.insert(makeSqlId("insertAlert"), alert);
+	}
+	
 
 
 }

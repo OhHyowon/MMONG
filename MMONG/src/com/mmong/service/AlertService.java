@@ -33,7 +33,12 @@ public interface AlertService {
 	 * @return
 	 */
 	int updateAlertStateByNo(Alert alert);
-
-
+	
+	/**
+	 * 소모임 초대, 쪽지 받을때, 댓글 달릴때 알람 추가하는 메소드
+	 * @param alert
+	 * @return
+	 */
+	int insertAlert(Alert alert);
 
 }

@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -20,9 +18,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.mmong.service.AlertService;
 import com.mmong.service.MessageService;
 import com.mmong.validation.ReplyMessageValidator;
 import com.mmong.validation.SendMessageValidator;
+import com.mmong.vo.Alert;
 import com.mmong.vo.Member;
 import com.mmong.vo.Message;
 
@@ -32,6 +32,8 @@ public class MessageController {
 
 	@Autowired
 	private MessageService service;
+	@Autowired
+	private AlertService alerService;
 	
 	/**
 	 * 쪽지보내기
@@ -61,6 +63,7 @@ public class MessageController {
 		}
 
 		service.insertMessage(message);
+		alerService.insertAlert(new Alert(0, "새로운 쪽지를 받았습니다.", 0, 1, 0, receiveId));
 		
 		RedirectView rv = new RedirectView("/MMONG/message/sendSuccess.do");
 		rv.setExposeModelAttributes(false);

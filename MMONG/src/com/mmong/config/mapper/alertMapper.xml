@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mmong.config.mapper.alertMapper">
-
-	<!-- 알람 추가 -->
-	<insert id="insertAlert" parameterType="alert">
-		<selectKey resultType="_int" keyProperty="no" order="BEFORE">
-			SELECT ALERT_NO_SEQ.nextVal FROM dual
-		</selectKey>
-		INSERT INTO alert VALUES (#{no}, #{content}, 0, #{type}, #{groupNo}, #{memberId})
-	</insert>
 	
 	
 	<!-- 안읽은 알람 수 조회 -->
@@ -46,4 +38,19 @@
 		WHERE member_id = #{value} 
 		ORDER BY state ASC
 	</select>
+	
+
+	<!-- 알람 한개 추가하는 메소드 -->
+	<insert id="insertAlert" parameterType="alert">
+		<selectKey keyProperty="no" resultType="_int" order="BEFORE">
+			SELECT ALERT_NO_SEQ.nextval FROM dual
+		</selectKey>
+		INSERT INTO alert VALUES ( #{no}, 
+								   #{content},
+								   #{state},
+								   #{type},
+								   #{groupNo},
+								   #{memberId}
+								 )
+	</insert>
 </mapper>

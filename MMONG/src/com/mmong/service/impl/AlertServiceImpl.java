@@ -35,6 +35,11 @@ public class AlertServiceImpl implements AlertService {
 		return alertDao.updateAlertStateByNo(alert);
 	}
 
+	@Override
+	public int insertAlert(Alert alert) {
+		return alertDao.insertAlert(alert);
+	}
+
 
 
 }
