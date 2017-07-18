@@ -82,10 +82,10 @@ function showAlertDropdown(){
 						}							
 					}else{ //댓글 달렸을 경우
 						if(this.state=="0"){//안읽은 알람
-							$("#alertDropdown").append("<li><a href='/MMONG/index.do'>"+this.content
+							$("#alertDropdown").append("<li><a href='/MMONG/group/board/board_view.do?boardNo="+this.groupNo+"'>"+this.content
 														+"<input type='hidden' class='alertNo' value='"+this.no+"'><img src='/MMONG/resource/assets/img/noti.png' width='15px' height='15px' align='right'></a></li>");
 						}else{//읽은 알람
-							$("#alertDropdown").append("<li><a href='/MMONG/index.do'>"+this.content
+							$("#alertDropdown").append("<li><a href='/MMONG/group/board/board_view.do?boardNo="+this.groupNo+"'>"+this.content
 														+"<input type='hidden' class='alertNo' value='"+this.no+"'></a></li>");
 						}							
 					}

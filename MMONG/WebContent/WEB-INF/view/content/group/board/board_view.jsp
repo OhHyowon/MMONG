@@ -86,7 +86,7 @@ $(document).ready(function(){
 			});
 		}
 	}); // end of .replyDeleteBtn
-
+});
 </script>
 
 
@@ -122,14 +122,9 @@ $(document).ready(function(){
 	
 	<table style="border-bottom:1px solid gray;width:943px">
 		<tr>
-<<<<<<< HEAD
 			<td>작성자(닉네임)</td>
-			<td class="messageGo">${requestScope.board.memberId }(${requestScope.boardNickname })
-				<div class="messageGoTxt"><a href="/MMONG/message/idNnickFromBoard.do?id=${requestScope.board.memberId }&nickname=${requestScope.boardNickname }">쪽지보내기</a></div> 
-=======
 			<td class="messageGo" style="padding: 10px; ">${requestScope.board.memberId }(${requestScope.boardNickname }) &nbsp;&nbsp;&nbsp; 조회수 ${requestScope.board.hit }
-				<div class="messageGoTxt">쪽지보내기</div>
->>>>>>> branch 'master' of https://github.com/OhHyowon/MMONG
+				<div class="messageGoTxt"><a href="/MMONG/message/idNnickFromBoard.do?id=${requestScope.board.memberId }&nickname=${requestScope.boardNickname }">쪽지보내기</a></div> 
 			</td>
 		</tr>
 		<tr>
