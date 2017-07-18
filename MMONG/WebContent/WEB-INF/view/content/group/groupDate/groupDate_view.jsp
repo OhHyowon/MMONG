@@ -8,7 +8,7 @@
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	$("#insertBtn").on("click",function(){
+	$(".insertBtn").on("click",function(){
 		$.ajax({
 			url:"/MMONG/group/groupDate/registerMeet.do",
 			type:"post",
@@ -98,7 +98,7 @@ $(document).ready(function(){
 			<c:choose>
  		<c:when test="${empty requestScope.memberIdList}"> <%-- 멤버아이디가 없을 때 --%>
 				<li>일정 참여자가 없습니다!</li>
-			<input class="btn btn-default btn-xs" type="button" value="참여하기" id="insertBtn">
+			<input class="btn btn-default btn-xs insertBtn" type="button" value="참여하기">
 		</c:when> 
 
 		<c:otherwise>
@@ -114,7 +114,7 @@ $(document).ready(function(){
 					<li>
 					${memberId }(${requestScope.nickNameList[idx.index] })
 					</li>			
-			<input type="button" value="참여 하기">
+			<input type="button" value="참여 하기" class="insertBtn">
 			</c:when>
 			</c:choose>
 			</c:forEach>

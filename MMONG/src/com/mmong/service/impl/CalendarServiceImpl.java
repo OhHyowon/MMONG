@@ -41,4 +41,15 @@ public class CalendarServiceImpl implements CalendarService{
 		dao.updateSchedule(calendar);
 	}
 
+	@Override
+	public void deleteGroupDate(int groupDateNo, String memberId) {
+		dao.deleteGroupDate(groupDateNo, memberId);
+	}
+
+	@Override
+	public void deleteFromGroup(int groupDateNo) {
+		dao.deleteFromGroup(groupDateNo);
+	}
+
+	
 }

@@ -21,7 +21,6 @@ $(document).ready(function(){
 			return;
 		}else{
 			var no =  $("#no").val();
-			alert(no);
 			$.ajax({
 				url:"/MMONG/calendar/delete.do",
 				type:"post",
@@ -71,19 +70,19 @@ $(document).ready(function(){
 				<td> <!-- 이모티콘으로 변환 필요!!! -->
 					<c:choose>
 						<c:when test="${requestScope.eventInfo.emotion eq 1}">
-							기쁨
+							<img src="/MMONG/resource/calendar/emoticon/happy.png" width="20" height="20">
 						</c:when>
 						<c:when test="${requestScope.eventInfo.emotion eq 2}">
-							슬픔
+							<img src="/MMONG/resource/calendar/emoticon/sad.png" width="20" height="20">
 						</c:when>
 						<c:when test="${requestScope.eventInfo.emotion eq 3}">
-							화남
+							<img src="/MMONG/resource/calendar/emoticon/upset.png" width="20" height="20">
 						</c:when>
 						<c:when test="${requestScope.eventInfo.emotion eq 4}">
-							보통
+							<img src="/MMONG/resource/calendar/emoticon/soso.png" width="20" height="20">
 						</c:when>
 						<c:when test="${requestScope.eventInfo.emotion eq 5}">
-							우울
+							<img src="/MMONG/resource/calendar/emoticon/gloomy.png" width="20" height="20">
 						</c:when>
 					</c:choose>
 				</td>

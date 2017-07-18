@@ -77,10 +77,6 @@
 <!--   </section> -->
 
     <!-- js placed at the end of the document so the pages load faster -->
-<<<<<<< HEAD
-=======
-   
->>>>>>> branch 'master' of https://github.com/OhHyowon/MMONG
     <script src="/MMONG/resource/assets/js/bootstrap.min.js"></script>
     <script src="/MMONG/resource/assets/js/jquery-ui-1.9.2.custom.min.js"></script>
     <script src="/MMONG/resource/assets/js/jquery.ui.touch-punch.min.js"></script>
