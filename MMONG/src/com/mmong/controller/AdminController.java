@@ -1,5 +1,7 @@
 package com.mmong.controller;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -13,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.mmong.service.AdministratorService;
 import com.mmong.service.MemberService;
 import com.mmong.service.UserService;
-import com.mmong.validation.AdministratorRegisterValidator;
 import com.mmong.vo.Administrator;
 import com.mmong.vo.Member;
 import com.mmong.vo.User;
@@ -32,36 +33,49 @@ public class AdminController {
 	
 	
 	
-	
 
-	
+
 /////////////// 이하 완료////////////////
 	
 	//info_member.jsp(회원 정보)로 가기 위한 컨트롤러
-		@RequestMapping("searchMemberById")
-		public ModelAndView searchMemberById(@RequestParam String memberId){
-			Member member = null;
-				member = memberService.searchMemberById(memberId);
-			return new ModelAndView("admin/info_member.tiles","member", member);
+	@RequestMapping("searchMemberById")
+	public ModelAndView searchMemberById(@RequestParam String memberId){
+		Member member = null;
+			member = memberService.searchMemberById(memberId);
+		return new ModelAndView("admin/info_member.tiles","member", member);
+	}
+	
+	//일반회원(member) 권한 변경하기
+	@RequestMapping("changeMemberAuthority")
+	public ModelAndView changeMemberAuthority(String memberId) {
+		Member mem = null;
+		mem = memberService.searchMemberById(memberId);
+		
+		if(mem.getUser().getUserAuthority().equals("ROLE_1")){//권한이 'ROLE_1'인 경우, 활동 정지 시킬때
+			userService.changeUserAuthorityToStop(mem.getMemberId());
+		}else{//권한이 'ROLE_2'인 경우, 활동 재개 시킬때
+			userService.changeMemberAuthorityToRun(mem.getMemberId());
 		}
 		
-		//일반회원(member) 권한 변경하기
-		@RequestMapping("changeAuthorityMember")
-		public ModelAndView changeAuthorityMember(String memberId) {
-			Member mem = null;
-			mem = memberService.searchMemberById(memberId);
-			
-			if(mem.getUser().getUserAuthority().equals("ROLE_1")){//권한이 'ROLE_1'인 경우, 활동 정지 시킬때
-				userService.changeAuthorityMemberToStop(mem.getMemberId());
-				
-			}else{//권한이 'ROLE_2'인 경우, 활동 재개 시킬때
-				userService.changeAuthorityMemberToRun(mem.getMemberId());
-			}
-			
-			String memId=mem.getMemberId();
-			return new ModelAndView("redirect:/admin/searchMemberById.do","memberId", memId);
+		String memId=mem.getMemberId();
+		return new ModelAndView("redirect:/admin/searchMemberById.do","memberId", memId);
+	}
+
+	//(info_admin.jsp)에서 관리자 권한 변경하고 다시 (info_admin.jsp)로 이동하기 위한 컨트롤러
+	@RequestMapping("changeAdminAuthority")
+	public ModelAndView changeAdminAuthority(@RequestParam String adminId){
+		Administrator stopAdmin=null;
+		stopAdmin = adminService.searchAdministratorById(adminId);
+		
+		if(stopAdmin.getUser().getUserAuthority().equals("ROLE_0")){//권한이 'ROLE_0'인 경우, 활동 정지 시킬때
+			userService.changeUserAuthorityToStop(stopAdmin.getAdminId());
+		}else{//권한이 'ROLE_2'인 경우, 관리자활동 재개 시킬때
+			userService.changeAdminAuthorityToRun(stopAdmin.getAdminId());
 		}
-	
+			
+		String changeAdminId = stopAdmin.getAdminId();
+		return new ModelAndView("redirect:/admin/searchAdmindById.do", "adminId", changeAdminId);
+	}
 	
 	//register_form.jsp (관리자 등록 폼)에서 register_success.jsp(관리자 등록 성공)으로 이동하기 위한 컨트롤러
 	//관리자 등록 처리
@@ -119,6 +133,23 @@ public class AdminController {
 		return String.valueOf(checkPhone);
 	}
 	
+	/**
+	 * 회원가입 시 회원 이메일 중복확인하는 handler method
+	 * @param memberPhone
+	 * @return
+	 */
+	@RequestMapping("checkAdminEmail")
+	@ResponseBody
+	public String checkAdminEmail(@RequestParam(required=false) String adminEmail1, String adminEmail2){
+		String adminEmail = adminEmail1 +"@"+ adminEmail2;
+		//요청파라미터 검증
+		
+		//비즈니스 로직 처리 - 회원 조회
+		int checkEmail = adminService.checkAdminEmail(adminEmail);
+		//응답
+		return String.valueOf(checkEmail);
+	}
+	
 	//register_form.jsp에서 register_success.jsp로 가기위한 컨트롤러
 	@RequestMapping("gotoRegisterSuccess")
 	public ModelAndView gotoRegisterSuccess(@RequestParam String adminId){
@@ -156,25 +187,13 @@ public class AdminController {
 //		validator.validate(admin, errors);
 //		System.out.println("점검---4 "+admin);
 //		if(errors.hasErrors()){
-//			return  new ModelAndView("admin/register_form.tiles");
+//			return  new ModelAndView("redirect:/admin/info_admin_update_form.do?adminId="+admin.getAdminId());
 //		}	
 		
 		Administrator newAdmin = new Administrator(admin.getAdminName(),admin.getAdminPhone(), admin.getAdminEmail(),admin.getAdminId(),user);
 			adminService.updateAdministrator(newAdmin);
 		return new ModelAndView("admin/mypage.tiles", "administrator", newAdmin);
 	}
-	
-	//(info_admin.jsp)에서 관리자 enable 0으로 바꾸고 다시 (info_admin.jsp)로 이동하기 위한 컨트롤러
-	@RequestMapping("changeEnable")
-	public ModelAndView changeAdminEnableToZero(@RequestParam String adminId){
-		
-		Administrator OutAdmin=null;
-		OutAdmin = adminService.searchAdministratorById(adminId);
-			userService.changeAdminEnableToZero(OutAdmin.getAdminId());
-			
-		return new ModelAndView("redirect:/admin/searchAdmindById.do", "adminId", OutAdmin.getAdminId());
-	}
-
 	
 	/**
 	 * 관리자 정보 조회 페이지로 이동시키는 handler method
@@ -188,28 +207,24 @@ public class AdminController {
 		return new ModelAndView("admin/mypage.tiles", "administrator", ad);
 	}
 	
-	
-	
+	//관리자탈퇴('ROLE_3')로 권한변경
+	@RequestMapping("adminWithdrawal")
+	public String adminWithdrawal(@RequestParam String adminId){
+		Administrator admin = null;
+			String deleteEmail = UUID.randomUUID().toString().replaceAll("-", "");
+			
+			System.out.println("컨트롤러 1- "+adminId);
+			admin = adminService.searchAdministratorById(adminId);
+			if(admin.getUser().getUserAuthority().equals("ROLE_0")){//권한이 'ROLE_0'인 경우 'ROLE_3'(탈퇴상태)로 바꾸기
+				userService.changeUserAuthorityToWithdrawal(admin.getAdminId());
+				System.out.println("컨트롤러 2- "+admin);
+				Administrator deleteAdmin = new Administrator("이름삭제","번호삭제", deleteEmail, admin.getAdminId());
+				System.out.println("컨트롤러 3- "+deleteAdmin);
+				adminService.updateAdministrator(deleteAdmin);
+			}
+			SecurityContextHolder.getContext().setAuthentication(null); // security에서 담당하는 session을 null으로 세팅하는 작업.   SecurityContextHolder는 system꺼라서 'new'하고 생성하지 않음.  
+			return "admin/byebye_greeting.tiles";
+		}
+	 
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

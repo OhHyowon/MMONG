@@ -13,7 +13,10 @@ span.error{
 </style>
 </head>
 <body>
-<h2>답장보내기</h2>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 답장 보내기
+		</h3>
 
 
 <form action="/MMONG/message/reply.do?receiveId=${requestScope.message.sendId }&no=${requestScope.no }" method="post">
@@ -38,3 +41,4 @@ span.error{
 	<input type="submit" value="전송">
 	<input type="button" value="취소" onclick="location.href='/MMONG/message/viewReceiveMsg.do?no=${requestScope.no }'">
 </form>
+</section>

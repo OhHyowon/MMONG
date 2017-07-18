@@ -20,7 +20,7 @@
 
 	<!-- 주현 -->
 	<!-- 로그인 폼 -->
-	<mvc:view-controller path="/login_form.do" view-name="login_form.tiles" />
+	<mvc:view-controller path="/login_form.do" view-name="/WEB-INF/view/content/login_form.jsp" />
 	<!-- 개인회원 회원가입 폼 -->
 	<mvc:view-controller path="/member/register_form.do" view-name="member/register_form.tiles" />
 
@@ -54,26 +54,26 @@
 
 
 	<!-- 세연 -->
-	<!-- 쪽지 관리 탭 -->   
+	  <!-- 쪽지 관리 탭 -->   
       <mvc:view-controller path="/message/message.do" view-name="message/message.tiles"/>
-      <!-- 쪽지보내기 폼 ㅡ 아마 수정 필요.........? -->
-      <mvc:view-controller path="/message/sendMessage.do" view-name="message/sendMessage.tiles"/>
       <!-- 쪽지 보내기 성공 폼 -->
       <mvc:view-controller path="/message/sendSuccess.do" view-name="message/sendSuccess.tiles"/>
    
 	
 		<mvc:view-controller path="/calendar/calendar_main.do" view-name="calendar/calendar_main.tiles"/>
-		<mvc:view-controller path="/calendar/insertSchedule.do" view-name="calendar/insertSchedule.tiles"/>
-		<mvc:view-controller path="/calendar/insertSuccess.do" view-name="calendar/insertSuccess.tiles"/>
-		<mvc:view-controller path="/calendar/updateSuccess.do" view-name="calendar/updateSuccess.tiles"/>
+		<mvc:view-controller path="/calendar/insertSchedule.do" view-name="/WEB-INF/view/content/calendar/insertSchedule.jsp"/>
+		<mvc:view-controller path="/calendar/insertSuccess.do" view-name="/WEB-INF/view/content/calendar/insertSuccess.jsp"/>
+		<mvc:view-controller path="/calendar/updateSuccess.do" view-name="/WEB-INF/view/content/calendar/updateSuccess.jsp"/>
+		
 
 	<!-- 규현 -->
 	<!-- 건강정보 목록 -->
    	<mvc:view-controller path="/health/list.do" view-name="health/healthlist.tiles"/>
    	<!-- 건강정보 등록 -->
    	<mvc:view-controller path="/health/registform.do" view-name="health/healthlist_regist.tiles"/>
-
-
+	<!-- 날씨 조회 -->
+	<mvc:view-controller path="/weather/list.do" view-name="weather/weather.tiles"/>
+	
 
 
 	<!-- 진우 -->

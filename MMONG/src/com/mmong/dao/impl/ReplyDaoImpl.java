@@ -67,8 +67,6 @@ public class ReplyDaoImpl implements ReplyDao{
 		return session.selectOne(makeSqlId("selectMyReplyCount"),map);
 	}
 	
-	
-	
 	public List<Reply> selectMyReply(int beginItemNo, int endItemNo,String memberId,int groupNo){
 		HashMap<String,Object> map=new HashMap<>();
 		
@@ -79,4 +77,10 @@ public class ReplyDaoImpl implements ReplyDao{
 		
 		return session.selectList(makeSqlId("selectMyReply"),map);
 	}
+	
+	public void deleteReplyByGroupNo(int groupNo){
+		session.delete(makeSqlId("deleteReplyByGroupNo"),groupNo);
+	}
+	
+	
 }

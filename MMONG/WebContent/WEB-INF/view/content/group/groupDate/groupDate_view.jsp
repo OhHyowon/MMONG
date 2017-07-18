@@ -65,10 +65,10 @@ $(document).ready(function(){
 </script>
 
 
-
-
-
-<h3>일정 상세보기</h3>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 일정 상세보기
+		</h3>>
 
 <%-- 일정 상세보기 페이지가 열릴 때 마다 groupDateNo 세션에 저장 --%>
 <%
@@ -143,3 +143,5 @@ $(document).ready(function(){
 		</c:otherwise>
 	</c:choose>
 </table>
+
+</section>

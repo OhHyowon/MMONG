@@ -31,12 +31,12 @@ $(document).ready(function() {
 			$("#pwdMsg").hide();
 			pwdChk = true;
 		}
-	});	
+	});
 	//비밀번호확인 검사 
 	$("#adminPwdCheck").change(function(){
 		if($("#adminPwd").val() != $("#adminPwdCheck").val()){
 			$("#pwdChkMsg").empty();
-			$("#pwdChkMsg").append("비밀번호를 다시 확인해주세요."); //비밀번호 폼을 바꿨을경우도.. 
+			$("#pwdChkMsg").append("비밀번호를 다시 확인해주세요."); 
 			$("#pwdChkMsg").show();		
 		}else{
 			$("#pwdChkMsg").hide();
@@ -100,12 +100,26 @@ $(document).ready(function() {
 //가입 버튼 누르기 전 값 유효성 검사하기 위한 함수들
 function formChk() {
 	var result = true;
-	 if($("#adminPwd").val() != $("#adminPwdCheck").val()){
+	
+	//비밀번호 비었는지 검사
+	 if(!$("#adminPwd").val()){
+		alert("비밀번호를 입력하세요");
+		$("#adminPwd").focus();
+		result = false;
+     }else if(!$("#adminPwdCheck").val()){
+		alert("비밀번호 확인을 입력하세요");
+		$("#adminPwdCheck").focus();
+		result = false;
+	 }else if($("#adminPwd").val() != $("#adminPwdCheck").val()){
 		$("#pwdMsg").empty();
 		$("#pwdChkMsg").empty();
 		$("#pwdChkMsg").append("비밀번호를 다시 확인해주세요.");
+		alert("비밀번호를 다시 확인해 주세요");
 		$("#pwdChkMsg").show();
 		$("#adminPwd").focus();
+		result = false;
+	}else if($("#adminPwd").val().length<7 || $("#adminPwd").val().length>13){
+		alert("비밀번호는 8~12자리입니다");
 		result = false;
 	}else if($("#adminPhone").val()==""){
 		$("#phoneMsg").empty();
@@ -131,8 +145,11 @@ function formSubmit(){
 }
 </script>
 
+<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i>관리자 정보수정
+		</h3>
 
-<h3>관리자 정보 수정하기</h3>
 
 	<form name="updateFrom" id="insert" action="/MMONG/admin/info_admin.do" method="post">
 		<table>
@@ -205,3 +222,4 @@ function formSubmit(){
 			</tr>
 		</table>
 	</form>
+</section>

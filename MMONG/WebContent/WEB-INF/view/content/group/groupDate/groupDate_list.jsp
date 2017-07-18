@@ -2,33 +2,29 @@
     pageEncoding="UTF-8"%>
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
 </script>
-</head>
-<body>
+
 <style type="text/css">
 a:link {
 	/*방문하지 않은 링크 설정.*/
 	text-decoration: none; /*밑줄 안나오도록 처리.*/
-	color: green;
+/* 	color: green; */
 }
 
 a:visited {
 	/*방문한 링크 설정*/
 	text-decoration: none;
-	color: green;
+	/* color: green; */
 }
 
 a:hover {
 	/*마우스 포인터가 올라간 시점의 설정.*/
 	text-decoration: underline;
-	color: red;
+	color: black;
 }
 
 a:active {
@@ -52,11 +48,16 @@ td {
 	text-align:center;
 }
 
-
 </style>
 
 
-<h3>소모임 페이지 - 소모임 상세 페이지</h3>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i>소모임 일정 목록
+		</h3>
+<c:choose>
+	<c:when test="${requestScope.check == 1}"> <!-- check가 1이면 볼 권한 있음 -->
+	
 <%-- =============소모임 상세페이지 소메뉴 : 밑에 세메뉴안에도 이것 포함시키기! ================ --%>
 <ul>
 	<li><a href="/MMONG/group/groupDate/allGroupDateList.do">모임 일정 목록</a></li> <!-- 소모임 상세페이지 첫 화면 -->
@@ -67,6 +68,10 @@ td {
 
 
 <a href="/MMONG/group/groupDate/groupDate_form.do">일정 등록</a>
+
+
+<c:choose>
+	<c:when test='${fn:length(requestScope.groupDateList)!=0 }'>
 
 
 <h2>전체 일정 목록</h2>
@@ -93,14 +98,15 @@ td {
 </table>
 
 <%-- 검색 창 --%>
-<form action="/MMONG/group/groupDate/allGroupDateList.do">
+		* 날짜 : 검색일 이후의 날짜로 검색 됩니다.<br>
+<form action="/MMONG/group/groupDate/allGroupDateListByKey.do">
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<select name="option">
 			<option value="title">일정이름</option>
 			<option value="place">장소</option>
 			<option value="dateTime">날짜</option>
 		</select>
-			<input type="text" name="key" placeholder="날짜는 yyyy-mm-dd 입력"> 
+			<input type="text" name="key" placeholder="날짜:yyyy-mm-dd 입력"> 
 			<input type="submit" value="검색">
 </form>
 
@@ -155,11 +161,16 @@ td {
 		<a href="/MMONG/group/groupDate/allGroupDateList.do?page=${requestScope.pageBean.totalPage}">마지막페이지</a>
 	</p>
 
+</c:when>
+<c:otherwise>
+	<br> 조회된 일정이 없습니다.
+</c:otherwise>
+</c:choose>
 
 
-
-
-
-
-</body>
-</html>
+		</c:when>
+	<c:otherwise>
+			<br>모임 참여자만 볼 수 있습니다. 모임 참여 해주세요 ^_^
+	</c:otherwise>
+</c:choose>
+	</section>

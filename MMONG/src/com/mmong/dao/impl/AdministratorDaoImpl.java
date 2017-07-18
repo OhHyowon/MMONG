@@ -38,7 +38,10 @@ public class AdministratorDaoImpl implements AdministratorDao{
 		return session.selectOne(makeSql("checkAdminPhone"), adminPhone);
 	}
 
-	
+	@Override
+	public int checkAdminEmail(String AdminEmail) {
+		return session.selectOne(makeSql("checkAdminEmail"), AdminEmail);
+	}
 	
 	
 	

@@ -3,6 +3,12 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 회원정보 조회
+		</h3>
+ 
+
 <style type="text/css">
 .error{
 	font-size : 8px;
@@ -122,13 +128,27 @@ $(document).ready(function() {
 //가입 버튼 누르기 전 값 유효성 검사하기 위한 함수들
 function formChk() {
 	var result = true;
-	 if($("#memberPwd").val() != $("#memberPwdCheck").val()){
+	
+	
+	if(!$("#memberPwd").val()){
+		alert("비밀번호를 입력하세요");
+		$("#memberPwd").focus();
+		result = false;
+    }else if(!$("#memberPwdCheck").val()){
+		alert("비밀번호 확인을 입력하세요");
+		$("#memberPwdCheck").focus();
+		result = false;
+    }else if($("#memberPwd").val() != $("#memberPwdCheck").val()){
 		$("#pwdMsg").empty();
 		$("#pwdChkMsg").empty();
 		$("#pwdChkMsg").append("비밀번호를 다시 확인해주세요.");
+		alert("비밀번호를 다시 확인해 주세요");
 		$("#pwdChkMsg").show();
 		$("#memberPwd").focus();
 		result = false;
+    }else if($("#memberPwd").val().length<7 || $("#memberPwd").val().length>13){
+ 		alert("비밀번호는 8~12자리입니다");
+ 		result = false;
 	}else if($("#memberPhone").val()==""){
 		$("#phoneMsg").empty();
 		$("#phoneMsg").append("핸드폰번호는 필수 입력값입니다.");
@@ -165,8 +185,11 @@ function formSubmit(){
 }
 
 </script>
-
-<h3>회원정보 수정</h3>
+<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 회원정보 수정
+		</h3>
+ 
 <form name="updateForm" id="register" action="/MMONG/member/info_member_update.do" method="post">
 	<table>	
 		<tr>
@@ -265,3 +288,4 @@ function formSubmit(){
 	</table>
 	<sec:csrfInput/>
 </form>
+</section>

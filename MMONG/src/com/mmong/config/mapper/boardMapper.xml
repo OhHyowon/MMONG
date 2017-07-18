@@ -298,9 +298,18 @@
 	WHERE no=${value}
 </select>
 
+<!-- groupNo으로 boardNo 전체 조회 -->
+<select id="selectBoardNoByGroupNo" parameterType="int" resultType="int">
+	SELECT no
+	FROM board
+	WHERE group_no=#{value}
+</select>
 
-
-
+<!-- groupNo으로 board 전체 삭제 -->
+<delete id="deleteBoardByGroupNo" parameterType="int">
+	DELETE board
+	WHERE group_no=#{value}
+</delete>
 
 
 

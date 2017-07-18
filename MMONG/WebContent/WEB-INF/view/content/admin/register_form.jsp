@@ -1,11 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>관리자 등록</title>
+
 <style type="text/css">
 .error{
 	font-size:8px;
@@ -166,8 +162,55 @@ $(document).ready(function(){
 			 $("#emailMsg").hide();
 		 }
 	 });
+/* 	 
+	 ///이메일 중복 확인
+	 $("#emailAuth").on("click",function(){
+		$.ajax({
+			"url":"/MMONG/admin/checkAdminEmail.do",
+			"data":{"adminEmail1":$("#adminEmail1").val(), "adminEmail2":$("#adminEmail2").val()},
+			"dataType":"text",
+			"beforeSend":function(){
+				if($("#adminEmail1").val()==""||$("#adminEmail1").val()==""){
+					$("#emailMsg").empty();
+					$("#emailMsg").append("이메일을 입력하세요");
+					$("#emailMsg").show();
+					return false;
+				}
+			},
+			"success":function(response){
+				if(response==1){
+					$("#emailMsg").empty();
+					$("#emailMsg").append("이미 가입된 이메일 입니다.");
+					$("#emailMsg").show();
+				}else{
+					$("#emailMsg").hide();
+					emailAuthOpen();
+				}
+			}
+		});
+	 });
+	 
+	  */
+	 
 });//ready 함수의 끝
 
+
+/* //이메일 인증 컨트롤러 부르는 함수
+function emailAuthOpen(){
+	if($("#adminEmail1").val()==""||$("#adminEmail2").val()==""){
+		$("#emailMsg").empty();
+		$("#emailMsg").append("이메일을 입력하세요.");
+		$("#emailMsg").show();
+		return;
+	}else{
+		$("#adminEmail").val($("#adminEmail1").val() + "@" + $("#adminEmail2").val()); //이메일 @ 전후로 합쳐서 hidden태그에 넣기
+		var adminEmail=$("adminEmail").val();
+		window.open("/MMONG/sendMail/auth.do?adminEmail="+$("#adminEmail").val(), '소모임 만들기', 'top=100px, left=100px, height=220px, width=500px');
+	}
+	
+}
+
+ */
 
 
 
@@ -242,7 +285,7 @@ function formChk() {
 
 function formSubmit(){
     if(formChk()){ // formChk 값이 true일경우만 submit
-    	$("#adminEmail").val($("#adminEmail1").val() + "@" + $("#adminEmail2").val()); //이메일 @ 전후로 합쳐서 hidden태그에 넣기
+    	$("#adminEmail").val($("#adminEmail1").val() + "@" + $("#adminEmail2").val());
     	$("#insert").submit();
     }
 }
@@ -250,9 +293,13 @@ function formSubmit(){
 
 
 </script>
-</head>
-<body>
-<h2>관리자 등록</h2>				<%-- value="${param. } 는 EL의 내장객체를 이용한 것 --%>
+
+<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i>관리자 등록
+		</h3>
+									
+									<%-- value="${param. } 는 EL의 내장객체를 이용한 것 --%>
 <form name="insertForm" id="insert" action="/MMONG/admin/register_success.do" method="post">
 	<table>	
 		<tr>
@@ -325,9 +372,12 @@ function formSubmit(){
 		
 		<tr>	
 			<th>이메일</th>
-			<td><input type="text" id="adminEmail1" name="adminEmail1" value="${param.adminEmail1 }"> @ 
+			<td><%-- <form> --%>
+				<input type="text" id="adminEmail1" name="adminEmail1" value="${param.adminEmail1 }"> @ 
 				<input type="text" id="adminEmail2" name="adminEmail2" value="${param.adminEmail2 }">
-				<input type="hidden" id="adminEmail" name="adminEmail" value="${param.adminEmail }"> </td>
+				<input type="hidden" id="adminEmail" name="adminEmail" value="${param.adminEmail }">
+				<!-- <input type="button" id="emailAuth" value="이메일 인증하기"/> -->
+				<%-- </form> --%></td>
 		</tr>
 		<tr>
 			<td></td>
@@ -344,5 +394,4 @@ function formSubmit(){
 	</table>
 	<sec:csrfInput/> <!-- 시큐리티 토큰을 위해, 340번 라인 대체 -->
 </form>
-</body>
-</html>
+</section>

@@ -347,6 +347,13 @@ span.result {
 	margin: 0;
 }
 </style>
+
+
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 산책로
+		</h3>
+
 <body>
 	<div id="map_div" style="position: relative;">
 		<div id="search_div"
@@ -364,3 +371,6 @@ span.result {
 	<input type="button" value="산책로 등록하기" id="registerTrail">
 	<input type="button" value="산책로 등록완료" id="finish">
 	<input type="button" value="마커 제거" id="removeMarker">
+	
+	</body>
+	</section>

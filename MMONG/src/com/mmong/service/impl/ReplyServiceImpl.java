@@ -77,4 +77,8 @@ public class ReplyServiceImpl implements ReplyService{
 		
 		return map;
 	}
+	
+	public void deleteReplyByGroupNo(int groupNo){
+		dao.deleteReplyByGroupNo(groupNo);
+	}
 }

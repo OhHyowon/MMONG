@@ -22,6 +22,15 @@ $(document).ready(function(){
 		self.close();		
 	});
 	
+	$("#to").one("click", function(){ //종료일시 기입시, 시작일시가 minimum value가 되도록 설정
+		to.min = $("#from").val();
+	});
+	
+	$("input[class='check']").on("click", function(){
+		$("input[class='check']").prop("checked", false);
+		$(this).prop("checked", true);
+	});
+
 });
 
 </script>
@@ -47,11 +56,11 @@ $(document).ready(function(){
 			<td>기분</td>  
 			<td>
 				<div>
-		  			<label>기쁨 <input type="checkbox" name="emotion" value=1></label>
-		  			<label>슬픔 <input type="checkbox" name="emotion" value=2></label>
-		  			<label>화남 <input type="checkbox" name="emotion" value=3></label>
-		  			<label>보통 <input type="checkbox" name="emotion" value=4></label>
-		  			<label>우울 <input type="checkbox" name="emotion" value=5></label>
+		  			<label>기쁨 <input type="checkbox" class="check" name="emotion" value=1></label>
+		  			<label>슬픔 <input type="checkbox" class="check" name="emotion" value=2></label>
+		  			<label>화남 <input type="checkbox" class="check" name="emotion" value=3></label>
+		  			<label>보통 <input type="checkbox" class="check" name="emotion" value=4></label>
+		  			<label>우울 <input type="checkbox" class="check" name="emotion" value=5></label>
 		  		</div>
 			</td>
 		</tr>
@@ -62,12 +71,12 @@ $(document).ready(function(){
 		</tr>
 		<tr>
 			<td>시작 일시</td>
-			<td><input type="datetime-local" name="startDate" value="<fmt:formatDate value="${requestScope.insertInfo.startDate }" pattern="yyyy-MM-dd'T'HH:mm"/>">
+			<td><input type="datetime-local" name="startDate" id="from" value="<fmt:formatDate value="${requestScope.insertInfo.startDate }" pattern="yyyy-MM-dd'T'HH:mm"/>">
 					<span class="error"><form:errors path="calendar.startDate"/></span></td>
 		</tr>
 		<tr> <!-- 시작일시 이전꺼 선택못하게 하기 -->
 			<td>종료 일시</td>
-			<td><input type="datetime-local" name="endDate" value="<fmt:formatDate value="${requestScope.insertInfo.endDate }" pattern="yyyy-MM-dd'T'HH:mm"/>">
+			<td><input type="datetime-local" name="endDate" id="to" value="<fmt:formatDate value="${requestScope.insertInfo.endDate }" pattern="yyyy-MM-dd'T'HH:mm"/>">
 					<span class="error"><form:errors path="calendar.endDate"/></span></td> 
 		</tr>
 		<tr>
@@ -84,7 +93,7 @@ $(document).ready(function(){
 		
 	</table>
 	
-	<input type="submit" value="확인">
+	<input type="submit" value="전송">
 	<input type="button" value="취소" id="cancel"> 
 	
 </form>

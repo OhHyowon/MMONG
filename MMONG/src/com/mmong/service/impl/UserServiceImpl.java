@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
 	private PasswordEncoder passwordEncoder;
 	////////////////////////////////////////////
 	@Autowired
-	private AdministratorDao adminDao;	
+	private AdministratorDao adminDao;
 	@Autowired
 	private MemberDao memberDao;
 	////////////////////////////////////////////
@@ -47,21 +47,32 @@ public class UserServiceImpl implements UserService {
 		userDao.deleteUserByUserId(userId);
 	}
 	
-	//일반회원(member) 활동(ROLE_1) -> 정지(ROLE_2)
+	//user(관리자/회원) authority -> 'ROLE_3'으로 변경
 	@Override
-	public void changeAuthorityMemberToStop(String memberId) {
-		Member mem = null;
+	public void changeUserAuthorityToStop(String userId) {
+		User user = null;
 		//1. 일반회원의 권한상태 조회(select)
-		mem = memberDao.searchMemberById(memberId);
-		if(mem.getUser().getUserAuthority().equals("ROLE_1")){
-			userDao.updateAuthorityMemberToStop(mem.getMemberId());
+		user = userDao.searchUserByUserId(userId);
+		if(user.getUserAuthority().equals("ROLE_0") || user.getUserAuthority().equals("ROLE_1") ){
+			userDao.updateUserAuthorityToStop(user.getUserId());
 		}
 		//throw new SameAuthorityExceptionStop(String.format("이미 활동정지된 회원 입니다."));
 	}
 	
+	//관리자 정지 -> 활동
+	@Override
+	public void changeAdminAuthorityToRun(String adminId) {
+		Administrator admin = null;
+		//1. 관리자의 권한 상태 조회(select)
+		admin = adminDao.searchAdministratorById(adminId);
+		if(admin.getUser().getUserAuthority().equals("ROLE_2")){
+			userDao.updateAuthorityAdminToRun(adminId);
+		}
+	}
+
 	//일반회원(member) 정지 -> 활동
 	@Override
-	public void changeAuthorityMemberToRun(String memberId) {
+	public void changeMemberAuthorityToRun(String memberId) {
 		Member mem = null;
 		//1. 일반회원의 권한상태 조회(select)
 		mem = memberDao.searchMemberById(memberId);
@@ -71,35 +82,17 @@ public class UserServiceImpl implements UserService {
 		//throw new SameAuthorityExceptionStop(String.format("이미 활동중인 회원 입니다."));
 	}
 	
-	//관리자 enable 1 -> 0
-	@Override
-	public void changeAdminEnableToZero(String adminId) {
-		Administrator admin = null;
-		admin = adminDao.searchAdministratorById(adminId);
-		if(admin.getUser().getUserEnable()==1){
-			userDao.updateUserEnableToZero(admin.getAdminId());
-		}
-	}
+
 		
 	////////////////////////////////////////////////////////////////////////
 	
-	//회원 enable 1 -> 0
+	//'회원 탈퇴하기' 
 	@Override
-	public void changeMemberEnableToZero(String memberId) {
-		Member member = null;
-		member = memberDao.searchMemberById(memberId);
-		if(member.getUser().getUserEnable()==1){
-			userDao.updateUserEnableToZero(member.getMemberId());
-		}
-	}
-	
-	//'회원 탈퇴하기' 이것과 위의 'changeMemberEnableToZero'메소드 중 택1
-	@Override
-	public void changeAuthorityMemberToWithdrawal(String memberId) {
-		Member member = null;
-		member = memberDao.searchMemberById(memberId);
-		if(member.getUser().getUserAuthority().equals("ROLE_1")){
-			userDao.updateUserAuthorityToWithdrawal(member.getMemberId());
+	public void changeUserAuthorityToWithdrawal(String userId) {
+		User user = null;
+		user = userDao.searchUserByUserId(userId);
+		if(user.getUserAuthority().equals("ROLE_0") || user.getUserAuthority().equals("ROLE_1")){
+			userDao.updateUserAuthorityToWithdrawal(user.getUserId());
 		}
 	}
 

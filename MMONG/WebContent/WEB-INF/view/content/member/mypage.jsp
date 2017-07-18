@@ -2,8 +2,10 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 
-
-<h3>회원 마이페이지</h3>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 회원 마이페이지
+		</h3>
  
 ID : <sec:authentication property="principal.memberId"/> <br>
 이름 : ${requestScope.member.memberName } <br>
@@ -25,8 +27,16 @@ ID : <sec:authentication property="principal.memberId"/> <br>
 
 <br>
 
-<form action="/MMONG/member/change_authority_member.do" method="post">
+
+<form action="/MMONG/member/memberWithdrawal.do" method="post">
 	<input type="hidden" name="memberId" value="${requestScope.member.memberId }">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	<input type="submit" value="회원탈퇴">
 </form>
+
+<br>
+<ul>
+	<li><a href="/MMONG/message/message.do">쪽지 관리</a></li>
+</ul>
+ </section>
+ 

@@ -1,11 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+
 <style type="text/css">
 
 span, td, th{
@@ -16,11 +12,13 @@ span.error{
 	color: red;
 }
 
+
 </style>
 
-</head>
-<body>
-<h2>쪽지 보내기</h2><hr>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 쪽지보내기
+		</h3>
 
 <!-- 받는 아이디는 자유게시판에서 session scope를 통해 받아온다 -->
 <form action="/MMONG/message/insert.do?id=${requestScope.id }&nickname=${requestScope.nickname }" method="post">
@@ -35,11 +33,12 @@ span.error{
 	</tr>
 	<tr>
 		<th>제목</th>
-		<td><input type="text" name="title"  value="${param.title }"><span class="error"><form:errors path="message.title"/></span></td>
+		<td><input type="text" name="title" style="width:350px; height:20px;" value="${param.title }"><span class="error"><form:errors path="message.title"/></span></td>
 	</tr>
 	<tr>
 		<th>내용</th>
-		<td><input type="text" name="content" value="${param.content }"><span class="error"><form:errors path="message.content"/></span></td>
+		<td><input type="text" name="content" style="width:350px; height:200px;" value="${param.content }">
+			<span class="error"><form:errors path="message.content"/></td>
 	</tr>
 	
 	<tr>
@@ -50,6 +49,4 @@ span.error{
 	</tr>
 </table>
 </form>
- 
-</body>
-</html>
+ </section>

@@ -6,6 +6,7 @@ public class Trail implements Serializable{
 	private int no;
 	private String category;
 	private String route;
+	private String title;
 	private String content;
 	
 	private String memberId;
@@ -13,23 +14,25 @@ public class Trail implements Serializable{
 	
 	public Trail() {}
 
-	public Trail(int no, String category, String route, String content, String memberId) {
+	public Trail(int no, String category, String route, String title, String content, String memberId, Member member) {
 		super();
 		this.no = no;
 		this.category = category;
 		this.route = route;
-		this.content = content;
-		this.memberId = memberId;
-	}
-
-	public Trail(int no, String category, String route, String content, String memberId, Member member) {
-		super();
-		this.no = no;
-		this.category = category;
-		this.route = route;
+		this.title = title;
 		this.content = content;
 		this.memberId = memberId;
 		this.member = member;
+	}
+
+	public Trail(int no, String category, String route, String title, String content, String memberId) {
+		super();
+		this.no = no;
+		this.category = category;
+		this.route = route;
+		this.title = title;
+		this.content = content;
+		this.memberId = memberId;
 	}
 
 	public int getNo() {
@@ -54,6 +57,14 @@ public class Trail implements Serializable{
 
 	public void setRoute(String route) {
 		this.route = route;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public String getContent() {
@@ -90,6 +101,7 @@ public class Trail implements Serializable{
 		result = prime * result + ((memberId == null) ? 0 : memberId.hashCode());
 		result = prime * result + no;
 		result = prime * result + ((route == null) ? 0 : route.hashCode());
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
 	}
 
@@ -129,24 +141,19 @@ public class Trail implements Serializable{
 				return false;
 		} else if (!route.equals(other.route))
 			return false;
+		if (title == null) {
+			if (other.title != null)
+				return false;
+		} else if (!title.equals(other.title))
+			return false;
 		return true;
 	}
 
-
 	@Override
 	public String toString() {
-		return "trail [no=" + no + ", category=" + category + ", route=" + route + ", content=" + content
-				+ ", memberId=" + memberId + ", member=" + member + "]";
+		return "Trail [no=" + no + ", category=" + category + ", route=" + route + ", title=" + title + ", content="
+				+ content + ", memberId=" + memberId + ", member=" + member + "]";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 }

@@ -18,7 +18,13 @@ function showPopup(){
 	// radio 버튼 ajax 처리
 	 $("input:radio[name=gender]").click(function(){
 		 var radio = $(this).val();
-		
+		 
+		 $(".checkList").remove();
+		 $("#chartTable").hide();
+		 $('input[name=chek]:checkbox').each(function(){
+				$(this).prop('checked', false);
+				$('#checkAll').prop('checked',false);
+			});
 		 $.ajax({
 				"url":"/MMONG/health/healthlist.do",
 				"type":"post",
@@ -28,8 +34,16 @@ function showPopup(){
 					var txt ="";
 					$.each(list, function(){
 						//this //하나의 회원정보 - <tr>
-						txt = txt+'<tr><td class="radioNo">'+this.no+"</td><td class='clickByHealth 'id='"+this.no+"'>"+this.content+"</td><td>"+'<input type="checkbox" name="chek" id="checkbx" value='+this.no+'>'+"</td></tr>";
-						
+						if(this.gender=='m'){
+							this.gender='수컷';
+						}else if(this.gender=='g'){
+							this.gender='암컷';
+						}else{
+							this.gender='중성';
+						}
+						txt = txt+'<tr><td class="radioNo">'+this.no+"</td><td class='clickByHealth 'id='"+this.no+"'>"+this.content+"</td><td>"
+						+this.gender+'</td><td>'
+						+'<input type="checkbox" name="chek" id="'+this.no+'" value='+this.no+'>'+"</td></tr>";
 					});	// end of each
 					$("#listTbody").html(txt);
 					$("#healthlist").show();
@@ -54,19 +68,43 @@ function showPopup(){
 				$(this).prop('checked', false);
 			});
 		};	// end of else
-	});
-	 
+	}); // 전체 체크박스 제거
+		
+	 // 건강기록 옆에 체크박스 누르면 전체 체크박스 지우기
 	$(document).on("click",'#checkbx',function(){
 		if($("input[name=chek]").not(':checked').length>0){
 			$("#checkAll").prop("checked",false);
 		}
 	});
-		     
-	 
+	
+	
 	 // 체크해서 진료기록 조회하기 
 	 $(document).on("click", '#selectBtn:button',function() {
 		 var checkedList = [];
-		 	 
+		 	
+		 // 체크박스 선택 안하고 진료기록검색 눌렀을시
+		 	if($("input:checkbox[name='chek']").is(":checked")==false){
+
+		 		jQuery.ajaxSettings.traditional = true;
+		 		$.ajax({
+		 			"url":"/MMONG/chart/selectChartByWriter.do",
+					"type":"post",
+					"data":{"${_csrf.parameterName}":"${_csrf.token}"},
+					"dataType":"json",
+					"success":function(list){
+						var txt ="";
+						$.each(list, function(){
+							//this //하나의 회원정보 - <tr>
+							txt = txt+'<tr class="checkList"><td>'+this.healthNo+'</td><td>'+this.time+'</td><td>'
+							+this.content+'</td></tr>';
+						});	// end of each
+						$("#chartList").html(txt);
+						$("#chartTable").show();
+					} // end of success
+		 		})	// end of ajax
+		 		
+		 	}else if($("input:checkbox[name='chek']").is(":checked")==true){
+			 
 		 	$("input[name='chek']:checked").each(function(){
 		 		checkedList.push($(this).val());
 		 		});	// end of checkbox
@@ -81,7 +119,7 @@ function showPopup(){
 					var txt ="";
 					$.each(list, function(){
 						//this //하나의 회원정보 - <tr>
-						txt = txt+'<tr><td>'+this.healthNo+'</td><td>'+this.time+'</td><td>'
+						txt = txt+'<tr class="checkList"><td>'+this.healthNo+'</td><td>'+this.time+'</td><td>'
 						+this.content+'</td></tr>';
 					});	// end of each
 					$("#chartList").html(txt);
@@ -91,8 +129,8 @@ function showPopup(){
 				"error":function(){
 					alert("건강기록을 체크해 주세요")
 				}	// end of error
-		 		 
 		 	 }); // end of ajax
+		 	} // end of else
 		 });	// end of button
 		 
 		 //	 건강 기록 삭제
@@ -132,25 +170,38 @@ function showPopup(){
 			$(".chartAdd").remove();
 			$(".chartForm").remove();
 			$(".chartContentForm").remove();
+			$(".modForm").remove();
+			$('input[name=chek]:checkbox').each(function(){
+				$(this).prop('checked', false);
+				$('#checkAll').prop('checked',false);
+			});
 			 $.ajax({
 					"url":"/MMONG/chart/chartSelect.do",
 					"type":"post",
 					"data":{"chartNo":chartNo, "${_csrf.parameterName}":"${_csrf.token}"},
 					"dataType":"json",
 					"success":function(chart){
-							$(that).parent().after('<tr class="chartContentForm"><td>진료 날짜</td><td>'+chartNo+'번 건강정보에 대한 내 진료기록</td><td>수정,삭제 여부</td></tr>'
-						+'<tr class="chartDetail"><td  width=110>'+chart.time+'</td><td size="80">'+chart.content+'</td><td>'
+							$(that).parent().after('<tr class="chartContentForm"><td>진료 날짜</td><td colspan="2">'+chartNo+'번 건강정보에 대한 내 진료기록</td><td>수정,삭제 여부</td></tr>'
+						+'<tr class="chartDetail"><td  width=110>'+chart.time+'</td><td size="80" colspan="2">'+chart.content+'</td><td>'
 						+'&nbsp<input type="button" value="삭제" class="chartDelete" id="'+chart.healthNo+'" >&nbsp'
 						+'<input type="button" value="수정" class="chartMod" id="'+chartNo+'"></td></tr>');
+						
+							$('input[id='+chartNo+']:checkbox').each(function() {
+								$(this).prop('checked', true);
+						});
 					},	// end of success
 					"error":function(){													
-						$(that).parent().after('<tr class="chartForm"><td>진료날짜 입력</td><td>진료내용을 입력해 주세요</td><td>등록 여부</td></tr><tr class="chartAdd"><td><input type=date id="chartDate"></td><td><textarea rows="2" cols="80" id="chartContent" name="textarea"></textarea>'+'</td><td>'
+						$(that).parent().after('<tr class="chartForm"><td>진료날짜 입력</td><td colspan="2">진료내용을 입력해 주세요</td><td>등록 여부</td></tr><tr class="chartAdd"><td><input type=date id="chartDate"></td><td colspan="2"><textarea rows="2" cols="80" id="chartContent" name="textarea"></textarea>'+'</td><td>'
 								+'<input type="button" value="등록" class="insertChart" id="'+chartNo+'">'+'</td></tr>');
+						$('input[id='+chartNo+']:checkbox').each(function() {
+							$(this).prop('checked', true);
+						});
 					}
 			 }); // ajax 종료
 		});	// end of clickByHealth
 		
 		$(document).on('click','.chartDetail',function(){
+			$('.chartContentForm').remove();
 			$(this).remove();
 		}); // end of chartdetail
 
@@ -161,12 +212,16 @@ function showPopup(){
 			var chartNo = $(this).attr('id');
 			var chartContent = $("#chartContent").val();
 			var chartDate = $("#chartDate").val();
+			
+			var that = this; // event source
+			$(".chartForm").remove();
+			$(".chartContentForm").remove();
 			 $.ajax({
 					"url":"/MMONG/chart/chartInsert.do",
 					"type":"post",
-					dataType:"text",
+					dataType:"json",
 					"data":{"chartNo":chartNo,"chartContent":chartContent,"chartDate":chartDate, "${_csrf.parameterName}":"${_csrf.token}"},
-					"beforeSend":function(){
+					"beforeSend":function(chart){
 						if(!chartContent){
 							alert("내용을 입력하세요");
 							return false;
@@ -176,12 +231,17 @@ function showPopup(){
 							return false;
 						}
 					},
-					"success":function(){
+					"success":function(chart){
 						alert("등록이 완료 되었습니다.")
-						location.reload();
+						$('.chartForm').empty();
+						$(that).parent().parent().empty();
+						$(that).parent().parent().parent().after('<tr class="chartContentForm"><td>진료 날짜</td><td colspan="2">'+chartNo+'번 건강정보에 대한 내 진료기록</td><td>수정,삭제 여부</td></tr>'
+								+'<tr class="chartDetail"><td  width=110>'+chart.time+'</td><td size="80" colspan="2">'+chart.content+'</td><td>'
+								+'&nbsp<input type="button" value="삭제" class="chartDelete" id="'+chart.healthNo+'" >&nbsp'
+								+'<input type="button" value="수정" class="chartMod" id="'+chartNo+'"></td></tr>')
 			 		},
-					"error":function(xhr, code, msg){
-							alert("로그인을 하셔야 이용 하실 수 있습니다."+msg)
+					"error":function(){
+							alert("로그인을 하셔야 이용 하실 수 있습니다.")
 							location.reload();
 					}
 			 }); // ajax 종료
@@ -198,7 +258,8 @@ function showPopup(){
 					"data":{"chartNo":chartNo, "${_csrf.parameterName}":"${_csrf.token}"},
 					"success":function(){
 						alert("삭제가 완료 되었습니다.")
-						location.reload();
+						$('.chartForm').empty();
+						$(that).parent().parent().empty();
 					},
 					"error":function(){
 						alert("에러")
@@ -209,8 +270,8 @@ function showPopup(){
 		// 진료기록 수정폼 만들기
 		$("#healthlist").on('click','.chartMod',function(){
 			var chartNo = $(this).attr('id');
-			$(this).parent().parent().after('<tr class="chartForm"><td>진료날짜 입력</td><td>수정할 진료내용을 입력해 주세요</td><td>등록 여부</td></tr>'+
-											'<tr><td><input type=date id="modeDate"></td><td>'+'<textarea rows="2" cols="80" id="chartContent" name="textarea"></textarea>'+'</td><td>'
+			$(this).parent().parent().after('<tr class="chartForm"><td>진료날짜 입력</td><td colspan="2">수정할 진료내용을 입력해 주세요</td><td>등록 여부</td></tr>'+
+											'<tr class="modForm"><td><input type=date id="modeDate"></td><td colspan="2">'+'<textarea rows="2" cols="80" id="chartContent" name="textarea"></textarea>'+'</td><td>'
 						+'<input type="button" value="등록" class="mod" id="'+chartNo+'">'+'</td></tr>');
 		}) // end of chartMod
 														
@@ -221,9 +282,7 @@ function showPopup(){
 			var content = $("textarea").val();
 			var chartDate = $("#modeDate").val();
 			
-			alert(healthNo)
-			alert(content)
-			alert(chartDate)
+			var that = this; // event source
 			$.ajax({
 				"url":"/MMONG/chart/chartModify.do",
 				"type":"post",
@@ -239,7 +298,9 @@ function showPopup(){
 				},
 				"success":function(){
 					alert("수정이 완료 되었습니다.")
-					location.reload();
+					$('.chartForm').empty();
+					$(that).parent().parent().empty();
+					
 				},
 				"error":function(){
 					alert("수정 실패!")
@@ -262,7 +323,7 @@ table{
 table, td, th{
 border: 1px solid black;
 }
-.clickByHealth{
+.clickByHealth, .chartDetail{
 		/*손가락 나오게 하는거*/
 		cursor:pointer;
 	}
@@ -282,7 +343,10 @@ border: 1px solid black;
 <title>Insert title here</title>
 
 
-<h1>건강 관리</h1>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 건강관리
+		</h3>
 
 
 <%-- ================건강관리 페이지 소메뉴=================== --%>
@@ -300,6 +364,7 @@ border: 1px solid black;
 		<tr>
 			<th width=70>번호</th>
 			<th>내용</th>
+			<th>성별</th>
 			<th width=110>전체선택<input type="checkbox" id="checkAll"></th>
 		</tr>
 	</thead>
@@ -327,3 +392,4 @@ border: 1px solid black;
 <input type="button" value="건강 리스트 등록" onclick="showPopup();">
 <input type="button" value="건강 리스트 삭제" id="removeHealth" onsubmit="return confirm('삭제하시겠습니까?')">
 </sec:authorize>
+</section>

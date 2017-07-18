@@ -73,4 +73,11 @@ public interface ReplyService {
 	 * 작성자 : 강여림
 	 */
 	public HashMap<String,Object>selectMyReply(int page,String memberId,int groupNo);
+	/**
+	 * 소모임 삭제시 리플도 다 삭제하는 메소드
+	 * @param groupNo
+	 * 작성자 : 강여림
+	 */
+	public void deleteReplyByGroupNo(int groupNo);
 }
+

@@ -57,7 +57,10 @@ $(document).ready(function(){
 });
 </script>
 
-<h3>소모임 페이지</h3>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 소모임 페이지
+		</h3>
 
 <!-- 소모임 검색창 : 이름으로 검색 -->
 <p><b>소모임 찾기</b></p>

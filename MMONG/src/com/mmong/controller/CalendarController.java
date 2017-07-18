@@ -62,7 +62,7 @@ public class CalendarController {
 		
 		if(errors.hasErrors()){
 			map.addAttribute("insertInfo", calendar);
-			return new ModelAndView("calendar/insertSchedule.tiles");
+			return new ModelAndView("/WEB-INF/view/content/calendar/insertSchedule.jsp");
 		}
 		
 		service.insertSchedule(calendar);
@@ -103,7 +103,7 @@ public class CalendarController {
 		Calendar eventInfo = service.viewSchedule(eventNo);
 		map.addAttribute("eventInfo", eventInfo);
 		
-		return "calendar/viewSchedule.tiles";
+		return "/WEB-INF/view/content/calendar/viewSchedule.jsp";
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class CalendarController {
 		Calendar calendar = service.viewSchedule(no);
 		map.addAttribute("updateInfo", calendar);
 		
-		return "calendar/updateSchedule.tiles";
+		return "/WEB-INF/view/content/calendar/updateSchedule.jsp";
 	}
 	
 	/**
@@ -175,7 +175,7 @@ public class CalendarController {
 		
 		if(errors.hasErrors()){
 			map.addAttribute("updateInfo", calendar);
-			return new ModelAndView("calendar/updateSchedule.tiles");
+			return new ModelAndView("/WEB-INF/view/content/calendar/updateSchedule.jsp");
 		}
 		
 		service.updateSchedule(calendar);

@@ -30,4 +30,9 @@ public interface ChartDao {
 	 */
 	Chart selectChartByNoAndWriter(Map map);
 	
+	/**
+	 * 	id로 차트 조회
+	 */
+	List<Chart> selectChartByWriter(String id);
+	
 }

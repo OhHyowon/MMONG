@@ -10,43 +10,43 @@ public class Calendar implements Serializable {
 	private String title; // 제목
  	private String content; // 메모
 	private int type; // 일정 구분
-	private int emotion; // 기분
-	private String picture; // 사진 업로드
 	@DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm")
 	private Date startDate; // 시작 일시
 	@DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm")
 	private Date endDate; //종료 일시
+	private int emotion; // 기분
+	private String picture; // 사진 업로드
 	
 	private String memberId;
 	private Member member;
 	
 	public Calendar(){}
 
-	public Calendar(int no, String title, String content, int type, int emotion, String picture, Date startDate,
-			Date endDate, String memberId) {
+	public Calendar(int no, String title, String content, int type, Date startDate, Date endDate, int emotion,
+			String picture, String memberId) {
 		super();
 		this.no = no;
 		this.title = title;
 		this.content = content;
 		this.type = type;
-		this.emotion = emotion;
-		this.picture = picture;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.emotion = emotion;
+		this.picture = picture;
 		this.memberId = memberId;
 	}
 
-	public Calendar(int no, String title, String content, int type, int emotion, String picture, Date startDate,
-			Date endDate, String memberId, Member member) {
+	public Calendar(int no, String title, String content, int type, Date startDate, Date endDate, int emotion,
+			String picture, String memberId, Member member) {
 		super();
 		this.no = no;
 		this.title = title;
 		this.content = content;
 		this.type = type;
-		this.emotion = emotion;
-		this.picture = picture;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.emotion = emotion;
+		this.picture = picture;
 		this.memberId = memberId;
 		this.member = member;
 	}
@@ -83,22 +83,6 @@ public class Calendar implements Serializable {
 		this.type = type;
 	}
 
-	public int getEmotion() {
-		return emotion;
-	}
-
-	public void setEmotion(int emotion) {
-		this.emotion = emotion;
-	}
-
-	public String getPicture() {
-		return picture;
-	}
-
-	public void setPicture(String picture) {
-		this.picture = picture;
-	}
-
 	public Date getStartDate() {
 		return startDate;
 	}
@@ -113,6 +97,22 @@ public class Calendar implements Serializable {
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+
+	public int getEmotion() {
+		return emotion;
+	}
+
+	public void setEmotion(int emotion) {
+		this.emotion = emotion;
+	}
+
+	public String getPicture() {
+		return picture;
+	}
+
+	public void setPicture(String picture) {
+		this.picture = picture;
 	}
 
 	public String getMemberId() {
@@ -203,8 +203,8 @@ public class Calendar implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Calendar [no=" + no + ", title=" + title + ", content=" + content + ", type=" + type + ", emotion="
-				+ emotion + ", picture=" + picture + ", startDate=" + startDate + ", endDate=" + endDate + ", memberId="
+		return "Calendar [no=" + no + ", title=" + title + ", content=" + content + ", type=" + type + ", startDate="
+				+ startDate + ", endDate=" + endDate + ", emotion=" + emotion + ", picture=" + picture + ", memberId="
 				+ memberId + ", member=" + member + "]";
 	}
 

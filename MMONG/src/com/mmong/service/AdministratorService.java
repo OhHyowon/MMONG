@@ -23,7 +23,6 @@ public interface AdministratorService {
 	 * 
 	 */
 	void updateAdministrator(Administrator newData);
-	
 
 	/**
 	* 저장된 관리자중 매개변수의 id를 가진 관리자를 찾아 주는 메소드.
@@ -34,8 +33,6 @@ public interface AdministratorService {
 	*/
 	Administrator searchAdministratorById(String adminId);
 	
-	////////////////수정///////////////////////////
-	
 	/**
 	 * 관리자 핸드폰 번호로 중복번호 조회하는 메소드
 	 * @param adminPhone
@@ -43,8 +40,12 @@ public interface AdministratorService {
 	 */
 	int checkAdminPhone(String adminPhone);
 	
-		
-	
+	/**
+	 * 관리자 이메일로 승인메일 코드일치 조회하는 메소드
+	 * @param adminEmail
+	 * @return 찾은 관리자 수 : 있으면 1, 없으면 0
+	 */
+	int checkAdminEmail(String adminEmail);
 	
 	
 }

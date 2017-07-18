@@ -1,25 +1,47 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<script type="text/javascript" src="/MMONG/resource/calendar/jquery.min.js"></script>
+<style type='text/css'>
+
+	body {
+		margin: 40px 10px;
+		padding: 0;
+		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+		font-size: 14px;
+	}
+
+	#calendar {
+		max-width: 900px;
+		margin: 0 auto;
+	}
+	
+	.typeColor{
+		display: inline;
+		width: 100px;
+	}
+	
+	.fc-sat { color:#0000FF; }     /* 토요일 */
+   .fc-sun { color:#FF0000; }    /* 일요일 */
+
+
+</style>
+
+<script type="text/javascript" src="/MMONG/resource/calendar/jquery.min.js"></script> 
 <script type="text/javascript" src="/MMONG/resource/calendar/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/MMONG/resource/calendar/moment.min.js"></script>
+<script type="text/javascript" src="/MMONG/resource/calendar/fullcalendar.min.js"></script>
+<script type="text/javascript" src="/MMONG/resource/calendar/fullcalendar.js"></script>
+<script type="text/javascript" src="/MMONG/resource/calendar/locale-all.js"></script>
+<script type="text/javascript" src="/MMONG/resource/calendar/gcal.js"></script>
 <link type="text/css" rel="stylesheet" href="/MMONG/resource/calendar/fullcalendar.css"/>
 <link type="text/css" rel="stylesheet" href="/MMONG/resource/calendar/fullcalendar.print.css"  media='print'/>
 <link type="text/css" rel="stylesheet" href="/MMONG/resource/calendar/fullcalendar.min.css"/>
-<script type="text/javascript" src="/MMONG/resource/calendar/moment.min.js"></script>
-<script type="text/javascript" src="/MMONG/resource/calendar/fullcalendar.min.js"></script>
-<script type="text/javascript" src="/MMONG/resource/calendar/locale-all.js"></script>
-<script type="text/javascript" src="/MMONG/resource/calendar/gcal.js"></script>
+
 
 <!-- 리스트 형식으로 표현 필요!!!!!!!!!****************** -->
-
 <script type='text/javascript'>
 
 	$(document).ready(function(){
@@ -43,7 +65,7 @@
 				center: 'title',
 				right: 'month,basicWeek,basicDay,listMonth'
 			},
-			locale: initialLocaleCode,
+			locale: 'ko',
 			defaultDate: date,
 			navLinks: true, // can click day/week names to navigate views
 			editable: false, // events can be dragged and resizedevents can be dragged and resized
@@ -114,30 +136,7 @@
 
 </script> 
 
-<style type='text/css'>
-
-
-	body {
-		margin: 40px 10px;
-		padding: 0;
-		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
-		font-size: 14px;
-	}
-
-	#calendar {
-		max-width: 900px;
-		margin: 0 auto;
-	}
-	
-	.typeColor{
-		display: inline;
-		width: 100px;
-	}
-
-</style>
-
-</head>
-<body>
+	<section class="wrapper site-min-height">
 	
 	<div align="right">
 		<input type="button" value="일정 추가" id="add"><br><br>
@@ -146,11 +145,8 @@
 		<div style="color:green; background-color:green;" class="typeColor">　　　</div><div class="typeColor">　모임 일정</div><br>
 		<div style="color:#ff8080; background-color:#ff8080;" class="typeColor">　　　</div><div class="typeColor">　공휴일　&nbsp;</div><br>
 	</div>
-	
 	<hr><br>
 
 	<div id='calendar'></div>
-	
 
-</body>
-</html>
+	</section>

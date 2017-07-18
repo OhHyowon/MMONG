@@ -83,7 +83,10 @@ $(document).ready(function(){
 </head>
 <body>
 
-<h2>받은 쪽지함</h2>
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 받은 쪽지함
+		</h3>
 
 	<table>
 		<thead>
@@ -186,3 +189,4 @@ $(document).ready(function(){
 		<input type="text" name="search">
 		<input type="submit" value="검색">
 	</form>
+	</section>

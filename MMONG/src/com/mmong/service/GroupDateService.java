@@ -112,5 +112,23 @@ public interface GroupDateService {
 	 * 작성자 : 강여림
 	 */
 	public void deleteMeetMemberByGroupMemberNo(int groupMemberNo);
+	/**
+	 * groupNo으로 groupDateNo 리스트로 조회하는 메소드
+	 * @param groupNo
+	 * 작성자 : 강여림
+	 */
+	public List<Integer> selectNoByGroupNo(int groupNo);
+	/**
+	 * groupNo으로 groupDate 전체 삭제하는 메소드
+	 * @param groupNo
+	 * 작성자 : 강여림
+	 */
+	public void deleteGroupDateByGroupNo(int groupNo);
+	/**
+	 * groupDateNo으로 일정 참여 멤버 삭제 하는 메소드
+	 * @param groupDateNo
+	 * 작성자 : 강여림
+	 */
+	public void deleteMeetMemberByGroupDateNo(int groupDateNo);
 	
 }
