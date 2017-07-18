@@ -35,7 +35,7 @@ $(document).ready(function(){
 			return;
 		}
 		$.ajax({
-			"url" : "/MMONG/group/searchGroupName.do",
+			"url" : "/MMONG/group/searchAllMember.do",
 			"data" : {"groupName":$("#searchName").val()},
 			"dataType" : "JSON",
 			"success":function(response) {

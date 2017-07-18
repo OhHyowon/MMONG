@@ -217,14 +217,32 @@ CREATE SEQUENCE BP_NO_SEQ;
 /* 알림 16번*/
 DROP TABLE ALERT;
 CREATE TABLE ALERT (
-	NO NUMBER PRIMARY KEY,/* NO */
-	CONTENT VARCHAR2(900) NOT NULL, /* 내용 */
-	STATE NUMBER NOT NULL, /* 상태 */
-	MEMBER_ID VARCHAR2(30) CONSTRAINT MEMBER_ID_ALERT_FK REFERENCES MEMBER(MEMBER_ID)  /* 회원아이디 */
+   NO NUMBER PRIMARY KEY,/* NO */
+   CONTENT VARCHAR2(900) NOT NULL, /* 내용 */
+   STATE NUMBER NOT NULL, /* 상태 */
+   TYPE NUMBER NOT NULL, /* 알림 종류 */
+   GROUP_NO NUMBER, /* 소모임 넘버 */
+   MEMBER_ID VARCHAR2(30) CONSTRAINT MEMBER_ID_ALERT_FK REFERENCES MEMBER(MEMBER_ID)  /* 회원아이디 */
 );
 
 DROP SEQUENCE ALERT_NO_SEQ;
 CREATE SEQUENCE ALERT_NO_SEQ;
+		SELECT no no,
+			   content content,
+			   state state,
+			   type type,
+			   group_no groupNo
+		FROM alert
+		WHERE member_id = 'wngus0424'
+		ORDER BY state ASC;
+
+INSERT INTO alert VALUES (1, '초대받음', 0, 0, 1, 'wngus0424');
+INSERT INTO alert VALUES (2, '초대받음', 1, 0, 1, 'wngus0424');
+INSERT INTO alert VALUES (3, '쪽지 옴', 0, 1, null, 'wngus0424');
+INSERT INTO alert VALUES (4, '쪽지 옴', 1, 1, null, 'wngus0424');
+INSERT INTO alert VALUES (5, '댓글 달림', 0, 2, null, 'wngus0424');
+INSERT INTO alert VALUES (6, '댓글 달림', 1, 2, null, 'wngus0424');
+
 
 /* 쪽지관리 17번*/
 DROP TABLE MESSAGE;

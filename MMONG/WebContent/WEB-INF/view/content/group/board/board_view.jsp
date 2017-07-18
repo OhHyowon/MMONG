@@ -85,9 +85,8 @@ $(document).ready(function(){
 				}
 			});
 		}
-	}); 
-});// end of .replyDeleteBtn
-
+	}); // end of .replyDeleteBtn
+});
 </script>
 
 
@@ -125,7 +124,7 @@ $(document).ready(function(){
 		<tr>
 			<td>작성자(닉네임)</td>
 			<td class="messageGo" style="padding: 10px; ">${requestScope.board.memberId }(${requestScope.boardNickname }) &nbsp;&nbsp;&nbsp; 조회수 ${requestScope.board.hit }
-				<a href="/MMONG/message/idNnickFromBoard.do?id=${requestScope.board.memberId }&nickname=${requestScope.boardNickname }">쪽지보내기</a>
+				<div class="messageGoTxt"><a href="/MMONG/message/idNnickFromBoard.do?id=${requestScope.board.memberId }&nickname=${requestScope.boardNickname }">쪽지보내기</a></div>
 			</td>
 		</tr>
 		<tr>

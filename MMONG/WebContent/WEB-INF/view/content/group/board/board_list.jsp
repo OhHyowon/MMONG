@@ -124,7 +124,7 @@ td {
 						<td>${board.no }</td>
 						<td><a href="/MMONG/group/board/board_view.do?boardNo=${board.no }">${board.title }[${board.replyCount}]</a></td>
 						<td class="messageGo">${board.memberId }(${requestScope.nickNameList[idx.index] })
-							<a href="/MMONG/message/idNnickFromBoard.do?id=${board.memberId }&nickname=${requestScope.nickNameList[idx.index] }">쪽지보내기</a>
+							<div class="messageGoTxt"><a href="/MMONG/message/idNnickFromBoard.do?id=${board.memberId }&nickname=${requestScope.nickNameList[idx.index] }">쪽지보내기</a></div>
 						</td>
 						<td><fmt:formatDate value="${board.boardDate }" pattern="yyyy-MM-dd HH:mm" />
 						</td>

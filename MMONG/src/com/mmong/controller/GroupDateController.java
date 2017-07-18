@@ -182,7 +182,6 @@ public class GroupDateController{
 		
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String memberId=member.getMemberId();
-		
 		// groupMember에 groupNo으로 조회했을 때 memberId가 본인이 있으면 1, 없으면 0
 		int check=0;
 		List<GroupMember> groupMemerList=GMService.searchGroupMemberByGroupNo(groupNo);
@@ -192,9 +191,7 @@ public class GroupDateController{
 				check=1;
 			}
 		}
-		
 		pagingMap=groupDateService.selectAllGroupDateList(page,groupNo);
-			
 		map.addAttribute("check", check);
 		map.addAttribute("groupNo", groupNo);
 		map.addAttribute("groupDateList", pagingMap.get("groupDateList"));
