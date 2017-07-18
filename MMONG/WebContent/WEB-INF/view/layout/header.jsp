@@ -76,7 +76,6 @@
                             </li>
                         </ul>
                     </li>
-                    inbox dropdown end -->
                 </ul>
                 <!--  notification end -->
             </div>
