@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
-
+ 
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -17,7 +17,6 @@
     
     <!--external css-->
     <link href="/MMONG/resource/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="/MMONG/resource/assets/css/zabuto_calendar.css">
     <link rel="stylesheet" type="text/css" href="/MMONG/resource/assets/js/gritter/css/jquery.gritter.css" />
     <link rel="stylesheet" type="text/css" href="/MMONG/resource/assets/lineicons/style.css">        
    
@@ -56,8 +55,9 @@
           </div>
       </aside>
       <!--sidebar end-->
-      
-<!-- **********************************************************************************************************************************************************
+
+        </section>
+ <!-- **********************************************************************************************************************************************************
       MAIN CONTENT
  *********************************************************************************************************************************************************** -->
       <!--main content start-->
@@ -70,10 +70,9 @@
 <tiles:insertAttribute name="footer"/>
       </footer>
       <!--footer end-->
-  </section>
+<!--   </section> -->
 
     <!-- js placed at the end of the document so the pages load faster -->
-   
     <script src="/MMONG/resource/assets/js/bootstrap.min.js"></script>
     <script src="/MMONG/resource/assets/js/jquery-ui-1.9.2.custom.min.js"></script>
     <script src="/MMONG/resource/assets/js/jquery.ui.touch-punch.min.js"></script>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mmong.config.mapper.alertMapper">
+	
+	
+	<!-- 안읽은 알람 수 조회 -->
+	<select id="countUnreadAlert" parameterType="java.lang.String" resultType="int">
+		SELECT count(*)
+		FROM alert
+		WHERE member_id = #{value} AND state = 0
+	</select>
+
+	<!-- no로 하나의 알람 조회 -->
+	<select id="searchAlertByNo" parameterType="_int" resultType="alert">
+		SELECT no no,
+			   content content,
+			   state state,
+			   type type,
+			   group_no groupNo
+		FROM alert
+		WHERE no = #{value}	
+	</select>
+	
+	<update id="updateAlertStateByNo" parameterType="alert">
+		UPDATE	alert
+		SET 	state = 1
+		WHERE 	no = #{no}	
+	</update>
+	
+	<!-- 전체 알람 리스트 조회 -->
+	<select id="selectAllAlert" parameterType="java.lang.String" resultType="alert">
+		SELECT no no,
+			   content content,
+			   state state,
+			   type type,
+			   group_no groupNo
+		FROM alert
+		WHERE member_id = #{value} 
+		ORDER BY state ASC
+	</select>
+	
+
+	<!-- 알람 한개 추가하는 메소드 -->
+	<insert id="insertAlert" parameterType="alert">
+		<selectKey keyProperty="no" resultType="_int" order="BEFORE">
+			SELECT ALERT_NO_SEQ.nextval FROM dual
+		</selectKey>
+		INSERT INTO alert VALUES ( #{no}, 
+								   #{content},
+								   #{state},
+								   #{type},
+								   #{groupNo},
+								   #{memberId}
+								 )
+	</insert>
+</mapper>

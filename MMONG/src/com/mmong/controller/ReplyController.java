@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mmong.service.AlertService;
 import com.mmong.service.impl.BoardPictureServiceImpl;
 import com.mmong.service.impl.BoardServiceImpl;
 import com.mmong.service.impl.ReplyServiceImpl;
 import com.mmong.validation.ReplyRegisterValidator;
+import com.mmong.vo.Alert;
 import com.mmong.vo.Board;
 import com.mmong.vo.BoardPicture;
 import com.mmong.vo.Member;
@@ -37,6 +39,8 @@ public class ReplyController {
 	private BoardServiceImpl boardService;
 	@Autowired
 	private BoardPictureServiceImpl BPService;
+	@Autowired
+	private AlertService alertService;
 	
 	/*리플 등록*/
 	@RequestMapping("register")
@@ -49,8 +53,11 @@ public class ReplyController {
 		ReplyRegisterValidator validator = new ReplyRegisterValidator();
 		validator.validate(reply, errors);
 		
+		Board board = boardService.selectBoard(boardNo); //if문 밖으로 꺼냄 - 주현
+		String memberId = board.getMemberId(); // 게시판 쓴 사람의 Id //if문 밖으로 꺼냄 - 주현
+		
 		if(errors.hasErrors()){
-			Board board = boardService.selectBoard(boardNo);
+			//
 			boardService.updateBoard(board);
 			board=boardService.selectBoard(boardNo);
 
@@ -61,7 +68,7 @@ public class ReplyController {
 				nameList.add(bP.get(i).getRoute()); 
 			}
 		
-			String memberId=board.getMemberId(); // 게시판 쓴 사람의 Id
+			//
 			String boardNickname=boardService.selectNickNameByMemberId(memberId, boardNo);
 			List<Reply> replyList = replyService.selectReplyByBoardNo(boardNo); 
 			
@@ -93,9 +100,14 @@ public class ReplyController {
 		reply.setBoardNo(boardNo);
 		
 		replyService.insertReply(reply);
+		/////알람 등록하는 로직 추가 - 주현////
+		if(!loginId.equals(memberId)){
+			alertService.insertAlert(new Alert(0, "내 게시물에 새 댓글이 달렸습니다.", 0, 2, boardNo, memberId));
+		}
+		/////////////////////////////
 	
 		List<Reply> replyList =replyService.selectReplyByBoardNo(boardNo); // 게시물번호로 댓글 가져오기
-		Board board = boardService.selectBoard(boardNo);
+		//Board board = boardService.selectBoard(boardNo); //위에 선언해서 주석처리 - 주현
 		
 		int replyNo;
 		ArrayList<String> replyNickname=new ArrayList<>();
