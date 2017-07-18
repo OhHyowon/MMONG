@@ -6,6 +6,9 @@
 
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
+window.onload=function(){
+	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+}
 </script>
 
 <style type="text/css">
@@ -55,7 +58,7 @@ td {
 
 </style>
 
-
+<div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i>소모임 일정
@@ -190,3 +193,4 @@ td {
 	</c:otherwise>
 </c:choose>
 	</section>
+	</div>

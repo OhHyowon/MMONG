@@ -2,7 +2,8 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+	
+	<!-- 새로운 테마  -->
     <!-- Bootstrap Core CSS -->
     <link href="/MMONG/resource/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -16,10 +17,7 @@
     <!-- Theme CSS -->
     <link href="/MMONG/resource/assets/css/agency.min.css" rel="stylesheet">
     
-    
-    
-    
-    
+	<!-- 기존테마가 우선시 (상단바 때문에) : 이후에 적용 -->
     <!-- Bootstrap core CSS -->
     <link href="/MMONG/resource/assets/css/bootstrap.css?var=1" rel="stylesheet">
     
@@ -38,6 +36,9 @@
     
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
+window.onload=function(){
+	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+}
 $(document).ready(function(){
 	//로그인 안했을 때 소모임 생성 버튼 누르면 처리
 	$("#createNone").on("click", function(){
@@ -48,61 +49,68 @@ $(document).ready(function(){
 });
 </script>
 
+<div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i> 소모임 페이지
 		</h3>
 
 <!-- 나의 소모임 뿌리기 -->
-<br>
+<sec:authorize access="!isAuthenticated()">      
+	로그인 해주세욥 <br>
+</sec:authorize>
 
-        <sec:authorize access="!isAuthenticated()">      
-			로그인 해주세욥 <br>
-		</sec:authorize>
-		
-		<sec:authorize access="isAuthenticated()">	
-		<section id="portfolio" class="bg-white">
-			 <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">My Group</h2>
-                </div>
-             </div>
-			 <div class="row">					
-				<c:forEach var="myGroup" items="${myGroup }">
-						<div class="col-md-4 col-sm-6 portfolio-item">
-		                    <a href="/MMONG/group/groupDetail.do?groupNo=${myGroup.no }" class="portfolio-link" data-toggle="modal">
-		                        <div class="portfolio-hover">
-		                            <div class="portfolio-hover-content">
-		                                <i class="fa fa-plus fa-3x"></i>
-		                            </div>
-		                        </div>
-		                        <img src="/MMONG/resource/assets/img/portfolio/port02.jpg" class="img-responsive" alt="">
-		                    </a>
-		                    <div class="portfolio-caption">
-		                        <h4><b>${myGroup.name }</b></h4>
-		                        <p class="text-muted">${myGroup.content }</p>
-		                    </div>
-		                </div>
-		                <sec:csrfInput/>					
-				</c:forEach>
-			</div>		
-		</section>		
-		</sec:authorize>
+<sec:authorize access="isAuthenticated()">	
+	<section id="portfolio" class="bg-white">
+		<!-- 타이틀 -->
+		<div class="row">
+	            <div class="col-lg-12 text-center">
+	                <h2 class="section-heading">My Group</h2>
+	            </div>
+	    </div>
+	    
+	    <!-- 소모임 추가 버튼 -->
+	    <div style="margin-left:89%; display:inline-block; margin-bottom:10px;">		
+			<sec:authorize access="!isAuthenticated()"> 
+				<button type="button" id="createNone" class="btn btn-theme">소모임 만들기</button>
+			</sec:authorize>
+		 	<sec:authorize access="hasRole('ROLE_1')">  
+				<button type="button"  class="btn btn-theme" onclick="window.open('/MMONG/group/createGroup.do', '소모임 만들기', 'top=100px, left=100px, height=220px, width=500px')">소모임 만들기</button>
+			</sec:authorize>	    
+	    </div>
+	    
+	    <!-- 그룹리스트 -->
+		<div class="row">					
+			<c:forEach var="myGroup" items="${myGroup }">
+				<div class="col-md-4 col-sm-6 portfolio-item">
+	                <a href="/MMONG/group/groupDetail.do?groupNo=${myGroup.no }" class="portfolio-link" data-toggle="modal">
+	                  <div class="portfolio-hover">
+	                      <div class="portfolio-hover-content">
+	                          <i class="fa fa-plus fa-3x"></i>
+	                      </div>
+	                  </div>
+	                  <img src="/MMONG/resource/assets/img/groups.jpg" class="img-responsive" alt="">
+		            </a>
+		            <div class="portfolio-caption">
+		                  <h4><b>${myGroup.name }</b></h4>
+		                  <p class="text-muted">${myGroup.content }</p>
+		            </div>
+	          	</div>
+	         	<sec:csrfInput/>					
+			</c:forEach>
+		</div>		
+	</section>		
+</sec:authorize>
             
 
     
     
 		<!-- 소모임 찾기 버튼 -->
-		<input type="button" value="소모임 찾기" onClick="self.location='/MMONG/group/searchGroup.do';"> <br>
+		<center><button type="button" class="btn btn-theme" onClick="self.location='/MMONG/group/searchGroup.do';">소모임 찾기</button></center>
 		
-		<!-- 소모임 추가 버튼 -->
-		<sec:authorize access="!isAuthenticated()"> 
-			<button type="button" id="createNone">소모임 만들기</button>
-		</sec:authorize>
-		  <sec:authorize access="hasRole('ROLE_1')">  
-			<button type="button" onclick="window.open('/MMONG/group/createGroup.do', '소모임 만들기', 'top=100px, left=100px, height=220px, width=500px')">소모임 만들기</button>
-		</sec:authorize>
+
 
 
 	</section>
+</div>
 	<!--wrapper -->

@@ -16,6 +16,7 @@ public class Calendar implements Serializable {
 	private Date endDate; //종료 일시
 	private int emotion; // 기분
 	private String picture; // 사진 업로드
+	private int groupDateNo; // 소모임 일정 no
 	
 	private String memberId;
 	private Member member;
@@ -23,7 +24,7 @@ public class Calendar implements Serializable {
 	public Calendar(){}
 
 	public Calendar(int no, String title, String content, int type, Date startDate, Date endDate, int emotion,
-			String picture, String memberId) {
+			String picture, int groupDateNo, String memberId) {
 		super();
 		this.no = no;
 		this.title = title;
@@ -33,11 +34,12 @@ public class Calendar implements Serializable {
 		this.endDate = endDate;
 		this.emotion = emotion;
 		this.picture = picture;
+		this.groupDateNo = groupDateNo;
 		this.memberId = memberId;
 	}
 
 	public Calendar(int no, String title, String content, int type, Date startDate, Date endDate, int emotion,
-			String picture, String memberId, Member member) {
+			String picture, int groupDateNo, String memberId, Member member) {
 		super();
 		this.no = no;
 		this.title = title;
@@ -47,6 +49,7 @@ public class Calendar implements Serializable {
 		this.endDate = endDate;
 		this.emotion = emotion;
 		this.picture = picture;
+		this.groupDateNo = groupDateNo;
 		this.memberId = memberId;
 		this.member = member;
 	}
@@ -115,6 +118,14 @@ public class Calendar implements Serializable {
 		this.picture = picture;
 	}
 
+	public int getGroupDateNo() {
+		return groupDateNo;
+	}
+
+	public void setGroupDateNo(int groupDateNo) {
+		this.groupDateNo = groupDateNo;
+	}
+
 	public String getMemberId() {
 		return memberId;
 	}
@@ -138,6 +149,7 @@ public class Calendar implements Serializable {
 		result = prime * result + ((content == null) ? 0 : content.hashCode());
 		result = prime * result + emotion;
 		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
+		result = prime * result + groupDateNo;
 		result = prime * result + ((member == null) ? 0 : member.hashCode());
 		result = prime * result + ((memberId == null) ? 0 : memberId.hashCode());
 		result = prime * result + no;
@@ -168,6 +180,8 @@ public class Calendar implements Serializable {
 			if (other.endDate != null)
 				return false;
 		} else if (!endDate.equals(other.endDate))
+			return false;
+		if (groupDateNo != other.groupDateNo)
 			return false;
 		if (member == null) {
 			if (other.member != null)
@@ -204,8 +218,8 @@ public class Calendar implements Serializable {
 	@Override
 	public String toString() {
 		return "Calendar [no=" + no + ", title=" + title + ", content=" + content + ", type=" + type + ", startDate="
-				+ startDate + ", endDate=" + endDate + ", emotion=" + emotion + ", picture=" + picture + ", memberId="
-				+ memberId + ", member=" + member + "]";
+				+ startDate + ", endDate=" + endDate + ", emotion=" + emotion + ", picture=" + picture
+				+ ", groupDateNo=" + groupDateNo + ", memberId=" + memberId + ", member=" + member + "]";
 	}
 
 }

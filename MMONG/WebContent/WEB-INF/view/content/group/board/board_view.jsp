@@ -41,6 +41,11 @@
 
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
+
+window.onload=function(){
+	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+}
+
 $(document).ready(function(){
 	$("#BoardDeleteBtn").on("click",function(){
 			if(!confirm("삭제하시겠습니까?")){
@@ -89,7 +94,7 @@ $(document).ready(function(){
 });
 </script>
 
-
+<div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i>게시글 보기
@@ -106,7 +111,7 @@ $(document).ready(function(){
 	<a href="/MMONG/group/board/board_form.do">게시글작성</a> | 
 	<a href="/MMONG/group/board/myBoardList.do">내가 쓴 글 보기</a> |
 	<a href="/MMONG/group/reply/myReplyList.do">내가 쓴 댓글 보기</a> |
-
+<br><br>
 
 	<sec:authentication property="principal.memberId" var="loginId"/>
 	<sec:authentication property="principal.nickName" var="nickName"/>
@@ -124,7 +129,7 @@ $(document).ready(function(){
 		<tr>
 			<td>작성자(닉네임)</td>
 			<td class="messageGo" style="padding: 10px; ">${requestScope.board.memberId }(${requestScope.boardNickname }) &nbsp;&nbsp;&nbsp; 조회수 ${requestScope.board.hit }
-				<div class="messageGoTxt"><a href="/MMONG/message/idNnickFromBoard.do?id=${requestScope.board.memberId }&nickname=${requestScope.boardNickname }">쪽지보내기</a></div> 
+				<div class="messageGoTxt"><a href="/MMONG/message/idNnickFromBoard.do?id=${requestScope.board.memberId }&nickname=${requestScope.boardNickname }">쪽지보내기</a></div>
 			</td>
 		</tr>
 		<tr>
@@ -134,9 +139,10 @@ $(document).ready(function(){
 					<input type="hidden" name="nameList" value="${fileName }">
 				</c:forEach>		
 			</td>
+			<td></td>
 		</tr>
 	</table>	
-	
+
 	<br>
 	
 	
@@ -213,3 +219,4 @@ $(document).ready(function(){
 
 </div> <%-- 댓글 end --%>
 </section>
+</div>
