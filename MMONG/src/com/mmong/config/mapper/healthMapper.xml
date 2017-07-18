@@ -27,13 +27,9 @@
 </insert>
 
 <!-- 건강기록 업데이트  -->
-<update id="updateHealthList" parameterType="health">
+<update id="updateHealthList" parameterType="map">
 		UPDATE health
-		SET no = #{no},
-			content = #{content},
-			done = #{done},
-			gender = #{gender},
-			chart_no = #{chartNo}
+		SET content = #{content}
 		WHERE no = #{no}
 </update>
 
@@ -47,6 +43,15 @@
 		   ORDER BY no
 </select>
 
+<!-- no로 건강기록 조회 -->
+<select id="selectByNo" parameterType="int" resultMap="health-resultmap">
+		SELECT	no,
+				content,
+				done,
+				gender
+		 FROM	health
+		 WHERE  no = #{no}
+</select>
 <!-- 성별로 건강기록 조회 -->
 <select id="selectByGender" parameterType="map" resultMap="health-resultmap">
 		SELECT	no,

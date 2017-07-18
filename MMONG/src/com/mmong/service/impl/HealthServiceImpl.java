@@ -2,6 +2,7 @@ package com.mmong.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,9 +42,9 @@ public class HealthServiceImpl implements HealthService {
 	 * 	건강관리 수정
 	 */
 	@Override
-	public void updateHealthList(Health health) {
+	public void updateHealthList(Map map) {
 		
-		dao.updateHealthList(health);
+		dao.updateHealthList(map);
 		
 	}
 	
@@ -63,6 +64,12 @@ public class HealthServiceImpl implements HealthService {
 	public List<Health> selectByGender(char gen) {
 		
 		return dao.selectByGender(gen);
+	}
+
+	@Override
+	public Health selectByNo(int no) {
+
+		return dao.selectByNo(no);
 	}
 
 

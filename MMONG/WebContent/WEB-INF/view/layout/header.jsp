@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
  <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>   
  
 <div class="sidebar-toggle-box">
@@ -96,7 +96,4 @@
             	
             	
             </div>
-=======
-<%@page contentType="text/html; charset=UTF-8"%>
-<a href="/MMONG/index.do"><h2> ♥MMONG♥ </h2></a>
->>>>>>> a537eee2acff70d4c6aeb31463ac59d50205a4a0
+

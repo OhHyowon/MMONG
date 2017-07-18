@@ -23,13 +23,11 @@ import com.mmong.vo.Member;
 @Controller
 @RequestMapping("/chart/")
 public class ChartController {
-	@Autowired
-	private HealthServiceImpl service;
 
 	@Autowired
 	private ChartServiceImpl service2;
 	
-	// 체크박스로 누른 전체 진료기록 조회
+	// 전체 진료기록 조회
 	@RequestMapping("chartlist")
 	@ResponseBody
 	public List chartList(@RequestParam List<Integer> checkedList){
@@ -37,15 +35,15 @@ public class ChartController {
 			
 		List<Chart> list = new ArrayList<Chart>();
 		
-		String writer = member.getMemberId();	// 여기다가 member.getWriter 넣을것 일단 테스트 
-		HashMap<String,Object> map = new HashMap<>();
+		String writer = member.getMemberId();	// 접속해 있는 Id
+		HashMap<String,Object> map = new HashMap<>();	// DB에 넣을 값들 map생성
 		
-		Chart chart = new Chart();
+		Chart chart = new Chart(); // service에서 리턴 받을 값 만들어줌
 		
-		for(int i=0; i<checkedList.size();i++){
-		map.put("writer",writer);
-		map.put("no", checkedList.get(i));
-		chart = service2.selectChartByNoAndWriter(map);
+		for(int i=0; i<checkedList.size();i++){	// 돌려서 차트 list를 만들자
+		map.put("writer",writer); // 비교할 id
+		map.put("no", checkedList.get(i));	// 해당 건강기록에 대한 진료기록 뽑을 no
+		chart = service2.selectChartByNoAndWriter(map); // 글 번호와 id를 이용하여 진료기록을 불러온다.
 		
 		// 선택한 건강기록에 댓글이 없는거 걸러내기
 		if(chart != null){
@@ -63,9 +61,7 @@ public class ChartController {
 		
 		List<Chart> list = new ArrayList<Chart>();
 		
-		String writer = member.getMemberId();
-		
-		Chart chart = new Chart();
+		String writer = member.getMemberId();	//이름으로 조회하기위한 값 변수에 저장
 		
 		list = service2.selectChartByWriter(writer);
 		
@@ -78,10 +74,11 @@ public class ChartController {
 	public Chart selectChartByNo(@RequestParam int chartNo){
 		
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Chart chart = new Chart();
+		Chart chart = new Chart();	// 리턴해주기위한 chart객체 생성
 		HashMap<String,Object> map = new HashMap<>();
-
-		map.put("no", chartNo);
+		
+		// Mapper에 식별값들을 넣어주자
+		map.put("no", chartNo);	
 		map.put("writer", member.getMemberId());
 		
 		chart = service2.selectChartByNoAndWriter(map);
@@ -97,18 +94,18 @@ public class ChartController {
 								@RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date chartDate){
 		
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
-		member.getMemberId();
-		
+			
 		HashMap<String,Object> map = new HashMap<>();
 		
-		Chart chart = new Chart(0,chartDate,member.getMemberId(),chartContent,chartNo);
+		Chart chart = new Chart(0,chartDate,member.getMemberId(),chartContent,chartNo);	// 생성할 객체를 만들어주자
 		
-		service2.insertChart(chart);
+		service2.insertChart(chart); // 위에꺼 객체 DB에 넣자.
 		
+		// 넣은 객체를 리턴해주기 위한 여정
 		map.put("no", chartNo);
 		map.put("writer", member.getMemberId());
 		
+		// no와 id를 이용해서 지금 등록한 객체 조회
 		chart = service2.selectChartByNoAndWriter(map);
 
 		return chart;
@@ -123,11 +120,12 @@ public class ChartController {
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
 		HashMap<String,Object> map = new HashMap<>();
-		Date date = new Date();
 		
+		//삭제할 애 no와 id로 찾자
 		map.put("writer", member.getMemberId());
 		map.put("no", chartNo);
 		
+		// db에서 삭제해주자  
 		service2.deleteChart(map);
 	}
 	

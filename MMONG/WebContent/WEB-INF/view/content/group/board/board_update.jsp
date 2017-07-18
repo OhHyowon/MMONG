@@ -53,7 +53,7 @@ $(document).ready(function(){
 <hr>
 기존 사용된 이미지 : <br>
 		<c:forEach items="${requestScope.nameList }" var="name">
-			${name } <br>
+			${name} <br>
 		</c:forEach>
 		
 <input type="hidden" name="no" value="${requestScope.board.no }">
