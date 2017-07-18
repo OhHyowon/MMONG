@@ -1,5 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>   
-
  
 <div class="sidebar-toggle-box">
                   <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
@@ -18,7 +18,6 @@
                             <span class="badge bg-theme">5</span>
                         </a>
                         <ul class="dropdown-menu extended inbox">
-                            <div class="notify-arrow notify-arrow-green"></div>
                             <li>
                                 <p class="green">You have 5 new messages</p>
                             </li>
@@ -81,6 +80,20 @@
             </div>
             <div class="top-menu">
             	<ul class="nav pull-right top-menu">
+            	
+            	<li style="padding:21px">
+ 					<sec:authorize access="hasRole('ROLE_0')">
+						<sec:authentication property="principal.adminId" /> 님 환영합니다.<br>
+					</sec:authorize>
+					<sec:authorize access="hasRole('ROLE_1')">
+						<sec:authentication property="principal.memberId" /> 님 환영합니다.<br>
+					</sec:authorize>
+					<sec:authorize access="hasRole('ROLE_2')">
+						현재 정지된 계정입니다.<br>
+					</sec:authorize>           	
+            	
+            	</li>
+            	
                  <sec:authorize access="isAuthenticated()">
                  	<sec:authorize access="hasRole('ROLE_1')">
     					<li><a class="logout" href="/MMONG/member/mypage.do">MyPage</a></li>

@@ -124,10 +124,10 @@ $(document).ready(function(){
 			</tr>
 		</thead>
 
+	<tbody>
 	<c:forEach items="${requestScope.boardList }" var="board" varStatus="idx">
 		<c:choose>
 			<c:when test="${board.replyCount!=0 }">
-				<tbody>
 					<tr>
 						<td>${board.no }</td>
 						<td><a href="/MMONG/group/board/board_view.do?boardNo=${board.no }">${board.title }[${board.replyCount}]</a></td>
@@ -139,6 +139,7 @@ $(document).ready(function(){
 						<td>${board.hit }</td>
 					</tr>
 			</c:when>
+			
 			<c:otherwise>
 				<tr>
 					<td>${board.no }</td>

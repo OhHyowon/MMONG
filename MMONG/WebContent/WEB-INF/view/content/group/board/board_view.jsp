@@ -113,7 +113,7 @@ $(document).ready(function(){
 	<a href="/MMONG/group/board/board_form.do">게시글작성</a> | 
 	<a href="/MMONG/group/board/myBoardList.do">내가 쓴 글 보기</a> |
 	<a href="/MMONG/group/reply/myReplyList.do">내가 쓴 댓글 보기</a> |
-
+<br><br>
 
 	<sec:authentication property="principal.memberId" var="loginId"/>
 	<sec:authentication property="principal.nickName" var="nickName"/>

@@ -66,7 +66,7 @@
 </section>
       <!--main content end-->
       <!--footer start-->
-      <footer class="site-footer">
+      <footer class="site-footer col-lg-12">
 <tiles:insertAttribute name="footer"/>
       </footer>
       <!--footer end-->
