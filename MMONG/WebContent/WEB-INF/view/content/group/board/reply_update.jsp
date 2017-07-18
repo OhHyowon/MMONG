@@ -3,8 +3,15 @@
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
  <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
  <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+ 
+<script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+window.onload=function(){
+	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+}
+</script>
 
-
+<div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i>댓글 수정
@@ -81,3 +88,4 @@
 	</c:forEach>
 </table>
 </section>
+</div>

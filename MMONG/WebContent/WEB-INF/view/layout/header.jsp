@@ -1,10 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
  
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
-
-
 $(document).ready(function(){
 	//알람 개수 뿌리기
 	$.ajax ({
@@ -146,7 +145,6 @@ function logout(){
 						    </a>
 					    </sec:authorize>
 					</li>                    
-                    
                 </ul>
             </div>
             <!-- --------------상단 바 : 알림, 쪽지 푸쉬알람 아이콘 끝------------- -->
@@ -155,6 +153,20 @@ function logout(){
             <!-- --------------상단 바 : 마이페이지, 로그인------------- -->
             <div class="top-menu">
             	<ul class="nav pull-right top-menu">
+            	
+            	<li style="padding:21px">
+ 					<sec:authorize access="hasRole('ROLE_0')">
+						<sec:authentication property="principal.adminId" /> 님 환영합니다.<br>
+					</sec:authorize>
+					<sec:authorize access="hasRole('ROLE_1')">
+						<sec:authentication property="principal.memberId" /> 님 환영합니다.<br>
+					</sec:authorize>
+					<sec:authorize access="hasRole('ROLE_2')">
+						현재 정지된 계정입니다.<br>
+					</sec:authorize>           	
+            	
+            	</li>
+            	
                  <sec:authorize access="isAuthenticated()">
                  	<sec:authorize access="hasRole('ROLE_1')">
     					<li><a class="logout" href="/MMONG/member/mypage.do">MyPage</a></li>

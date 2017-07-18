@@ -55,9 +55,7 @@
           </div>
       </aside>
       <!--sidebar end-->
-    </section>
-<!-- **********************************************************************************************************************************************************
-      
+        </section>
 <!-- **********************************************************************************************************************************************************
       MAIN CONTENT
  *********************************************************************************************************************************************************** -->
@@ -67,11 +65,10 @@
 </section>
       <!--main content end-->
       <!--footer start-->
-      <footer class="site-footer">
+      <footer class="site-footer col-lg-12">
 <tiles:insertAttribute name="footer"/>
       </footer>
       <!--footer end-->
-<!--   </section> -->
 
     <!-- js placed at the end of the document so the pages load faster -->
     <script src="/MMONG/resource/assets/js/bootstrap.min.js"></script>
@@ -83,7 +80,7 @@
 
 
     <!--common script for all pages-->
-    <script src="/MMONG/resource/assets/js/common-scripts.js"></script>
+    <script src="/MMONG/resource/assets/js/common-scripts.js?ver=1"></script>
 
     <!--script for this page-->
     
