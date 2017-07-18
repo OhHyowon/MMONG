@@ -7,6 +7,11 @@
 
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
+
+window.onload=function(){
+	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+}
+
 $(document).ready(function(){
 	$(".insertBtn").on("click",function(){
 		alert("일정 참여");
@@ -72,7 +77,7 @@ $(document).ready(function(){
 	float:right;
 }
 </style>
-
+<div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i> 일정 상세보기
@@ -101,8 +106,9 @@ $(document).ready(function(){
 				<li>일정 참여자가 없습니다!</li>
 			<input class="btn btn-default btn-xs insertBtn" type="button" value="참여하기">
 		</c:when> 
-
+	
 		<c:otherwise> <%-- 일정 참여자가 있을 때 --%>
+	<div style="text-align:center">일정 참여자</div>
 	<c:forEach items="${requestScope.memberIdList }" var="memberId" varStatus="idx">
 			<c:choose>
 			<c:when test="${memberId == loginId }"> <%-- 로그인된 아이디와 참여자 아이디가 같다면 --%>
@@ -155,8 +161,5 @@ $(document).ready(function(){
 <br><br><br><br><br><br><br><br><br><br><br><br><br>
 	</div>
 </div>
-
-
-
-
 </section>
+</div>

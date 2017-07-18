@@ -11,7 +11,6 @@ span.error{
 }
 
 </style>
-</head>
 <body>
 	<section class="wrapper site-min-height">
 		<h3>
