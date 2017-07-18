@@ -1,5 +1,6 @@
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>   
 
+ 
 <div class="sidebar-toggle-box">
                   <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
               </div>
@@ -10,8 +11,8 @@
                 <!--  notification start -->
                 <ul class="nav top-menu">
      
-              <!--       
-                    inbox dropdown start
+
+                    <!-- inbox dropdown start-->
                     <li id="header_inbox_bar" class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
                             <i class="fa fa-envelope-o"></i>
@@ -102,3 +103,4 @@
             	
             	
             </div>
+

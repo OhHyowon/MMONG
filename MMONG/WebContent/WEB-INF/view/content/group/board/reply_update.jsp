@@ -18,17 +18,11 @@
 </ul>
 <%-- =============소모임 상세페이지 소메뉴 끝================ --%>
 <hr>
-
-<h3>자유게시판 메뉴</h3>
-<ul>
-	<li><a href="/MMONG/group/board/board_form.do">게시글작성</a></li>
-	<li><a href="/MMONG/group/board/myBoardList.do">내가 쓴 글 보기</a>
-	<li><a href="/MMONG/group/reply/myReplyList.do">내가 쓴 댓글 보기</a>
-</ul>
+	<a href="/MMONG/group/board/board_form.do">게시글작성</a> | 
+	<a href="/MMONG/group/board/myBoardList.do">내가 쓴 글 보기</a> |
+	<a href="/MMONG/group/reply/myReplyList.do">내가 쓴 댓글 보기</a> |
 
 
-
-<body>
 	<table>
 	
 		<tr>
@@ -86,3 +80,4 @@
 		</c:choose>
 	</c:forEach>
 </table>
+</section>

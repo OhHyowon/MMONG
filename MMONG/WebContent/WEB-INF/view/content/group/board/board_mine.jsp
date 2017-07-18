@@ -4,8 +4,9 @@
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-	<style type="text/css">
+<style type="text/css">
 a:link {
 	/*방문하지 않은 링크 설정.*/
 	text-decoration: none; /*밑줄 안나오도록 처리.*/
@@ -30,9 +31,9 @@ a:active {
 }
 
 table, td {
-	border: 1px solid gray;
+/* 	border: 1px solid gray; */
 	width: auto;
-	text-align: center;
+	/* text-align: center; */
 }
 
 table {
@@ -44,6 +45,13 @@ td {
 	padding: 10px;
 	text-align: center;
 }
+
+#form{
+	 text-align: center;
+}
+
+
+
 </style>
 	<script type="text/javascript"
 		src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
@@ -95,7 +103,7 @@ td {
 
 	<section class="wrapper site-min-height">
 		<h3>
-			<i class="fa fa-angle-right"></i>내가 쓴 게시물 목록
+			<i class="fa fa-angle-right"></i>소모임
 		</h3>
 <%-- =============소모임 상세페이지 소메뉴 : 밑에 세메뉴안에도 이것 포함시키기! ================ --%>
 <ul>
@@ -106,15 +114,19 @@ td {
 <%-- =============소모임 상세페이지 소메뉴 끝================ --%>
 <hr>
 
-<h3>자유게시판 메뉴</h3>
-<ul>
-	<li><a href="/MMONG/group/board/board_form.do">게시글작성</a></li>
-	<li><a href="/MMONG/group/board/myBoardList.do">내가 쓴 글 보기</a>
-	<li><a href="/MMONG/group/reply/myReplyList.do">내가 쓴 댓글 보기</a>
-</ul>
+	<a href="/MMONG/group/board/board_form.do">게시글작성</a> | 
+	<a href="/MMONG/group/board/myBoardList.do">내가 쓴 글 보기</a> |
+	<a href="/MMONG/group/reply/myReplyList.do">내가 쓴 댓글 보기</a> |
 
-	<table>
-		<thead>
+
+<c:choose>
+	<c:when test="${fn:length(requestScope.myBoardList)!=0 }">
+
+<div class="col-md-12">
+	      <h4>자유게시판</h4>
+	          <hr>
+<table class="table">
+	<thead>
 			<tr>
 				<td><input type="checkbox" id="allCheckBtn" name="allCheck"></td>
 				<td>글번호</td>
@@ -158,15 +170,6 @@ td {
 	</table>
 	<input type="button" id="deleteBtn" value="삭제하기">
 
-	<form action="/MMONG/group/board/myBoardList.do">
-	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-		<select name="option">
-			<option value="title">제목</option>
-			<option value="content">내용</option>
-			<input type="text" name="key">
-			<input type="submit" value="검색">
-		</select>
-	</form>
 
 
 
@@ -222,4 +225,29 @@ td {
 			href="/MMONG/group/board/myBoardList.do?page=${requestScope.pageBean.totalPage}&groupNo=${sessionScope.groupNo }">마지막
 			페이지</a>
 	</p>
+	
+	<%-- 검색창 --%>
+<div id="form">
+	<form action="/MMONG/group/board/myBoardList.do">
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+		<select name="option"  style="height:24.4px; margin-top:3px">
+			<option value="title">제목</option>
+			<option value="content">내용</option>
+		</select>
+			<input type="text" name="key" style="margin-bottom:1px;margin-left:3px">
+			<input class="btn btn-default btn-sm" type="submit" value="검색"  style="margin-left:3px">
+	</form>
+	</div>
+	
+	</div>
+	</c:when>
+	<c:otherwise>
+		<p style="text-align:center">
+		내가 쓴 게시물이 없습니다.
+		</p>
+	</c:otherwise>
+	</c:choose>
+	
+	
+	
 </section>

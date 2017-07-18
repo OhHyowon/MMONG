@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i> 회원 마이페이지
@@ -26,7 +25,6 @@ ID : <sec:authentication property="principal.memberId"/> <br>
 </form>
 
 <br>
-
 
 <form action="/MMONG/member/memberWithdrawal.do" method="post">
 	<input type="hidden" name="memberId" value="${requestScope.member.memberId }">

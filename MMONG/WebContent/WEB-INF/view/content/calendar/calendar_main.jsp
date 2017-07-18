@@ -29,16 +29,13 @@
 
 </style>
 
-<script type="text/javascript" src="/MMONG/resource/calendar/jquery.min.js"></script> 
 <script type="text/javascript" src="/MMONG/resource/calendar/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/MMONG/resource/calendar/moment.min.js"></script>
-<script type="text/javascript" src="/MMONG/resource/calendar/fullcalendar.min.js"></script>
 <script type="text/javascript" src="/MMONG/resource/calendar/fullcalendar.js"></script>
 <script type="text/javascript" src="/MMONG/resource/calendar/locale-all.js"></script>
 <script type="text/javascript" src="/MMONG/resource/calendar/gcal.js"></script>
 <link type="text/css" rel="stylesheet" href="/MMONG/resource/calendar/fullcalendar.css"/>
 <link type="text/css" rel="stylesheet" href="/MMONG/resource/calendar/fullcalendar.print.css"  media='print'/>
-<link type="text/css" rel="stylesheet" href="/MMONG/resource/calendar/fullcalendar.min.css"/>
 
 
 <!-- 리스트 형식으로 표현 필요!!!!!!!!!****************** -->
@@ -49,7 +46,6 @@
 		var initialLocaleCode = 'ko'; //한글로 변환
 
 		var date = new Date();
-
 		//팝업창 크기 조절
 		var width=800, height=500;
 		var left = (screen.availWidth - width)/2;
@@ -59,10 +55,10 @@
 		specs += ",left=" + left;
 		specs += ",top=" + top;
 		
-		$('#calendar').fullCalendar({
+		$('#calendarFull').fullCalendar({
 			header: {
 				left: 'prev,next today',
-				center: 'title',
+				center: "title",
 				right: 'month,basicWeek,basicDay,listMonth'
 			},
 			locale: 'ko',
@@ -147,6 +143,6 @@
 	</div>
 	<hr><br>
 
-	<div id='calendar'></div>
+	<div id='calendarFull'></div>
 
 	</section>
