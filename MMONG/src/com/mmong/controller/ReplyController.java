@@ -48,11 +48,9 @@ public class ReplyController {
 		int groupNo=(int) session.getAttribute("groupNo");
 		ReplyRegisterValidator validator = new ReplyRegisterValidator();
 		validator.validate(reply, errors);
+		
 		if(errors.hasErrors()){
-			
 			Board board = boardService.selectBoard(boardNo);
-			
-			
 			boardService.updateBoard(board);
 			board=boardService.selectBoard(boardNo);
 
@@ -64,9 +62,7 @@ public class ReplyController {
 			}
 		
 			String memberId=board.getMemberId(); // 게시판 쓴 사람의 Id
-			
 			String boardNickname=boardService.selectNickNameByMemberId(memberId, boardNo);
-
 			List<Reply> replyList = replyService.selectReplyByBoardNo(boardNo); 
 			
 			int replyNo;
@@ -98,7 +94,6 @@ public class ReplyController {
 		
 		replyService.insertReply(reply);
 	
-		
 		List<Reply> replyList =replyService.selectReplyByBoardNo(boardNo); // 게시물번호로 댓글 가져오기
 		Board board = boardService.selectBoard(boardNo);
 		

@@ -48,12 +48,17 @@ td {
 	text-align:center;
 }
 
+#form{
+	 text-align: center;
+}
+
+
 </style>
 
 
 	<section class="wrapper site-min-height">
 		<h3>
-			<i class="fa fa-angle-right"></i>소모임 일정 목록
+			<i class="fa fa-angle-right"></i>소모임 일정
 		</h3>
 <c:choose>
 	<c:when test="${requestScope.check == 1}"> <!-- check가 1이면 볼 권한 있음 -->
@@ -67,15 +72,15 @@ td {
 <%-- =============소모임 상세페이지 소메뉴 끝================ --%>
 
 
-<a href="/MMONG/group/groupDate/groupDate_form.do">일정 등록</a>
-
-
 <c:choose>
 	<c:when test='${fn:length(requestScope.groupDateList)!=0 }'>
 
 
-<h2>전체 일정 목록</h2>
-<table>
+
+<div class="col-md-12">
+	      <h4>전체 일정</h4>
+	          <hr>
+<table class="table table-hover">
 	<thead>
 		<tr>
 			<td>일정이름</td>
@@ -97,27 +102,7 @@ td {
 </c:forEach>
 </table>
 
-<c:set var="optionValue" value="${requestScope.option }"/>
-
-<%
-	String optionValue=(String)request.getAttribute("option");
-%>
-
-<%-- 검색 창 --%>
-		* 날짜 : 검색일 이후의 날짜로 검색 됩니다.<br>
-<form action="/MMONG/group/groupDate/allGroupDateListByKey.do">
-		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-
-		<select name="option">
-			<option value="title" <%if(optionValue.equals("title")){%>selected<%} %>>일정이름</option>
-			<option value="place"  <%if(optionValue.equals("place")){%>selected<%} %>>장소</option>
-			<option value="dateTime"  <%if(optionValue.equals("dateTime")){%>selected<%} %>>날짜</option>
-		</select>
-		
-			<input type="text" name="key" placeholder="날짜:yyyy-mm-dd 입력" value="${requestScope.key }"> 
-			<input type="submit" value="검색">
-</form>
-
+<button id="inputBtn" class="btn btn-default btn-sm" onclick="location.href='/MMONG/group/groupDate/groupDate_form.do'"style="float:right;margin-right: 15px">일정 등록</button>
 
 
 <%-- ################### 페이징 ################ --%>
@@ -169,16 +154,39 @@ td {
 		<a href="/MMONG/group/groupDate/allGroupDateListByKey.do?page=${requestScope.pageBean.totalPage}&key=${requestScope.key}&option=${requestScope.option}">마지막페이지</a>
 	</p>
 
+<c:set var="optionValue" value="${requestScope.option }"/>
+<%
+	String optionValue=(String)request.getAttribute("option");
+%>
+
+<%-- 검색 창 --%>
+		<div id="form">
+<form action="/MMONG/group/groupDate/allGroupDateListByKey.do">
+		* 날짜 : 검색일 이후의 날짜로 검색 됩니다.<br>
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+		<select name="option" style="height:24.4px; margin-top:3px">
+			<option value="title" <%if(optionValue.equals("title")){%>selected<%} %>>일정이름</option>
+			<option value="place"  <%if(optionValue.equals("place")){%>selected<%} %>>장소</option>
+			<option value="dateTime"  <%if(optionValue.equals("dateTime")){%>selected<%} %>>날짜</option>
+		</select>
+		
+			<input type="text" name="key" placeholder="날짜:yyyy-mm-dd 입력" value="${requestScope.key }" style="margin-bottom:1px;margin-left:3px"> 
+			<input type="submit" value="검색">
+</form>
+</div>
+</div>
 </c:when>
 <c:otherwise>
 	<br> 조회된 일정이 없습니다.
+	<button id="inputBtn" class="btn btn-default btn-sm" onclick="location.href='/MMONG/group/groupDate/groupDate_form.do'">일정 등록</button>
 </c:otherwise>
 </c:choose>
 
 
 		</c:when>
 	<c:otherwise>
-			<br>모임 참여자만 볼 수 있습니다. 모임 참여 해주세요 ^_^
+			<br>모임 참여자만 볼 수 있습니다. 모임 참여를 해주세요~
 	</c:otherwise>
 </c:choose>
 	</section>

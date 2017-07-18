@@ -38,7 +38,7 @@
 		SELECT REPLY_NO_SEQ.nextval FROM dual
 	</selectKey>
 	INSERT INTO reply VALUES(
-		#{no},#{content},#{replyDate},#{memberId},#{boardNo},#{groupNo}
+		#{no},#{content},#{replyDate},#{memberId},#{groupNo},#{boardNo}
 	)
 </insert>
 

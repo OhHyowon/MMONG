@@ -48,12 +48,18 @@ td {
 	text-align:center;
 }
 
+#form{
+	 text-align: center;
+}
+
+
+
 </style>
 
 
 	<section class="wrapper site-min-height">
 		<h3>
-			<i class="fa fa-angle-right"></i>소모임 일정 목록
+			<i class="fa fa-angle-right"></i>소모임
 		</h3>
 <c:choose>
 	<c:when test="${requestScope.check == 1}"> <!-- check가 1이면 볼 권한 있음 -->
@@ -67,15 +73,16 @@ td {
 <%-- =============소모임 상세페이지 소메뉴 끝================ --%>
 
 
-<a href="/MMONG/group/groupDate/groupDate_form.do">일정 등록</a>
 
 
 <c:choose>
 	<c:when test='${fn:length(requestScope.groupDateList)!=0 }'>
 
+<div class="col-md-12">
 
-<h2>전체 일정 목록</h2>
-<table>
+	      <h4>전체 일정</h4>
+	          <hr>
+<table class="table table-hover">
 	<thead>
 		<tr>
 			<td>일정이름</td>
@@ -91,24 +98,17 @@ td {
 			<td><li>${groupDate.title }</td>
 			<td>${groupDate.place }</td>
 			<td><fmt:formatDate value="${groupDate.groupDate }" pattern="yyyy-MM-dd HH:mm" /></td>
-			<td><input type="button" value="상세보기" onclick="location.href='/MMONG/group/groupDate/groupDateView.do?groupDateNo=${groupDate.no}'"></td>
+			<td><input type="button" value="상세보기" class="btn btn-default btn-sm" onclick="location.href='/MMONG/group/groupDate/groupDateView.do?groupDateNo=${groupDate.no}'"></td>
 		</tr>
 	</tbody>
 </c:forEach>
 </table>
 
-<%-- 검색 창 --%>
-		* 날짜 : 검색일 이후의 날짜로 검색 됩니다.<br>
-<form action="/MMONG/group/groupDate/allGroupDateListByKey.do">
-		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-		<select name="option">
-			<option value="title">일정이름</option>
-			<option value="place">장소</option>
-			<option value="dateTime">날짜</option>
-		</select>
-			<input type="text" name="key" placeholder="날짜:yyyy-mm-dd 입력"> 
-			<input type="submit" value="검색">
-</form>
+<button id="inputBtn" class="btn btn-default btn-sm" onclick="location.href='/MMONG/group/groupDate/groupDate_form.do'"style="float:leftt;margin-right: 15px">일정 등록</button>
+
+
+
+
 
 
 
@@ -161,16 +161,35 @@ td {
 		<a href="/MMONG/group/groupDate/allGroupDateList.do?page=${requestScope.pageBean.totalPage}">마지막페이지</a>
 	</p>
 
+<%-- 검색 창 --%>
+<div id="form">
+<form action="/MMONG/group/groupDate/allGroupDateListByKey.do">
+		* 날짜 : 검색일 이후의 날짜로 검색 됩니다.<br>
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+		<select name="option" style="height:24.4px; margin-top:3px">
+			<option value="title">일정이름</option>
+			<option value="place">장소</option>
+			<option value="dateTime">날짜</option>
+		</select>
+			<input type="text" name="key" placeholder="날짜:yyyy-mm-dd 입력" style="margin-bottom:1px;margin-left:3px"> 
+			<input class="btn btn-default btn-sm" type="submit" value="검색" style="margin-left:3px">
+</form>
+</div>
+</div>
 </c:when>
 <c:otherwise>
-	<br> 조회된 일정이 없습니다.
+	<br> <div style="	text-align:center;">조회된 일정이 없습니다.<br>
+	<button id="inputBtn" class="btn btn-default btn-sm" onclick="location.href='/MMONG/group/groupDate/groupDate_form.do'">일정 등록</button>
+	</div>
 </c:otherwise>
 </c:choose>
 
 
 		</c:when>
 	<c:otherwise>
-			<br>모임 참여자만 볼 수 있습니다. 모임 참여 해주세요 ^_^
+	<p style="text-align:center">
+			모임 참여자만 볼 수 있습니다. 모임 참여를 해주세요~
+			</p>
 	</c:otherwise>
 </c:choose>
 	</section>
