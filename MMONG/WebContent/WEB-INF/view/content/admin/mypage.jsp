@@ -23,8 +23,11 @@ enable : ${requestScope.administrator.user.userEnable}<br>
 </form>
 <br>
 
-<<<<<<< HEAD
+ <form action="/MMONG/admin/adminWithdrawal.do" method="post">
+	<input type="hidden" name="adminId" value="<sec:authentication property="principal.adminId"/>">
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	<input type="submit" value="관리자 탈퇴">
+</form>
+
 </section>
-=======
- 
->>>>>>> a537eee2acff70d4c6aeb31463ac59d50205a4a0
+

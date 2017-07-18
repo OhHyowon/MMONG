@@ -145,11 +145,11 @@ function formSubmit(){
 }
 </script>
 
-
-	<section class="wrapper site-min-height">
+<section class="wrapper site-min-height">
 		<h3>
-			<i class="fa fa-angle-right"></i> 관리자 정보 수정하기
+			<i class="fa fa-angle-right"></i>관리자 정보수정
 		</h3>
+
 
 	<form name="updateFrom" id="insert" action="/MMONG/admin/info_admin.do" method="post">
 		<table>
@@ -222,5 +222,4 @@ function formSubmit(){
 			</tr>
 		</table>
 	</form>
-
-	</section>
+</section>

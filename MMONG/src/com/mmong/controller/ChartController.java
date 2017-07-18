@@ -40,11 +40,7 @@ public class ChartController {
 		String writer = member.getMemberId();	// 여기다가 member.getWriter 넣을것 일단 테스트 
 		HashMap<String,Object> map = new HashMap<>();
 		
-		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd"); 
-		
 		Chart chart = new Chart();
-		
-		
 		
 		for(int i=0; i<checkedList.size();i++){
 		map.put("writer",writer);
@@ -56,7 +52,22 @@ public class ChartController {
 			list.add(chart);
 			}
 		}
+		return list;
+	}
+	
+	// 이름으로만 조회 (체크박스 없이 전체차트 조회 눌렀을때)
+	@RequestMapping("selectChartByWriter")
+	@ResponseBody
+	public List selectChartByWriter(){
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
+		List<Chart> list = new ArrayList<Chart>();
+		
+		String writer = member.getMemberId();
+		
+		Chart chart = new Chart();
+		
+		list = service2.selectChartByWriter(writer);
 		
 		return list;
 	}
@@ -81,7 +92,7 @@ public class ChartController {
 	// 진료기록 등록
 	@RequestMapping("chartInsert")
 	@ResponseBody
-	public void insertChartList(@RequestParam String chartContent, 
+	public Chart insertChartList(@RequestParam String chartContent, 
 								@RequestParam int chartNo, 
 								@RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date chartDate){
 		
@@ -89,9 +100,18 @@ public class ChartController {
 		
 		member.getMemberId();
 		
+		HashMap<String,Object> map = new HashMap<>();
+		
 		Chart chart = new Chart(0,chartDate,member.getMemberId(),chartContent,chartNo);
 		
 		service2.insertChart(chart);
+		
+		map.put("no", chartNo);
+		map.put("writer", member.getMemberId());
+		
+		chart = service2.selectChartByNoAndWriter(map);
+
+		return chart;
 	
 	}
 	

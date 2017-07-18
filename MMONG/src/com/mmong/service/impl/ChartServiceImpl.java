@@ -54,6 +54,15 @@ public class ChartServiceImpl implements ChartService{
 		
 		return dao.selectChartByNoAndWriter(map);
 	}
+	
+	/**
+	 *  id로 진료기록 추가
+	 */
+	@Override
+	public List<Chart> selectChartByWriter(String id) {
+		
+		return dao.selectChartByWriter(id);
+	}
 
 	
 }

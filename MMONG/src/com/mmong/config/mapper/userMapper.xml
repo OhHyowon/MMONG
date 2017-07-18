@@ -79,10 +79,17 @@
 	</select>
 
  	<!-- user 권한 변경 -->
- 	<!-- 일반회원 권한 변경 (ROLE_1 -> ROLE_2) -->
- 	<update id="updateAuthorityMemberToStop" parameterType="user">
+ 	<!-- 사용자(관리자/일반회원) 권한 변경 (ROLE_0 또는 ROLE_1 -> ROLE_2) -->
+ 	<update id="updateUserAuthorityToStop" parameterType="user">
  	UPDATE	users
  	SET 			user_authority='ROLE_2'
+ 	WHERE 	user_id=#{value}
+ 	</update>
+ 	
+ 	<!-- 관리자 권한 변경 (ROLE_0 <- ROLE_2) -->
+ 	<update id="updateAuthorityAdminToRun" parameterType="user">
+ 	UPDATE 	users
+ 	SET 			user_authority='ROLE_0'
  	WHERE 	user_id=#{value}
  	</update>
  	
@@ -96,7 +103,8 @@
 	<!-- 회원 탈퇴 -->
 	<update id="updateUserAuthorityToWithdrawal" parameterType="user">
 	UPDATE 	users
-	SET 			user_authority='ROLE_3'
+	SET 			user_Pwd='!withdrawalUser*',
+					user_authority='ROLE_3'
 	WHERE 	user_id=#{value}
 	</update>
 

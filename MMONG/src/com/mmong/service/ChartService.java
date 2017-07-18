@@ -1,5 +1,6 @@
 package com.mmong.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.mmong.vo.Chart;
@@ -18,4 +19,7 @@ public interface ChartService {
 	
 	// no랑 writer로 진료기록 조회
 	public Chart selectChartByNoAndWriter(Map map);
+	
+	// id로 진료기록 조회
+	public List<Chart> selectChartByWriter(String id);
 }

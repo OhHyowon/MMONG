@@ -26,6 +26,17 @@ public class AdminNoticeController {
 	private AdministratorNoticeService adminNoticeService;
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	/////// 이하 테스트 완료////////////
+	
+	
 	//관리자 공지사항 페이징
 	@RequestMapping("selectAdminNoticeList")
 	public String selectAdminNoticeList(@RequestParam(value="page", defaultValue="1")int page, 
@@ -50,11 +61,6 @@ public class AdminNoticeController {
 
 			return "adminNotice/selectAdminNoticeList.tiles";
 	}
-	
-	
-	
-	
-	/////// 이하 테스트 완료////////////
 	
 	
 	//관리자 공지사항 글 하나 조회
@@ -143,29 +149,4 @@ public class AdminNoticeController {
 		return new ModelAndView("adminNotice/selectAdminNoticeList.tiles","adminNoticeList", adminNoticeListByKeyword);
 	}
 	
-	
-	
-	
-	
-	
-	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -2,13 +2,11 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<<<<<<< HEAD
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i> 공지사항 수정 폼
 		</h3>
 <form action="/MMONG/adminNotice/updateAdminNotice.do" method="post">
-=======
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
@@ -39,9 +37,7 @@ $(document).ready(function(){
 
 
 
-<h3>공지사항 수정 폼</h3>
 <form action="/MMONG/adminNotice/updateAdminNotice.do?adminNoticeNo=${requestScope.adminNotice.no}" method="post">
->>>>>>> a537eee2acff70d4c6aeb31463ac59d50205a4a0
 		<table>
 			<tr>
                 <td>작성자: </td>

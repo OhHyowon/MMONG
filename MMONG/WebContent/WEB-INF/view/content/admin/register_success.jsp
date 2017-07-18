@@ -10,3 +10,4 @@
 이메일 : ${requestScope.administrator.adminEmail }<br>
 
 <a href="/MMONG/index.do">메인페이지</a>
+</section>

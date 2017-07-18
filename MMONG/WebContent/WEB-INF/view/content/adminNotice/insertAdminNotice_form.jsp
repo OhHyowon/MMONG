@@ -1,17 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<<<<<<< HEAD
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i> 공지사항 글쓰기
 		</h3>
-=======
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
-	
-
-
 	
 function formChk(){
 	var titleSize = true; //제목 체크값
@@ -69,8 +64,6 @@ $(document).ready(function(){
 
 </script>
 
-<h3>공지사항 글쓰기</h3>
->>>>>>> a537eee2acff70d4c6aeb31463ac59d50205a4a0
 <table>
         <form id="insert" action="/MMONG/adminNotice/insertAdminNotice.do" method="post" >
         		

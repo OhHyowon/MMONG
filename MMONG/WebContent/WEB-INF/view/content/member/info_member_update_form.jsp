@@ -3,6 +3,12 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 회원정보 조회
+		</h3>
+ 
+
 <style type="text/css">
 .error{
 	font-size : 8px;
@@ -179,8 +185,11 @@ function formSubmit(){
 }
 
 </script>
-
-<h3>회원정보 수정</h3>
+<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 회원정보 수정
+		</h3>
+ 
 <form name="updateForm" id="register" action="/MMONG/member/info_member_update.do" method="post">
 	<table>	
 		<tr>
@@ -279,3 +288,4 @@ function formSubmit(){
 	</table>
 	<sec:csrfInput/>
 </form>
+</section>

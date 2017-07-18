@@ -1,4 +1,5 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>   
+
  
 <div class="sidebar-toggle-box">
                   <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
@@ -81,7 +82,14 @@
             <div class="top-menu">
             	<ul class="nav pull-right top-menu">
                  <sec:authorize access="isAuthenticated()">
-    				<li><a class="logout" href="/MMONG/member/mypage.do">MyPage</a>
+                 	<sec:authorize access="hasRole('ROLE_1')">
+    					<li><a class="logout" href="/MMONG/member/mypage.do">MyPage</a></li>
+    				</sec:authorize>
+    				<sec:authorize access="hasRole('ROLE_0')">
+    					<li><a class="logout" href="/MMONG/admin/mypage.do">MyPage</a></li>
+    				</sec:authorize>
+    				
+    				
           		 </sec:authorize>
            		 <sec:authorize access="isAuthenticated()">
     				<li><a class="logout" href="javascript:logout()">Logout</a>

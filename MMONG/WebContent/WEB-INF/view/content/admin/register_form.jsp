@@ -1,11 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>관리자 등록</title>
+
 <style type="text/css">
 .error{
 	font-size:8px;
@@ -297,9 +293,13 @@ function formSubmit(){
 
 
 </script>
-</head>
-<body>
-<h2>관리자 등록</h2>				<%-- value="${param. } 는 EL의 내장객체를 이용한 것 --%>
+
+<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i>관리자 등록
+		</h3>
+									
+									<%-- value="${param. } 는 EL의 내장객체를 이용한 것 --%>
 <form name="insertForm" id="insert" action="/MMONG/admin/register_success.do" method="post">
 	<table>	
 		<tr>
@@ -394,5 +394,4 @@ function formSubmit(){
 	</table>
 	<sec:csrfInput/> <!-- 시큐리티 토큰을 위해, 340번 라인 대체 -->
 </form>
-</body>
-</html>
+</section>
