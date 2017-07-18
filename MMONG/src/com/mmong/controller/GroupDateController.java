@@ -68,8 +68,8 @@ public class GroupDateController{
 		int groupDateNo=groupDateService.insertGroupDate(groupDate); // 등록한 일정 No
 		groupDateService.insertMeetMember(new MeetMember(groupDateNo, memberNo)); //일정 만든 사람이 최초 일정 참여자
 		
-		return "redirect:/group/groupDate/groupDateView.do?groupDateNo="+groupDateNo; // 완성되면 일정 상세보기 페이지로 바꾸기
-	}
+		return "redirect:/group/groupDate/groupDateView.do?groupDateNo="+groupDateNo;
+}
 	
 	/***
 	 * 하나의 일정 상세보기 handler method
@@ -254,6 +254,7 @@ public class GroupDateController{
 				
 		GroupDate groupDate=groupDateService.selectGroupDate(groupDateNo);
 		map.addAttribute("groupDate", groupDate);
+		map.addAttribute("groupDateNo", groupDateNo);
 		
 		return "group/groupDate/groupDate_update.tiles";
 	}
@@ -266,13 +267,28 @@ public class GroupDateController{
 	 * 작성자 : 강여림
 	 */
 	@RequestMapping("updateGroupDate2")
-	public String updateGroupDate2(@ModelAttribute GroupDate groupDate, BindingResult errors ){
+	public String updateGroupDate2(@RequestParam int groupDateNo,@ModelAttribute GroupDate groupDate, BindingResult errors, ModelMap map){
 				
 		GroupDateValidator vaildator=new GroupDateValidator();
 		vaildator.validate(groupDate, errors);
 		if(errors.hasErrors()){
 			return "group/groupDate/groupDate_update.tiles";
 		}
+		
+		List<Integer> memberNoList=groupDateService.selectMeetMemberList(groupDateNo); // 참여자(memberNo) 목록 가져오기
+		List<String> memberIdList=new ArrayList<>();  // id 담을 list
+		List<String> nickNameList=new ArrayList<>(); // 닉네임 담을 list
+		
+		for(int i=0; i<memberNoList.size(); i++){  // 
+			int memberNo=memberNoList.get(i);
+			String memberId=groupDateService.selectMemberId(memberNo);
+			memberIdList.add(memberId);
+			String nickName=groupDateService.selectNickname(memberId);
+			nickNameList.add(nickName);
+		}
+		
+		map.addAttribute("memberIdList", memberIdList);
+		map.addAttribute("nickNameList", nickNameList);
 		
 		groupDateService.upDateGroupDate(groupDate); // DB에 수정된 일정 넣기
 		return "group/groupDate/groupDate_view.tiles";

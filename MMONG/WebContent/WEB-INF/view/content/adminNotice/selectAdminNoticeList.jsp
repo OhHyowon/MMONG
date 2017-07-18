@@ -7,29 +7,17 @@
 <style type="text/css">
 table {
     border-collapse: collapse;
-    width: 100%;
+    width: 1000px;
 }
 th, td {
     padding: 4px;
     text-align: center;
     border-bottom: 1px solid #ddd;
 }
-th {
-	background-color: #ffd777;
-    color: black;
-}
+
 
 tr:hover {background-color: #f9efd4}
 
-#no{
-	width: 15%;
-}
-#date{
-	width: 20%;
-}
-#writer{
-	width: 20%;
-}
 #search{
 	text-align:center;
 }
@@ -57,17 +45,21 @@ tr:hover {background-color: #f9efd4}
 
 
 
+
+
+
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i> 공지사항 목록
 		</h3>
-<table border="1">
+		<hr>
+<table class="table">
 		<thead>
 				<tr>
-						<th id="no">글 번호</th>
+						<th>글 번호</th>
 						<th>공지사항 제목</th>
-						<th  id="date">작성일</th>
-						<th  id="writer">작성자</th>
+						<th>작성일</th>
+						<th>작성자</th>
 				</tr>
 		</thead>
 		<tbody>
@@ -81,21 +73,7 @@ tr:hover {background-color: #f9efd4}
 			</c:forEach>
 		</tbody>
 </table>
-<br>
-<div id="search">
 
-		<form action="/MMONG/adminNotice/selectAdminNoticeList.do" method="post">
-			<select name="option">
-							<option value="title">제목</option>
-							<!-- <option>제목+내용</option> -->
-							<option value="content">내용</option>
-			</select> &nbsp;
-
-			<input type="text" name="keyword">
-			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-			<input class="btn btn-default btn-sm" type="submit" value="검색">
-		</form>
-</div>
 <div id="list-menu">
 			<sec:authorize access="hasRole('ROLE_0')">
 				<input class="btn btn-default btn-sm" type="button" value="글쓰기" onclick="location.href='/MMONG/adminNotice/insertAdminNotice_form.do' ">
@@ -161,7 +139,19 @@ tr:hover {background-color: #f9efd4}
 	<!-- 마지막 페이지로 이동 -->
 	<a href="/MMONG/adminNotice/selectAdminNoticeList.do?page=${requestScope.pageBean.totalPage}">마지막 페이지</a>
 </div>
+<div id="search">
+		<form action="/MMONG/adminNotice/selectAdminNoticeList.do" method="post">
+			<select name="option" style="height:24.4px; margin-top:3px">
+							<option value="title">제목</option>
+							<!-- <option>제목+내용</option> -->
+							<option value="content">내용</option>
+			</select> &nbsp;
 
+			<input id="keyword" type="text" name="keyword">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+			<input class="btn btn-default btn-sm" type="submit" value="검색">
+		</form>
+</div>
 
 </section>
 

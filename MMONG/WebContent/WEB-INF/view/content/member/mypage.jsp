@@ -8,7 +8,7 @@
   display:flex;
   align-items:center;
   justify-content:center;
- 
+
   display:-webkit-flex;
   -webkit-align-item;center;
   -webkit-justify-content:center;
@@ -65,4 +65,8 @@ form{
 		<input class="btn btn-default btn-sm" type="submit" value="회원탈퇴">
 </form>
 </div>
+
+<br>
+
 </section>
+

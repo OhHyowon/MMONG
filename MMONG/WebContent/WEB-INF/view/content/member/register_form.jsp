@@ -313,7 +313,6 @@ function formSubmit(){
 
 </script>
 
-<section id="main-content">
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i> 회원가입
@@ -324,7 +323,7 @@ function formSubmit(){
 		<tr>
 			<th>ID</th>
 			<td><input type="text" id="memberId" name="memberId" value="${param['user.userId'] }">
-				<input type="button" id="idChk" value="중복확인"/></td>
+				   <input type="button" id="idChk" value="중복확인"/></td>
 		</tr>
 		<tr>
 			<td></td>
@@ -429,7 +428,6 @@ function formSubmit(){
 	</table>
 	<sec:csrfInput/>
 </form>
-	</section>
 </section>
 
 
