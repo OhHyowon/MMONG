@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
+
+
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i>고객센터
@@ -11,13 +13,9 @@
 
 
 		<%--공지사항 목록조회 메뉴 : selectAdminNoticeList.jsp로 가기 --%>
-		<li><a href="/MMONG/adminNotice/selectAdminNoticeList.do">공지사항 목록 조회</a></li>
-		
-		
-		
+		<li><button class="btn btn-default" type="button" onclick="location.href='/MMONG/adminNotice/selectAdminNoticeList.do' ">공지사항 목록 조회</button></li>
 </ul>
 </section>
-
 
 
 

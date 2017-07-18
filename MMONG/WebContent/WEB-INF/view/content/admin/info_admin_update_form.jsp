@@ -3,13 +3,24 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <style type="text/css">
+#view-detail{
+  top:0;right:0;bottom:0;left:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+ 
+  display:-webkit-flex;
+  -webkit-align-item;center;
+  -webkit-justify-content:center;
+}
+#view-menu{
+	text-align: center;
+}
 .error{
 	font-size : 8px;
 	color : red;
 }
-th, td {
-	padding-right : 5px;
-}
+
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -144,21 +155,20 @@ function formSubmit(){
     }
 }
 </script>
-
-<section class="wrapper site-min-height">
+	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i>관리자 정보수정
 		</h3>
 
-
+<div id="view-detail">
 	<form name="updateFrom" id="insert" action="/MMONG/admin/info_admin.do" method="post">
 		<table>
 			<tr>
-				<td>ID :</td>
+				<th>ID :</th>
 				<td><input type="text" id="adminId" name="adminId" readonly value="${requestScope.administrator.adminId}" style="background-color: #e2e2e2;"><br></td>
 			</tr>
 			<tr>
-				<td>새 비밀번호 :</td>
+				<th>새 비밀번호 :</th>
 				<td><input type="password" id="adminPwd" name="user.userPwd">
 				<td>
 			</tr>
@@ -170,7 +180,7 @@ function formSubmit(){
 				</td>
 			</tr>
 			<tr>
-				<td>새 비밀번호 확인 :</td>
+				<th>새 비밀번호 확인 :</th>
 				<td><input type="password" id="adminPwdCheck" name="userPwd2"></td>
 			</tr>
 			<tr>
@@ -180,7 +190,7 @@ function formSubmit(){
 				</td>
 			</tr>
 			<tr>
-				<td>이름 :</td>
+				<th>이름 :</th>
 				<td><input type="text" id="adminName" name="adminName" readonly value="${requestScope.administrator.adminName}" style="background-color: #e2e2e2;"></td>
 			</tr>
 			<tr>
@@ -190,8 +200,7 @@ function formSubmit(){
 				</td>
 			</tr>			
 			<tr>
-				<td>핸드폰번호 :<br> <font size="2em" color="green"> - 없이 숫자만 입력해주세요.</font>
-				</td>
+				<th>핸드폰번호 :<br></th>
 				<td><input type="number" id="adminPhone" name="adminPhone" value="${requestScope.administrator.adminPhone}"></td>
 						<!-- <input type="button" id="memberPhoneChk" value="인증"/></td> -->
 			</tr>
@@ -202,7 +211,7 @@ function formSubmit(){
 					<div id="phoneMsg" style="display:none"></div>
 			</td>			
 			<tr>
-				<td>이메일 :</td>
+				<th>이메일 :</th>
 				<td><input type="text" id="adminEmail" name="adminEmail" value="${requestScope.administrator.adminEmail}"></td>
 			</tr>
 			<tr>
@@ -212,14 +221,15 @@ function formSubmit(){
 				</td>
 			</tr>			
 			<tr>
-				<td>권한 :</td>
+				<th>권한 :</th>
 				<td><input type="text" name="user.userAuthority" readonly value="${requestScope.administrator.user.userAuthority}" style="background-color: #e2e2e2;"></td>
 			</tr>
-			<tr>
-				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-				<input type="button" value="수정" onClick="formSubmit(); return false;" />&nbsp;
-				<input type="reset" value="다시 작성">
-			</tr>
 		</table>
+		<div id="view-menu">
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				<input class="btn btn-default btn-sm" type="button" value="수정" onClick="formSubmit(); return false;" />&nbsp;
+				<input class="btn btn-default btn-sm" type="reset" value="다시 작성">
+		</div>
 	</form>
+</div>			
 </section>

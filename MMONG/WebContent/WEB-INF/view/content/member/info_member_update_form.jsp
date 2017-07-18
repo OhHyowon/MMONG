@@ -3,13 +3,18 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 
-	<section class="wrapper site-min-height">
-		<h3>
-			<i class="fa fa-angle-right"></i> 회원정보 조회
-		</h3>
- 
 
 <style type="text/css">
+#view-detail{
+  top:0;right:0;bottom:0;left:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+ 
+  display:-webkit-flex;
+  -webkit-align-item;center;
+  -webkit-justify-content:center;
+}
 .error{
 	font-size : 8px;
 	color : red;
@@ -48,7 +53,6 @@ $(document).ready(function() {
 			$("#pwdChkMsg").hide();
 		}
 	});
-	
 	
 	////////////////////핸드폰번호 인증
 	/* $("#memberPhoneChk").on("click", function(){
@@ -120,15 +124,12 @@ $(document).ready(function() {
 			 $("#emailMsg").hide();
 		 }
 	 });
-	 
-
 
 });//ready fucntion끝
 
 //가입 버튼 누르기 전 값 유효성 검사하기 위한 함수들
 function formChk() {
 	var result = true;
-	
 	
 	if(!$("#memberPwd").val()){
 		alert("비밀번호를 입력하세요");
@@ -186,106 +187,102 @@ function formSubmit(){
 
 </script>
 <section class="wrapper site-min-height">
-		<h3>
-			<i class="fa fa-angle-right"></i> 회원정보 수정
-		</h3>
+		<h3><i class="fa fa-angle-right"></i> 회원정보 수정</h3>
+<div id="view-detail">
  
-<form name="updateForm" id="register" action="/MMONG/member/info_member_update.do" method="post">
-	<table>	
-		<tr>
-			<th>ID</th>
-			<td><input type="text" id="memberId" name="memberId" readonly value="${requestScope.member.memberId}" style="background-color: #e2e2e2;"></td>
-		</tr>
-		
-		<tr>
-			<th>비밀번호</th>
-			<td><input type="password" id="memberPwd" name="user.userPwd" value="${param['user.userPwd'] }"></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td class="error">
-				<form:errors path="member.user.userPwd" delimiter="<br>"/>
-				<div id="pwdMsg" style="display:none"></div>
-			</td>
-		</tr>
-				
-		<tr>
-			<th>비밀번호 확인</th>
-			<td><input type="password" id="memberPwdCheck"></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td class="error">
-			<div id="pwdChkMsg" style="display:none"></div>
-			</td>
-		</tr>
-		
-		<tr>
-			<th>이름</th>
-			<td><input type="text" id="memberName" name="memberName" readonly value="${requestScope.member.memberName}" style="background-color: #e2e2e2;"></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td class="error">
-			<div id="nameMsg" style="display:none"></div>
-			</td>
-		</tr>
-				
-		<tr>
-		<th>닉네임</th>
-			<td><input type="text" id="nickName" name="nickName" value="${requestScope.member.nickName}"></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td class="error">
-			<div id="nickNameMsg" style="display:none"></div>
-			</td>
-		</tr>
-				
-		<tr>
-			<th>핸드폰번호</th>
-			<td><input type="text" id="memberPhone" name="memberPhone" value="${requestScope.member.memberPhone}" maxlength="13"> 
-				<!-- <input type="button" id="memberPhoneChk" value="인증"/></td> -->
-		</tr>		
-		<tr>
-			<td></td>
-			<td class="error">
-				<form:errors path="member.memberPhone" delimiter="<br>"/>
-				<div id="phoneMsg" style="display:none"></div>
-			</td>
-		</tr>
-		
-		<tr>
-			<th>주소</th>
-			<td><input type="text" id="memberAddress" name="memberAddress" value="${requestScope.member.memberAddress}"></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td class="error">
-			<div id="addressMsg" style="display:none"></div>
-			</td>
-		</tr>
-				
-		<tr>
-			<th>이메일</th>
-			<td><input type="text" id="memberEmail" name="memberEmail" value="${requestScope.member.memberEmail }"> </td>
-			<td><input type="hidden" name="memberPicture" value="tmp"></td>
-		</tr>		
-		<tr>
-			<td></td>
-			<td class="error">
-			<div id="emailMsg" style="display:none"></div>
-			</td>
-		</tr>
-		
-		<tr>
-			<td colspan="2">
+	<form name="updateForm" id="register" action="/MMONG/member/info_member_update.do" method="post">
+		<table>	
+			<tr>
+				<th>ID</th>
+				<td><input type="text" id="memberId" name="memberId" readonly value="${requestScope.member.memberId}" style="background-color: #e2e2e2;"></td>
+			</tr>
+			
+			<tr>
+				<th>비밀번호</th>
+				<td><input type="password" id="memberPwd" name="user.userPwd" value="${param['user.userPwd'] }"></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td class="error">
+					<form:errors path="member.user.userPwd" delimiter="<br>"/>
+					<div id="pwdMsg" style="display:none"></div>
+				</td>
+			</tr>
+					
+			<tr>
+				<th>비밀번호 확인</th>
+				<td><input type="password" id="memberPwdCheck"></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td class="error">
+				<div id="pwdChkMsg" style="display:none"></div>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>이름</th>
+				<td><input type="text" id="memberName" name="memberName" readonly value="${requestScope.member.memberName}" style="background-color: #e2e2e2;"></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td class="error">
+				<div id="nameMsg" style="display:none"></div>
+				</td>
+			</tr>
+					
+			<tr>
+			<th>닉네임</th>
+				<td><input type="text" id="nickName" name="nickName" value="${requestScope.member.nickName}"></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td class="error">
+				<div id="nickNameMsg" style="display:none"></div>
+				</td>
+			</tr>
+					
+			<tr>
+				<th>핸드폰번호</th>
+				<td><input type="text" id="memberPhone" name="memberPhone" value="${requestScope.member.memberPhone}" maxlength="13"> 
+					<!-- <input type="button" id="memberPhoneChk" value="인증"/></td> -->
+			</tr>		
+			<tr>
+				<td></td>
+				<td class="error">
+					<form:errors path="member.memberPhone" delimiter="<br>"/>
+					<div id="phoneMsg" style="display:none"></div>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>주소</th>
+				<td><input type="text" id="memberAddress" name="memberAddress" value="${requestScope.member.memberAddress}"></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td class="error">
+				<div id="addressMsg" style="display:none"></div>
+				</td>
+			</tr>
+					
+			<tr>
+				<th>이메일</th>
+				<td><input type="text" id="memberEmail" name="memberEmail" value="${requestScope.member.memberEmail }"> </td>
+				<td><input type="hidden" name="memberPicture" value="tmp"></td>
+			</tr>		
+			<tr>
+				<td></td>
+				<td class="error">
+				<div id="emailMsg" style="display:none"></div>
+				</td>
+			</tr>
+		</table>
+		<br>
 				<input type="hidden" name="user.userAuthority" value="ROLE_1"/>
-				<input type="button" value="수정" onClick="formSubmit(); return false;" />&nbsp;
-				<input type="reset" value="다시 작성"/>
-			</td>
-		</tr>
-	</table>
-	<sec:csrfInput/>
-</form>
+				<input class="btn btn-default btn-sm" type="button" value="수정" onClick="formSubmit(); return false;" />&nbsp;
+				<input class="btn btn-default btn-sm" type="reset" value="다시 작성"/>
+		<sec:csrfInput/>
+	</form>
+</div>
 </section>

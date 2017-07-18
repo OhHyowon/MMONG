@@ -10,7 +10,9 @@
 th, td{
 	padding-right: 5px;
 }
+
 </style>
+
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
 																				
@@ -212,8 +214,6 @@ function emailAuthOpen(){
 
  */
 
-
-
 //가입 버튼 누르기 전 값 유효성 검사하기 위한 함수들
 function formChk() {
 	var result = true;
@@ -293,8 +293,7 @@ function formSubmit(){
 
 
 </script>
-
-<section class="wrapper site-min-height">
+	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i>관리자 등록
 		</h3>
@@ -305,7 +304,7 @@ function formSubmit(){
 		<tr>
 			<th>ID</th>
 			<td><input type="text" id="adminId" name="adminId"  value="${param.adminId }"> 
-					<input type="button" id="idChk" value="중복확인"/></td> 
+					<input class="btn btn-default btn-sm" type="button" id="idChk" value="중복확인"/></td> 
 		</tr>
 		<tr>
 			<td></td>
@@ -352,7 +351,7 @@ function formSubmit(){
 		<tr>
 			<th>핸드폰 번호</th>
 			<td><input type="text" id="adminPhone" name="adminPhone" value="${param.adminPhone}">
-					<input type="button" id="adminPhoneChk" value="인증"/></td>
+					<input class="btn btn-default btn-sm" type="button" id="adminPhoneChk" value="인증"/></td>
 							<!-- <select name="tel1">
 										<option>선택</option>
 										<option>010</option>
@@ -388,7 +387,7 @@ function formSubmit(){
 		<tr>
 			<td>
 			<%-- 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> --%>
-				<input type="button" value="등록" onClick="formSubmit(); return false;" />
+				<input class="btn btn-default btn-sm" type="button" value="등록" onClick="formSubmit(); return false;" />
 			</td>
 		</tr>
 	</table>

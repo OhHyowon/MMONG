@@ -2,12 +2,6 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-	<section class="wrapper site-min-height">
-		<h3>
-			<i class="fa fa-angle-right"></i> 공지사항 수정 폼
-		</h3>
-<form action="/MMONG/adminNotice/updateAdminNotice.do" method="post">
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -29,13 +23,13 @@ $(document).ready(function(){
 	});
 });
 
-
-
-
-
 </script>
 
-
+<section id="main-content">
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 공지사항 수정 폼
+		</h3>
 
 <form action="/MMONG/adminNotice/updateAdminNotice.do?adminNoticeNo=${requestScope.adminNotice.no}" method="post">
 		<table>
@@ -56,10 +50,11 @@ $(document).ready(function(){
 				<input type="hidden" name="no" value="${requestScope.adminNotice.no}"/><br>
 				<input type="hidden" name="adminDate" value=<fmt:formatDate value="${requestScope.adminNotice.adminDate }" pattern="yyyy-MM-dd"/>/><br>
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-				<input type="submit" id="updateBtn" value="저장">&nbsp;
-				<input type="reset" value="되돌리기">
+				<input class="btn btn-default btn-sm" type="submit" id="updateBtn" value="저장">&nbsp;
+				<input class="btn btn-default btn-sm" type="reset" value="되돌리기">
 			</tr>
 		</table>
 	</form>
-	<input type="button" value="목록 " onclick="location.href='/MMONG/adminNotice/selectAdminNoticeList.do'"/>
+	<input class="btn btn-default btn-sm" type="button" value="목록 " onclick="location.href='/MMONG/adminNotice/selectAdminNoticeList.do'"/>
+	</section>
 </section>

@@ -42,8 +42,19 @@ public class AdminController {
 	public ModelAndView searchMemberById(@RequestParam String memberId){
 		Member member = null;
 			member = memberService.searchMemberById(memberId);
+			if(member==null){
+				return new ModelAndView("redirect:/admin/nullmemberId.do", "memberId", memberId);
+			}
 		return new ModelAndView("admin/info_member.tiles","member", member);
 	}
+	
+	//searchMemberById 한 id가 없을 경우(null) 없다고 search_member_form.jsp로 이동시켜 알려주는 컨트롤러
+	@RequestMapping("nullmemberId")
+	public ModelAndView nullMemberId(@RequestParam String memberId){
+		return new ModelAndView("admin/search_member_null.tiles","memberId",memberId);
+	}
+	
+	
 	
 	//일반회원(member) 권한 변경하기
 	@RequestMapping("changeMemberAuthority")
@@ -162,13 +173,24 @@ public class AdminController {
 	@RequestMapping("searchAdmindById")
 	public ModelAndView AdminInfo(@RequestParam String adminId){
 		Administrator admin = null;
-			admin = adminService.searchAdministratorById(adminId);
-		return new ModelAndView("admin/info_admin.tiles","administrator", admin);
+		admin = adminService.searchAdministratorById(adminId);
+			if(admin == null){
+				return new ModelAndView("redirect:/admin/nullAdminId.do","adminId",adminId);
+			}else{
+				return new ModelAndView("admin/info_admin.tiles","administrator", admin);
+			}
 	}
+	
+	//searchAdminById 한 id가 없을 경우(null) 없다고 search_admin_form.jsp로 이동시켜주는 컨트롤러
+	@RequestMapping("nullAdminId")
+	public ModelAndView nullAdminId(@RequestParam String adminId){
+		return new ModelAndView("admin/search_admin_null.tiles","adminId",adminId);
+	}
+	
 	
 	//(info_admin.jsp)에서 정보 수정하기(info_admin_update_form.jsp)로 이동하기 위한 컨트롤러
 	@RequestMapping("info_admin_update_form")
-	public ModelAndView UpdateAdminForm(@RequestParam String adminId){
+	public ModelAndView updateAdminForm(@RequestParam String adminId){
 		Administrator admin=null;
 			admin = adminService.searchAdministratorById(adminId);
 		return new ModelAndView("admin/info_admin_update_form.tiles", "administrator", admin);

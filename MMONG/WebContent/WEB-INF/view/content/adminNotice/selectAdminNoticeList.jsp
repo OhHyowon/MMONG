@@ -4,8 +4,55 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 
+<style type="text/css">
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+th, td {
+    padding: 4px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+th {
+	background-color: #ffd777;
+    color: black;
+}
 
+tr:hover {background-color: #f9efd4}
 
+#no{
+	width: 15%;
+}
+#date{
+	width: 20%;
+}
+#writer{
+	width: 20%;
+}
+#search{
+	text-align:center;
+}
+#list-menu{
+	text-align: left;
+}
+.paging{
+	text-align: center;
+	color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+.paging a.active{
+	 border-radius: 10px;
+     border: 1px solid #adaba6;
+}
+.paging a:hover:not(.active) { 
+	background-color: #efd575;
+    color: white;
+   
+}
+
+</style>
 
 
 
@@ -17,10 +64,10 @@
 <table border="1">
 		<thead>
 				<tr>
-						<td>공지사항 번호</td>
-						<td>공지사항 제목</td>
-						<td>작성일</td>
-						<td>작성자</td>
+						<th id="no">글 번호</th>
+						<th>공지사항 제목</th>
+						<th  id="date">작성일</th>
+						<th  id="writer">작성자</th>
 				</tr>
 		</thead>
 		<tbody>
@@ -34,34 +81,30 @@
 			</c:forEach>
 		</tbody>
 </table>
+<br>
+<div id="search">
+
+		<form action="/MMONG/adminNotice/selectAdminNoticeList.do" method="post">
+			<select name="option">
+							<option value="title">제목</option>
+							<!-- <option>제목+내용</option> -->
+							<option value="content">내용</option>
+			</select> &nbsp;
+
+			<input type="text" name="keyword">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+			<input class="btn btn-default btn-sm" type="submit" value="검색">
+		</form>
+</div>
+<div id="list-menu">
+			<sec:authorize access="hasRole('ROLE_0')">
+				<input class="btn btn-default btn-sm" type="button" value="글쓰기" onclick="location.href='/MMONG/adminNotice/insertAdminNotice_form.do' ">
+			</sec:authorize>
+</div>		
 
 
 
-
-
-
-<form action="/MMONG/adminNotice/selectAdminNoticeList.do" method="post">
-	<select name="option">
-					<option value="title">제목</option>
-					<!-- <option>제목+내용</option> -->
-					<option value="content">내용</option>
-	</select>
-	<input type="text" name="keyword">
-	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-	<input type="submit" value="검색">
-</form>
-	
-<input type="button" value="메인페이지" onclick="location.href='/MMONG/index.do' ">
-
-<sec:authorize access="hasRole('ROLE_0')">
-	<input type="button" value="글쓰기" onclick="location.href='/MMONG/adminNotice/insertAdminNotice_form.do' ">
-</sec:authorize>
-	
-	
-	<%---==============---이상 정상 작동 : 아래의 페이징은 미완료.............============--%>
-	
-<p>
-
+<div class="paging">
 	<%-- ######################################################
 														페이징 처리
 			###################################################### --%>
@@ -117,7 +160,8 @@
 	
 	<!-- 마지막 페이지로 이동 -->
 	<a href="/MMONG/adminNotice/selectAdminNoticeList.do?page=${requestScope.pageBean.totalPage}">마지막 페이지</a>
+</div>
 
 
-</p>
 </section>
+
