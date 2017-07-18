@@ -192,6 +192,9 @@
 .fa-search:before {
   content: "\f002";
 }
+.fa-alarm-o:before{
+  content: url('/MMONG/resource/assets/img/alarm_icon.png');
+}
 .fa-envelope-o:before {
   content: "\f003";
 }

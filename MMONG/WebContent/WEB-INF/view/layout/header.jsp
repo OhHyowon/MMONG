@@ -8,17 +8,23 @@
 $(document).ready(function(){
 	//알람 개수 뿌리기
 	$.ajax ({
-		"url" : "/MMONG/alert/countAlert.do",
-		"dataType" : "text",
-		"success" : function(response) {//response = 안읽은 알람개수
-			if(response!=null){//로그인한 사용자라면 (로그인하지않은 사용자일땐 response에 null값 옴)
-				$("#alert").html(response);
-				$("#alertMsg").html("<b>"+response+"</b>개의 읽지않은 알람이 있습니다.");
-			}					
-		}
+			"url" : "/MMONG/alert/countAlert.do",
+			"dataType" : "text",
+			"success" : function(response) {//response = 안읽은 알람개수
+				if(response==""){
+					$("#alertDropdown").remove();
+				}else{//로그인한 사용자라면 (로그인하지않은 사용자일땐 response에 빈 값 옴)
+					$("#alert").html(response);
+					if(response=="0"){
+						$("#alertMsg").html("새로운 알람이 없습니다.");
+					}else{
+						$("#alertMsg").html("<b>"+response+"</b>개의 읽지않은 알람이 있습니다.");
+					}					
+				}					
+			}
 	});//ajax 끝
 		
-	//전체 알람 리스트 뿌리기
+	//알람 아이콘 누르면 드롭다운 생기고 전체 알람 리스트 뿌리기
 	$("#alertIcon").on("click", showAlertDropdown());	
 	
 	//알람 누르면 읽음 상태값 변경 처리
@@ -41,9 +47,15 @@ $(function() { //3초에 한번 알람개수 뿌리는 함수
 			"url" : "/MMONG/alert/countAlert.do",
 			"dataType" : "text",
 			"success" : function(response) {//response = 안읽은 알람개수
-				if(response!=null){//로그인한 사용자라면 (로그인하지않은 사용자일땐 response에 null값 옴)
+				if(response==""){
+					$("#alertDropdown").remove();
+				}else{//로그인한 사용자라면 (로그인하지않은 사용자일땐 response에 빈 값 옴)
 					$("#alert").html(response);
-					$("#alertMsg").html("<b>"+response+"</b>개의 읽지않은 알람이 있습니다.");
+					if(response=="0"){
+						$("#alertMsg").html("새로운 알람이 없습니다.");
+					}else{
+						$("#alertMsg").html("<b>"+response+"</b>개의 읽지않은 알람이 있습니다.");
+					}					
 				}					
 			}
 		});//ajax 끝
@@ -55,14 +67,11 @@ function showAlertDropdown(){
 	$.ajax ({
 		"url" : "/MMONG/alert/showAllalert.do",
 		"dataType" : "JSON",
-		"success" : function(response) {//response = alert객체 (로그인하지않은 사용자일땐 response에 null값 옴)
-			if(response==null){
-				alert("로그인해주세요.");
-			}else{
+		"success" : function(response) {//response = alert객체 
+			if(response!=null){//로그인한 사용자라면 (로그인하지않은 사용자일땐 response에 null값 옴)
 				//$("#alertDropdown").empty().append("<li> <p class='green' id='alertMsg'></p> </li>"); //수정필요 - 두번째리스트부터 empty함면 됨
 				//var $except = $("#header_inbox_bar").find("ul>li.green");
-					//$("#header_inbox_bar").find("ul>li").not($except).css({'color': 'orange'});
-					$("ul #alertDropdown>li:gt(1)").remove();
+				$("ul #alertDropdown>li:gt(1)").remove();
 				$.each(response, function(){				
 					if(this.type=="0"){ //소모임 초대 알림인 경우
 						if(this.state=="0"){//안읽은 알람
@@ -115,7 +124,7 @@ function logout(){
 					<!--  알림아이콘 -->
 					<li id="header_inbox_bar" class="dropdown">
 					    <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
-					        <i class="fa fa-envelope-o" id="alertIcon"></i>
+					        <i class="fa fa-bell" id="alertIcon"></i>
 					        <span class="badge bg-theme" id="alert"></span> <%--알람개수 표시 --%>
 						</a>
 						<ul class="dropdown-menu extended inbox" id="alertDropdown">
@@ -126,9 +135,16 @@ function logout(){
                
 					<!--  쪽지아이콘 -->                   
 					<li id="header_inbox_bar" class="dropdown">
-					    <a href="/MMONG/message.do">
-					        <i class="fa fa-envelope-o"></i>
-					    </a>
+						<sec:authorize access="!isAuthenticated()"> 
+						    <a>
+						        <i class="fa fa-envelope-o"></i>
+						    </a>							
+					    </sec:authorize>
+					    <sec:authorize access="isAuthenticated()">
+						    <a href="/MMONG/message/message.do">
+						        <i class="fa fa-envelope-o"></i>
+						    </a>
+					    </sec:authorize>
 					</li>                    
                     
                 </ul>

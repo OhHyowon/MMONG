@@ -27,7 +27,7 @@ public class AlertController {
 	@ResponseBody
 	public String countAlert(){
 		if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")){ //로그인 안 한 사용자는 myGroup을 없이 전달 
-			return null;
+			return "";
 		}else{
 			Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			int cnt = alertService.countUnreadAlert(member.getMemberId());
