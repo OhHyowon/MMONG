@@ -7,6 +7,9 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
+window.onload=function(){
+	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+}
 $(document).ready(function(){
 	//로그인 안했을 때 소모임 가입 버튼 누르면 처리
 	$("#createNone").on("click", function(){
@@ -70,6 +73,7 @@ $(document).ready(function(){
 });
 </script>
 
+<div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i> 소모임 페이지
@@ -132,3 +136,4 @@ $(document).ready(function(){
 <p><b>모임 일정</b></p>
 
 </section>
+</div>
