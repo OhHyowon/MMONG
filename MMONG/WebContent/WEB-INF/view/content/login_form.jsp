@@ -8,8 +8,7 @@
 
 
 
-<script type="text/javascript"
-	src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script src="resource/assets/js/bootstrap.min.js"></script>
 <script
 	src="resource/assets/js/bootstarp-inputmask/bootstrap-inputmask.min.js"></script>

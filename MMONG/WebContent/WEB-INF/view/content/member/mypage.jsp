@@ -32,5 +32,9 @@ ID : <sec:authentication property="principal.memberId"/> <br>
 	<input type="submit" value="회원탈퇴">
 </form>
 
-</section>
-
+<br>
+<ul>
+	<li><a href="/MMONG/message/message.do">쪽지 관리</a></li>
+</ul>
+ </section>
+ 

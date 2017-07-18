@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mmong.service.CalendarService;
 import com.mmong.service.GroupDateService;
 import com.mmong.service.GroupMemberService;
 import com.mmong.validation.GroupDateValidator;
+import com.mmong.vo.Calendar;
 import com.mmong.vo.GroupDate;
 import com.mmong.vo.GroupMember;
 import com.mmong.vo.MeetMember;
@@ -35,6 +37,8 @@ public class GroupDateController{
 	@Autowired
 	private GroupMemberService GMService;	
 	
+	@Autowired
+	private CalendarService calendarService;
 	
 	/***
 	 * 일정 등록하는 handler method
@@ -68,9 +72,13 @@ public class GroupDateController{
 		int groupDateNo=groupDateService.insertGroupDate(groupDate); // 등록한 일정 No
 		groupDateService.insertMeetMember(new MeetMember(groupDateNo, memberNo)); //일정 만든 사람이 최초 일정 참여자
 		
-		return "redirect:/group/groupDate/groupDateView.do?groupDateNo="+groupDateNo;
-}
-	
+		//*** 달력에 자동 입력
+		Calendar calendar = new Calendar(0, groupDate.getTitle(), groupDate.getPlace(), 2, groupDate.getGroupDate(), groupDate.getGroupDate(), 0, "", memberId);
+		calendarService.insertSchedule(calendar);
+		
+		return "redirect:/group/groupDate/groupDateView.do?groupDateNo="+groupDateNo; // 완성되면 일정 상세보기 페이지로 바꾸기
+	}
+
 	/***
 	 * 하나의 일정 상세보기 handler method
 	 * @param groupDateNo

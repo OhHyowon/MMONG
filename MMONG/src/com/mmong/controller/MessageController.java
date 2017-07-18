@@ -35,6 +35,15 @@ public class MessageController {
 	@Autowired
 	private AlertService alerService;
 	
+	@RequestMapping("idNnickFromBoard")
+	public String idNnickFromBoard(@RequestParam String id, @RequestParam String nickname, ModelMap map){
+		
+		map.addAttribute("id", id);
+		map.addAttribute("nickname", nickname);
+		
+		return "message/sendMessage.tiles";
+	}
+	
 	/**
 	 * 쪽지보내기
 	 * @param mess
@@ -43,15 +52,18 @@ public class MessageController {
 	 * @return
 	 */
 	@RequestMapping("insert")
-	public ModelAndView insertMessage(@ModelAttribute Message mess, BindingResult errors){
+	public ModelAndView insertMessage(@ModelAttribute Message mess, BindingResult errors, @RequestParam String id, @RequestParam String nickname, ModelMap map){
+		
+		System.out.println("insert");
 		
 		Date date = new Date();
-		//String receiveId = "b1b2b3b4";   ////대체될 줄!!!!!!!!!
-		String receiveId = "wngus0424";   ////대체될 줄!!!!!!!!!
-
+		String receiveId = id; 
+		
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String sendId = member.getMemberId();   
 
+		map.addAttribute("id", id);
+		map.addAttribute("nickname", nickname);
 		
 		Message message = new Message(0, date, mess.getTitle(), mess.getContent(), 0, sendId, receiveId);
 		
@@ -64,6 +76,7 @@ public class MessageController {
 
 		service.insertMessage(message);
 		alerService.insertAlert(new Alert(0, "새로운 쪽지를 받았습니다.", 0, 1, 0, receiveId));
+		
 		
 		RedirectView rv = new RedirectView("/MMONG/message/sendSuccess.do");
 		rv.setExposeModelAttributes(false);

@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
- <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
  
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
