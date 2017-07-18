@@ -1,43 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%-- ========================menu 영역 =================== --%>
-<%-- <ul>
-	비회원 메뉴
-	<sec:authorize access="!isAuthenticated()">      
-		<li><a href="/MMONG/login_form.do">로그인</a></li>
-		<li><a href="/MMONG/member/register_form.do">회원가입</a></li>
-	</sec:authorize>
-   
-	회원메뉴
-	<sec:authorize access="isAuthenticated()">
-		<li><a href="javascript:logout()">로그아웃</a>
-	</sec:authorize>
-   
-	회원 메뉴 : 개인회원 메뉴 /member로 시작
-	<sec:authorize access="hasRole('ROLE_1')">
-		<li><a href="/MMONG/member/mypage.do">회원 정보조회</a></li>
-		<li><a href="/MMONG/message/message.do">쪽지 관리</a></li>
-		<!-- 
-		<li><a href="/MMONG/message/selectReceiveMsg.do">받은 쪽지함</a></li>
-		<li><a href="/MMONG/message/selectSendMsg.do">보낸 쪽지함</a></li>
-		 -->
-		<li><a href="/MMONG/calendar/calendar_main.do">달력</a></li>
-		       
-	</sec:authorize>
-	
-	관리자 메뉴 : 관리자회원 메뉴 /admin으로 시작
-	<sec:authorize access="hasRole('ROLE_0')">
-		<li><a href="/MMONG/admin/mypage.do">관리자 정보조회</a></li>          
-	</sec:authorize>
-</ul>
-<hr> --%>
-<%-- =======================menu 영역 끝=================== --%>
-<style>
-
-
-/* 아이콘 적용 하기l */
-</style>
-
 
 
 <script type="text/javascript">
