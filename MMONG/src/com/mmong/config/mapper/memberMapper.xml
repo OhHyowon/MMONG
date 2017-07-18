@@ -69,6 +69,15 @@
 		AND 		m.member_id = #{value}
 	</select>
 	
+	<select id="searchManyMemberById" parameterType="java.lang.String" resultMap="member-user-resultMap">
+		SELECT	 	m.member_id, m.member_name, m.nickname, m.member_phone, m.member_address, m.member_email, m.member_picture,
+		     		 	 u.user_id, u.user_pwd, u.user_authority, u.user_enable
+		FROM 		member m, users u
+		WHERE 	m.member_id = u.user_id 
+		AND 		m.member_id like '%'||#{value}||'%'
+	</select>
+	
+	
 	<!-- 회원ID 중복조회 -->
 	<select id="checkMemberId" parameterType="String" resultType="int">
 		SELECT count(*)

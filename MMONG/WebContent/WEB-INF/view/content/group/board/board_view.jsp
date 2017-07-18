@@ -86,14 +86,7 @@ $(document).ready(function(){
 			});
 		}
 	}); // end of .replyDeleteBtn
-	$('.messageGoTxt').on("click",function(){
-		alert("올ㅋ 되는뎅ㅋ 여기서 세연이한테 쪽지 주소 받고, 아이디, 닉네임 넘겨 주면 됩니다!");
-	});
-	$(".cancleBtn").on("click",function(){
-		$(this).parent().parent().hide();
-	});
 });
-
 </script>
 
 
@@ -129,8 +122,9 @@ $(document).ready(function(){
 	
 	<table style="border-bottom:1px solid gray;width:943px">
 		<tr>
+			<td>작성자(닉네임)</td>
 			<td class="messageGo" style="padding: 10px; ">${requestScope.board.memberId }(${requestScope.boardNickname }) &nbsp;&nbsp;&nbsp; 조회수 ${requestScope.board.hit }
-				<div class="messageGoTxt">쪽지보내기</div>
+				<div class="messageGoTxt"><a href="/MMONG/message/idNnickFromBoard.do?id=${requestScope.board.memberId }&nickname=${requestScope.boardNickname }">쪽지보내기</a></div>
 			</td>
 		</tr>
 		<tr>

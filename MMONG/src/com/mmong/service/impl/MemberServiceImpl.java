@@ -1,5 +1,7 @@
 package com.mmong.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,18 +38,19 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	public List<Member> searchManyMemberById(String id) {
+		return memDao.searchManyMemberById(id);
+	}
+	
+	@Override
 	public int checkMemberId(String memberId) {
 		return memDao.checkMemberId(memberId);
-	}
-
-	@Override
-	public int checkMemberPhone(String memberPhone) {
-		return memDao.checkMemberPhone(memberPhone);
 	}
 
 	@Override
 	public int checkMemberEmail(String memberEmail) {
 		return memDao.checkMemberEmail(memberEmail);
 	}
+
 
 }

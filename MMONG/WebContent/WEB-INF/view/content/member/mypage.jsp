@@ -21,8 +21,14 @@ form{
 }
 
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+window.onload=function(){
+	$("#total_div").css("min-height",(document.body.scrollHeight-38.4)+"px");
+}
+</script>
 
-
+<div id="total_div">
 <section class="wrapper site-min-height">
 		<h3><i class="fa fa-angle-right"></i> 회원 마이페이지</h3>
 <div id="view-detail">
@@ -68,5 +74,9 @@ form{
 
 <br>
 
-</section>
 
+<ul>
+	<li><a href="/MMONG/message/message.do">쪽지 관리</a></li>
+</ul>
+</section>
+</div>

@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mmong.service.CalendarService;
 import com.mmong.service.GroupDateService;
 import com.mmong.service.GroupMemberService;
 import com.mmong.validation.GroupDateValidator;
+import com.mmong.vo.Calendar;
 import com.mmong.vo.GroupDate;
 import com.mmong.vo.GroupMember;
 import com.mmong.vo.MeetMember;
@@ -35,6 +37,8 @@ public class GroupDateController{
 	@Autowired
 	private GroupMemberService GMService;	
 	
+	@Autowired
+	private CalendarService calendarService;
 	
 	/***
 	 * 일정 등록하는 handler method
@@ -68,9 +72,13 @@ public class GroupDateController{
 		int groupDateNo=groupDateService.insertGroupDate(groupDate); // 등록한 일정 No
 		groupDateService.insertMeetMember(new MeetMember(groupDateNo, memberNo)); //일정 만든 사람이 최초 일정 참여자
 		
-		return "redirect:/group/groupDate/groupDateView.do?groupDateNo="+groupDateNo;
-}
-	
+		//*** 달력에 자동 입력
+		Calendar calendar = new Calendar(0, groupDate.getTitle(), groupDate.getPlace(), 2, groupDate.getGroupDate(), groupDate.getGroupDate(), 0, "", groupDateNo, memberId);
+		calendarService.insertSchedule(calendar);
+		
+		return "redirect:/group/groupDate/groupDateView.do?groupDateNo="+groupDateNo; // 완성되면 일정 상세보기 페이지로 바꾸기
+	}
+
 	/***
 	 * 하나의 일정 상세보기 handler method
 	 * @param groupDateNo
@@ -123,6 +131,11 @@ public class GroupDateController{
 		MeetMember MM = new MeetMember(groupDateNo,memberNo);
 		groupDateService.insertMeetMember(MM);
 		
+		//*** 달력에 자동 입력
+		GroupDate groupDateInfo = groupDateService.selectGroupDate(groupDateNo);
+		Calendar calendar = new Calendar(0, groupDateInfo.getTitle(), groupDateInfo.getPlace(), 2, groupDateInfo.getGroupDate(), groupDateInfo.getGroupDate(), 0, "", groupDateNo, memberId);
+		calendarService.insertSchedule(calendar);
+		
 		return "1";
 	}
 	/**
@@ -145,6 +158,9 @@ public class GroupDateController{
 		MeetMember MM = new MeetMember(groupDateNo, memberNo);
 		groupDateService.deleteMeetmember(MM);
 		
+		//*** 달력에서 삭제
+		calendarService.deleteGroupDate(groupDateNo, memberId);
+		
 		return "1";
 	}
 	/**
@@ -166,7 +182,6 @@ public class GroupDateController{
 		
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String memberId=member.getMemberId();
-		
 		// groupMember에 groupNo으로 조회했을 때 memberId가 본인이 있으면 1, 없으면 0
 		int check=0;
 		List<GroupMember> groupMemerList=GMService.searchGroupMemberByGroupNo(groupNo);
@@ -176,9 +191,7 @@ public class GroupDateController{
 				check=1;
 			}
 		}
-		
 		pagingMap=groupDateService.selectAllGroupDateList(page,groupNo);
-			
 		map.addAttribute("check", check);
 		map.addAttribute("groupNo", groupNo);
 		map.addAttribute("groupDateList", pagingMap.get("groupDateList"));
@@ -305,6 +318,9 @@ public class GroupDateController{
 		int groupDateNo=(int) session.getAttribute("groupDateNo");
 		groupDateService.deleteMeetMemberByGroupDateNo(groupDateNo);
 		groupDateService.deleteGroupDate(groupDateNo);
+
+		//*** 일정 삭제시 그 일정에 참가신청했던 모든 회원들의 일정들을 calendar DB에서 삭제
+		calendarService.deleteFromGroup(groupDateNo);
 		return "1";
 	}
 }
