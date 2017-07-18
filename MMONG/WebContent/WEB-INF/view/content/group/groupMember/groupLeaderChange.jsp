@@ -35,10 +35,12 @@ p:hover{
 }
 </style>
     <!-- 참여자 목록 --> 
-    <h2>어떤 멤버로 변경 할꺼야?</h2>
-
+    <div class="col-md-6">
+    <h4 style="text-align:center;">어떤 멤버로 변경하시겠습니까?</h4>
+    <div style="text-align:center; border:1px">
    	<c:forEach var="groupMember" items="${requestScope.groupMemberList }">
    		<p class="memberId">${groupMember.memberId}</p>
    	</c:forEach>
-
+   	</div>
+</div>
    
