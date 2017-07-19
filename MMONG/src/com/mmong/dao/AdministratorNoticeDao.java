@@ -96,34 +96,5 @@ public interface AdministratorNoticeDao {
 	 * @return
 	 */
 	int selectAdminNoticeOptionCount(String option, String keyword);
-
-
-	
-	
-	
-	
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

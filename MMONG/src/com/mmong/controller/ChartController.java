@@ -1,6 +1,5 @@
 package com.mmong.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,13 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.SystemPropertyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mmong.service.CalendarService;
 import com.mmong.service.impl.ChartServiceImpl;
 import com.mmong.service.impl.HealthServiceImpl;
+import com.mmong.vo.Calendar;
 import com.mmong.vo.Chart;
 import com.mmong.vo.Member;
 
@@ -26,6 +26,9 @@ public class ChartController {
 
 	@Autowired
 	private ChartServiceImpl service2;
+	
+	@Autowired
+	private CalendarService calendarService;
 	
 	// 전체 진료기록 조회
 	@RequestMapping("chartlist")
@@ -94,12 +97,17 @@ public class ChartController {
 								@RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date chartDate){
 		
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			
+
 		HashMap<String,Object> map = new HashMap<>();
 		
 		Chart chart = new Chart(0,chartDate,member.getMemberId(),chartContent,chartNo);	// 생성할 객체를 만들어주자
 		
-		service2.insertChart(chart); // 위에꺼 객체 DB에 넣자.
+		service2.insertChart(chart);
+
+		//*** 달력에 자동 입력
+		Calendar calendar = new Calendar(0, chartContent.substring(0, 4), chartContent, 1, chartDate, chartDate, 0, "", member.getMemberId());
+		calendarService.insertSchedule(calendar);
+		
 		
 		// 넣은 객체를 리턴해주기 위한 여정
 		map.put("no", chartNo);

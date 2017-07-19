@@ -1,14 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <style type="text/css">
 .button{
-    color: #f74009;
+    color: #797979;
     font-size: 12px;
     border-radius: 4px;
     -webkit-border-radius: 4px;
-    border: 1px solid #fcab59 !important;
+    border: 1px solid #797979 !important;
     padding: 5px 15px;
     margin-right: 15px;
-    background: #ffd777;
+    background: #e5e5e5;
     margin-top: 15px;
 }
 </style>

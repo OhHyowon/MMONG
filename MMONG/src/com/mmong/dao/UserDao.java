@@ -19,7 +19,7 @@ public interface UserDao {
 	User searchUserByUserId(String userId);
 	
 	/**
-	 * userId의 사용자의 권한 조회 ( 0: 관리자, 1: 개인회원, 2:정지된 회원, 3:탈퇴한 회원)
+	 * userId의 사용자의 권한 조회 ( ROLE_0: 관리자, ROLE_1: 개인회원, ROLE_2:정지된 회원, ROLE_3:탈퇴한 회원)
 	 * @param userId
 	 * @return
 	 */
@@ -44,18 +44,26 @@ public interface UserDao {
 	 */
 	int updateUser(User user);	
 	
-	//일반회원(member)의 권한이 'ROLE_1' 이면 'ROLE_2'로 변경 (update)
+	//사용자(관리자/회원)의 활동 정지를 위한 권한 변경
 	/**
-	* 일반회원(member)의 권한이  'ROLE_1'이면 'ROLE_2'로 변경 (update)
-	* @param memberId
+	* 관리자(administrator) 활동상태(ROLE_0) -> 중지상태 (ROLE_2),
+	* 일반회원(member) 활동상태(ROLE_1) -> 중지상태(ROLE_2)
+	* @param userId
 	* @return
 	* 작성자 : 이진우
 	*/
-	int updateAuthorityMemberToStop(String memberId);
+	int updateUserAuthorityToStop(String userId);
 	
-	//일반회원(member)의 권한이 'ROLE_2'이면 'ROLE_1'로 변경 (update)
 	/**
-	* 일반회원(member)의 권한이 'ROLE_2'이면 'ROLE_1'로 변경 (update)
+	 * 관리자(administrator) 활동상태(ROLE_0) <- 중지상태 (ROLE_2)
+	 * @param adminId
+	 * @return
+	 * 작성자 : 이진우
+	 */
+	int updateAuthorityAdminToRun(String adminId);
+	
+	/**
+	* 일반회원(member) 활동상태(ROLE_1) <- 중지상태(ROLE_2)
 	* @param memberId
 	* @return
 	* 작성자 : 이진우
@@ -63,30 +71,20 @@ public interface UserDao {
 	int updateAuthorityMemberToRun(String memberId);	
 	
 	/**
-	 * 사용자(관리자/회원)의 enable이 1 이면 0으로 변경한다
-	 * 필요 이유: 관리자 공지사항 게시글 보존을 위해 관리자 삭제 대신 필요
+	 * 사용자(관리자/회원) 탈퇴시 회원의 authority를 'ROLE_3' 상태로 변경
 	 * @param userId
 	 * @return
 	 * 작성자 : 이진우
 	 */
-	int updateUserEnableToZero(String userId);
+	int updateUserAuthorityToWithdrawal(String userId);
 	
 	/**
-	* 관리자ID로 중복 ID 조회하는 메소드
-	* @param adminId
-	* @return 찾은 관리자 수 : 있으면 1, 없으면 0
-	* 작성자 : 이진우
-	*/
-	int checkUserId(String userId);
-
-	/**
-	 * 회원 탈퇴시 회원의 authority를 'ROLE_3' 상태로 변경
-	 * @param memberId
-	 * @return
+	 * 관리자ID로 중복 ID 조회하는 메소드
+	 * @param userId
+	 * @return 찾은 관리자 수 : 있으면 1, 없으면 0
 	 * 작성자 : 이진우
 	 */
-	int updateUserAuthorityToWithdrawal(String memberId);
-	
+	int checkUserId(String userId);
 	
 	////////////////////////////////////////////////////////
 			

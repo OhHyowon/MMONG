@@ -21,5 +21,7 @@
 		<mapper resource="com/mmong/config/mapper/chartMapper.xml"/>
 		<mapper resource="com/mmong/config/mapper/healthMapper.xml" />
 		<mapper resource="com/mmong/config/mapper/messageMapper.xml" />
+		<mapper resource="com/mmong/config/mapper/alertMapper.xml" />
+		<mapper resource="com/mmong/config/mapper/calendarMapper.xml" />
 	</mappers>
 </configuration>

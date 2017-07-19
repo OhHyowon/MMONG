@@ -38,25 +38,18 @@ public class HealthController {
 		
 		validator.validate(health, errors);
 		if(errors.hasErrors()){
-			return "health/healthlist_regist.tiles";
+			return "/WEB-INF/view/content/health/healthlist_regist.jsp";
 		}
 		
 		String content = request.getParameter("content");
 		String gender = request.getParameter("gender");
 		
-		Health health2 = new Health(2,content,0,gender);
+		Health health2 = new Health(2,content,gender);
 		
 		service.addHealthList(health2);
 		
 		
-		return "health/success.tiles";
-	}
-	
-	// 건강 기록 수정
-	@RequestMapping("modify")
-	public String modifyHealthList(HttpServletRequest request){
-		
-		return "content/health/success";
+		return "/WEB-INF/view/content/health/success.jsp";
 	}
 	
 	// 건강기록 뿌려주기
@@ -99,18 +92,13 @@ public class HealthController {
 		HashMap<String,Object> map = new HashMap<>();
 		String String_no = request.getParameter("no");
 		String content = request.getParameter("content");
-		
-		int no = Integer.parseInt(String_no);
-		
-		Health health = new Health();
-		
-		health = service.selectByNo(no);
-		
+						
 		map.put("no", String_no);	
 		map.put("content", content);
 		
+		// 위에 건강기록 수정 
 		service.updateHealthList(map);
 		
-		return "health/success.tiles";
+		return "/WEB-INF/view/content/health/success.jsp";
 	}
 }

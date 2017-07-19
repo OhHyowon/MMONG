@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mmong.service.CalendarService;
 import com.mmong.service.GroupDateService;
 import com.mmong.service.GroupMemberService;
 import com.mmong.validation.GroupDateValidator;
+import com.mmong.vo.Calendar;
 import com.mmong.vo.GroupDate;
 import com.mmong.vo.GroupMember;
 import com.mmong.vo.MeetMember;
@@ -35,6 +37,8 @@ public class GroupDateController{
 	@Autowired
 	private GroupMemberService GMService;	
 	
+	@Autowired
+	private CalendarService calendarService;
 	
 	/***
 	 * 일정 등록하는 handler method
@@ -68,9 +72,13 @@ public class GroupDateController{
 		int groupDateNo=groupDateService.insertGroupDate(groupDate); // 등록한 일정 No
 		groupDateService.insertMeetMember(new MeetMember(groupDateNo, memberNo)); //일정 만든 사람이 최초 일정 참여자
 		
+		//*** 달력에 자동 입력
+		Calendar calendar = new Calendar(0, groupDate.getTitle(), groupDate.getPlace(), 2, groupDate.getGroupDate(), groupDate.getGroupDate(), 0, "", memberId);
+		calendarService.insertSchedule(calendar);
+		
 		return "redirect:/group/groupDate/groupDateView.do?groupDateNo="+groupDateNo; // 완성되면 일정 상세보기 페이지로 바꾸기
 	}
-	
+
 	/***
 	 * 하나의 일정 상세보기 handler method
 	 * @param groupDateNo
@@ -166,7 +174,6 @@ public class GroupDateController{
 		
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String memberId=member.getMemberId();
-		
 		// groupMember에 groupNo으로 조회했을 때 memberId가 본인이 있으면 1, 없으면 0
 		int check=0;
 		List<GroupMember> groupMemerList=GMService.searchGroupMemberByGroupNo(groupNo);
@@ -176,9 +183,7 @@ public class GroupDateController{
 				check=1;
 			}
 		}
-		
 		pagingMap=groupDateService.selectAllGroupDateList(page,groupNo);
-			
 		map.addAttribute("check", check);
 		map.addAttribute("groupNo", groupNo);
 		map.addAttribute("groupDateList", pagingMap.get("groupDateList"));
@@ -254,6 +259,7 @@ public class GroupDateController{
 				
 		GroupDate groupDate=groupDateService.selectGroupDate(groupDateNo);
 		map.addAttribute("groupDate", groupDate);
+		map.addAttribute("groupDateNo", groupDateNo);
 		
 		return "group/groupDate/groupDate_update.tiles";
 	}
@@ -266,13 +272,28 @@ public class GroupDateController{
 	 * 작성자 : 강여림
 	 */
 	@RequestMapping("updateGroupDate2")
-	public String updateGroupDate2(@ModelAttribute GroupDate groupDate, BindingResult errors ){
+	public String updateGroupDate2(@RequestParam int groupDateNo,@ModelAttribute GroupDate groupDate, BindingResult errors, ModelMap map){
 				
 		GroupDateValidator vaildator=new GroupDateValidator();
 		vaildator.validate(groupDate, errors);
 		if(errors.hasErrors()){
 			return "group/groupDate/groupDate_update.tiles";
 		}
+		
+		List<Integer> memberNoList=groupDateService.selectMeetMemberList(groupDateNo); // 참여자(memberNo) 목록 가져오기
+		List<String> memberIdList=new ArrayList<>();  // id 담을 list
+		List<String> nickNameList=new ArrayList<>(); // 닉네임 담을 list
+		
+		for(int i=0; i<memberNoList.size(); i++){  // 
+			int memberNo=memberNoList.get(i);
+			String memberId=groupDateService.selectMemberId(memberNo);
+			memberIdList.add(memberId);
+			String nickName=groupDateService.selectNickname(memberId);
+			nickNameList.add(nickName);
+		}
+		
+		map.addAttribute("memberIdList", memberIdList);
+		map.addAttribute("nickNameList", nickNameList);
 		
 		groupDateService.upDateGroupDate(groupDate); // DB에 수정된 일정 넣기
 		return "group/groupDate/groupDate_view.tiles";

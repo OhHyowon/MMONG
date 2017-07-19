@@ -1,5 +1,7 @@
 package com.mmong.dao;
 
+import java.util.List;
+
 import com.mmong.vo.Member;
 
 public interface MemberDao {
@@ -37,6 +39,14 @@ public interface MemberDao {
 	Member searchMemberById(String memberId);
 	
 	/**
+	 * 해당 아이디가 포함된 여러 멤버아이디를 조회하는 메소드
+	 * @param id : Member객체 안에 있는 User안의 memberId로 조회
+	 * @return
+	 * 작성자 : 이주현
+	 */
+	List<Member> searchManyMemberById(String id);
+	
+	/**
 	 * 회원ID로 중복 ID 조회하는 메소드
 	 * @param memberId
 	 * @return 찾은 회원 수 : 있으면 1, 없으면 0
@@ -56,4 +66,6 @@ public interface MemberDao {
 	 * @return 찾은 회원 수 : 있으면 1, 없으면 0
 	 */
 	int checkMemberPhone(String memberPhone);
+
+	
 }

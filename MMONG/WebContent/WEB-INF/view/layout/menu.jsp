@@ -16,7 +16,13 @@
 	회원 메뉴 : 개인회원 메뉴 /member로 시작
 	<sec:authorize access="hasRole('ROLE_1')">
 		<li><a href="/MMONG/member/mypage.do">회원 정보조회</a></li>
-		<li><a href="/MMONG/message.do">쪽지 관리</a></li>          
+		<li><a href="/MMONG/message/message.do">쪽지 관리</a></li>
+		<!-- 
+		<li><a href="/MMONG/message/selectReceiveMsg.do">받은 쪽지함</a></li>
+		<li><a href="/MMONG/message/selectSendMsg.do">보낸 쪽지함</a></li>
+		 -->
+		<li><a href="/MMONG/calendar/calendar_main.do">달력</a></li>
+		       
 	</sec:authorize>
 	
 	관리자 메뉴 : 관리자회원 메뉴 /admin으로 시작
@@ -65,9 +71,9 @@
                       </a>
                   </li>                 
             </sec:authorize>
-                  
+            <sec:authorize access="hasRole('ROLE_1')">
                   <li class="sub-menu">
-                      <a href="javascript:;" > <!-- 다이어리 주소 넣기 -->
+                      <a href="/MMONG/calendar/calendar_main.do" > <!-- 다이어리 주소 넣기 -->
                           <i class="fa fa-book"></i>
                           <span>다이어리</span>
                       </a>
@@ -94,7 +100,7 @@
                           <span>소모임</span>
                       </a>
                    </li>
-
+				</sec:authorize>
                   
                   <li class="sub-menu">
                       <a href="/MMONG/admin/customerCenter.do" >

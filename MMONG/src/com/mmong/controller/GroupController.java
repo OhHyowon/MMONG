@@ -77,7 +77,7 @@ public class GroupController {
 	 */
 	@RequestMapping("createGroup")
 	public ModelAndView openCreateGroupWindow(){
-		return new ModelAndView("group/createGroup.tiles");
+		return new ModelAndView("/WEB-INF/view/content/group/createGroup.jsp");
 	}
 	
 	/**

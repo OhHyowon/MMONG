@@ -31,6 +31,12 @@
 .messageGo:hover .messageGoTxt {
     visibility: visible;
 }
+#button{
+    position: absolute;
+    right: 10px;
+    margin-right:7px
+}
+
 </style>
 
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
@@ -57,10 +63,10 @@ $(document).ready(function(){
 			}
 	}); // end of deleteBtn
 	$('.updateBtn').on("click",function(){
-		$(this).parent().parent().find("td:nth-child(6)").find("div").show();
+		$(this).parent().parent().parent().find("div:nth-child(2)").next().show();
 	}); // end of updateBtn (리플)
-	$('.replyDeleteBtn').on('click',function(){
-		var replyNo=$(this).parent().parent().find("td:nth-child(7)").find("input").val();
+	$('.replyDeleteBtn').on('click',function(){		
+		var replyNo=$(this).next().val();
 		if(!confirm("댓글 삭제하시겠습니까?")){
 			return;
 		}else{
@@ -80,11 +86,7 @@ $(document).ready(function(){
 			});
 		}
 	}); // end of .replyDeleteBtn
-	$('.messageGoTxt').on("click",function(){
-		alert("올ㅋ 되는뎅ㅋ 여기서 세연이한테 쪽지 주소 받고, 아이디, 닉네임 넘겨 주면 됩니다!");
-	});
 });
-
 </script>
 
 
@@ -101,50 +103,46 @@ $(document).ready(function(){
 </ul>
 <%-- =============소모임 상세페이지 소메뉴 끝================ --%>
 <hr>
-
-<h3>자유게시판 메뉴</h3>
-<ul>
-	<li><a href="/MMONG/group/board/board_form.do">게시글작성</a></li>
-	<li><a href="/MMONG/group/board/myBoardList.do">내가 쓴 글 보기</a>
-	<li><a href="/MMONG/group/reply/myReplyList.do">내가 쓴 댓글 보기</a>
-</ul>
+	<a href="/MMONG/group/board/board_form.do">게시글작성</a> | 
+	<a href="/MMONG/group/board/myBoardList.do">내가 쓴 글 보기</a> |
+	<a href="/MMONG/group/reply/myReplyList.do">내가 쓴 댓글 보기</a> |
 
 
 	<sec:authentication property="principal.memberId" var="loginId"/>
-	<h2>게시글 보기</h2>
-	<hr>
-	<table>
-	
+	<sec:authentication property="principal.nickName" var="nickName"/>
+<div class="col-md-9">
+
+	<table style="border-top:1px solid gray;border-bottom:1px dashed; width:943px; margin-botton:1px">
 		<tr>
-			<td>제목</td>
-			<td>${requestScope.board.title }</td>
+			<td style="padding: 10px;">${requestScope.board.title }</td>
+			<td style="text-align:right;"><fmt:formatDate value="${requestScope.board.boardDate }" pattern="yyyy-MM-dd HH:mm"/> </td>
 		</tr>
+	</table>
+
+	
+	<table style="border-bottom:1px solid gray;width:943px">
 		<tr>
 			<td>작성자(닉네임)</td>
-			<td class="messageGo">${requestScope.board.memberId }(${requestScope.boardNickname })
-				<div class="messageGoTxt">쪽지보내기</div>
+			<td class="messageGo" style="padding: 10px; ">${requestScope.board.memberId }(${requestScope.boardNickname }) &nbsp;&nbsp;&nbsp; 조회수 ${requestScope.board.hit }
+				<div class="messageGoTxt"><a href="/MMONG/message/idNnickFromBoard.do?id=${requestScope.board.memberId }&nickname=${requestScope.boardNickname }">쪽지보내기</a></div> 
 			</td>
 		</tr>
 		<tr>
-			<td>작성일자</td>
-			<td><fmt:formatDate value="${requestScope.board.boardDate }" pattern="yyyy-MM-dd HH:mm"/> </td>
+			<td style="padding: 10px;">${requestScope.board.content }<br>
+				<c:forEach items="${requestScope.nameList }" var="fileName">
+					<img src="/MMONG/up_image/${fileName }" width="400px">
+					<input type="hidden" name="nameList" value="${fileName }">
+				</c:forEach>		
+			</td>
 		</tr>
-		<tr>
-			<td>내용</td>
-			<td>${requestScope.board.content }<br>
-			<c:forEach items="${requestScope.nameList }" var="fileName">
-				<img src="/MMONG/up_image/${fileName }" width="400px">
-				<input type="hidden" name="nameList" value="${fileName }">
-			</c:forEach></td>
-		</tr>
-		<tr>
-			<td>조회수</td>
-			<td>${requestScope.board.hit }</td>
-		</tr>
+	</table>	
 	
-	</table> 
+	<br>
+	
+	
 	<%-- 로그인된 아이디와 글쓴 아이디가 같을 때!!!!  --%>
-	<form action="/MMONG/group/board/boardUpdate1.do" method="post">
+	<div style="margin-left:800px;">
+	<form action="/MMONG/group/board/boardUpdate1.do" method="post" style="">
 	<c:if test="${requestScope.board.memberId == loginId }">
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<input type="hidden" name=nameList value="${requestScope.nameList }">
@@ -153,53 +151,65 @@ $(document).ready(function(){
 		<input type="button" id="BoardDeleteBtn" value="삭제하기"/>
 	</c:if>
 		</form>
-
+		</div>
 <%--########################   댓글    #########################  --%>
+<br><br>
 
-<form action="/MMONG/group/reply/register.do" method="post">
-	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-	<input type="text" name="content">
-	<input type="hidden" name="boardNo" value="${requestScope.board.no }">
-	<input type="submit" value="댓글등록"><span class="error"><form:errors path="reply.content" deilimiter="&nbsp;&nbsp;"/></span>
-	<br>
-</form>
-
-<table id="replyTable">
-
+<div style="background:#DFDFDF;width:943px">
+	<div>&nbsp;</div>
 	<c:forEach items="${requestScope.replyList }" var="reply" varStatus="idx">
 		<c:choose>  
-		<c:when test="${ reply.memberId  == loginId}">  <%-- 로그인된 아이디와 댓글 작성자가 같지 않을 때 --%>
-				<tr>
-					<td>${reply.content} </td>
-					<td>${reply.memberId }(${requestScope.replyNickname[idx.index] })</td>
-					<td><fmt:formatDate value="${reply.replyDate }" pattern="yyyy-MM-dd HH:mm"/></td>
-					<td><input type="button" value="댓글수정" class="updateBtn"></td>
-					<td><input type="button" class="replyDeleteBtn" value="댓글삭제"></td>
-					<td>
-						<div id="updateForm"  style="display:none" >
-							<form action="/MMONG/group/reply/replyUpdate.do" method="post" >
-								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-								<input type="hidden" name="no" value="${reply.no }">
-								<input type="hidden" name="boardNo" value="${reply.boardNo }">
-								<input type="text" name="content" value="${reply.content} ">
-								<input type="submit" value="수정완료">
-							</form>
-						</div>
-					</td>
-					<td><input type="hidden" name="replyNo" value="${reply.no}"></td>
-					</tr>
-			</c:when>
-			<c:otherwise>  <%-- 로그인된 아이디와 댓글 쓴 아이디가 같지 않을 때 --%>
-				<tr>
-					<td>${reply.content }</td>
-					<td>${reply.memberId }(${requestScope.replyNickname[idx.index] })</td>
-					<td><fmt:formatDate value="${reply.replyDate }" pattern="yyyy-MM-dd HH:mm"/></td>
-					<td></td>
-					<td></td>
-				</tr>
-			</c:otherwise>
-		 </c:choose> 
-		 
-	</c:forEach>
-	
-</table>
+		<c:when test="${ reply.memberId  == loginId}">
+	<div>
+		<div style="padding-left:10px;">
+			<span><b>${reply.memberId }(${requestScope.replyNickname[idx.index] })</b></span>&nbsp;&nbsp;&nbsp;<span><fmt:formatDate value="${reply.replyDate }" pattern="yyyy-MM-dd HH:mm"/></span>
+			<div id="button">
+				<button class="updateBtn btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
+				<button class="replyDeleteBtn btn btn-danger btn-xs" value="댓글삭제"><i class="fa fa-trash-o "></i></button>
+				<input type="hidden" name="replyNo" value="${reply.no }">
+			</div>
+		</div>
+		<div style="padding:7px">
+			<span>${reply.content}</span>
+		</div>
+		<div id="updateForm" style="display:none">
+			<form action="/MMONG/group/reply/replyUpdate.do" method="post" >
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+				<input type="hidden" name="no" value="${reply.no }">
+				<input type="hidden" name="boardNo" value="${reply.boardNo }">
+				<input type="text" name="content" value="${reply.content} " size="100">
+				<input type="button" value="취소" class="cancleBtn">
+				<input type="submit" value="수정완료">
+			</form>
+		</div>	
+	<div><hr style="border:0; border-bottom: 1px dashed #ccc;"></div>
+	</div>
+</c:when>
+<c:otherwise> <%-- 로그인된 아이디와 댓글 쓴 아이디가 같지 않을 때 --%>
+		<div>
+			<div style="padding-left:10px;">
+				<span><b>${reply.memberId }(${requestScope.replyNickname[idx.index] })</b></span>&nbsp;&nbsp;&nbsp;<span><fmt:formatDate value="${reply.replyDate }" pattern="yyyy-MM-dd HH:mm"/></span>
+			</div>
+				<div style="padding:7px">
+					<span>${reply.content}</span>
+				</div>
+			<div><hr style="border:0; border-bottom: 1px dashed #ccc;"></div>
+		</div>
+</c:otherwise>	
+</c:choose>
+</c:forEach>
+<form action="/MMONG/group/reply/register.do" method="post" style="padding:10px">
+	<div><b>${loginId }(${nickName})</b></div>
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	<textarea  cols="120" name="content"></textarea>
+	<input type="hidden" name="boardNo" value="${requestScope.board.no }">
+	<div style="float:right">
+	<input type="submit" value="댓글등록"><span class="error"><form:errors path="reply.content" deilimiter="&nbsp;&nbsp;"/></span>
+	</div>
+	<br>
+</form>
+</div>
+
+
+</div> <%-- 댓글 end --%>
+</section>

@@ -22,58 +22,44 @@ public interface UserService {
 	void deleteUserByUserId(String userId);
 
 		
-	//일반회원(member) 권한 변경
-	//일반회원(member) 활동상태(1) -> 중지상태(4)
+	//사용자(관리자/회원) 권한 변경
 	/**
-	* 일반회원 (member)의 권한을 '활동중지(4)'로 변경한다.
+	* 관리자(administrator) 활동상태(ROLE_0) -> 중지상태 (ROLE_2),
+	* 일반회원(member) 활동상태(ROLE_1) -> 중지상태(ROLE_2)
 	* @param memberId
 	* @return
 	*/
-	void changeAuthorityMemberToStop(String memberId);
-	//1. 일반회원(member)의 권한 상태 조회(select)
-	//2. 권한이 1이면 4로 변경(update)
+	void changeUserAuthorityToStop(String userId);
 	
-	
-	//일반회원(member) 활동상태(4) <- 중지상태(1)
 	/**
-	* 일반회원(member)의 권한을 '일반회원(1)'로 변경한다.
+	 * 관리자(administrator) 활동상태(ROLE_0) <- 중지상태 (ROLE_2)
+	 * @param userId
+	 */
+	void changeAdminAuthorityToRun(String adminId);
+	
+	/**
+	* 일반회원(member) 활동상태(ROLE_1) <- 중지상태(ROLE_2)
 	* @param memberId
 	* @return
 	*/
-	void changeAuthorityMemberToRun(String memberId);
-	//1. 일반회원(member)의 권한 상태 조회(select)
-	//2. 권한이 4이면 1로 변경(update)
+	void changeMemberAuthorityToRun(String userId);
 	
-	//관리자(administrator) enable 1 -> 0
 	/**
-	* 관리자(administrator)의 enable을 0으로 변경해서 접근을 막는다.
-	* @param adminId
-	*/
-	void changeAdminEnableToZero(String adminId);	
+	 * 사용자(관리자/회원) 탈퇴시 사용자의 권한을 ROLE_3(탈퇴상태)로 변경시킨다.
+	 * @param userId
+	 */
+	void changeUserAuthorityToWithdrawal(String userId);
 	
-	//회원(member) enable 1 -> 0
-	/**
-	* 일반회원(member)의 enable을 0으로 변경해서 접근을 막는다.
-	* @param memberId
-	*/
-	void changeMemberEnableToZero(String memberId);	
 	
-		
-	///////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////
+
+
 	/**
 	 * 관리자ID로 중복 ID 조회하는 메소드
 	 * @param adminId
 	 * @return 찾은 관리자 수 : 있으면 1, 없으면 0
 	 */
 	int checkUserId(String userId);
-
-	
-	
-	/**
-	 * 회원탈퇴시 회원의 ROLE_1을 ROLE_3(탈퇴상태)로 변경시킨다.
-	 * @param memberId
-	 */
-	void changeAuthorityMemberToWithdrawal(String memberId);
 	
 	///////////////////////////////////////////////////////////////////
 	

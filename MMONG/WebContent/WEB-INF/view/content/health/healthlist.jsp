@@ -50,7 +50,7 @@ function showPopup2(){
 				"success":function(list){
 					var txt ="";
 					$.each(list, function(){
-						//this //하나의 회원정보 - <tr>
+						// 성별을 받았을때 char 타입이라 다시 수컷,암컷,중성으로 바꿔준다.
 						if(this.gender=='m'){
 							this.gender='수컷';
 						}else if(this.gender=='g'){
@@ -71,20 +71,6 @@ function showPopup2(){
 		 }); // ajax 종료
 	 }); // end of radio
 	 
-	 //체크박스 전체 선택
-	 $('#checkAll').click(function() {
-			if ($('#checkAll').prop('checked')) {
-					$('input[name=chek]:checkbox').each(function() {
-						$(this).prop('checked', true);
-				});
-				
-		// checkedAll 이 checked 되어 있지 않다면
-		} else {
-		$('input[name=chek]:checkbox').each(function(){
-				$(this).prop('checked', false);
-			});
-		};	// end of else
-	}); // 전체 체크박스 제거
 		
 	 // 건강기록 옆에 체크박스 누르면 전체 체크박스 지우기
 	$(document).on("click",'#checkbx',function(){
@@ -199,16 +185,16 @@ function showPopup2(){
 					"success":function(chart){
 							$(that).parent().after('<tr class="chartContentForm"><td>진료 날짜</td><td>'+chartNo+'번 건강정보에 대한 내 진료기록</td><td>수정,삭제 여부</td></tr>'
 						+'<tr class="chartDetail"><td  width=110>'+chart.time+'</td><td size="80">'+chart.content+'</td><td>'
-						+'&nbsp<input type="button" value="삭제"  style="width:58px;height:32px" align="center" class="chartDelete" id="'+chart.healthNo+'" >'
-						+'<input type="button" value="수정" class="chartMod"style="width:55px;height:32px" align="center" id="'+chartNo+'"></td></tr>');
+						+'<input type="button" value="삭제" align="center" class="chartDelete" id="'+chart.healthNo+'">'
+						+'<input type="button" value="수정" class="chartMod" align="center" id="'+chartNo+'"></td></tr>');
 						
 							$('input[id='+chartNo+']:checkbox').each(function() {
 								$(this).prop('checked', true);
 						});
 					},	// end of success
 					"error":function(){													
-						$(that).parent().after('<tr class="chartForm"><td>진료날짜 입력</td><td>진료내용을 입력해 주세요</td><td>등록 여부</td></tr><tr class="chartAdd"><td><input type=date id="chartDate"></td><td><textarea rows="2" cols="40" id="chartContent" name="textarea"></textarea>'+'</td><td>'
-								+'<input type="button" value="등록" class="insertChart" align="center" id="'+chartNo+'">'+'</td></tr>');
+						$(that).parent().after('<tr class="chartForm"><td>진료날짜 입력</td><td>진료내용을 입력해 주세요</td><td>등록 여부</td></tr><tr class="chartAdd"><td><input type=date id="chartDate"></td><td><textarea rows="2" cols="50" id="chartContent" name="textarea"></textarea>'+'</td><td>'
+								+'<center><input type="button" value="등록" class="insertChart" id="'+chartNo+'"><center>'+'</td></tr>');
 						$('input[id='+chartNo+']:checkbox').each(function() {
 							$(this).prop('checked', true);
 						});
@@ -346,34 +332,48 @@ function showPopup2(){
 
 /*########## button ############*/
 .button{
-    color: #f74009;
+    color: #797979;
     font-size: 12px;
     border-radius: 4px;
     -webkit-border-radius: 4px;
-    border: 1px solid #fcab59 !important;
+    border: 1px solid #797979 !important;
     padding: 5px 15px;
     margin-right: 15px;
-    background: #ffd777;
+    background: #e5e5e5;
     margin-top: 15px;
 }
 
-.chartDelete , .chartMod , .insertChart, .mod{
+.insertChart, .mod{
 	color: #f2f2f2;
     font-size: 12px;
     border-radius: 4px;
     -webkit-border-radius: 4px;
-    border: 1px solid #64c3c2 !important;
+    border: 1px solid #e5e5e5 !important;
     padding: 5px 15px;
-    margin-right: 15px;
-    background: #68dff0;
-    margin-top: 15px;
+    margin-right: 10px;
+    margin-left: 10px;
+    background: #b6b6b6;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.chartDelete,.chartMod{
+	color: #f2f2f2;
+    font-size: 12px;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border: 1px solid #e5e5e5 !important;
+    padding: 5px 15px;
+    background: #b6b6b6;
+	margin-right: 5px;
+    margin-left: 5px;
 }
 
 /*#################### RadioButton ###################*/
 .radioButton{
 	margin-top: 20px;
-    margin-right: 350px;
-    margin-left: 350px;
+    margin-right: 400px;
+    margin-left: 400px;
 }
 /*#################### table ###################*/
 table.healthList{
@@ -391,7 +391,7 @@ table.healthList thead th {
     font-weight: bold;
     vertical-align: top;
     color: #fff;
-    background: #ffd777;
+    background: #F2CBD0;
     margin: 20px 10px;
 }
 table.healthList tbody th {
@@ -402,9 +402,14 @@ table.healthList td {
     width: 350px;
     padding: 10px;
     vertical-align: top;
+    align:center;
 }
 table.healthList .even {
     background: #fdf3f5;
+}
+
+table.checkboxClass{
+	width: 100px;
 }
 
 
@@ -424,7 +429,7 @@ table.chartTable thead th {
     font-weight: bold;
     vertical-align: top;
     color: #fff;
-    background: #ffd777;
+    background: #F2CBD0;
     margin: 20px 10px;
 }
 table.chartTable tbody th {
@@ -463,9 +468,6 @@ table.chartTable .even {
 			<th width=70>번호</th>
 			<th>내용</th>
 			<th>성별</th>
-			<sec:authorize access="hasRole('ROLE_0')">
-			<th width=70>전체선택<input type="checkbox" id="checkAll"></th>
-			</sec:authorize>
 		</tr>
 	</thead>
 	<tbody id="listTbody"></tbody>
