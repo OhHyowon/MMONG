@@ -1,12 +1,16 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
+<script type="text/javascript">
+window.onload=function(){
+	$("#total_div").css("min-height",(document.body.scrollHeight-38.4)+"px");
+}
+</script>
+
+<div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i> 관리자 등록 성공
 		</h3>
-관리자 ID : ${requestScope.administrator.adminId }<br>
-이름 : ${requestScope.administrator.adminName}<br>
-전화번호 : ${requestScope.administrator.adminPhone }<br>
-이메일 : ${requestScope.administrator.adminEmail }<br>
+ '${requestScope.administrator.adminId }'님을 관리자로 등록하였습니다<br>
 
-<a href="/MMONG/index.do">메인페이지</a>
 </section>
+</div>

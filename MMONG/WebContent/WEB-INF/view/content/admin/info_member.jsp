@@ -13,8 +13,13 @@ $(document).ready(function(){
 		}
 	 });
 });
-
+<script type="text/javascript">
+window.onload=function(){
+	$("#total_div").css("min-height",(document.body.scrollHeight-38.4)+"px");
+}
 </script>
+
+<div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i>회원정보 조회
@@ -64,3 +69,4 @@ $(document).ready(function(){
 <tr>
 </table>
 </section>
+</div>

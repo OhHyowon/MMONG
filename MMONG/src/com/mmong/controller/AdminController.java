@@ -94,7 +94,7 @@ public class AdminController {
 	public ModelAndView RegisterAdminSuccess(@ModelAttribute Administrator admin, BindingResult errors){
 		User user = new User(admin.getAdminId(), admin.getUser().getUserPwd(), "ROLE_0", 1);
 			admin.setUser(user);
-			
+			System.out.println("컨트롤러 1 --"+admin.getAdminEmail());
 		//1. 요청파라미터 검증
 //		AdministratorRegisterValidator validator = new AdministratorRegisterValidator();
 //		validator.validate(admin, errors);
@@ -135,9 +135,9 @@ public class AdminController {
 	 */
 	@RequestMapping("checkAdminPhone")
 	@ResponseBody
-	public String checkMemberPhone(@RequestParam(required=false) String adminPhone){
+	public String checkAdminPhone(@RequestParam(required=false) String adminPhone){
 		//요청파라미터 검증
-		
+		System.out.println("컨트롤러 2 --"+adminPhone);
 		//비즈니스 로직 처리 - 관리자 번호조회
 		int checkPhone = adminService.checkAdminPhone(adminPhone);
 		//응답
@@ -151,8 +151,8 @@ public class AdminController {
 	 */
 	@RequestMapping("checkAdminEmail")
 	@ResponseBody
-	public String checkAdminEmail(@RequestParam(required=false) String adminEmail1, String adminEmail2){
-		String adminEmail = adminEmail1 +"@"+ adminEmail2;
+	public String checkAdminEmail(@RequestParam(required=false) String adminEmail){
+		
 		//요청파라미터 검증
 		
 		//비즈니스 로직 처리 - 회원 조회

@@ -4,6 +4,10 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
+window.onload=function(){
+	$("#total_div").css("min-height",(document.body.scrollHeight-38.4)+"px");
+}
+
 $(document).ready(function(){
 	$("#updateBtn").on("click",function(){
 		if(!$("#title").val()){
@@ -25,6 +29,7 @@ $(document).ready(function(){
 
 </script>
 
+<div id="total_div">
 <section id="main-content">
 	<section class="wrapper site-min-height">
 		<h3>
@@ -58,3 +63,4 @@ $(document).ready(function(){
 	<input class="btn btn-default btn-sm" type="button" value="목록 " onclick="location.href='/MMONG/adminNotice/selectAdminNoticeList.do'"/>
 	</section>
 </section>
+</div>

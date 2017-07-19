@@ -13,8 +13,12 @@ $(document).ready(function(){
 		}
 	 });
 });
-
+window.onload=function(){
+	$("#total_div").css("min-height",(document.body.scrollHeight-38.4)+"px");
+}
 </script>
+
+<div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i>검색한 관리자 정보조회
@@ -52,7 +56,5 @@ $(document).ready(function(){
 <tr>
 </table>
 
-
-<br>
-
 </section>
+</div>

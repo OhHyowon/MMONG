@@ -8,7 +8,13 @@
 }
 </style>
 
+<script type="text/javascript">
+window.onload=function(){
+	$("#total_div").css("min-height",(document.body.scrollHeight-38.4)+"px");
+}
+</script>
 
+<div id="total_div">
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
 	
@@ -102,3 +108,4 @@ $(document).ready(function(){
         </form>
 </table>
 </section>
+</div>

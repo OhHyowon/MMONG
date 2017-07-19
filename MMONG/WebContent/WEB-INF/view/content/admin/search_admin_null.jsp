@@ -11,9 +11,14 @@
   -webkit-align-item;center;
   -webkit-justify-content:center;
 }
-
 </style>
+<script type="text/javascript">
+window.onload=function(){
+	$("#total_div").css("min-height",(document.body.scrollHeight-38.4)+"px");
+}
+</script>
 
+<div id="total_div">
 <section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i>&nbsp;'${param.adminId}'인 관리자가 없습니다.
@@ -22,3 +27,4 @@
 	<button class="btn btn-default btn-sm" type="button" onclick="location.href='/MMONG/admin/search_admin_form.do'">관리자 다시 조회</button>
 </div>
 </section>
+</div>

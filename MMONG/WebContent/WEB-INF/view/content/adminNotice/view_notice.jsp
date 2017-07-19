@@ -19,9 +19,14 @@
 form{
 	display:inline;
 }
-
 </style>
+<script type="text/javascript">
+window.onload=function(){
+	$("#total_div").css("min-height",(document.body.scrollHeight-38.4)+"px");
+}
+</script>
 
+<div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i> 공지사항 상세조회 
@@ -69,3 +74,4 @@ form{
 		<input class="btn btn-default btn-sm" type="button" value="목록" onclick="location.href='/MMONG/adminNotice/selectAdminNoticeList.do' ">
 </div>
 </section>
+</div>

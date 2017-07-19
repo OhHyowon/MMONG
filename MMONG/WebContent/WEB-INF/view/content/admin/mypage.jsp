@@ -20,37 +20,48 @@ form{
 	display: inline;
 }
 
-
 </style>
+<script type="text/javascript">
+window.onload=function(){
+	$("#total_div").css("min-height",(document.body.scrollHeight-38.4)+"px");
+}//맨 아래 footer 보정
 
+$(document).ready(function(){
+	$("#withdrawalBtn").on("click", function(){
+		if(confirm("정말 탈퇴하시겠습니까?")){
+			return true;
+		}else{
+			alert("탈퇴가 취소되었습니다.");
+			return false;
+		}
+	});
+});//ready 함수 끝
+</script>
+
+<div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i>관리자 마이페이지
 		</h3>
  
 <div id="view-detail">
-<table>
-<tr>
-	<th>관리자 ID : </th>
-	<td>${requestScope.administrator.adminId }</td>
-<tr>
-<tr>
-	<th>권한 : </th>
-	<td>${requestScope.administrator.user.userAuthority}</td>
-<tr>
- <tr>
-	<th>이름 : </th>
-	<td>${requestScope.administrator.adminName}</td>
-<tr>
-<tr>
-	<th>전화번호 : </th>
-	<td>${requestScope.administrator.adminPhone }</td>
-<tr>
-<tr>
-	<th>이메일 : </th>
-	<td>${requestScope.administrator.adminEmail }</td>
-<tr>
-</table>
+
+
+
+<div>
+		<div>
+			<h5>회원정보</h5>
+		</div>
+		<p><img src="/MMONG/up_image/profileAdmin.PNG" class="img-circle" width="80"></p> 
+		<p><b>ID</b> : <sec:authentication property="principal.adminId"/></p>
+		<div class="row">
+			<div class="col-md-6">
+				<p><b>이름</b> : ${requestScope.administrator.adminName}</p>
+				<p><b>전화번호</b> : ${requestScope.administrator.adminPhone }</p>
+				<p><b>이메일</b> : ${requestScope.administrator.adminEmail }</p>
+			</div>
+		</div>
+	</div>
 </div>
 <div id="view-menu">
 	<form action="/MMONG/admin/info_admin_update_form.do" method="post">
@@ -61,7 +72,8 @@ form{
 	<form action="/MMONG/admin/adminWithdrawal.do" method="post">
 				<input type="hidden" name="adminId" value="<sec:authentication property="principal.adminId"/>">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-				<input class="btn btn-default btn-sm" type="submit" value="관리자 탈퇴">
+				<input id="withdrawalBtn" class="btn btn-default btn-sm" type="submit" value="관리자 탈퇴">
 	</form>
 </div>
 </section>
+</div>

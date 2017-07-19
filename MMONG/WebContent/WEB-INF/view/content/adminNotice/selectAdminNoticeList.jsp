@@ -15,7 +15,6 @@ th, td {
     border-bottom: 1px solid #ddd;
 }
 
-
 tr:hover {background-color: #f9efd4}
 
 #search{
@@ -39,7 +38,6 @@ tr:hover {background-color: #f9efd4}
     color: white;
    
 }
-
 </style>
 
 
@@ -47,7 +45,13 @@ tr:hover {background-color: #f9efd4}
 
 
 
+<script type="text/javascript">
+window.onload=function(){
+	$("#total_div").css("min-height",(document.body.scrollHeight-38.4)+"px");
+}
+</script>
 
+<div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i> 공지사항 목록
@@ -154,4 +158,5 @@ tr:hover {background-color: #f9efd4}
 </div>
 
 </section>
+</div>
 
