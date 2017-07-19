@@ -3,13 +3,16 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
+
+// 건강관리 등록 팝업
 function showPopup(){
 	
 	var popupTitle = "건강관리 등록";
 	
-	window.open("/MMONG/health/registform.do",popupTitle,"width=700, height=600");
+	window.open("/MMONG/health/registform.do",popupTitle,"width=500, height=460");
 }
 
+// 건강관리 수정 팝업
 function showPopup2(){
 	
 	var popupTitle = "건강관리 수정";
@@ -23,7 +26,7 @@ function showPopup2(){
 	});	// end of checklist
 	
 	
-	window.open("/MMONG/health/healthMod.do?checkedNo="+checkedNo+"&checkedContent="+checkedContent+"",popupTitle,"width=600, height=500")
+	window.open("/MMONG/health/healthMod.do?checkedNo="+checkedNo+"&checkedContent="+checkedContent+"",popupTitle,"width=507, height=400")
 	
 }
 
