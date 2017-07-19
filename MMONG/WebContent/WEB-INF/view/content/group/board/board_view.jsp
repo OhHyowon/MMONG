@@ -1,152 +1,96 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="sec"
-	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec"  uri="http://www.springframework.org/security/tags" %>
 
 <style type="text/css">
-.error {
+.error{
 	color: red;
 }
-
 .messageGo {
-	position: relative;
+    position: relative;
 }
 
 .messageGo .messageGoTxt {
-	visibility: hidden;
-	width: 120px;
-	background-color: black;
-	color: #fff;
-	text-align: center;
-	border-radius: 6px;
-	padding: 5px 0;
-	/* Position the tooltip */
-	position: absolute;
-	z-index: 1;
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
 }
 
 .messageGo:hover .messageGoTxt {
-	visibility: visible;
+    visibility: visible;
+}
+#button{
+    position: absolute;
+    right: 10px;
+    margin-right:7px
 }
 
-#button {
-	position: absolute;
-	right: 10px;
-	margin-right: 7px
-}
 </style>
 
-<script type="text/javascript"
-	src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
-	window.onload = function() {
-		$("#total_div").css("min-height",
-				(document.body.scrollHeight - 38.4) + "px");
-	}
 
-	$(document)
-			.ready(
-					function() {
+window.onload=function(){
+	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+}
 
-						//팝업창 크기 조절
-						var width = 480, height = 480;
-						var left = (screen.availWidth - width) / 2;
-						var top = (screen.availHeight - height) / 2;
-						var specs = "width=" + width;
-						specs += ",height=" + height;
-						specs += ",left=" + left;
-						specs += ",top=" + top;
-
-						$(".messageGoTxt")
-								.on(
-										"click",
-										function() {
-											var id = $("#id").val()
-											var nickname = $("#nickname").val();
-
-											window.open(
-													"/MMONG/message/idNnickFromBoard.do?id="
-															+ id + "&nickname="
-															+ nickname,
-													"쪽지보내기", specs);
-										});
-
-						$("#BoardDeleteBtn")
-								.on(
-										"click",
-										function() {
-											if (!confirm("삭제하시겠습니까?")) {
-												return;
-											} else {
-												$
-														.ajax({
-															url : "/MMONG/group/board/boardDelete.do",
-															type : "post",
-															data : {
-																"boardNo" : $(
-																		"#boardNo")
-																		.val(),
-																"${_csrf.parameterName}" : "${_csrf.token}"
-															},
-															dataType : "json",
-															success : function(
-																	txt) {
-																if (txt == '1') {
-																	alert('삭제되었습니다.');
-																	location.href = "/MMONG/group/board/allBoardList.do"
-																} else {
-																	alert('삭제실패');
-																}
-															}
-														});
-											}
-										}); // end of deleteBtn
-						$('.updateBtn').on(
-								"click",
-								function() {
-									$(this).parent().parent().parent().find(
-											"div:nth-child(2)").next().show();
-								}); // end of updateBtn (리플)
-						$('.replyDeleteBtn')
-								.on(
-										'click',
-										function() {
-											var replyNo = $(this).next().val();
-											if (!confirm("댓글 삭제하시겠습니까?")) {
-												return;
-											} else {
-												$
-														.ajax({
-															url : "/MMONG/group/reply/deleteReply.do",
-															type : "post",
-															data : {
-																"replyNo" : replyNo,
-																"${_csrf.parameterName}" : "${_csrf.token}",
-																"boardNo" : $(
-																		'#boardNo')
-																		.val()
-															},
-															dataType : "json",
-															success : function(
-																	txt) {
-																if (txt == '1') {
-																	alert("삭제되었습니다.");
-																	location.href = "/MMONG/group/board/board_view.do?boardNo="
-																			+ $
-																	{
-																		requestScope.board.no
-																	}
-																} else {
-																	alert("삭제실패");
-																}
-															}
-														});
-											}
-										}); // end of .replyDeleteBtn
-					});
+$(document).ready(function(){
+	$("#BoardDeleteBtn").on("click",function(){
+			if(!confirm("삭제하시겠습니까?")){
+				return;
+			}else{
+		$.ajax({
+			url:"/MMONG/group/board/boardDelete.do", 
+			type:"post",
+			data:{"boardNo":$("#boardNo").val(),"${_csrf.parameterName}":"${_csrf.token}"},
+			dataType:"json",
+			success:function(txt){
+				if(txt=='1'){
+				alert('삭제되었습니다.');   
+				location.href="/MMONG/group/board/allBoardList.do"
+				}else{
+					alert('삭제실패');
+				}
+			}
+		});
+			}
+	}); // end of deleteBtn
+	$('.updateBtn').on("click",function(){
+		$(this).parent().parent().parent().find("div:nth-child(2)").next().show();
+	}); // end of updateBtn (리플)
+	$('.replyDeleteBtn').on('click',function(){		
+		var replyNo=$(this).next().val();
+		if(!confirm("댓글 삭제하시겠습니까?")){
+			return;
+		}else{
+			$.ajax({
+				url:"/MMONG/group/reply/deleteReply.do",
+				type:"post",
+				data:{"replyNo":replyNo,"${_csrf.parameterName}":"${_csrf.token}","boardNo":$('#boardNo').val()},
+				dataType:"json",
+				success:function(txt){
+					if(txt=='1'){
+						alert("삭제되었습니다.");
+						location.href="/MMONG/group/board/board_view.do?boardNo="+${requestScope.board.no}
+				}else{
+					alert("삭제실패");
+				}
+				}
+			});
+		}
+	}); // end of .replyDeleteBtn
+});
 </script>
 
 <div id="total_div">
@@ -154,28 +98,23 @@
 		<h3>
 			<i class="fa fa-angle-right"></i>게시글 보기
 		</h3>
-
-		<%-- =============소모임 상세페이지 소메뉴 : 밑에 세메뉴안에도 이것 포함시키기! ================ --%>
-		<ul>
-			<li><a href="/MMONG/group/groupDate/allGroupDateList.do">모임
-					일정 목록</a></li>
-			<li><a href="/MMONG/group/board/allBoardList.do">자유게시판</a></li>
-		</ul>
-		<%-- =============소모임 상세페이지 소메뉴 끝================ --%>
-		<hr>
-		<input type="button" class="btn btn-default btn-sm" value="글쓰기"
-			onclick="location.href='/MMONG/group/board/board_form.do'"> <input
-			type="button" class="btn btn-default btn-sm" value="내가 쓴 글"
-			onclick="location.href='/MMONG/group/board/myBoardList.do'">
-		<input type="button" class="btn btn-default btn-sm" value="내가 쓴 댓글"
-			onclick="location.href='/MMONG/group/reply/myReplyList.do'">
-		<br>
-		<br>
-
-		<sec:authentication property="principal.memberId" var="loginId" />
-		<sec:authentication property="principal.nickName" var="nickName" />
 		
-		<div class="col-md-9" style="margin-left: 170px;">
+<%-- =============소모임 상세페이지 소메뉴 : 밑에 세메뉴안에도 이것 포함시키기! ================ --%>
+<ul>
+	<li><a href="/MMONG/group/groupDate/allGroupDateList.do">모임 일정 목록</a></li> <!-- 소모임 상세페이지 첫 화면 -->
+	<li><a href="/MMONG/group/board/allBoardList.do">자유게시판</a></li>
+	<li><a href="/MMONG/groupMember/searchGroupMember.do">참여 멤버 목록</a></li>
+</ul>
+<%-- =============소모임 상세페이지 소메뉴 끝================ --%>
+<hr>
+	<input type="button"class="btn btn-default btn-sm" value="글쓰기" onclick="location.href='/MMONG/group/board/board_form.do'">
+	<input type="button"class="btn btn-default btn-sm" value="내가 쓴 글" onclick="location.href='/MMONG/group/board/myBoardList.do'">
+	<input type="button"class="btn btn-default btn-sm" value="내가 쓴 댓글" onclick="location.href='/MMONG/group/reply/myReplyList.do'">
+<br><br>
+
+	<sec:authentication property="principal.memberId" var="loginId"/>
+	<sec:authentication property="principal.nickName" var="nickName"/>
+	<div class="col-md-9" style="margin-left: 170px;">
 
 			<table
 				style="border-top: 1px solid gray; border-bottom: 1px dashed; width: 943px; margin-botton: 1px">
