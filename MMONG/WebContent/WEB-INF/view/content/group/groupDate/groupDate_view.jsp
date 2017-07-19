@@ -7,8 +7,14 @@
 
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
+
+window.onload=function(){
+	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+}
+
 $(document).ready(function(){
-	$("#insertBtn").on("click",function(){
+	$(".insertBtn").on("click",function(){
+		alert("일정 참여");
 		$.ajax({
 			url:"/MMONG/group/groupDate/registerMeet.do",
 			type:"post",
@@ -58,17 +64,24 @@ $(document).ready(function(){
 					}
 				}
 			});
-		}
+		}c
 	}); // end of deleteBtn
 });
 
 </script>
-
-
+<style>
+.groupDate{
+	text-align:left;
+}
+.Btn{
+	float:right;
+}
+</style>
+<div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i> 일정 상세보기
-		</h3>>
+		</h3>
 
 <%-- 일정 상세보기 페이지가 열릴 때 마다 groupDateNo 세션에 저장 --%>
 <%
@@ -76,59 +89,31 @@ $(document).ready(function(){
 	session.setAttribute("groupDateNo",groupDateNo);
 %>
 	<sec:authentication property="principal.memberId" var="loginId"/>
+<div class="col-lg-8">
+	<div class="form-panel">
 
-
-<table>
-	<thead>
-		<tr>일정이름</tr>
-		<tr>
-			<td>시간</td>
-			<td>장소(지도)</td>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>${requestScope.groupDate.title}</tr>
-		<tr>
-			<td><fmt:formatDate value="${requestScope.groupDate.groupDate}" pattern="yyyy-MM-dd HH:mm"/></td>
-			<td>${requestScope.groupDate.place }</td>
-		</tr>
-	</tbody>	
-</table>
-
-<!-- 로그인된 아이디가 일정 작성자와 같다면 -->
-
-	<c:if test="${requestScope.groupDate.memberId == loginId }">
-	<form action="/MMONG/group/groupDate/updateGroupDate1.do" method="post">
-		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-<%-- 		
-		<input type="hidden" name="title" value="${requestScope.groupDate.title }">
-		<input type="hidden" name="place" value="${requestScope.groupDate.place }">
-		<input type="hidden" name="groupDate" value="${requestScope.groupDate.groupDate }"> --%>
-		<input type="hidden" name="groupDateNo" value="${requestScope.groupDate.no }">
-	
-		<input type="submit" value="수정하기" id="updateBtn">
-		<input type="button" value="삭제하기" id="deleteBtn">
-		</form>
-	</c:if>
-
-
-	
-	
-<hr>
-<table>
-<tr>일정 참여자 목록</tr>
-<c:choose>
+<div class="col-lg-4">
+	<div class="form-panel" style="background:#E8F1EE">
+		<div>&nbsp;</div>
+		이름 : ${requestScope.groupDate.title}
+		<br>
+		일정 : <fmt:formatDate value="${requestScope.groupDate.groupDate}" pattern="yyyy-MM-dd HH:mm"/>
+	</div>
+	<div class="form-panel" style="background:#E8F1EE">
+		<div>
+	<c:choose>
  		<c:when test="${empty requestScope.memberIdList}"> <%-- 멤버아이디가 없을 때 --%>
 				<li>일정 참여자가 없습니다!</li>
-			<input type="button" value="참여 하기" id="insertBtn">
+			<input class="btn btn-default btn-xs insertBtn" type="button" value="참여하기">
 		</c:when> 
-
-		<c:otherwise>
+	
+		<c:otherwise> <%-- 일정 참여자가 있을 때 --%>
+	<div style="text-align:center">일정 참여자</div>
 	<c:forEach items="${requestScope.memberIdList }" var="memberId" varStatus="idx">
 			<c:choose>
 			<c:when test="${memberId == loginId }"> <%-- 로그인된 아이디와 참여자 아이디가 같다면 --%>
 					<li>
-					${memberId }(${requestScope.nickNameList[idx.index] })<input type="button" value="참여 취소" id="cancelBtn">
+					${memberId }(${requestScope.nickNameList[idx.index] })<input type="button" value="참여 취소" id="cancelBtn" style="margin-left:5px" class="btn btn-default btn-xs">
 					</li>
 			</c:when>
 			
@@ -136,12 +121,45 @@ $(document).ready(function(){
 					<li>
 					${memberId }(${requestScope.nickNameList[idx.index] })
 					</li>			
-			<input type="button" value="참여 하기">
 			</c:when>
+					
 			</c:choose>
 			</c:forEach>
+			
+		<% int i =1; %> <%-- 1이면 memberList에 본인 없음, 2이면 본인 있음 --%>
+			<c:forEach items= "${requestScope.memberIdList }" var="memberId">
+				<c:if test="${memberId==loginId }"> 
+					<% i=2; %>
+				</c:if>
+			</c:forEach>
+		<% if (i==1){%>
+			<input type="button" value="참여 하기" class="btn btn-default btn-xs insertBtn">
+		<%}%>
+		
 		</c:otherwise>
 	</c:choose>
-</table>
+		</div>
+	</div>
+	
+</div>
 
+
+<div class="col-lg-4">
+	<div class="form-panel" style="background:#E8F1EE"><div>지도 들어갈 자리</div></div>
+</div>
+
+	<c:if test="${requestScope.groupDate.memberId == loginId }">
+	<form action="/MMONG/group/groupDate/updateGroupDate1.do" method="post">
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+		<input type="hidden" name="groupDateNo" value="${requestScope.groupDate.no }">
+<div style="position:relative; top:210px;">
+		<input class="btn btn-default btn-sm" type="submit" value="수정하기" id="updateBtn" class="Btn" style="float:right;">
+		<input class="btn btn-default btn-sm" type="button" value="삭제하기" id="deleteBtn" class="Btn" style="margin-left:120px">
+		</div>
+		</form>
+	</c:if>
+<br><br><br><br><br><br><br><br><br><br><br><br><br>
+	</div>
+</div>
 </section>
+</div>

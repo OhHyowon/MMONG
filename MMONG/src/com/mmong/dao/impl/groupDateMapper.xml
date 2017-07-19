@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mmong.config.mapper.groupDateMapper">
+
+<!-- groupDate resultMap -->
+<resultMap type="groupDate" id="groupDate-resultmap">
+	<result column="no" property="no"/>
+	<result column="MEET_DATE" property="groupDate"/>
+	<result column="place" property="place"/>
+	<result column="title" property="title"/>
+	<result column="member_id" property="memberId"/>
+	<result column="group_no" property="groupNo"/>
+</resultMap>
+
+<!-- meetMember resultMap -->
+<resultMap type="meetMember" id="meetMember-resultmap">
+	<result column="group_date_no" property="groupDateNo"/>
+	<result column="group_member_no" property="groupMemberNo"/>
+</resultMap>
+
+<sql id="select-groupDate">
+	SELECT no, MEET_DATE, place, title, group_no, member_id
+	FROM group_date
+</sql>
+
+<!-- groupDate 등록  -->
+<insert id="insertGroupDate" parameterType="groupDate">
+	<selectKey keyProperty="no" resultType="int" order="BEFORE">
+		SELECT GROUP_DATE_NO_SEQ.nextval FROM dual
+	</selectKey>
+	INSERT INTO group_date VALUES(
+		#{no}, #{groupDate}, #{place}, #{title},#{memberId}, #{groupNo} 
+	)
+</insert>
+
+<!-- No으로 groupDate 조회 -->
+<select id="selectGroupDate" parameterType="int" resultMap="groupDate-resultmap">
+	<include refid="select-groupDate"/>
+	WHERE no=#{value}
+</select>
+
+<!-- memberId로 memberNo 조회 -->
+<select id="selectMemberNo" parameterType="map" resultType="int">
+	SELECT	no
+	FROM group_member
+	WHERE member_id=#{memberId}
+	AND group_no=#{groupNo}
+</select>
+
+<!-- 일정 참여자 등록 -->
+<insert id="insertMeetMember" parameterType="meetMember">
+	INSERT INTO meet_member VALUES(
+		#{groupDateNo}, #{groupMemberNo}
+	)
+</insert>
+
+<!-- groupDateNo 으로 meetmember 조회 -->
+<select id="selectMeetMemberList" parameterType="int" resultType="int">
+	SELECT group_member_no
+	FROM meet_member
+	WHERE group_date_no=#{value}
+</select>
+
+<!-- memberNo으로 memberId 조회-->
+<select id="selectMemberId" parameterType="int" resultType="string">
+	SELECT member_id
+	FROM group_member
+	WHERE no=#{value}
+</select>
+
+<!-- memberId로 nickName 조회 -->
+<select id="selectNickname" parameterType="string" resultType="string">
+	SELECT nickName
+	FROM member
+	WHERE member_id=#{value}
+</select>
+
+<!-- groupDate no에 맞는 일정 참여자 삭제 -->
+<delete id="deleteMeetmember" parameterType="meetMember">
+	DELETE meet_member
+	WHERE group_date_no=#{groupDateNo}
+	AND group_member_no=#{groupMemberNo}
+</delete>
+
+<!-- groupMemberNo에 맞는 일정 참여자 삭제 -->
+<delete id="deleteMeetMemberByGroupMemberNo" parameterType="int">
+	DELETE meet_member
+	WHERE group_member_no=#{groupMemberNo}
+</delete>
+
+<!-- 전체 일정 목록 -->
+<select id="selectAllGroupDateList" parameterType="map" resultMap="groupDate-resultmap">
+	<![CDATA[
+SELECT no, meet_date, place, title, group_no, member_id
+	FROM (
+		SELECT rownum rnum, no, meet_date, place, title, group_no, member_id
+		FROM(
+			SELECT  no, meet_date, place, title, group_no, member_id
+			FROM group_date
+			WHERE group_no=#{groupNo}
+			ORDER BY meet_date DESC
+			)
+			WHERE rownum <= #{endItemNo}
+		)
+		WHERE rnum >= #{beginItemNo}
+]]>
+</select>
+
+<!-- 전체 일정 갯수 -->
+<select id="selectGroupDateCount" parameterType="int" resultType="int">
+	SELECT COUNT(no)
+	FROM group_date
+	WHERE group_no=#{value}
+</select>
+
+<!-- option에 따른 일정 갯수 -->
+<select id="selectGroupDateOptionCount" parameterType="map" resultType="int">
+	<choose>
+		<when test="option=='title'">
+			SELECT COUNT(no)
+			FROM group_date
+			WHERE group_no=#{groupNo}
+			AND title LIKE '%'||#{key}||'%'
+		</when>
+	<!-- 	<when test="option=='place'"> -->
+	<otherwise>
+			SELECT COUNT(no)
+			FROM group_date
+			WHERE group_no=#{groupNo}
+			AND place LIKE '%'||#{key}||'%'
+	</otherwise>
+<!-- 		</when> -->
+	</choose>
+</select>
+
+<!-- option에 따른 일정 리스트 -->
+<select id="selectOptionGroupDate" parameterType="map" resultMap="groupDate-resultmap">
+	<choose>
+		<when test="option=='title'">
+		<![CDATA[			
+			SELECT no, meet_date, place, title, group_no, member_id
+	FROM (
+		SELECT rownum rnum, no, meet_date, place, title, group_no, member_id
+		FROM(
+			SELECT  no, meet_date, place, title, group_no, member_id
+			FROM group_date
+			WHERE group_no=#{groupNo}
+			AND title LIKE '%'||#{key}||'%'
+			ORDER BY meet_date DESC
+			)
+			WHERE rownum <= #{endItemNo}
+		)
+		WHERE rnum >= #{beginItemNo}
+		]]>
+		</when>
+		
+		<when test="option=='place'">
+		<![CDATA[			
+			SELECT no, meet_date, place, title, group_no, member_id
+	FROM (
+		SELECT rownum rnum, no, meet_date, place, title, group_no, member_id
+		FROM(
+			SELECT  no, meet_date, place, title, group_no, member_id
+			FROM group_date
+			WHERE group_no=#{groupNo}
+			AND place LIKE '%'||#{key}||'%'
+			ORDER BY meet_date DESC
+			)
+			WHERE rownum <= #{endItemNo}
+		)
+		WHERE rnum >= #{beginItemNo}
+		]]>		
+		</when>
+	</choose>
+</select>
+
+<!-- date로 검색 할 때의 일정 갯수 -->
+<select id="selectGroupDateOptionCount2" parameterType="map" resultType="int">
+<![CDATA[	
+	SELECT COUNT(no)
+	FROM group_Date
+	WHERE group_no=#{groupNo}
+	AND #{dateTime} <= meet_date
+]]>
+</select>
+
+<!-- date로 검색 할 때의 일정 목록 -->
+<select id="selectOptionGroupDate2" parameterType="map" resultMap="groupDate-resultmap">
+	<![CDATA[			
+			SELECT no, meet_date, place, title, group_no, member_id
+	FROM (
+		SELECT rownum rnum, no, meet_date, place, title, group_no, member_id
+		FROM(
+			SELECT  no, meet_date, place, title, group_no, member_id
+			FROM group_date
+			WHERE group_no=#{groupNo}
+			AND #{dateTime} <= meet_date
+			ORDER BY meet_date DESC
+			)
+			WHERE rownum <= #{endItemNo}
+		)
+		WHERE rnum >= #{beginItemNo}
+		]]>	
+</select>
+
+<!-- groupDate 수정 -->
+<update id="upDateGroupDate" parameterType="groupDate" >
+	UPDATE group_date
+	SET		meet_date = #{groupDate},
+				place = #{place},
+				title = #{title}
+	WHERE no = #{no}	
+</update>
+
+
+<!-- groupDate 삭제 -->
+<delete id="deleteGroupDate" parameterType="int">
+	DELETE group_date
+	WHERE no=#{value}
+</delete>
+
+<!-- groupNo으로 groupDateNo 조회 -->
+<select id="selectNoByGroupNo" parameterType="int" resultType="int">
+	SELECT no
+	FROM group_date
+	WHERE group_no=#{value}
+</select>
+
+<!-- groupNo으로 groupDate 전체 삭제 -->
+<delete id="deleteGroupDateByGroupNo" parameterType="int">
+	DELETE group_date
+	WHERE group_no=#{value}
+</delete>
+
+<!-- groupDateNo으로 일정 참여 멤버 삭제 -->
+<delete id="deleteMeetMemberByGroupDateNo" parameterType="int">
+	DELETE meet_member
+	WHERE group_date_no=#{value}
+</delete>
+
+</mapper>

@@ -10,13 +10,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mmong.service.AlertService;
 import com.mmong.service.GroupMemberService;
 import com.mmong.service.GroupService;
+import com.mmong.service.MemberService;
 import com.mmong.service.impl.GroupDateServiceImpl;
+import com.mmong.vo.Alert;
 import com.mmong.vo.GroupMember;
 import com.mmong.vo.Member;
 
@@ -30,6 +34,11 @@ public class GroupMemberController {
 	private GroupService groupService;
 	@Autowired
 	private GroupDateServiceImpl groupDateService;
+	@Autowired
+	private MemberService memberService;
+	@Autowired
+	private AlertService alertService;
+	
 	/**
 	 * 소모임에 소속된 모임멤버 추가시키는 handler method
 	 * @param groupMember
@@ -76,9 +85,9 @@ public class GroupMemberController {
 					
 					ModelAndView mv = new ModelAndView();
 					mv.setViewName("group/groupMember/groupMemberList.tiles");
-					mv.addObject("groupMemberList",groupMemberList);
-					mv.addObject("leader",leader);
-					
+					mv.addObject("groupMemberList", groupMemberList);
+					mv.addObject("leader", leader);
+					mv.addObject("groupNo", groupNo);
 					return mv;
 				}
 			}
@@ -143,4 +152,30 @@ public class GroupMemberController {
 		
 		return "1";
 	}
+	
+	/**
+	 * 모임멤버 초대 시 해당 이름이 표함된 멤버들 검색하는 메소드 
+	 * @param memberId
+	 * @return
+	 * 작성자 : 이주현
+	 */
+	@RequestMapping("searchAllMember")
+	@ResponseBody
+	public List<Member> searchGroupMember(@RequestParam String memberId){
+		List<Member> members = memberService.searchManyMemberById(memberId);
+		return members;
+	}
+	
+	/**
+	 * 모임멤버 초대버튼 누를 시 그 멤버에게 알림을 추가하는 메소드
+	 * @param memberId
+	 * @return
+	 */
+	@RequestMapping("inviteGroupMember")
+	@ResponseBody	
+	public String inviteGroupMember(String memberId, String groupNo){
+		alertService.insertAlert(new Alert(0, "새로운 소모임 가입 요청이 있습니다.", 0, 0, Integer.parseInt(groupNo), memberId));
+		return "알림 성공";
+	}
+	
 }

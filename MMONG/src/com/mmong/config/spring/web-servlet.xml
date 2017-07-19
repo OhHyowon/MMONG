@@ -5,7 +5,8 @@
 	xmlns:c="http://www.springframework.org/schema/c"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+      http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
 
 	<context:component-scan base-package="com.mmong.controller" />
 	<mvc:annotation-driven />
@@ -16,8 +17,6 @@
 	<mvc:view-controller path="/index.do" view-name="index.tiles" />
 
 	<!-- @@@@@ 추가시 각자의 구역 안에서 추가 해주세요 @@@@ -->
-
-
 
 	<!-- 주현 -->
 	<!-- 로그인 폼 -->
@@ -53,13 +52,17 @@
 
 
 	<!-- 세연 -->
-	<!-- 쪽지 관리 탭 -->
-	<mvc:view-controller path="/message.do" view-name="message/message.tiles" />
-	<!-- 쪽지보내기 폼 ㅡ 아마 수정 필요.........? -->
-	<mvc:view-controller path="/message/sendMessage.do" view-name="message/sendMessage.tiles" />
-	<!-- 쪽지 보내기 성공 폼 -->
-	<mvc:view-controller path="/message/sendSuccess.do" view-name="message/sendSuccess.tiles" />
-
+	  <!-- 쪽지 관리 탭 -->   
+      <mvc:view-controller path="/message/message.do" view-name="message/message.tiles"/>
+      <!-- 쪽지 보내기 성공 폼 -->
+      <mvc:view-controller path="/message/sendSuccess.do" view-name="message/sendSuccess.tiles"/>
+   
+	
+		<mvc:view-controller path="/calendar/calendar_main.do" view-name="calendar/calendar_main.tiles"/>
+		<mvc:view-controller path="/calendar/insertSchedule.do" view-name="/WEB-INF/view/content/calendar/insertSchedule.jsp"/>
+		<mvc:view-controller path="/calendar/insertSuccess.do" view-name="/WEB-INF/view/content/calendar/insertSuccess.jsp"/>
+		<mvc:view-controller path="/calendar/updateSuccess.do" view-name="/WEB-INF/view/content/calendar/updateSuccess.jsp"/>
+		
 
 	<!-- 규현 -->
 	<!-- 건강정보 목록 -->

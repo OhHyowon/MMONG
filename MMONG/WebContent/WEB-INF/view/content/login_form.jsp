@@ -3,24 +3,23 @@
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <link href="resource/assets/css/bootstrap.css" rel="stylesheet">
-<link href="resource/assets/css/style.css" rel="stylesheet">
+<link href="resource/assets/css/style.css?ver=1" rel="stylesheet">
 
 
 
 
-<script type="text/javascript"
-	src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script src="resource/assets/js/bootstrap.min.js"></script>
 <script
 	src="resource/assets/js/bootstarp-inputmask/bootstrap-inputmask.min.js"></script>
 <style>
 .error {
-	font-size: 8px;
+/* 	font-size: 8px; */
 	color: red;
 }
 </style>
 
-<h3>로그인 페이지</h3>
+<h3>　</h3>
 
 
 <div id="login-page">
@@ -38,21 +37,26 @@
 					
 					<label class="checkbox"> <!-- 비밀번호 찾기  -->
 		                <span class="pull-right">
-		                    <a data-toggle="modal" href="login.html#myModal"> Forgot Password?</a>
+		                    <a data-toggle="modal" href="login.html#myModal"> 비밀번호 찾기 </a>
 		                </span>
 		            </label>					
-					
+					<div style="text-align:center;">
+						<c:if test="${not empty param.errorMessage}">
+							<div class="error">${param.errorMessage }</div>
+						</c:if>
+					</div>
 				<button type="submit" class="btn btn-theme btn-block">SIGN
 					IN</button>
 					<hr>
 				<sec:csrfInput />
 			</div>
-			<div class="registration" align>
-				Don't have an account yet?<br/> 
+			<div class="registration" style="text-align:center;">
+				계정이 없으신가요?<br/> 
 				<a class="" href="/MMONG/member/register_form.do" > <!-- 회원가입 링크  --> 
-				Create an account
+				회원가입하기
 				</a>
 			</div>
+			<div>&nbsp;</div>
 		</form>
 	</div>
 </div>
@@ -67,6 +71,3 @@
      $.backstretch("http://www.pbh2.com/wordpress/wp-content/uploads/2013/03/cute-puppy-gifs-playing.gif", {speed: 500});
 </script>
 
-<c:if test="${not empty param.errorMessage}">
-	<div class="error">${param.errorMessage }</div>
-</c:if>

@@ -3,16 +3,20 @@
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
  <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
  <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-
+<script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+window.onload=function(){
+	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+}
+</script>
 <style type="text/css">
 .error{
-	font-size:.8em;
 	color: red;
 }
 </style>
 </head>
 <body>
-
+<div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i>게시물 등록
@@ -26,19 +30,26 @@
 <%-- =============소모임 상세페이지 소메뉴 끝================ --%>
 <hr>
 
-<h3>자유게시판 메뉴</h3>
-<ul>
-	<li><a href="/MMONG/group/board/board_form.do">게시글작성</a></li>
-	<li><a href="/MMONG/group/board/myBoardList.do">내가 쓴 글 보기</a>
-	<li><a href="/MMONG/group/reply/myReplyList.do">내가 쓴 댓글 보기</a>
-</ul>
+	<a href="/MMONG/group/board/board_form.do">게시글작성</a> | 
+	<a href="/MMONG/group/board/myBoardList.do">내가 쓴 글 보기</a> |
+	<a href="/MMONG/group/reply/myReplyList.do">내가 쓴 댓글 보기</a> |
 
 
-
-<form action="/MMONG/group/board/register.do?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data" onsubmit="return confirm('등록하시겠습니까?');">
-제목 : <input type="text" name="title"><span class="error"><form:errors path="board.title" deilimiter="&nbsp;&nbsp;"/></span><br>
+<div class="col-lg-10">
+	<div class="form-panel">
+		<h4 class="mb">글쓰기</h4>
+		
+<form action="/MMONG/group/board/register.do?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data" onsubmit="return confirm('등록하시겠습니까?');" class="form-horizontal style-form">
+제목 : <input type="text" name="title" class="form-control"><span class="error"><form:errors path="board.title" deilimiter="&nbsp;&nbsp;"/></span><br>
 내용 : <br>
-<textarea rows='20' cols='100' name="content">${param.content }</textarea><span class="error"><form:errors path="board.title" deilimiter="&nbsp;&nbsp;"/></span><br>
-<input type="file" name="upImage" multiple><br>
-<input type="submit" value="등록"> <input type="button" value="취소" onclick="location.href='/MMONG/group/board/allBoardList.do?gourpNo=${sessionScope.groupNo}'"/>
+<textarea rows='20' cols='100' name="content" class="form-control">${param.content }</textarea>
+<span class="error"><form:errors path="board.title" deilimiter="&nbsp;&nbsp;"/></span><br>
+<input class="btn btn-default btn-sm" type="file" name="upImage" multiple><br>
+<div style="float:right; position:relative; bottom:30px">
+<input class="btn btn-default btn-sm" type="submit" value="등록"> <input class="btn btn-default btn-sm" type="button" value="취소" onclick="location.href='/MMONG/group/board/allBoardList.do?gourpNo=${sessionScope.groupNo}'"/>
+</div>
 </form>
+	</div>
+</div>
+</section>
+</div>

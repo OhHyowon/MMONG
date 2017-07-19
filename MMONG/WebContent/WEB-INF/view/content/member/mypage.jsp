@@ -1,7 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-
+<script>
+window.onload=function(){
+	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+}
+</script>
+<div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i> 회원 마이페이지
@@ -27,10 +32,15 @@ ID : <sec:authentication property="principal.memberId"/> <br>
 
 <br>
 
-
 <form action="/MMONG/member/memberWithdrawal.do" method="post">
 	<input type="hidden" name="memberId" value="${requestScope.member.memberId }">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	<input type="submit" value="회원탈퇴">
 </form>
+
+<br>
+<ul>
+	<li><a href="/MMONG/message/message.do">쪽지 관리</a></li>
+</ul>
  </section>
+</div>

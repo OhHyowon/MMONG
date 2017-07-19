@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <style type="text/css">
 a:link {
 	/*방문하지 않은 링크 설정.*/
@@ -29,9 +29,9 @@ a:active {
 }
 
 table, td {
-	border: 1px solid gray;
+/* 	border: 1px solid gray; */
 	width:auto;
-	text-align:center;
+/* 	text-align:center; */
 }
 
 table {
@@ -51,6 +51,11 @@ label{
 <script type="text/javascript"
 		src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
+
+window.onload=function(){
+	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+}
+
 $(document).ready(function(){
 	$("#allCheckBtn").on("click", function() {
 		$("input[class='check']").prop("checked", this.checked);
@@ -63,7 +68,6 @@ $(document).ready(function(){
 	});
 	
 	$("#deleteBtn").on("click", function() {
-		alert("삭제버튼");
 		var cnt = $("input[class='check']").filter(":checked").length;
 		if(!confirm("선택된 " + cnt + "개 댓글을 삭제 하시겠습니까?")){
 			return ;
@@ -85,6 +89,7 @@ $(document).ready(function(){
 			success : function(txt) {
 				if (txt == '1') {
 					alert("삭제되었습니다.");
+					opener.parent.location.reload();
 					location.href = "/MMONG/group/reply/myReplyList.do"
 				} else {
 					alert("삭제실패");
@@ -97,11 +102,13 @@ $(document).ready(function(){
 });
 	
 </script>
-
+<div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i>내가 쓴 댓글 목록
 		</h3>
+		
+		
 		
 <%-- =============소모임 상세페이지 소메뉴 : 밑에 세메뉴안에도 이것 포함시키기! ================ --%>
 <ul>
@@ -111,19 +118,23 @@ $(document).ready(function(){
 </ul>
 <%-- =============소모임 상세페이지 소메뉴 끝================ --%>
 <hr>
+	<a href="/MMONG/group/board/board_form.do">게시글작성</a> | 
+	<a href="/MMONG/group/board/myBoardList.do">내가 쓴 글 보기</a> |
+	<a href="/MMONG/group/reply/myReplyList.do">내가 쓴 댓글 보기</a> |
 
-<h3>자유게시판 메뉴</h3>
-<ul>
-	<li><a href="/MMONG/group/board/board_form.do">게시글작성</a></li>
-	<li><a href="/MMONG/group/board/myBoardList.do">내가 쓴 글 보기</a>
-	<li><a href="/MMONG/group/reply/myReplyList.do">내가 쓴 댓글 보기</a>
-</ul>
+<c:choose>
+	<c:when test="${fn:length(requestScope.myReplyList)!=0 }">
 
-<table>
+
+<div class="col-md-12">
+	      <h4>자유게시판</h4>
+<input type="button"  id="deleteBtn" value="삭제" class="btn btn-default btn-sm">
+	          <hr>
+<table class="table">
 	<thead>
 		<tr>
 			<td><input type="checkbox" id="allCheckBtn" name="allCheck"></td>
-			<td>
+			<td>내용
 			</td>
 		</tr>
 	</thead>
@@ -141,7 +152,6 @@ $(document).ready(function(){
 	</tbody>
 </c:forEach>
 </table>
-<input type="button"  id="deleteBtn" value="삭제하기">
 
 
 	<%-- ################### 페이징 ################ --%>
@@ -194,4 +204,14 @@ $(document).ready(function(){
 			href="/MMONG/group/reply/myReplyList.do?page=${requestScope.pageBean.totalPage}">마지막
 			페이지</a>
 	</p>
+	</div>
+	</c:when>
+	<c:otherwise>
+		<p style="text-align:center">내가 쓴 댓글이 없습니다.</p>
+	</c:otherwise>
+	
+	
+
+	</c:choose>
 </section>
+</div>

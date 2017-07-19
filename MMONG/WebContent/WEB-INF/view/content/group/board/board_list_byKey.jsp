@@ -4,7 +4,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-
+<script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+window.onload=function(){
+	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+}
+</script>
 <style type="text/css">
 a:link {
 	/*방문하지 않은 링크 설정.*/
@@ -30,9 +35,9 @@ a:active {
 }
 
 table, td {
-	border: 1px solid gray;
+/* 	border: 1px solid gray; */
 	width:auto;
-	text-align:center;
+/* 	text-align:center; */
 }
 
 table {
@@ -66,21 +71,16 @@ td {
 .messageGo:hover .messageGoTxt {
     visibility: visible;
 }
+
+#form{
+	text-align:center;
+}
 </style>
 
-<script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-	$('.messageGoTxt').on("click",function(){
-		alert("올ㅋ 되는뎅ㅋ 여기서 세연이한테 쪽지 주소 받고, 아이디, 닉네임 넘겨 주면 됩니다!");
-	});
-});
-
-</script>
-
+<div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
-			<i class="fa fa-angle-right"></i>자유게시판
+			<i class="fa fa-angle-right"></i>소모임
 		</h3>
 	
 
@@ -99,18 +99,17 @@ $(document).ready(function(){
 </ul>
 <%-- =============소모임 상세페이지 소메뉴 끝================ --%>
 <hr>
-
-<ul>
-	<li><a href="/MMONG/group/board/board_form.do">게시글작성</a></li>
-	<li><a href="/MMONG/group/board/myBoardList.do">내가 쓴 글 보기</a>
-	<li><a href="/MMONG/group/reply/myReplyList.do">내가 쓴 댓글 보기</a>
-</ul>
+	<a href="/MMONG/group/board/board_form.do">게시글작성</a> | 
+	<a href="/MMONG/group/board/myBoardList.do">내가 쓴 글 보기</a> |
+	<a href="/MMONG/group/reply/myReplyList.do">내가 쓴 댓글 보기</a> |
 
 <c:choose>
 	<c:when test='${fn:length(requestScope.boardList)!=0 }'>
 
-	<h3>게시판 전체 목록</h3>
-	<table>
+<div class="col-md-12">
+	      <h4>자유게시판</h4>
+	          <hr>
+<table class="table">
 		<thead>
 			<tr>
 				<td>글번호</td>
@@ -129,7 +128,7 @@ $(document).ready(function(){
 						<td>${board.no }</td>
 						<td><a href="/MMONG/group/board/board_view.do?boardNo=${board.no }">${board.title }[${board.replyCount}]</a></td>
 						<td class="messageGo">${board.memberId }(${requestScope.nickNameList[idx.index] })
-							<div class="messageGoTxt" >쪽지보내기</div>
+							<a href="/MMONG/message/idNnickFromBoard.do?id=${board.memberId }&nickname=${requestScope.nickNameList[idx.index] }">쪽지보내기</a>
 						</td>
 						<td><fmt:formatDate value="${board.boardDate }" pattern="yyyy-MM-dd HH:mm" />
 						</td>
@@ -141,7 +140,7 @@ $(document).ready(function(){
 					<td>${board.no }</td>
 					<td><a href="/MMONG/group/board/board_view.do?boardNo=${board.no }">${board.title }</a></td>
 					<td class="messageGo">${board.memberId }(${requestScope.nickNameList[idx.index] })
-						<div class="messageGoTxt">쪽지보내기</div>
+						<div class="messageGoTxt"><a href="/MMONG/message/idNnickFromBoard.do?id=${board.memberId }&nickname=${requestScope.nickNameList[idx.index] }">쪽지보내기</a></div>
 					</td>
 					<td><fmt:formatDate value="${board.boardDate }" pattern="yyyy-MM-dd HH:mm" /></td>
 					<td>${board.hit }</td>
@@ -153,24 +152,6 @@ $(document).ready(function(){
 	</tbody>
 	</table>
 
-<c:set var="optionValue" value="${requestScope.option }"/>
-
-<%
-	String optionValue=(String)request.getAttribute("option");
-%>
-
-
- <%-- 검색 창 --%>
-	<form action="/MMONG/group/board/allBoardListByKey.do">
-	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-		<select name="option">
-			<option value="title" <%if(optionValue.equals("title")){%>selected<%} %>>제목</option>
-			<option value="content" <%if(optionValue.equals("content")){%>selected<%} %>>내용</option>
-			<option value="writer" <%if(optionValue.equals("writer")){%>selected<%} %>>작성자ID</option>
-		</select>
-			<input type="text" name="key" value="${requestScope.key }">
-			<input type="submit" value="검색">
-	</form>
 
 
 	<%-- ################### 페이징 ################ --%>
@@ -223,20 +204,41 @@ $(document).ready(function(){
 			href="/MMONG/group/board/allBoardListByKey.do?page=${requestScope.pageBean.totalPage}&groupNo=${sessionScope.groupNo}&key=${requestScope.key}&option=${requestScope.option}">마지막
 			페이지</a>
 	</p>
+<c:set var="optionValue" value="${requestScope.option }"/>
+
+<%
+	String optionValue=(String)request.getAttribute("option");
+%>
+
+
+ <%-- 검색 창 --%>
+ <div id="form">
+ 	<form action="/MMONG/group/board/allBoardListByKey.do">
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+		<select name="option" style="height:24.4px; margin-top:3px">
+			<option value="title" <%if(optionValue.equals("title")){%>selected<%} %>>제목</option>
+			<option value="content" <%if(optionValue.equals("content")){%>selected<%} %>>내용</option>
+			<option value="writer" <%if(optionValue.equals("writer")){%>selected<%} %>>작성자ID</option>
+		</select>
+			<input type="text" name="key" value="${requestScope.key }"  style="margin-bottom:1px;margin-left:3px">
+			<input class="btn btn-default btn-sm" type="submit" value="검색"  style="margin-left:3px">
+	</form>
+	</div>
+	</div>
+	
 	</c:when>
 		<c:otherwise>
-			조회된 게시물이 없습니다. 
+		<p style="text-align:center">
+			'${requestScope.key }' (으)로 조회된 게시물이 없습니다. 
+		</p>
 		</c:otherwise>
 	</c:choose>
-	
-	
-	
-	
-	
-	
+
 		</c:when>
 		<c:otherwise>
-			모임 참여자만 볼 수 있습니다. 모임 참여 해주세요 ^_^
+		<p style="text-align:center">
+			모임 참여자만 볼 수 있습니다. 모임 참여를 해주세요~</p>
 		</c:otherwise>
 </c:choose>
 	</section>
+</div>

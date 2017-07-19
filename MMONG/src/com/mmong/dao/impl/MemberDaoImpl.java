@@ -1,5 +1,7 @@
 package com.mmong.dao.impl;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -36,7 +38,12 @@ public class MemberDaoImpl implements MemberDao {
 	public Member searchMemberById(String memberId) {
 		return session.selectOne(makeSql("searchMemberById"), memberId);
 	}
-
+	
+	@Override
+	public List<Member> searchManyMemberById(String id) {
+		return session.selectList(makeSql("searchManyMemberById"), id);
+	}
+	
 	@Override
 	public int checkMemberId(String memberId) {
 		return session.selectOne(makeSql("checkMemberId"), memberId);
@@ -51,5 +58,7 @@ public class MemberDaoImpl implements MemberDao {
 	public int checkMemberEmail(String memberEmail) {
 		return session.selectOne(makeSql("checkMemberEmail"), memberEmail);
 	}
+
+
 
 }

@@ -36,7 +36,7 @@ function check(){
 <h5>인증번호 7자리를 입력하세요.</h5>
 	<form method="post" name="authForm" onSubmit="return check();">
 		인증번호 입력 : <input type="text" name="authNo"> <br>
-						<input type="submit" class="btn btn-info" value="인증">
+						<input type="button" class="btn btn-info" onClick="check(); return false;" value="인증">
 						<sec:csrfInput/>
 	</form>
 </body>

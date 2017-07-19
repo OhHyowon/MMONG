@@ -5,6 +5,11 @@
 <script type="text/javascript"
 	src="https://apis.skplanetx.com/tmap/js?version=1&format=javascript&appKey=6627b1a4-d735-3501-8a0d-84ad3ce149c9"></script>
 <script type="text/javascript">
+
+window.onload=function(){
+	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+}
+
 var map, markerLayer;
 var tdata;
 
@@ -113,25 +118,32 @@ window.onload = function() {
 </script>
 <style type="text/css">
 .error{
-	font-size:.8em;
 	color: red;
 }
 </style>
 
+<div id="total_div">
+<div>　</div>
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i>일정 등록
 		</h3>
 		
-<form action="/MMONG/group/groupDate/register.do?${_csrf.parameterName}=${_csrf.token}" method="post" onsubmit="return confirm('등록하시겠습니까?');">
-일정 이름 : <input type="text" name="title"><span class="error"><form:errors path="groupDate.title" deilimiter="&nbsp;&nbsp;"/></span><br>
-날짜 : <input type="datetime-local" name="groupDate"> <span class="error"><form:errors path="groupDate.groupDate" deilimiter="&nbsp;&nbsp;"/></span><br>
-장소 : <input type="text" name="place" id="keyword"><input type="button" value="검색" id="searchPOI">
+		
+		<div class="col-lg-8">
+	<div class="form-panel">
+	<div>&nbsp;</div>
+<form action="/MMONG/group/groupDate/register.do?${_csrf.parameterName}=${_csrf.token}" method="post" onsubmit="return confirm('등록하시겠습니까?');" class="form-horizontal style-form">
+일정 이름 : <input type="text" name="title" class="form-control"><span class="error"><form:errors path="groupDate.title" deilimiter="&nbsp;&nbsp;"/></span><br>
+날짜 : <input type="datetime-local" name="groupDate" class="form-control"> <span class="error"><form:errors path="groupDate.groupDate" deilimiter="&nbsp;&nbsp;"/></span><br>
+장소 : <input type="text" name="place" id="keyword" class="form-control"><input type="button" value="검색" id="searchPOI" >
 <div id="map_div" style="position: relative;">
 	<div id="result_list_div" style="position: absolute; left: 400px; top: 0px;width: 300px; display: flex;">
 	</div>
 </div>
 <input type="submit" value="등록">
 </form>
-
+</div>
+</div>
 </section>
+</div>
