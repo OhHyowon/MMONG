@@ -129,7 +129,7 @@ function logout(){
 </div>
 
             <!------메인로고-------->
-            <a href="/MMONG/index.do" class="logo"><b>MMONG</b></a>
+            <a href="/MMONG/index.do" class="logo"><b>MMONG <img src="/MMONG/resource/assets/img/puppy/dogPrint.png"></b></a>
             <!------메인 로고 끝------>
             
             <!-- --------------상단 바 : 알림, 쪽지 아이콘------------- -->
@@ -163,7 +163,7 @@ function logout(){
 						    </a>							
 					    </sec:authorize>
 					    <sec:authorize access="isAuthenticated()">
-						    <a href="/MMONG/message/message.do">
+						    <a href="/MMONG/message/selectReceiveMsg.do">
 						        <i class="fa fa-envelope-o"></i>
 						    </a>
 					    </sec:authorize>
@@ -216,6 +216,5 @@ function logout(){
                  </sec:authorize>
             	</ul>       	     	
             </div>
-
 
             <!-- --------------상단 바 : 마이페이지, 로그인 끝------------- -->

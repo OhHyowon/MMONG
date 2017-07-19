@@ -67,7 +67,7 @@ public class CalendarController {
 		
 		service.insertSchedule(calendar);
 		
-		RedirectView rv = new RedirectView("/MMONG/calendar/insertSuccess.do");
+		RedirectView rv = new RedirectView("/WEB-INF/view/content/calendar/insertSuccess.jsp");
 		rv.setExposeModelAttributes(false);
 		
 		return new ModelAndView(rv);

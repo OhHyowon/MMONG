@@ -17,6 +17,15 @@
 /* 	font-size: 8px; */
 	color: red;
 }
+
+a{
+	color:rgb(242, 140, 140);
+}
+
+a:hover{
+	color:rgb(242, 140, 140);
+	 font-weight: bold;
+}
 </style>
 
 <h3>　</h3>
@@ -35,11 +44,12 @@
 					name="userPwd" value="${param.userPwd }" class="form-control"
 					placeholder="Password">
 					
-					<label class="checkbox"> <!-- 비밀번호 찾기  -->
+					<div>&nbsp;</div>
+<!-- 					<label class="checkbox"> 비밀번호 찾기 
 		                <span class="pull-right">
 		                    <a data-toggle="modal" href="login.html#myModal"> 비밀번호 찾기 </a>
 		                </span>
-		            </label>					
+		            </label>	 -->				
 					<div style="text-align:center;">
 						<c:if test="${not empty param.errorMessage}">
 							<div class="error">${param.errorMessage }</div>

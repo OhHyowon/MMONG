@@ -29,7 +29,7 @@ a, a:hover, a:focus {
 }
 ::selection {
 
-    background: #68dff0;
+    background: rgb(242, 140, 140);
     color: #fff;
 }
 ::-moz-selection {
@@ -101,8 +101,8 @@ a, a:hover, a:focus {
 .btn-theme.active,
 .open .dropdown-toggle.btn-theme {
   color: #fff;
-  background-color: #48bcb4;
-  border-color: #48bcb4;
+  background-color: rgb(242, 140, 140);
+  border-color: rgb(242, 140, 140);
 }
 
 .btn-theme02 {
@@ -116,8 +116,8 @@ a, a:hover, a:focus {
 .btn-theme02.active,
 .open .dropdown-toggle.btn-theme02 {
   color: #fff;
-  background-color: #967adc;
-  border-color: #967adc;
+  background-color: rgb(242, 140, 140);
+  border-color: rgb(242, 140, 140);
 }
 
 .btn-theme03 {
@@ -429,7 +429,7 @@ ul.sidebar-menu li a.active i {
 
 a.logo {
     font-size: 20px;
-    color: black;
+    color: rgb(242, 140, 140);
     float: left;
     margin-top: 15px;
     text-transform: uppercase;
