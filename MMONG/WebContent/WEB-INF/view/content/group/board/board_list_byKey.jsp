@@ -31,7 +31,7 @@ a:hover {
 
 a:active {
 	/*마우스를 링크에 클릭하는 시점*/
-	color: blue;
+/* 	color: blue; */
 }
 
 table, td {

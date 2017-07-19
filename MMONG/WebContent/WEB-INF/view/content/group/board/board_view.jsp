@@ -69,6 +69,10 @@ $(document).ready(function(){
 	$('.updateBtn').on("click",function(){
 		$(this).parent().parent().parent().find("div:nth-child(2)").next().show();
 	}); // end of updateBtn (리플)
+	$(".cancleBtn").on("click",function(){
+		$(this).parent().parent().hide();
+	});
+	
 	$('.replyDeleteBtn').on('click',function(){		
 		var replyNo=$(this).next().val();
 		if(!confirm("댓글 삭제하시겠습니까?")){
@@ -215,7 +219,7 @@ $(document).ready(function(){
 											name="boardNo" value="${reply.boardNo }"> <input
 											type="text" name="content" value="${reply.content} "
 											size="100"> <input type="button" value="취소"
-											class="cancleBtn"> <input type="submit" value="수정완료">
+											class="cancleBtn btn btn-default btn-xs"> <input type="submit" value="수정완료" class="btn btn-default btn-xs">
 									</form>
 								</div>
 								<div>

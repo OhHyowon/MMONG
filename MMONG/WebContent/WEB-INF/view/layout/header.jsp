@@ -113,7 +113,7 @@ function logout(){
 </div>
 
             <!------메인로고-------->
-            <a href="/MMONG/index.do" class="logo"><b>MMONG</b></a>
+            <a href="/MMONG/index.do" class="logo"><b>MMONG <img src="/MMONG/resource/assets/img/puppy/dogPrint.png"></b></a>
             <!------메인 로고 끝------>
             
             <!-- --------------상단 바 : 알림, 쪽지 아이콘------------- -->
