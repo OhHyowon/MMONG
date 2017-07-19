@@ -25,7 +25,16 @@
 			<result column="content" property="content"/>	
 		</association>
 	</resultMap>
-
+	
+	<!-- no로 그룹멤버 select -->
+	<select id="selectGroupMemberByNo" parameterType="_int" resultType="groupMember">
+		SELECT no no,
+			   group_no groupNo,
+			   member_id memberId
+		FROM group_member
+		WHERE no = #{value}	
+	</select>
+	
 	<select id="selectMeById" parameterType="java.lang.String" resultMap="groupMember-group-resultMap">
 		SELECT gm.no, gm.group_no, gm.member_id,
 			   g.no, g.name, g.leader, g.picture, g.content

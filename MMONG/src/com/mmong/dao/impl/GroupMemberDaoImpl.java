@@ -54,4 +54,9 @@ public class GroupMemberDaoImpl implements GroupMemberDao {
 		session.delete(makeSql("deleteGroupMember"),map);
 	}
 
+	@Override
+	public GroupMember selectGroupMemberByNo(int no) {
+		return session.selectOne(makeSql("selectGroupMemberByNo"), no);
+	}
+
 }
