@@ -21,8 +21,6 @@
 	<!-- 주현 -->
 	<!-- 로그인 폼 -->
 	<mvc:view-controller path="/login_form.do" view-name="/WEB-INF/view/content/login_form.jsp" />
-	<!-- 개인회원 회원가입 폼 -->
-	<mvc:view-controller path="/member/register_form.do" view-name="member/register_form.tiles" />
 
 
 
