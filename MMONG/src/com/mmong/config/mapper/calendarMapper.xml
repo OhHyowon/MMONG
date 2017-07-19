@@ -83,4 +83,18 @@ emotion 변수 사용시, (null 가능)
 	DELETE FROM calendar
 	WHERE group_date_no = #{value}	
 </delete>
+
+<!-- 소모임 일정이 수정되었을 때 -->
+<update id="updateFromGroup">
+	UPDATE calendar
+	SET
+		title=#{title}, 
+		content=#{content}, 
+		type=#{type}, 
+		start_date=#{startDate}, 
+		end_date=#{endDate}, 
+		emotion=#{emotion}, 
+		picture=#{picture}
+	WHERE group_date_no=#{groupDateNo}
+</update>
 </mapper>

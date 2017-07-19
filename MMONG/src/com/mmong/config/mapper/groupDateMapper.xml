@@ -54,7 +54,7 @@
 	)
 </insert>
 
-<!-- groupDateNo 으로 meetmember 조회 -->
+<!-- groupDateNo 으로 meetmemberNo 조회 -->
 <select id="selectMeetMemberList" parameterType="int" resultType="int">
 	SELECT group_member_no
 	FROM meet_member

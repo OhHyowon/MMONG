@@ -2,6 +2,7 @@ package com.mmong.dao.impl;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +46,9 @@ public class HealthDaoImpl implements HealthDao{
 	 * 	건강관리 정보 수정
 	 */
 	@Override
-	public int updateHealthList(Health	health){
+	public int updateHealthList(Map	map){
 		
-		return session.update(makeSqlId("updateHealthList"),health);
+		return session.update(makeSqlId("updateHealthList"),map);
 	}
 	
 	/**
@@ -67,6 +68,15 @@ public class HealthDaoImpl implements HealthDao{
 		map.put("gen", gen);
 		
 		return session.selectList(makeSqlId("selectByGender"),map);
+	}
+	
+	/**
+	 * no로 건강기록 조회
+	 */
+	@Override
+	public Health selectByNo(int no) {
+		
+		return session.selectOne(makeSqlId("selectByNo"),no);
 	}
 
 

@@ -56,32 +56,35 @@ $(document).ready(function(){
 		$(this).submit(); //선택된 form전송
 	});
 
-
 });
 
 function searchNameChk(){//소모임 검색 버튼 누를때 값 검사
 	if($("#wantedGroup").val()=="" || $("#wantedGroup").val()=="이름으로 소모임 검색"){
 		$("#inputForm").attr('class', 'form-group has-error');
-/* 		$("#errMsg").empty();
-		$("#errMsg").append("검색할 소모임 이름을 입력하세요.");
-		$("#errMsg").show(); */
 		$("#wantedGroup").focus();
 		return;
 	}else{
 		$("#searchName").submit();
 	}
 }
+/* 
+function random_image(){
+	var myimages = new Array();
+	// 이곳에 출력할 이미지 주소를 계속해서 아래의 방법처럼 기입해 주세요
+	myimages[0] = "/MMONG/resource/assets/img/doggroup.jpg";
+	myimages[1] = "/MMONG/resource/assets/img/groups.jpg";
+	myimages[2] = "/MMONG/resource/assets/img/ny.jpg";
+	var ry = Math.floor( Math.random() * (myimages.length-1) );
+	$("#groupImg").attr('src', myimages[ry]);
+	//document.write('<img src="' + myimages[ry] + '" border=0>');
+}
+ */
 </script>
 
 
 
 <div id="total_div">
 <section class="wrapper site-min-height">
-		<h3>
-			<i class="fa fa-angle-right"></i> 소모임 페이지
-		</h3>
-
-
 
 
 
@@ -89,7 +92,7 @@ function searchNameChk(){//소모임 검색 버튼 누를때 값 검사
 <!-- 소모임 리스트 뿌리기  --> 
 <section id="portfolio" class="bg-white">
 	<!-- 타이틀 -->
-	<div class="row">
+	<div class="row" style="margin-top:50px;">
 	      <div class="col-lg-12 text-center">
 	          <h2 class="section-heading">All Groups</h2>
 	      </div>
@@ -110,13 +113,13 @@ function searchNameChk(){//소모임 검색 버튼 누를때 값 검사
 	<div class="row" id="groupResult">	
 	<c:forEach var="allGroup" items="${allGroup }">
 			<div class="col-md-4 col-sm-6 portfolio-item">
-	                  <a href="/MMONG/group/groupDetail.do?groupNo=${allGroup.no }" class="portfolio-link" data-toggle="modal">
+	                  <a href="/MMONG/group/groupDetail.do?groupNo=${allGroup.no }" class="portfolio-link" data-toggle="modal">	                  	  
 	                      <div class="portfolio-hover">
 	                          <div class="portfolio-hover-content">
 	                              <i class="fa fa-plus fa-3x"></i>
 	                          </div>
 	                      </div>
-	                      <img src="/MMONG/resource/assets/img/groups.jpg" class="img-responsive" alt="">
+	                      <img src="/MMONG/resource/assets/img/doggroup.jpg" class="img-responsive" alt="">	                      
 	                  </a>
 	                  <div class="portfolio-caption">
 	                      <h4><b>${allGroup.name }</b></h4>

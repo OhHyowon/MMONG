@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+   pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -7,7 +7,7 @@
 
 <style type="text/css">
 .error{
-	color: red;
+   color: red;
 }
 .messageGo {
     position: relative;
@@ -42,58 +42,71 @@
 <script type="text/javascript">
 
 window.onload=function(){
-	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+   $("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
 }
 
 $(document).ready(function(){
-	$("#BoardDeleteBtn").on("click",function(){
-			if(!confirm("삭제하시겠습니까?")){
-				return;
-			}else{
-		$.ajax({
-			url:"/MMONG/group/board/boardDelete.do", 
-			type:"post",
-			data:{"boardNo":$("#boardNo").val(),"${_csrf.parameterName}":"${_csrf.token}"},
-			dataType:"json",
-			success:function(txt){
-				if(txt=='1'){
-				alert('삭제되었습니다.');   
-				location.href="/MMONG/group/board/allBoardList.do"
-				}else{
-					alert('삭제실패');
-				}
-			}
-		});
-			}
-	}); // end of deleteBtn
-	$('.updateBtn').on("click",function(){
-		$(this).parent().parent().parent().find("div:nth-child(2)").next().show();
-	}); // end of updateBtn (리플)
-	$(".cancleBtn").on("click",function(){
-		$(this).parent().parent().hide();
+	
+	//팝업창 크기 조절
+	var width=480, height=480;
+	var left = (screen.availWidth - width)/2;
+	var top = (screen.availHeight - height)/2;
+	var specs = "width=" + width;
+	specs += ",height=" + height;
+	specs += ",left=" + left;
+	specs += ",top=" + top;
+	
+	$(".messageGoTxt").on("click", function(){
+		var id = $("#id").val()
+		var nickname = $("#nickname").val();
+		
+		window.open("/MMONG/message/idNnickFromBoard.do?id="+id+"&nickname="+nickname, "쪽지보내기", specs);
 	});
 	
-	$('.replyDeleteBtn').on('click',function(){		
-		var replyNo=$(this).next().val();
-		if(!confirm("댓글 삭제하시겠습니까?")){
-			return;
-		}else{
-			$.ajax({
-				url:"/MMONG/group/reply/deleteReply.do",
-				type:"post",
-				data:{"replyNo":replyNo,"${_csrf.parameterName}":"${_csrf.token}","boardNo":$('#boardNo').val()},
-				dataType:"json",
-				success:function(txt){
-					if(txt=='1'){
-						alert("삭제되었습니다.");
-						location.href="/MMONG/group/board/board_view.do?boardNo="+${requestScope.board.no}
-				}else{
-					alert("삭제실패");
-				}
-				}
-			});
-		}
-	}); // end of .replyDeleteBtn
+   $("#BoardDeleteBtn").on("click",function(){
+         if(!confirm("삭제하시겠습니까?")){
+            return;
+         }else{
+      $.ajax({
+         url:"/MMONG/group/board/boardDelete.do", 
+         type:"post",
+         data:{"boardNo":$("#boardNo").val(),"${_csrf.parameterName}":"${_csrf.token}"},
+         dataType:"json",
+         success:function(txt){
+            if(txt=='1'){
+            alert('삭제되었습니다.');   
+            location.href="/MMONG/group/board/allBoardList.do"
+            }else{
+               alert('삭제실패');
+            }
+         }
+      });
+         }
+   }); // end of deleteBtn
+   $('.updateBtn').on("click",function(){
+      $(this).parent().parent().parent().find("div:nth-child(2)").next().show();
+   }); // end of updateBtn (리플)
+   $('.replyDeleteBtn').on('click',function(){      
+      var replyNo=$(this).next().val();
+      if(!confirm("댓글 삭제하시겠습니까?")){
+         return;
+      }else{
+         $.ajax({
+            url:"/MMONG/group/reply/deleteReply.do",
+            type:"post",
+            data:{"replyNo":replyNo,"${_csrf.parameterName}":"${_csrf.token}","boardNo":$('#boardNo').val()},
+            dataType:"json",
+            success:function(txt){
+               if(txt=='1'){
+                  alert("삭제되었습니다.");
+                  location.href="/MMONG/group/board/board_view.do?boardNo="+${requestScope.board.no}
+            }else{
+               alert("삭제실패");
+            }
+            }
+         });
+      }
+   }); // end of .replyDeleteBtn
 });
 </script>
 
@@ -102,22 +115,47 @@ $(document).ready(function(){
 		<h3>
 			<i class="fa fa-angle-right"></i>게시글 보기
 		</h3>
-		
-<%-- =============소모임 상세페이지 소메뉴 : 밑에 세메뉴안에도 이것 포함시키기! ================ --%>
-<ul>
-	<li><a href="/MMONG/group/groupDate/allGroupDateList.do">모임 일정 목록</a></li> <!-- 소모임 상세페이지 첫 화면 -->
-	<li><a href="/MMONG/group/board/allBoardList.do">자유게시판</a></li>
-</ul>
+
+
+<%-- =============소모임 상세페이지 소메뉴 : 밑에 두메뉴안에도 이것 포함시키기! ================ --%>
+	<div class="btn-group btn-group-justified" style="margin-top:50px; margin-bottom:30px;"">
+	  <div class="btn-group">
+	    <a href="/MMONG/group/groupDate/allGroupDateList.do"><button type="button" class="btn btn-theme">모임 일정 목록</button></a>
+	  </div>
+	  <div class="btn-group">
+	    <a href="/MMONG/group/board/allBoardList.do"><button type="button" class="btn btn-theme">자유게시판</button></a>
+	  </div>
+	</div>			
+
 <%-- =============소모임 상세페이지 소메뉴 끝================ --%>
+
 <hr>
 	<input type="button"class="btn btn-default btn-sm" value="글쓰기" onclick="location.href='/MMONG/group/board/board_form.do'">
 	<input type="button"class="btn btn-default btn-sm" value="내가 쓴 글" onclick="location.href='/MMONG/group/board/myBoardList.do'">
 	<input type="button"class="btn btn-default btn-sm" value="내가 쓴 댓글" onclick="location.href='/MMONG/group/reply/myReplyList.do'">
 <br><br>
 
-	<sec:authentication property="principal.memberId" var="loginId"/>
-	<sec:authentication property="principal.nickName" var="nickName"/>
-	<div class="col-md-9" style="margin-left: 170px;">
+		<%-- =============소모임 상세페이지 소메뉴 : 밑에 세메뉴안에도 이것 포함시키기! ================ --%>
+		<ul>
+			<li><a href="/MMONG/group/groupDate/allGroupDateList.do">모임
+					일정 목록</a></li>
+			<!-- 소모임 상세페이지 첫 화면 -->
+			<li><a href="/MMONG/group/board/allBoardList.do">자유게시판</a></li>
+		</ul>
+		<%-- =============소모임 상세페이지 소메뉴 끝================ --%>
+		<hr>
+		<input type="button" class="btn btn-default btn-sm" value="글쓰기"
+			onclick="location.href='/MMONG/group/board/board_form.do'"> <input
+			type="button" class="btn btn-default btn-sm" value="내가 쓴 글"
+			onclick="location.href='/MMONG/group/board/myBoardList.do'">
+		<input type="button" class="btn btn-default btn-sm" value="내가 쓴 댓글"
+			onclick="location.href='/MMONG/group/reply/myReplyList.do'">
+		<br>
+		<br>
+
+		<sec:authentication property="principal.memberId" var="loginId" />
+		<sec:authentication property="principal.nickName" var="nickName" />
+		<div class="col-md-9" style="margin-left: 170px;">
 
 			<table
 				style="border-top: 1px solid gray; border-bottom: 1px dashed; width: 943px; margin-botton: 1px">
@@ -177,7 +215,6 @@ $(document).ready(function(){
 			<%--########################   댓글    #########################  --%>
 			<br>
 			<br>
-
 			<div style="background: #DFDFDF; width: 943px">
 				<div>&nbsp;</div>
 				<c:forEach items="${requestScope.replyList }" var="reply"
@@ -185,7 +222,7 @@ $(document).ready(function(){
 					<c:choose>
 						<c:when test="${ reply.memberId  == loginId}">
 							<div>
-								<div style="padding-left: 10px;position:relative">
+								<div style="padding-left: 10px;">
 									<div class="messageGo">
 										<b> ${reply.memberId }(${requestScope.replyNickname[idx.index] })
 										</b> &nbsp;&nbsp;&nbsp;
@@ -198,15 +235,16 @@ $(document).ready(function(){
 												id="nickname">
 										</div>
 									</div>
-									<div style="position:absolute;top:5px;left:880px;display:flex;">
-									<button class="updateBtn btn btn-primary btn-xs" value="댓글수정">
-										<i class="fa fa-pencil"></i>
-									</button>
-									<button class="replyDeleteBtn btn btn-danger btn-xs" value="댓글삭제">
-										<i class="fa fa-trash-o "></i>
-									</button>
+									<div id="button">
+										<button class="updateBtn btn btn-primary btn-xs">
+											<i class="fa fa-pencil"></i>
+										</button>
+										<button class="replyDeleteBtn btn btn-danger btn-xs"
+											value="댓글삭제">
+											<i class="fa fa-trash-o "></i>
+										</button>
+										<input type="hidden" name="replyNo" value="${reply.no }">
 									</div>
-									<input type="hidden" name="replyNo" value="${reply.no }">
 								</div>
 								<div style="padding: 7px">
 									<span>${reply.content}</span>
@@ -219,7 +257,7 @@ $(document).ready(function(){
 											name="boardNo" value="${reply.boardNo }"> <input
 											type="text" name="content" value="${reply.content} "
 											size="100"> <input type="button" value="취소"
-											class="cancleBtn btn btn-default btn-xs"> <input type="submit" value="수정완료" class="btn btn-default btn-xs">
+											class="cancleBtn"> <input type="submit" value="수정완료">
 									</form>
 								</div>
 								<div>
@@ -262,7 +300,6 @@ $(document).ready(function(){
 					<br>
 				</form>
 			</div>
-
 
 		</div>
 		<%-- 댓글 end --%>

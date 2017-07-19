@@ -125,9 +125,7 @@ window.onload = function() {
 <div id="total_div">
 <div>　</div>
 	<section class="wrapper site-min-height">
-		<h3>
-			<i class="fa fa-angle-right"></i>일정 등록
-		</h3>
+
 		
 		
 		<div class="col-lg-8">

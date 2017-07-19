@@ -9,6 +9,26 @@
 window.onload=function(){
 	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
 }
+
+$(document).ready(function(){
+	
+	//팝업창 크기 조절
+	var width=480, height=480;
+	var left = (screen.availWidth - width)/2;
+	var top = (screen.availHeight - height)/2;
+	var specs = "width=" + width;
+	specs += ",height=" + height;
+	specs += ",left=" + left;
+	specs += ",top=" + top;
+	
+	$(".messageGoTxt").on("click", function(){
+		var id = $("#id").val()
+		var nickname = $("#nickname").val();
+
+		window.open("/MMONG/message/idNnickFromBoard.do?id="+id+"&nickname="+nickname, "쪽지보내기", specs);
+	});
+});
+	
 </script>
 <style type="text/css">
 a:link {
@@ -79,9 +99,7 @@ td {
 
 <div id="total_div">
 	<section class="wrapper site-min-height">
-		<h3>
-			<i class="fa fa-angle-right"></i>소모임
-		</h3>
+
 	
 
 	
@@ -89,13 +107,18 @@ td {
 	<c:when test="${requestScope.check == 1}"> <!-- check가 1이면 볼 권한 있음 -->
 
 
-
-
-<%-- =============소모임 상세페이지 소메뉴 : 밑에 세메뉴안에도 이것 포함시키기! ================ --%>
-<ul>
-	<li><a href="/MMONG/group/groupDate/allGroupDateList.do">모임 일정 목록</a></li> <!-- 소모임 상세페이지 첫 화면 -->
-	<li><a href="/MMONG/group/board/allBoardList.do">자유게시판</a></li>
-</ul>
+<%-- =============소모임 상세페이지 소메뉴 : 밑에 두메뉴안에도 이것 포함시키기! ================ --%>
+	<div class="btn-group btn-group-justified" style="margin-top:50px; margin-bottom:30px;"">
+	  <div class="btn-group">
+	    <a href="/MMONG/group/groupDate/allGroupDateList.do"><button type="button" class="btn btn-theme">모임 일정 목록</button></a>
+	  </div>
+	  <div class="btn-group">
+	    <a href="/MMONG/group/board/allBoardList.do"><button type="button" class="btn btn-theme">자유게시판</button></a>
+	  </div>
+	  <div class="btn-group">
+	    <a href="/MMONG/group/mygroup.do"><button type="button" class="btn btn-theme">나의 소모임</button></a>
+	  </div>
+	</div>			
 <%-- =============소모임 상세페이지 소메뉴 끝================ --%>
 <hr>
 <input type="button"class="btn btn-default btn-sm" value="글쓰기" onclick="location.href='/MMONG/group/board/board_form.do'">
@@ -127,7 +150,10 @@ td {
 						<td>${board.no }</td>
 						<td><a href="/MMONG/group/board/board_view.do?boardNo=${board.no }">${board.title }[${board.replyCount}]</a></td>
 						<td class="messageGo">${board.memberId }(${requestScope.nickNameList[idx.index] })
-							<a href="/MMONG/message/idNnickFromBoard.do?id=${board.memberId }&nickname=${requestScope.nickNameList[idx.index] }">쪽지보내기</a>
+							<div class="messageGoTxt">쪽지보내기
+								<input type="hidden" value="${board.memberId }" id="id">
+								<input type="hidden" value="${requestScope.nickNameList[idx.index] }" id="nickname">
+							</div>
 						</td>
 						<td><fmt:formatDate value="${board.boardDate }" pattern="yyyy-MM-dd HH:mm" />
 						</td>
@@ -139,7 +165,10 @@ td {
 					<td>${board.no }</td>
 					<td><a href="/MMONG/group/board/board_view.do?boardNo=${board.no }">${board.title }</a></td>
 					<td class="messageGo">${board.memberId }(${requestScope.nickNameList[idx.index] })
-						<div class="messageGoTxt"><a href="/MMONG/message/idNnickFromBoard.do?id=${board.memberId }&nickname=${requestScope.nickNameList[idx.index] }">쪽지보내기</a></div>
+						<div class="messageGoTxt">쪽지보내기
+							<input type="hidden" value="${board.memberId }" id="id">
+							<input type="hidden" value="${requestScope.nickNameList[idx.index] }" id="nickname">
+						</div>
 					</td>
 					<td><fmt:formatDate value="${board.boardDate }" pattern="yyyy-MM-dd HH:mm" /></td>
 					<td>${board.hit }</td>

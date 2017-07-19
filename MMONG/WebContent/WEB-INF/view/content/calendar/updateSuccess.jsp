@@ -6,6 +6,27 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 
+<!-- Bootstrap core CSS -->
+    <link href="/MMONG/resource/assets/css/bootstrap.css?var=1" rel="stylesheet">
+    
+    <!--external css-->
+    <link href="/MMONG/resource/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="/MMONG/resource/assets/js/gritter/css/jquery.gritter.css" />
+    <link rel="stylesheet" type="text/css" href="/MMONG/resource/assets/lineicons/style.css">        
+   
+    <!-- Custom styles for this template -->
+    <link href="/MMONG/resource/assets/css/style.css?var=2" rel="stylesheet">
+    <link href="/MMONG/resource/assets/css/style-responsive.css" rel="stylesheet">
+
+<style type="text/css">
+
+body{
+	font-size: 15px;
+	background-color: #F2F2F2;
+}
+
+</style>
+
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -19,8 +40,10 @@ $(document).ready(function(){
 
 </head>
 <body>
-<h2>일정 수정에 성공하셨습니다.</h2>
-
-<input type="button" value="확인" id="ok">
+<div align="center">
+<br><br><br><br><br><br><br><br>
+<h2>일정 수정 성공</h2><br><br>
+<input type="button" class="btn btn-default" value="확인" id="ok">
+<br><br><br><br><br><br></div>
 </body>
 </html>

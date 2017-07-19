@@ -166,5 +166,5 @@ $(document).ready(function(){
 		</form>
 	</c:if>
 <br><br><br><br><br><br><br><br><br><br><br><br><br>
-			</div>
 	</div>
+</div>
