@@ -48,7 +48,7 @@ $(function() { //3초에 한번 알람개수 뿌리는 함수
 			"success" : function(response) {//response = 안읽은 알람개수
 				if(response==""){
 					$("#alertDropdown").remove();
-				}else{//로그인한 사용자라면 (로그인하지않은 사용자일땐 response에 빈 값 옴)
+				}else{//로그인한 사용자라면 (로그인하지않은 사용자, 관리자일땐 response에 빈 값 옴)
 					$("#alert").html(response);
 					if(response=="0"){
 						$("#alertMsg").html("새로운 알람이 없습니다.");
