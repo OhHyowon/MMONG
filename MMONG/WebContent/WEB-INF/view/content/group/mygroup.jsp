@@ -72,10 +72,10 @@ $(document).ready(function(){
 		    <!-- 소모임 추가 버튼 -->
 		    <div style="margin-left:89%; display:inline-block; margin-bottom:10px;">		
 				<sec:authorize access="!isAuthenticated()"> 
-					<button type="button" id="createNone" class="btn btn-theme">소모임 만들기</button>
+					<button type="button" id="createNone" class="btn btn-default">소모임 만들기</button>
 				</sec:authorize>
 			 	<sec:authorize access="hasRole('ROLE_1')">  
-					<button type="button"  class="btn btn-theme" onclick="window.open('/MMONG/group/createGroup.do', '소모임 만들기', 'top=100px, left=100px, height=220px, width=500px')">소모임 만들기</button>
+					<button type="button"  class="btn btn-default" onclick="window.open('/MMONG/group/createGroup.do', '소모임 만들기', 'top=100px, left=100px, height=220px, width=500px')">소모임 만들기</button>
 				</sec:authorize>	    
 		    </div>		    
 		    <!-- 그룹리스트 -->
@@ -107,7 +107,7 @@ $(document).ready(function(){
     
     
 		<!-- 소모임 찾기 버튼 -->
-		<center><button type="button" class="btn btn-theme" onClick="self.location='/MMONG/group/searchGroup.do';">소모임 찾기</button></center>
+		<center><button type="button" class="btn btn-default" onClick="self.location='/MMONG/group/searchGroup.do';">소모임 찾기</button></center>
 		
 
 
