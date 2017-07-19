@@ -58,7 +58,7 @@ $(document).ready(function(){
 					}
 				}
 			});
-		}c
+		}
 	}); // end of deleteBtn
 });
 
@@ -143,60 +143,6 @@ $(document).ready(function(){
 <br><br><br><br><br><br><br><br><br><br><br><br><br>
 	</div>
 </div>
-
-
-
-
-
-<%-- 
-
-<div class="col-sm-8" style="text-align:center;">
-<img src="/MMONG/resource/assets/img/left.png"><span>　</span>${requestScope.groupDate.title}<span>　</span><img src="/MMONG/resource/assets/img/right.png"><br>
-날짜 : <fmt:formatDate value="${requestScope.groupDate.groupDate}" pattern="yyyy-MM-dd HH:mm"/><br>
-<textarea rows='auto' cols='50'>지도 들어갈 자리</textarea>
-
-
-<!-- 로그인된 아이디가 일정 작성자와 같다면 -->
-
-</div>
-
-
-
-
-<div class="col-sm-4">
-	<table>
-	<br><br><br>
-<tr>일정 참여자 목록</tr>
-<c:choose>
- 		<c:when test="${empty requestScope.memberIdList}"> 멤버아이디가 없을 때
-				<li>일정 참여자가 없습니다!</li>
-			<input type="button" value="참여 하기" id="insertBtn">
-		</c:when> 
-
-		<c:otherwise>
-	<c:forEach items="${requestScope.memberIdList }" var="memberId" varStatus="idx">
-			<c:choose>
-			<c:when test="${memberId == loginId }"> 로그인된 아이디와 참여자 아이디가 같다면
-					<li>
-					${memberId }(${requestScope.nickNameList[idx.index] })<input type="button" value="참여 취소" id="cancelBtn" style="margin-left:5px">
-					</li>
-			</c:when>
-			
-			<c:when test="${memberId != loginId }"> 로그인된 아이디와 참여자 아이디가 다르다면
-					<li>
-					${memberId }(${requestScope.nickNameList[idx.index] })
-					</li>			
-			<input type="button" value="참여 하기">
-			</c:when>
-			</c:choose>
-			</c:forEach>
-		</c:otherwise>
-	</c:choose>
-</table>
-</div>
-	
-	
-<hr> --%>
 
 
 </section>
