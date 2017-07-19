@@ -27,7 +27,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 
 
 	@Override
-	public Administrator searchAdministratorById(String adminId) {
+	public Administrator searchAdministratorById(String adminId){
 		return adminDao.searchAdministratorById(adminId);
 	}
 	

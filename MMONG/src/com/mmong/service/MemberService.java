@@ -51,5 +51,11 @@ public interface MemberService {
 	 */	
 	int checkMemberEmail(String memberEmail);
 	
+	/**
+	 * 회원 전화번호 중복확인하는 메소드
+	 * @param memberPhone
+	 * @return 찾은 번호가 : 있으면 1, 없으면 0
+	 */
+	int checkMemberPhone(String memberPhone);
 
 }

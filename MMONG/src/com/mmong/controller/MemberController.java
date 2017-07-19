@@ -74,14 +74,29 @@ public class MemberController {
 	 */
 	@RequestMapping("checkMemberEmail")
 	@ResponseBody
-	public String checkMemberEmail(@RequestParam(required=false) String memberEmail1, String memberEmail2){
-		String memberEmail = memberEmail1 +"@"+ memberEmail2;
+	public String checkMemberEmail(@RequestParam(required=false) String memberEmail){
 		//요청파라미터 검증
 		
 		//비즈니스 로직 처리 - 회원 조회
 		int checkEmail = memberService.checkMemberEmail(memberEmail);
 		//응답
 		return String.valueOf(checkEmail);
+	}
+	
+	/**
+	 * 회원등록시 회원 핸드폰번호 중복확인하는 handler method
+	 * @param memberPhone
+	 * @return
+	 */
+	@RequestMapping("checkMemberPhone")
+	@ResponseBody
+	public String checkMemberPhone(@RequestParam(required=false) String memberPhone){
+		//요청파라미터 검증
+		System.out.println("컨트롤러 2 --"+memberPhone);
+		//비즈니스 로직 처리 - 관리자 번호조회
+		int checkPhone = memberService.checkMemberPhone(memberPhone);
+		//응답
+		return String.valueOf(checkPhone);
 	}
 	
 	/**

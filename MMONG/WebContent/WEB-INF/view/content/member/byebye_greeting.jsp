@@ -1,14 +1,25 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
-<body>
+
+<style type="text/css">
+#content{
+	text-align: center;
+}
+</style>
+<script type="text/javascript">
+window.onload=function(){
+	$("#total_div").css("min-height",(document.body.scrollHeight-38.4)+"px");
+}
+
+</script>
+
+<div id="total_div">
+
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i> 회원 탈퇴가 완료되었습니다.
 		</h3>
- 
-
-그동안 이용해 주셔서 감사합니다<br>
-
-<a href="/MMONG/index.do">메인페이지</a>
-
+<div id="content">
+	그동안 이용해 주셔서 감사합니다
+</div>
 </section>
-</body>
+</div>
