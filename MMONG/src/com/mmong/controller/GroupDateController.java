@@ -316,6 +316,14 @@ public class GroupDateController{
 		
 		groupDateService.upDateGroupDate(groupDate1); // DB에 수정된 일정 넣기
 		
+		//일정 수정시 일정에 참여했던 멤버들에게 수정된 일정 정보 알리기 --이주현
+		List meetMemberNos = groupDateService.selectMeetMemberList(groupDateNo);
+		GroupMember groupMember; //모임에 참여하는 그룹멤버들 담을 변수 
+		for(int i=0; i<meetMemberNos.size(); i++){
+			groupMember = groupMemberService.selectGroupMemberByNo((int)meetMemberNos.get(i)); //meetMember의 no로 GroupMember를 찾음 
+			alertService.insertAlert(new Alert(0, "모임 [ "+groupDate1.getTitle()+" ]이 변경되었습니다.", 0, 3, groupDate1.getGroupNo(), groupMember.getMemberId()));
+		}
+		
 		map.addAttribute("memberIdList", memberIdList);
 		map.addAttribute("nickNameList", nickNameList);
 		return "/group/groupDate/groupDateView.do?groupDateNo="+groupDateNo;

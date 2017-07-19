@@ -218,8 +218,8 @@ $(document).ready(function(){
    if(au.equals("ROLE_1")){//관리자인 경우 아무것도 안뜸 
       Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();      
       if(((Group)request.getAttribute("group")).getLeader().equals(member.getMemberId())){ //주인장은 가입하기 버튼 대신 소모임 정보수정 버튼 필요
-         out.println("<button type='button' id='editGroupBtn' class='btn btn-default'>소모임 수정하기</button>");
-      	 out.println("<button type='button' id='deleteBtn' class='btn btn-default'>소모임 삭제하기</button>");
+         out.println("<center><button type='button' id='editGroupBtn' class='btn btn-default btn-sm'>소모임 수정하기</button></center>");
+      	 out.println("<center><button type='button' id='deleteBtn' class='btn btn-default btn-sm'>소모임 삭제하기</button></center>");
       }else{//주인장이 아닌경우 그룹멤버에 이미 내가 포함되어있는지 검사후 안되어있으면 가입하기버튼
     	  List<GroupMember> groupMemberList = (List)(request.getAttribute("groupMemberList"));
     	  boolean flag = false;
@@ -230,7 +230,7 @@ $(document).ready(function(){
     		  }
     	  }
     	  if(flag==false){ //가입 안되어있는 경우 - 가입하기 버튼 
-    		  out.println("<button type='button' id='create' class='btn btn-default'>가입하기</button>");
+    		  out.println("<center><button type='button' id='create' class='btn btn-default btn-sm'>가입하기</button></center>");
     	  }
       }
    }
