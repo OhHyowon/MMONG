@@ -96,31 +96,55 @@ $(document).ready(function() {
 
 
 <!-- 참여자 목록 -->
-<p>
-	<b>참여 멤버</b>
-</p>
 <sec:authorize access="!isAuthenticated()">
 		로그인 해주세요. 
 	</sec:authorize>
 <sec:authorize access="isAuthenticated()">
 	<!-- 참여멤버 조회 -->
+
 	<c:choose>
 		<c:when test="${groupMemberList == null}">
 				참여 멤버 목록 조회는 모임 멤버만 가능합니다. 
 			</c:when>
 		<c:otherwise>
-			<c:forEach var="groupMember" items="${groupMemberList }">
-				- 이름 : ${groupMember.memberId }<br>
-			</c:forEach>
-			
+	
+		<div class="col-md-4" style="text-align:center;">
+					<table class="table">
+						<thead>
+							<tr>
+								<td>참여자 ID</td>
+							</tr>
+						</thead>
+						<tbody>
+								<c:forEach var="groupMember" items="${groupMemberList }">
+							<tr>
+									<td>${groupMember.memberId }</td>
+							</tr>
+								</c:forEach>
+						</tbody>
+					</table>
+			</div>
 		</c:otherwise>
 	</c:choose>
-	
-	
+
+
+
 	<c:choose>
 		<c:when test="${groupMemberList != null}"> <!-- 멤버초대랑 모임탈퇴는 내가 그룹에 가입되어있을때만 -->
-	<!-- 멤버초대 -->	    					
-			<button class="btn btn-default" data-toggle="modal" data-target="#myModal">invite</button>
+	<!-- 멤버초대 -->	   
+	<div class="col-md-9"> 					
+			<button class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">invite</button>
+				<!-- 모임탈퇴 -->	
+			<button class="btn btn-default btn-sm" id="leaveBtn" >모임 탈퇴</button>
+			<sec:authentication property="principal.memberId" var="loginId" />
+			<c:if test="${requestScope.leader eq loginId}">
+					<input type="button" value="모임장 변경하기" class="btn btn-default btn-sm"
+						onclick="window.open('/MMONG/groupMember/searchGroupMember2.do', '모임장 변경하기', 'top=100px, left=100px, height=220px, width=500px')">
+			</c:if>
+		</div>
+	
+
+		
 			<!-- Modal -->
 			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			  <div class="modal-dialog">
@@ -147,36 +171,17 @@ $(document).ready(function() {
 			          	</div><!-- /row -->
 			      </div>
 			      <div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
+			        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">cancel</button>
 			      </div>
 			    </div>
 			  </div>
 			</div>  
-			
-	<!-- 모임탈퇴 -->	
-			<button class="btn btn-default" id="leaveBtn" >모임 탈퇴</button>
-			
 		</c:when>
 	</c:choose>
-	
-	
 </sec:authorize>
-
-
-
-
-
-<sec:authentication property="principal.memberId" var="loginId" />
-
-<c:if test="${requestScope.leader eq loginId}">
-	<input type="button" value="모임장 변경하기" class="btn btn-default"
-		onclick="window.open('/MMONG/groupMember/searchGroupMember2.do', '모임장 변경하기', 'top=100px, left=100px, height=220px, width=500px')">
-</c:if>
 
 <input type="hidden" id="leader" value="${requestScope.leader }">
 <input type="hidden" id="loginId" value="${loginId }">
-
-
 
 </section>
 </div>

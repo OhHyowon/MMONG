@@ -21,8 +21,6 @@
 	<!-- 주현 -->
 	<!-- 로그인 폼 -->
 	<mvc:view-controller path="/login_form.do" view-name="/WEB-INF/view/content/login_form.jsp" />
-	<!-- 개인회원 회원가입 폼 -->
-	<mvc:view-controller path="/member/register_form.do" view-name="member/register_form.tiles" />
 
 
 
@@ -40,7 +38,7 @@
 	<!-- 일정 상세 페이지 -->
 	<mvc:view-controller path="/group/groupDate/groupDate_view.do" view-name="group/groupDate/groupDate_view.tiles" />
     <!-- 일정 수정 페이지 -->
-     <mvc:view-controller path="/group/groupDate/groupDate_update.do" view-name="group/groupDate/groupDate_update.tiles"/>
+     <mvc:view-controller path="/group/groupDate/groupDate_update.do" view-name="/WEB-INF/view/content/group/groupDate/groupDate_update.jsp"/>
 		
 	
 	<!-- 자유게시판 등록 양식 -->
