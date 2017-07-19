@@ -80,7 +80,6 @@ $(document).ready(function(){
 
 </script>
 
-</head>
 <body>
 
 	<section class="wrapper site-min-height">

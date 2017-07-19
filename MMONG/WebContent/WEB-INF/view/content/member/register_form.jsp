@@ -18,7 +18,9 @@ var sizeChk = true; //아이디 길이 체크값
 var idDuplicationChk = false; //아이디 중복검사 체크값
 var pwdChk = false; //비밀번호 값 검사 체크값
 var emailChk = false; //이메일인증 검사 체크값 
-
+window.onload=function(){
+	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+}
 $(document).ready(function() {///가입 버튼 누르기 전에 폼 이동 시 에러메시지 뿌리기 
 	
 	////////////////////아이디 길이 값 검사 
@@ -313,6 +315,7 @@ function formSubmit(){
 
 </script>
 
+<div id="total_div">
 <section id="main-content">
 	<section class="wrapper site-min-height">
 		<h3>
@@ -431,6 +434,6 @@ function formSubmit(){
 </form>
 	</section>
 </section>
-
+</div>
 
 

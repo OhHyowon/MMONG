@@ -56,11 +56,16 @@ $(document).ready(function(){
 			<td>기분</td>  
 			<td>
 				<div>
-		  			<label>기쁨 <input type="checkbox" class="check" name="emotion" value=1></label>
-		  			<label>슬픔 <input type="checkbox" class="check" name="emotion" value=2></label>
-		  			<label>화남 <input type="checkbox" class="check" name="emotion" value=3></label>
-		  			<label>보통 <input type="checkbox" class="check" name="emotion" value=4></label>
-		  			<label>우울 <input type="checkbox" class="check" name="emotion" value=5></label>
+		  			<label><img src="/MMONG/resource/calendar/emoticon/happy.png" width="20" height="20"> 
+		  						<input type="checkbox" class="check" name="emotion" value=1></label>
+		  			<label><img src="/MMONG/resource/calendar/emoticon/sad.png" width="20" height="20">
+		  						<input type="checkbox" class="check" name="emotion" value=2></label>
+		  			<label><img src="/MMONG/resource/calendar/emoticon/upset.png" width="20" height="20">
+		  						<input type="checkbox" class="check" name="emotion" value=3></label>
+		  			<label><img src="/MMONG/resource/calendar/emoticon/soso.png" width="20" height="20">
+		  						<input type="checkbox" class="check" name="emotion" value=4></label>
+		  			<label><img src="/MMONG/resource/calendar/emoticon/gloomy.png" width="20" height="20">
+		  						<input type="checkbox" class="check" name="emotion" value=5></label>
 		  		</div>
 			</td>
 		</tr>

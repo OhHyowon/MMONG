@@ -4,7 +4,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-
+<script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+window.onload=function(){
+	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+}
+</script>
 <style type="text/css">
 a:link {
 	/*방문하지 않은 링크 설정.*/
@@ -72,16 +77,7 @@ td {
 }
 </style>
 
-<script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-	$('.messageGoTxt').on("click",function(){
-		alert("올ㅋ 되는뎅ㅋ 여기서 세연이한테 쪽지 주소 받고, 아이디, 닉네임 넘겨 주면 됩니다!");
-	});
-});
-
-</script>
-
+<div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i>소모임
@@ -132,7 +128,7 @@ $(document).ready(function(){
 						<td>${board.no }</td>
 						<td><a href="/MMONG/group/board/board_view.do?boardNo=${board.no }">${board.title }[${board.replyCount}]</a></td>
 						<td class="messageGo">${board.memberId }(${requestScope.nickNameList[idx.index] })
-							<div class="messageGoTxt" >쪽지보내기</div>
+							<a href="/MMONG/message/idNnickFromBoard.do?id=${board.memberId }&nickname=${requestScope.nickNameList[idx.index] }">쪽지보내기</a>
 						</td>
 						<td><fmt:formatDate value="${board.boardDate }" pattern="yyyy-MM-dd HH:mm" />
 						</td>
@@ -144,7 +140,7 @@ $(document).ready(function(){
 					<td>${board.no }</td>
 					<td><a href="/MMONG/group/board/board_view.do?boardNo=${board.no }">${board.title }</a></td>
 					<td class="messageGo">${board.memberId }(${requestScope.nickNameList[idx.index] })
-						<div class="messageGoTxt">쪽지보내기</div>
+						<div class="messageGoTxt"><a href="/MMONG/message/idNnickFromBoard.do?id=${board.memberId }&nickname=${requestScope.nickNameList[idx.index] }">쪽지보내기</a></div>
 					</td>
 					<td><fmt:formatDate value="${board.boardDate }" pattern="yyyy-MM-dd HH:mm" /></td>
 					<td>${board.hit }</td>
@@ -245,3 +241,4 @@ $(document).ready(function(){
 		</c:otherwise>
 </c:choose>
 	</section>
+</div>

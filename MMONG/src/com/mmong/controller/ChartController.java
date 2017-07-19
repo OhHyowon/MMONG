@@ -105,7 +105,7 @@ public class ChartController {
 		service2.insertChart(chart);
 
 		//*** 달력에 자동 입력
-		Calendar calendar = new Calendar(0, chartContent.substring(0, 4), chartContent, 1, chartDate, chartDate, 0, "", member.getMemberId());
+		Calendar calendar = new Calendar(0, chartContent.substring(0, 4), chartContent, 1, chartDate, chartDate, 0, "", 0, member.getMemberId());
 		calendarService.insertSchedule(calendar);
 		
 		

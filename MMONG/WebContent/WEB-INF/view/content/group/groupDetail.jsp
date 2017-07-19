@@ -1,3 +1,4 @@
+<%@page import="com.mmong.vo.GroupMember"%>
 <%@page import="java.util.List"%>
 <%@page import="com.mmong.vo.Member"%>
 <%@page import="org.springframework.security.core.context.SecurityContextHolder"%>
@@ -5,8 +6,12 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
+window.onload=function(){
+	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+}
 $(document).ready(function(){
 	//로그인 안했을 때 소모임 가입 버튼 누르면 처리
 	$("#createNone").on("click", function(){
@@ -70,6 +75,7 @@ $(document).ready(function(){
 });
 </script>
 
+<div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i> 소모임 페이지
@@ -105,30 +111,38 @@ $(document).ready(function(){
 
 <!-- 가입하기 버튼 -->
 <sec:authorize access="!isAuthenticated()"> <!-- 로그인 안했을시  -->       
-   <button type="button" id="createNone">가입하기</button>
+   <button type="button" id="createNone" class='btn btn-default'>가입하기</button>
 </sec:authorize>
 <sec:authorize access="isAuthenticated()"> <!-- 로그인 했을시 -->
    <%
+   //관리자, 주인장, 새로온 사람 별 버튼 달기 로직 --이주현
    List authList = (List)SecurityContextHolder.getContext().getAuthentication().getAuthorities(); //로그인한 사용자 권한정보 리스트
    String au = String.valueOf(authList.get(0));
    if(au.equals("ROLE_1")){//관리자인 경우 아무것도 안뜸 
-      Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+      Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();      
       if(((Group)request.getAttribute("group")).getLeader().equals(member.getMemberId())){ //주인장은 가입하기 버튼 대신 소모임 정보수정 버튼 필요
-         out.println("<button type='button' id='editGroupBtn'>소모임 수정하기</button>");
-      	 out.println("<input type='button' id='deleteBtn' value='소모임 삭제하기'>");
-      }else{
-         out.println("<button type='button' id='create'>가입하기</button>");
+         out.println("<button type='button' id='editGroupBtn' class='btn btn-default'>소모임 수정하기</button>");
+      	 out.println("<button type='button' id='deleteBtn' class='btn btn-default'>소모임 삭제하기</button>");
+      }else{//주인장이 아닌경우 그룹멤버에 이미 내가 포함되어있는지 검사후 안되어있으면 가입하기버튼
+    	  List<GroupMember> groupMemberList = (List)(request.getAttribute("groupMemberList"));
+    	  boolean flag = false;
+    	  for(GroupMember gm : groupMemberList){
+    		  if(gm.getMemberId().equals(member.getMemberId())){
+    			  flag = true; //내가 가입되어있음 
+    			  break;
+    		  }
+    	  }
+    	  if(flag==false){ //가입 안되어있는 경우 - 가입하기 버튼 
+    		  out.println("<button type='button' id='create' class='btn btn-default'>가입하기</button>");
+    	  }
       }
    }
    %>
 </sec:authorize>
 
-
-
 <br>
 
-
-<!-- 모임 일정 목록 -->
-<p><b>모임 일정</b></p>
+ 
 
 </section>
+</div>

@@ -5,8 +5,6 @@
  
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
-
-
 $(document).ready(function(){
 	//알람 개수 뿌리기
 	$.ajax ({
@@ -51,7 +49,7 @@ $(function() { //3초에 한번 알람개수 뿌리는 함수
 			"success" : function(response) {//response = 안읽은 알람개수
 				if(response==""){
 					$("#alertDropdown").remove();
-				}else{//로그인한 사용자라면 (로그인하지않은 사용자일땐 response에 빈 값 옴)
+				}else{//로그인한 사용자라면 (로그인하지않은 사용자, 관리자일땐 response에 빈 값 옴)
 					$("#alert").html(response);
 					if(response=="0"){
 						$("#alertMsg").html("새로운 알람이 없습니다.");
@@ -148,7 +146,6 @@ function logout(){
 						    </a>
 					    </sec:authorize>
 					</li>                    
-                    
                 </ul>
             </div>
             <!-- --------------상단 바 : 알림, 쪽지 푸쉬알람 아이콘 끝------------- -->
@@ -157,6 +154,20 @@ function logout(){
             <!-- --------------상단 바 : 마이페이지, 로그인------------- -->
             <div class="top-menu">
             	<ul class="nav pull-right top-menu">
+            	
+            	<li style="padding:21px">
+ 					<sec:authorize access="hasRole('ROLE_0')">
+						<sec:authentication property="principal.adminId" /> 님 환영합니다.<br>
+					</sec:authorize>
+					<sec:authorize access="hasRole('ROLE_1')">
+						<sec:authentication property="principal.memberId" /> 님 환영합니다.<br>
+					</sec:authorize>
+					<sec:authorize access="hasRole('ROLE_2')">
+						현재 정지된 계정입니다.<br>
+					</sec:authorize>           	
+            	
+            	</li>
+            	
                  <sec:authorize access="isAuthenticated()">
                  	<sec:authorize access="hasRole('ROLE_1')">
     					<li><a class="logout" href="/MMONG/member/mypage.do">MyPage</a></li>

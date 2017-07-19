@@ -59,7 +59,7 @@ function showPopup2(){
 							this.gender='중성';
 						}
 						txt = txt+'<tr><td class="radioNo" id="'+this.content+'">'+this.no+"</td><td class='clickByHealth' id='"+this.no+"'>"+this.content+"</td><td>"
-						+this.gender+'</td><td class="checkboxClass"><sec:authorize access="hasRole(\'ROLE_1\')"><input type="checkbox" name="chek" id="'+this.no+'" value='+this.content+'></sec:authorize></td></tr>'
+						+this.gender+'</td><td class="checkboxClass"><sec:authorize access="hasRole(\'ROLE_0\')"><input type="checkbox" name="chek" id="'+this.no+'" value='+this.content+'></sec:authorize></td></tr>'
 					});	// end of each
 					$("#listTbody").html(txt);
 					$("#healthlist").show();
@@ -372,8 +372,8 @@ function showPopup2(){
 /*#################### RadioButton ###################*/
 .radioButton{
 	margin-top: 20px;
-    margin-right: 400px;
-    margin-left: 400px;
+	margin-right: 380px;
+    margin-left: 380px;
 }
 /*#################### table ###################*/
 table.healthList{
@@ -391,7 +391,7 @@ table.healthList thead th {
     font-weight: bold;
     vertical-align: top;
     color: #fff;
-    background: #F2CBD0;
+    background: #797979;
     margin: 20px 10px;
 }
 table.healthList tbody th {
@@ -415,6 +415,7 @@ table.checkboxClass{
 
 /* ############## 진료기록 테이블 ##################*/
 table.chartTable{
+	align:center;
     border-collapse: collapse;
     text-align: center;
     line-height: 2;
@@ -429,7 +430,7 @@ table.chartTable thead th {
     font-weight: bold;
     vertical-align: top;
     color: #fff;
-    background: #F2CBD0;
+    background: #797979;
     margin: 20px 10px;
 }
 table.chartTable tbody th {

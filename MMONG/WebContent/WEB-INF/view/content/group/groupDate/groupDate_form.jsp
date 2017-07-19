@@ -5,6 +5,11 @@
 <script type="text/javascript"
 	src="https://apis.skplanetx.com/tmap/js?version=1&format=javascript&appKey=6627b1a4-d735-3501-8a0d-84ad3ce149c9"></script>
 <script type="text/javascript">
+
+window.onload=function(){
+	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+}
+
 var map, markerLayer;
 var tdata;
 
@@ -116,6 +121,8 @@ window.onload = function() {
 	color: red;
 }
 </style>
+
+<div id="total_div">
 <div>　</div>
 	<section class="wrapper site-min-height">
 		<h3>
@@ -139,3 +146,4 @@ window.onload = function() {
 </div>
 </div>
 </section>
+</div>

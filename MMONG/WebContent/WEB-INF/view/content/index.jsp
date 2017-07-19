@@ -1,31 +1,51 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
+	
+<script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+var myIndex = 0;
+carousel();
 
+function carousel() {
+    var i;
+    var x = $(".mySlides");
+    for (i = 0; i < x.length; i++) {
+       x[i].style.display = "none";  
+    }
+    myIndex++;
+    if (myIndex > x.length) {myIndex = 1}    
+    x[myIndex-1].style.display = "block";  
+    setTimeout(carousel, 2100); // Change image every 2 seconds
+}
+	
+});
 
+</script>
+
+<style>
+.mySlides {display:none;}
+.w3-content{max-width:980px;margin:auto}
+.w3-section{
+	margin-top:16px!important;
+	margin-bottom:16px!important;
+	margin-left:16px;
+	position:absolute;
+	top:61px;
+	left:200px;
+}
+</style>
 
 
 	<section class="wrapper site-min-height">
-		<h3>
-			<i class="fa fa-angle-right"></i> 메인페이지
-		</h3>
 
-
-		<div class="row mt">
-			<div class="col-lg-12">
-				<p>
-					<sec:authorize access="hasRole('ROLE_0')">
-						<sec:authentication property="principal.adminId" /> 님 환영합니다.<br>
-					</sec:authorize>
-					<sec:authorize access="hasRole('ROLE_1')">
-						<sec:authentication property="principal.memberId" /> 님 환영합니다.<br>
-					</sec:authorize>
-					<sec:authorize access="hasRole('ROLE_2')">
-						현재 정지된 계정입니다.<br>
-					</sec:authorize>
-				</p>
-			</div>
-		</div>
+<img src="/MMONG/resource/assets/img/puppy/dogwalking.jpg" alt="Architecture" width="1500" height="800">
+<!-- <div class="w3-content w3-section" style="max-width:500px">
+  <img class="mySlides" src="/MMONG/resource/assets/img/puppy/puppy1.jpg" style="width:240%;filter: opacity(60%)">
+  <img class="mySlides" src="/MMONG/resource/assets/img/puppy/puppy2.jpg" style="width:240%;filter: opacity(60%)">
+  <img class="mySlides" src="/MMONG/resource/assets/img/puppy/puppy3.jpg" style="width:240%;filter: opacity(60%)">
+</div> -->
 
 	</section>
 

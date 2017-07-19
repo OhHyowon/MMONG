@@ -39,4 +39,17 @@ public interface CalendarService {
 	 * @param calendar
 	 */
 	void updateSchedule(Calendar calendar);
+	
+	/**
+	 * 소모임 일정에 참여했다가 참여 취소 버튼을 눌렀을 때
+	 * @param groupDateNo
+	 * @param memberId
+	 */
+	void deleteGroupDate(int groupDateNo, String memberId);
+	
+	/**
+	 * 소모임 일정이 일정 등록자에 의해 아예 삭제되었을 때
+	 * @param groupDateNo
+	 */
+	void deleteFromGroup(int groupDateNo);
 }

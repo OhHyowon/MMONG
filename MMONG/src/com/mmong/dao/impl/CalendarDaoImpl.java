@@ -1,5 +1,6 @@
 package com.mmong.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import com.mmong.dao.CalendarDao;
 import com.mmong.vo.Calendar;
-import com.mmong.vo.Member;
 
 @Repository
 public class CalendarDaoImpl implements CalendarDao{
@@ -44,6 +44,18 @@ public class CalendarDaoImpl implements CalendarDao{
 	public void updateSchedule(Calendar calendar) {
 		session.update(makeSqlId("updateSchedule"), calendar);
 	}
-	
+
+	@Override
+	public void deleteGroupDate(int groupDateNo, String memberId) {
+		HashMap<Object, Object> map = new HashMap<>();
+		map.put("groupDateNo", groupDateNo);
+		map.put("memberId", memberId);
+		session.delete(makeSqlId("deleteGroupDate"), map);
+	}
+
+	@Override
+	public void deleteFromGroup(int groupDateNo) {
+		session.delete(makeSqlId("deleteFromGroup"), groupDateNo);
+	}
 	
 }

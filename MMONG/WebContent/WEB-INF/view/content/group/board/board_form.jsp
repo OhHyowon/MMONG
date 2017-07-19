@@ -3,7 +3,12 @@
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
  <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
  <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-
+<script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+window.onload=function(){
+	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+}
+</script>
 <style type="text/css">
 .error{
 	color: red;
@@ -11,7 +16,7 @@
 </style>
 </head>
 <body>
-
+<div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i>게시물 등록
@@ -47,3 +52,4 @@
 	</div>
 </div>
 </section>
+</div>
