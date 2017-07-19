@@ -60,11 +60,11 @@ $(document).ready(function(){
 });
 
 function searchNameChk(){//소모임 검색 버튼 누를때 값 검사
-	alert($("#wantedGroup").val());
 	if($("#wantedGroup").val()=="" || $("#wantedGroup").val()=="이름으로 소모임 검색"){
-		$("#errMsg").empty();
+		$("#inputForm").attr('class', 'form-group has-error');
+/* 		$("#errMsg").empty();
 		$("#errMsg").append("검색할 소모임 이름을 입력하세요.");
-		$("#errMsg").show();
+		$("#errMsg").show(); */
 		$("#wantedGroup").focus();
 		return;
 	}else{
@@ -96,7 +96,7 @@ function searchNameChk(){//소모임 검색 버튼 누를때 값 검사
 	</div>
 	
 	<!-- 소모임 검색창 : 이름으로 검색 -->
-	<div style="margin-left:80%; display:inline-block; margin-bottom:10px;">
+	<div style="margin-left:80%; display:inline-block; margin-bottom:10px;" id=inputForm class="form-group">
 		<form class="form-inline" role="form" action="/MMONG/group/searchGroupName.do" id="searchName">
 		    <div id="inputForm" class="form-group">
 		        <input class="form-control" id="wantedGroup" name="groupName" placeholder="이름으로 소모임 검색">
@@ -130,7 +130,7 @@ function searchNameChk(){//소모임 검색 버튼 누를때 값 검사
 
 
 <!-- 나의 소모임으로 돌아가기 버튼 -->
-<center><button type="button" class="btn btn-theme" onClick="self.location='/MMONG/group/mygroup.do';">나의 소모임</button></center>
+<center><button type="button" class="btn btn-default" onClick="self.location='/MMONG/group/mygroup.do';">나의 소모임</button></center>
 
 </section>
 </div>

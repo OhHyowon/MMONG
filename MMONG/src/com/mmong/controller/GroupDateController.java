@@ -321,6 +321,8 @@ public class GroupDateController{
 
 		//*** 일정 삭제시 그 일정에 참가신청했던 모든 회원들의 일정들을 calendar DB에서 삭제
 		calendarService.deleteFromGroup(groupDateNo);
+		//일정 삭제 시 그 일정에 참가 신청했던 모든 회원들에게 알람 메시지 
+		//List< GMService.searchGroupMemberByGroupNo(groupDateNo);
 		return "1";
 	}
 }

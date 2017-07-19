@@ -110,8 +110,14 @@ public class GroupController {
 	 */
 	@RequestMapping("groupDetail")
 	public ModelAndView searchMyGroupDetailById(String groupNo){
-		Group selectedGroup = groupService.selectMyGroupByNo(Integer.parseInt(groupNo));		
-		return new ModelAndView("group/groupDetail.tiles", "group", selectedGroup);
+		Group selectedGroup = groupService.selectMyGroupByNo(Integer.parseInt(groupNo));
+		List<GroupMember> groupMemberList = groupMemberService.searchGroupMemberByGroupNo(Integer.parseInt(groupNo))
+				;
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("group/groupDetail.tiles");
+		mv.addObject("groupMemberList", groupMemberList);
+		mv.addObject("group", selectedGroup);
+		return mv;
 	}
 	
 	/**
