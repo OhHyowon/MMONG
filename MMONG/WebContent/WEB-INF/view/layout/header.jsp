@@ -1,3 +1,4 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>   
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
@@ -208,4 +209,6 @@ function logout(){
                  </sec:authorize>
             	</ul>       	     	
             </div>
+
+=======
             <!-- --------------상단 바 : 마이페이지, 로그인 끝------------- -->

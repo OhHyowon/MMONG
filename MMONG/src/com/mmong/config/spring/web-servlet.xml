@@ -69,10 +69,11 @@
 	<!-- 건강정보 목록 -->
    	<mvc:view-controller path="/health/list.do" view-name="health/healthlist.tiles"/>
    	<!-- 건강정보 등록 -->
-   	<mvc:view-controller path="/health/registform.do" view-name="health/healthlist_regist.tiles"/>
-	<!-- 날씨 조회 -->
-	<mvc:view-controller path="/weather/list.do" view-name="weather/weather.tiles"/>
-	
+   	<mvc:view-controller path="/health/registform.do" view-name="/WEB-INF/view/content/health/healthlist_regist.jsp"/>
+	<!-- 건강정보 수정-->
+	<mvc:view-controller path="/health/healthMod.do" view-name="/WEB-INF/view/content/health/healthMod.jsp"/>
+	<!-- 등록 수정 성공 페이지 -->
+	<mvc:view-controller path="/health/success.do" view-name="/WEB-INF/view/content/health/success.jsp"/>
 
 
 	<!-- 진우 -->
