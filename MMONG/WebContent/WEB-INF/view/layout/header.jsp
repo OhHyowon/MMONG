@@ -138,14 +138,21 @@ function logout(){
 
 					<!--  알림아이콘 -->
 					<li id="header_inbox_bar" class="dropdown">
-					    <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
-					        <i class="fa fa-bell" id="alertIcon"></i>
-					        <span class="badge bg-theme" id="alert"></span> <%--알람개수 표시 --%>
-						</a>
-						<ul class="dropdown-menu extended inbox" id="alertDropdown">
-						    <!-- <div class="notify-arrow notify-arrow-green"></div> -->
-							<li> <p class="green" id="alertMsg"></p> </li> <%-- *개의 읽지않은 알람이있습니다 --%>
-						</ul>
+						<sec:authorize access="!isAuthenticated()"> 
+						    <a onClick="alertMsg2(); return false;" >
+						        <i class="fa fa-bell"></i>
+						    </a>							
+					    </sec:authorize>
+					    <sec:authorize access="isAuthenticated()"> 
+						    <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
+						        <i class="fa fa-bell" id="alertIcon"></i>
+						        <span class="badge bg-theme" id="alert"></span> <%--알람개수 표시 --%>
+							</a>
+							<ul class="dropdown-menu extended inbox" id="alertDropdown">
+							    <!-- <div class="notify-arrow notify-arrow-green"></div> -->
+								<li> <p class="green" id="alertMsg"></p> </li> <%-- *개의 읽지않은 알람이있습니다 --%>
+							</ul>
+						</sec:authorize>
 					</li>               
                
 					<!--  쪽지아이콘 -->                   
@@ -210,5 +217,5 @@ function logout(){
             	</ul>       	     	
             </div>
 
-=======
+
             <!-- --------------상단 바 : 마이페이지, 로그인 끝------------- -->
