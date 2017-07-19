@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mmong.config.mapper.trailMapper">
+
+	<!-- no(trail_no_seq), category(nn), route1(nn), route2, route3, route4, route5, title(nn), content, member_id -->
+	
+	<resultMap id="trail-resultmap" type="trail">
+		<id column="no" property="no"/>
+		<result column="category" property="category"/>
+		<result column="route1" property="route1"/>
+		<result column="route2" property="route2"/>
+		<result column="route3" property="route3"/>
+		<result column="route4" property="route4"/>
+		<result column="route5" property="route5"/>
+		<result column="title" property="title"/>
+		<result column="content" property="content"/>
+		<result column="member_id" property="memberId"/>
+		<association property="member" javaType="com.mmong.vo.Member">
+			<result column="member_id" property="memberId"/>
+			<result column="member_name" property="memberName"/>
+			<result column="nickname" property="nickName"/>
+			<result column="member_phone" property="memberPhone"/>
+			<result column="member_address" property="memberAddress"/>
+			<result column="member_email" property="memberEmail"/>
+			<result column="member_picture" property="memberPicture"/>
+		</association>
+	</resultMap>
+	
+	<select id="searchTrailByNo" parameterType="int" resultMap="trail-resultmap">
+		SELECT	no, category, route1, route2, route3, route4, route5, title, content, member_id
+		FROM	trail
+		WHERE	no=#{value}
+	</select>
+	
+	<select id="searchTrailByTitle" parameterType="String" resultMap="trail-resultmap">
+		SELECT	no, category, route1, route2, route3, route4, route5, title, content, member_id
+		FROM	trail
+		WHERE	title LIKE '%'||#{title}||'%'
+	</select>
+	
+	<insert id="insertTrail" parameterType="trail">
+		<selectKey keyProperty="no" resultType="_int" order="BEFORE">
+			SELECT	trail_no_seq.nextval
+			FROM	dual
+		</selectKey>
+		INSERT INTO trail VALUES (#{no}, #{category}, #{route1}, #{route2}, #{route3}, #{route4}, #{route5}, #{title}, #{content}, #{memberId})
+	</insert>
+	
+	<update id="updateTrail" parameterType="trail">
+		UPDATE	trail
+		SET		category=#{category},
+				route1=#{route1},
+				route2=#{route2},
+				route3=#{route3},
+				route4=#{route4},
+				route5=#{route5},
+				title=#{title},
+				content=#{content}
+		WHERE	no=#{no}
+	</update>
+	
+	<delete id="deleteTrailByNo" parameterType="int">
+		DELETE FROM trail WHERE no=#{no}
+	</delete>
+	
+</mapper>

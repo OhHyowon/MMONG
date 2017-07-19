@@ -1,9 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<style type="text/css">
+.button{
+    color: #797979;
+    font-size: 12px;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border: 1px solid #797979 !important;
+    padding: 5px 15px;
+    margin-right: 15px;
+    background: #e5e5e5;
+    margin-top: 15px;
+}
+</style>
 </head>
 <body>
 	<section class="wrapper site-min-height">
@@ -19,7 +27,7 @@
 <label><input type="radio" name="gender" value="c">중성</label>
 </p>
 
-<input type="submit" value="등록">
+<input type="submit" value="등록" class="button">
 </form>
 </section>
 </body>

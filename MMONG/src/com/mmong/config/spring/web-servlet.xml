@@ -26,7 +26,6 @@
 
 
 
-
 	<!-- 효원 -->
 	<!-- 기본 맵 폼 -->
 	<mvc:view-controller path="/map/basic_map.do" view-name="map/basic_map.tiles" />
@@ -40,7 +39,7 @@
 	<!-- 일정 상세 페이지 -->
 	<mvc:view-controller path="/group/groupDate/groupDate_view.do" view-name="group/groupDate/groupDate_view.tiles" />
     <!-- 일정 수정 페이지 -->
-     <mvc:view-controller path="/group/groupDate/groupDate_update.do" view-name="group/groupDate/groupDate_update.tiles"/>
+     <mvc:view-controller path="/group/groupDate/groupDate_update.do" view-name="/WEB-INF/view/content/group/groupDate/groupDate_update.jsp"/>
 		
 	
 	<!-- 자유게시판 등록 양식 -->
@@ -70,10 +69,11 @@
 	<!-- 건강정보 목록 -->
    	<mvc:view-controller path="/health/list.do" view-name="health/healthlist.tiles"/>
    	<!-- 건강정보 등록 -->
-   	<mvc:view-controller path="/health/registform.do" view-name="health/healthlist_regist.tiles"/>
-	<!-- 날씨 조회 -->
-	<mvc:view-controller path="/weather/list.do" view-name="weather/weather.tiles"/>
-	
+   	<mvc:view-controller path="/health/registform.do" view-name="/WEB-INF/view/content/health/healthlist_regist.jsp"/>
+	<!-- 건강정보 수정-->
+	<mvc:view-controller path="/health/healthMod.do" view-name="/WEB-INF/view/content/health/healthMod.jsp"/>
+	<!-- 등록 수정 성공 페이지 -->
+	<mvc:view-controller path="/health/success.do" view-name="/WEB-INF/view/content/health/success.jsp"/>
 
 
 	<!-- 진우 -->

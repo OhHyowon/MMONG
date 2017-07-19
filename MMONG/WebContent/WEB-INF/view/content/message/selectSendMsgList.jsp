@@ -84,8 +84,12 @@ $(document).ready(function(){
  	});
 });
 
-</script>
+window.onload=function(){
+	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+}
 
+</script>
+<div id="total_div">
 	<section class="wrapper site-min-height">
 	<br><br>
 	<ul>
@@ -215,4 +219,5 @@ $(document).ready(function(){
 <br><br><br>
 	</div>
 	</section>
+	</div>
 </body>

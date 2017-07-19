@@ -130,9 +130,13 @@
 			window.open("/MMONG/calendar/insertSchedule.do", "일정추가", specs);
 		});
 	});
+	
+	window.onload=function(){
+		$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+	}
 
 </script> 
-
+<div id="total_div">
 	<section class="wrapper site-min-height">
 	<br><br>
 	<div align="right">
@@ -147,3 +151,4 @@
 	<div id='calendarFull'></div>
 
 	</section>
+</div>

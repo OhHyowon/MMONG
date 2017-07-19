@@ -4,7 +4,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec"  uri="http://www.springframework.org/security/tags" %>
-
+  	<!-- Bootstrap core CSS -->
+ <link href="/MMONG/resource/assets/css/bootstrap.css?var=1" rel="stylesheet">
+    
+	<!--external css-->
+<link href="/MMONG/resource/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="/MMONG/resource/assets/js/gritter/css/jquery.gritter.css" />
+<link rel="stylesheet" type="text/css" href="/MMONG/resource/assets/lineicons/style.css">        
+   
+	<!-- Custom styles for this template -->
+<link href="/MMONG/resource/assets/css/style.css?var=2" rel="stylesheet">
+<link href="/MMONG/resource/assets/css/style-responsive.css" rel="stylesheet">
+    
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
 
@@ -14,7 +25,6 @@ window.onload=function(){
 
 $(document).ready(function(){
 	$(".insertBtn").on("click",function(){
-		alert("일정 참여");
 		$.ajax({
 			url:"/MMONG/group/groupDate/registerMeet.do",
 			type:"post",
@@ -68,6 +78,8 @@ $(document).ready(function(){
 	}); // end of deleteBtn
 });
 
+
+
 </script>
 <style>
 .groupDate{
@@ -77,11 +89,6 @@ $(document).ready(function(){
 	float:right;
 }
 </style>
-<div id="total_div">
-	<section class="wrapper site-min-height">
-		<h3>
-			<i class="fa fa-angle-right"></i> 일정 상세보기
-		</h3>
 
 <%-- 일정 상세보기 페이지가 열릴 때 마다 groupDateNo 세션에 저장 --%>
 <%
@@ -101,10 +108,12 @@ $(document).ready(function(){
 	</div>
 	<div class="form-panel" style="background:#E8F1EE">
 		<div>
-	<c:choose>
+	<c:choose> 
  		<c:when test="${empty requestScope.memberIdList}"> <%-- 멤버아이디가 없을 때 --%>
-				<li>일정 참여자가 없습니다!</li>
-			<input class="btn btn-default btn-xs insertBtn" type="button" value="참여하기">
+				<div style="display:flex">
+					<div><li>일정 참여자가 없습니다!</div>
+					<div style="margin-left:340px;"><input class="btn btn-default btn-xs insertBtn" type="button" value="참여하기"></div>
+				</div>
 		</c:when> 
 	
 		<c:otherwise> <%-- 일정 참여자가 있을 때 --%>
@@ -140,27 +149,22 @@ $(document).ready(function(){
 	</c:choose>
 		</div>
 	</div>
-	
 </div>
 
 
-<div class="col-lg-4">
-	<div class="form-panel" style="background:#E8F1EE"><div>지도 들어갈 자리</div></div>
-</div>
-
+	<div class="col-lg-4">
+		<div class="form-panel" style="background:#E8F1EE"><div>지도 들어갈 자리</div></div>
+	</div>
 	<c:if test="${requestScope.groupDate.memberId == loginId }">
-	<form action="/MMONG/group/groupDate/updateGroupDate1.do" method="post">
-		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-		<input type="hidden" name="groupDateNo" value="${requestScope.groupDate.no }">
-<div style="position:relative; top:210px;">
-		<input class="btn btn-default btn-sm" type="submit" value="수정하기" id="updateBtn" class="Btn" style="float:right;">
-		<input class="btn btn-default btn-sm" type="button" value="삭제하기" id="deleteBtn" class="Btn" style="margin-left:120px">
-		</div>
+		<form action="/MMONG/group/groupDate/updateGroupDate1.do" method="post">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			<input type="hidden" name="groupDateNo" value="${requestScope.groupDate.no }">
+			<div style="position:relative; top:210px;">
+			<input class="btn btn-default btn-sm" type="submit" value="수정하기" id="updateBtn" class="Btn" style="float:right;">
+			<input class="btn btn-default btn-sm" type="button" value="삭제하기" id="deleteBtn" class="Btn" style="margin-left:120px">
+			</div>
 		</form>
 	</c:if>
 <br><br><br><br><br><br><br><br><br><br><br><br><br>
 	</div>
-</div>
-
-</section>
 </div>

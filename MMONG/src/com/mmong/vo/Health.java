@@ -7,16 +7,14 @@ public class Health implements Serializable {
 
 	private int no;
 	private String content;
-	private int done;
 	private String gender;
 	
 	public Health(){}
 
-	public Health(int no, String content, int done, String gender) {
+	public Health(int no, String content, String gender) {
 		super();
 		this.no = no;
 		this.content = content;
-		this.done = done;
 		this.gender = gender;
 	}
 
@@ -36,14 +34,6 @@ public class Health implements Serializable {
 		this.content = content;
 	}
 
-	public int getDone() {
-		return done;
-	}
-
-	public void setDone(int done) {
-		this.done = done;
-	}
-
 	public String getGender() {
 		return gender;
 	}
@@ -54,7 +44,7 @@ public class Health implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Health [no=" + no + ", content=" + content + ", done=" + done + ", gender=" + gender + "]";
+		return "Health [no=" + no + ", content=" + content + ", gender=" + gender + "]";
 	}
 
 	@Override
@@ -62,7 +52,6 @@ public class Health implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((content == null) ? 0 : content.hashCode());
-		result = prime * result + done;
 		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
 		result = prime * result + no;
 		return result;
@@ -82,8 +71,6 @@ public class Health implements Serializable {
 				return false;
 		} else if (!content.equals(other.content))
 			return false;
-		if (done != other.done)
-			return false;
 		if (gender == null) {
 			if (other.gender != null)
 				return false;
@@ -93,6 +80,6 @@ public class Health implements Serializable {
 			return false;
 		return true;
 	}
-	
+
 	
 }

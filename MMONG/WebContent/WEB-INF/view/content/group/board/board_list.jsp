@@ -118,13 +118,13 @@ td {
 <ul>
 	<li><a href="/MMONG/group/groupDate/allGroupDateList.do">모임 일정 목록</a></li> <!-- 소모임 상세페이지 첫 화면 -->
 	<li><a href="/MMONG/group/board/allBoardList.do">자유게시판</a></li>
-	<li><a href="/MMONG/groupMember/searchGroupMember.do">참여 멤버 목록</a></li>
 </ul>
 <%-- =============소모임 상세페이지 소메뉴 끝================ --%>
 <hr>
-	<a href="/MMONG/group/board/board_form.do">게시글작성</a> | 
-	<a href="/MMONG/group/board/myBoardList.do">내가 쓴 글 보기</a> |
-	<a href="/MMONG/group/reply/myReplyList.do">내가 쓴 댓글 보기</a> |
+	
+<input type="button"class="btn btn-default btn-sm" value="글쓰기" onclick="location.href='/MMONG/group/board/board_form.do'">
+<input type="button"class="btn btn-default btn-sm" value="내가 쓴 글" onclick="location.href='/MMONG/group/board/myBoardList.do'">
+<input type="button"class="btn btn-default btn-sm" value="내가 쓴 댓글" onclick="location.href='/MMONG/group/reply/myReplyList.do'">
 
 <c:choose>
 	<c:when test='${fn:length(requestScope.boardList)!=0 }'>

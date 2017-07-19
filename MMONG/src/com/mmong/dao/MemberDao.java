@@ -63,7 +63,7 @@ public interface MemberDao {
 	/**
 	 * 회원 핸드폰 번호로 중복번호 조회하는 메소드
 	 * @param memberPhone
-	 * @return 찾은 회원 수 : 있으면 1, 없으면 0
+	 * @return 찾은 번호 수 : 있으면 1, 없으면 0
 	 */
 	int checkMemberPhone(String memberPhone);
 

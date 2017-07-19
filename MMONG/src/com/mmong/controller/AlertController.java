@@ -1,5 +1,6 @@
 package com.mmong.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,9 +8,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.mmong.service.AlertService;
 import com.mmong.vo.Alert;
+import com.mmong.vo.Group;
+import com.mmong.vo.GroupMember;
 import com.mmong.vo.Member;
 
 @Controller
@@ -23,15 +27,24 @@ public class AlertController {
 	 * @param memberId
 	 * @return
 	 */
+
 	@RequestMapping("countAlert.do")
 	@ResponseBody
 	public String countAlert(){
 		if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")){ //로그인 안 한 사용자는 myGroup을 없이 전달 
 			return "";
 		}else{
-			Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			int cnt = alertService.countUnreadAlert(member.getMemberId());
-			return String.valueOf(cnt);
+			List authList = (List)SecurityContextHolder.getContext().getAuthentication().getAuthorities(); //로그인한 사용자 권한정보 리스트
+			String au = String.valueOf(authList.get(0)); 
+
+			if(au.equals("ROLE_1")){//로그인한 사용자가 회원
+				Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+				int cnt = alertService.countUnreadAlert(member.getMemberId());
+				return String.valueOf(cnt);				
+			}else{//로그인한 사용자가 관리자
+				List myGroup = new ArrayList(); //빈 myGroup 전달
+				return "";
+			}			
 		}
 	}
 	
