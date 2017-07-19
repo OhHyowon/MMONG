@@ -74,9 +74,11 @@ $(document).ready(function(){
 					}
 				}
 			});
-		}c
+		}
 	}); // end of deleteBtn
 });
+
+
 
 </script>
 <style>
@@ -106,10 +108,12 @@ $(document).ready(function(){
 	</div>
 	<div class="form-panel" style="background:#E8F1EE">
 		<div>
-	<c:choose>
+	<c:choose> 
  		<c:when test="${empty requestScope.memberIdList}"> <%-- 멤버아이디가 없을 때 --%>
-				<li>일정 참여자가 없습니다! &nbsp;&nbsp; <input class="btn btn-default btn-xs insertBtn" type="button" value="참여하기"></li>
-			
+				<div style="display:flex">
+					<div><li>일정 참여자가 없습니다!</div>
+					<div style="margin-left:340px;"><input class="btn btn-default btn-xs insertBtn" type="button" value="참여하기"></div>
+				</div>
 		</c:when> 
 	
 		<c:otherwise> <%-- 일정 참여자가 있을 때 --%>

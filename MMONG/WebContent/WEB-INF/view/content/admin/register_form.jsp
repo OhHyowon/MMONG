@@ -10,10 +10,18 @@
 th, td{
 	padding-right: 5px;
 }
+#register_form{
+	width:80%; height:30%; margin:0 auto; 
+}
 </style>
+
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
-																				
+window.onload=function(){
+	$("#total_div").css("min-height",(document.body.scrollHeight-38.4)+"px");
+}
+
+																	
 var sizeChk = true; //아이디 길이 체크값
 var idDuplicationChk = false; //아이디 중복검사 체크값
 var pwdChk = false; //비밀번호 값 검사 체크값
@@ -86,7 +94,7 @@ $(document).ready(function(){
 	$("#adminPwdCheck").change(function(){
 		if($("#adminPwd").val() != $("#adminPwdCheck").val()){
 			$("#pwdChkMsg").empty();
-			$("#pwdChkMsg").append("비밀번호를 다시 확인해주세요."); //비밀번호 폼을 바꿨을경우도..   <- ????
+			$("#pwdChkMsg").append("비밀번호를 다시 확인해주세요.");
 			$("#pwdChkMsg").show();		
 		}else{
 			$("#pwdChkMsg").hide();
@@ -143,9 +151,9 @@ $(document).ready(function(){
 		 }
 	 });	
 	
-	////////////////////이메일 비었는지 체크                            // email 칸 2개중 1개만 입력될 경우 경고표시 안나옴
-	 $("#adminEmail1").blur(function(){
-		 if($("#adminEmail1").val()==""){
+	////////////////////이메일 비었는지 체크                        
+	 $("#adminEmail").blur(function(){
+		 if($("#adminEmail").val()==""){
 			$("#emailMsg").empty();
 			$("#emailMsg").append("이메일을 입력하세요.");
 			$("#emailMsg").show();
@@ -153,24 +161,16 @@ $(document).ready(function(){
 			 $("#emailMsg").hide();
 		 }
 	 });
-	 $("#adminEmail2").blur(function(){
-		 if($("#adminEmail2").val()==""){
-			$("#emailMsg").empty();
-			$("#emailMsg").append("이메일을 입력하세요.");
-			$("#emailMsg").show();
-		 }else{
-			 $("#emailMsg").hide();
-		 }
-	 });
-/* 	 
+	
+ 	 
 	 ///이메일 중복 확인
 	 $("#emailAuth").on("click",function(){
 		$.ajax({
 			"url":"/MMONG/admin/checkAdminEmail.do",
-			"data":{"adminEmail1":$("#adminEmail1").val(), "adminEmail2":$("#adminEmail2").val()},
+			"data":{"adminEmail":$("#adminEmail").val()},
 			"dataType":"text",
 			"beforeSend":function(){
-				if($("#adminEmail1").val()==""||$("#adminEmail1").val()==""){
+				if($("#adminEmail").val()==""){
 					$("#emailMsg").empty();
 					$("#emailMsg").append("이메일을 입력하세요");
 					$("#emailMsg").show();
@@ -190,27 +190,23 @@ $(document).ready(function(){
 		});
 	 });
 	 
-	  */
+	  
 	 
 });//ready 함수의 끝
 
-
-/* //이메일 인증 컨트롤러 부르는 함수
-function emailAuthOpen(){
-	if($("#adminEmail1").val()==""||$("#adminEmail2").val()==""){
+ 
+function emailAuthOpen(){ //이메일 인증컨트롤러 부르는 함수
+	if($("#adminEmail").val()==""){
 		$("#emailMsg").empty();
 		$("#emailMsg").append("이메일을 입력하세요.");
 		$("#emailMsg").show();
 		return;
 	}else{
-		$("#adminEmail").val($("#adminEmail1").val() + "@" + $("#adminEmail2").val()); //이메일 @ 전후로 합쳐서 hidden태그에 넣기
-		var adminEmail=$("adminEmail").val();
-		window.open("/MMONG/sendMail/auth.do?adminEmail="+$("#adminEmail").val(), '소모임 만들기', 'top=100px, left=100px, height=220px, width=500px');
+		var adminEmail = $("#adminEmail").val();
+		window.open("/MMONG/sendMail/auth.do?memberEmail="+$("#adminEmail").val(), '소모임 만들기', 'top=100px, left=100px, height=220px, width=500px');
 	}
-	
 }
 
- */
 
 
 
@@ -261,23 +257,30 @@ function formChk() {
 		$("#phoneMsg").show();
 		$("#adminPhone").focus();
 		result = false;
+	}else if($("#adminPhone").val().length<10 || $("#adminPhone").val().length>11){
+		$("#phoneMsg").empty();
+		$("#phoneMsg").append("10~11자리 번호를 입력해주세요.");
+		$("#phoneMsg").show();
+		$("#adminPhone").focus();
+		result = false;
 	}else if(phoneDuplicationChk==false){
 		$("#phoneMsg").empty();
 		$("#phoneMsg").append("핸드폰번호 인증을 해 주세요.");
 		$("#phoneMsg").show();
 		result = false;
-	}else if($("#adminEmail1").val()==""){
+	}else if($("#adminEmail").val()==""){
 		$("#emailMsg").empty();
 		$("#emailMsg").append("이메일을 입력하세요.");
 		$("#emailMsg").show();
-		$("#adminEmail1").focus();
+		$("#adminEmail").focus();
 		result = false;
-	}else if($("#adminEmail2").val()==""){
+	}else if($("#emailSuccessMsg").text()!="인증완료"){
 		$("#emailMsg").empty();
-		$("#emailMsg").append("이메일을 입력하세요.");
+		$("#emailMsg").append("이메일 인증을 해주세요.");
 		$("#emailMsg").show();
-		$("#adminEmail2").focus();
 		result = false;
+	}else{
+		result = true;
 	}
 	return result;
 }//formChk함수 끝
@@ -285,7 +288,6 @@ function formChk() {
 
 function formSubmit(){
     if(formChk()){ // formChk 값이 true일경우만 submit
-    	$("#adminEmail").val($("#adminEmail1").val() + "@" + $("#adminEmail2").val());
     	$("#insert").submit();
     }
 }
@@ -293,20 +295,13 @@ function formSubmit(){
 
 
 </script>
-
-<section class="wrapper site-min-height">
-		<h3>
-			<i class="fa fa-angle-right"></i>관리자 등록
-		</h3>
-									
+<div id="total_div">		
+	<section class="wrapper site-min-height">
+		<h3><i class="fa fa-angle-right"></i>관리자 등록</h3>
+<div id="register_form">										
 									<%-- value="${param. } 는 EL의 내장객체를 이용한 것 --%>
 <form name="insertForm" id="insert" action="/MMONG/admin/register_success.do" method="post">
 	<table>	
-		<tr>
-			<th>ID</th>
-			<td><input type="text" id="adminId" name="adminId"  value="${param.adminId }"> 
-					<input type="button" id="idChk" value="중복확인"/></td> 
-		</tr>
 		<tr>
 			<td></td>
 			<td class="error">
@@ -314,11 +309,12 @@ function formSubmit(){
 				<div id="idMsg" style="display:none"></div>
 			</td>
 		</tr>
-		
 		<tr>
-			<th>비밀번호</th>
-			<td><input type="password" id="adminPwd" name="user.userPwd" ></td>
+			<th>ID</th>
+			<td><input class="form-control" placeholder="ID" type="text" id="adminId" name="adminId"  value="${param.adminId }"><br></td> 
+			<td><input class="btn btn-default btn-sm" type="button" id="idChk" value="중복확인"/></td> 
 		</tr>
+		
 		<tr>
 			<td></td>
 			<td class="error">
@@ -326,42 +322,33 @@ function formSubmit(){
 				<div id="pwdMsg" style="display:none"></div>
 			</td>
 		</tr>
-		
 		<tr>
-			<th>비밀번호 확인</th>
-			<td><input type="password" id="adminPwdCheck"></td>
+			<th>비밀번호</th>
+			<td><input class="form-control" placeholder="패스워드" type="password" id="adminPwd" name="user.userPwd" ><br></td>
 		</tr>
+		
 		<tr>
 			<td></td>
 			<td class="error">
 			<div id="pwdChkMsg" style="display:none"></div>
 			</td>
 		</tr>
-		
 		<tr>
-			<th>이름</th>
-			<td><input type="text" id="adminName" name="adminName" value="${param.adminName}"></td>
+			<th>비밀번호 확인</th>
+			<td><input class="form-control" placeholder="패스워드 확인" type="password" id="adminPwdCheck"><br></td>
 		</tr>
+		
 		<tr>
 			<td></td>
 			<td class="error">
 			<div id="nameMsg" style="display:none"></div>
 			</td>
 		</tr>
-		
 		<tr>
-			<th>핸드폰 번호</th>
-			<td><input type="text" id="adminPhone" name="adminPhone" value="${param.adminPhone}">
-					<input type="button" id="adminPhoneChk" value="인증"/></td>
-							<!-- <select name="tel1">
-										<option>선택</option>
-										<option>010</option>
-										<option>011</option>
-										<option>016</option>
-										<option>019</option>
-								</select>
-								 - <input type="text" name="tel2" size="1" maxlength="4"> - <input type="text" name="tel3" size="1" maxlength="4">  -->
+			<th>이름</th>
+			<td><input class="form-control" placeholder="이름" type="text" id="adminName" name="adminName" value="${param.adminName}"><br></td>
 		</tr>
+		
 		<tr>
 			<td></td>
 			<td class="error">
@@ -369,29 +356,35 @@ function formSubmit(){
 				<div id="phoneMsg" style="display:none"></div>
 			</td>
 		</tr>
-		
-		<tr>	
-			<th>이메일</th>
-			<td><%-- <form> --%>
-				<input type="text" id="adminEmail1" name="adminEmail1" value="${param.adminEmail1 }"> @ 
-				<input type="text" id="adminEmail2" name="adminEmail2" value="${param.adminEmail2 }">
-				<input type="hidden" id="adminEmail" name="adminEmail" value="${param.adminEmail }">
-				<!-- <input type="button" id="emailAuth" value="이메일 인증하기"/> -->
-				<%-- </form> --%></td>
+		<tr>
+			<th>휴대전화 번호</th>
+			<td><input class="form-control" placeholder="휴대전화 번호" type="text" id="adminPhone" name="adminPhone" value="${param.adminPhone}"><br></td>
+			<td><input class="btn btn-default btn-sm" type="button" id="adminPhoneChk" value="인증"/></td>
 		</tr>
+		
 		<tr>
 			<td></td>
 			<td class="error">
 			<div id="emailMsg" style="display:none"></div>
+			<div id="emailSuccessMsg"></div>
 			</td>
+		</tr>
+		<tr>	
+			<th>이메일</th>
+			<td><form>
+				<input class="form-control" placeholder="Email" type="text" id="adminEmail" name="adminEmail" value="${param.adminEmail}"><br></td>
+				<td><input class="btn btn-default btn-sm" type="button" id="emailAuth" value="이메일 인증"/> 
+				</form></td>
 		</tr>
 		<tr>
 			<td>
 			<%-- 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> --%>
-				<input type="button" value="등록" onClick="formSubmit(); return false;" />
+				<input class="btn btn-default btn-sm" type="button" value="등록" onClick="formSubmit(); return false;" />
 			</td>
 		</tr>
 	</table>
 	<sec:csrfInput/> <!-- 시큐리티 토큰을 위해, 340번 라인 대체 -->
 </form>
+</div>
 </section>
+</div>

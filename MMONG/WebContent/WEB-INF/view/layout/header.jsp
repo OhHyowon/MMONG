@@ -111,6 +111,13 @@ function showAlertDropdown(){
 	});//ajax 끝		
 }
 
+function alertMsg2(){
+	$("#loginWaringMsg2").empty();
+	$("#loginWaringMsg2").append("<div class='alert alert-warning alert-dismissable' style='height:30px;'>"
+							   +"<button type='button' onClick='window.location.reload();' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>"
+							   +"&nbsp;&nbsp;<strong>Warning!</strong> 로그인이 필요한 서비스입니다.</div> ");
+}
+
 function logout(){
    document.getElementById("logoutForm").submit();
 }
@@ -143,7 +150,7 @@ function logout(){
 					<!--  쪽지아이콘 -->                   
 					<li id="header_inbox_bar" class="dropdown">
 						<sec:authorize access="!isAuthenticated()"> 
-						    <a>
+						    <a onClick="alertMsg2(); return false;" >
 						        <i class="fa fa-envelope-o"></i>
 						    </a>							
 					    </sec:authorize>
@@ -152,8 +159,14 @@ function logout(){
 						        <i class="fa fa-envelope-o"></i>
 						    </a>
 					    </sec:authorize>
-					</li>                    
+					</li> 
+					
+					<!-- 로그인하지 않은 사용자가 로그인이 필요한 메뉴 접근시 경고메시지 뿌려줄 곳 -->
+					<li id="loginWaringMsg2">
+					</li>
+				                   
                 </ul>
+
             </div>
             <!-- --------------상단 바 : 알림, 쪽지 푸쉬알람 아이콘 끝------------- -->
 
@@ -161,7 +174,9 @@ function logout(){
             <!-- --------------상단 바 : 마이페이지, 로그인------------- -->
             <div class="top-menu">
             	<ul class="nav pull-right top-menu">
-            	
+            	                
+
+
             	<li style="padding:21px">
  					<sec:authorize access="hasRole('ROLE_0')">
 						<sec:authentication property="principal.adminId" /> 님 환영합니다.<br>

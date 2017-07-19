@@ -96,6 +96,7 @@ $(document).ready(function(){
 <div id="total_div">
 	<section class="wrapper site-min-height">
 
+
 <%-- =============소모임 상세페이지 소메뉴 : 밑에 두메뉴안에도 이것 포함시키기! ================ --%>
 	<div class="btn-group btn-group-justified" style="margin-top:50px; margin-bottom:30px;"">
 	  <div class="btn-group">
@@ -108,6 +109,7 @@ $(document).ready(function(){
 	    <a href="/MMONG/group/mygroup.do"><button type="button" class="btn btn-theme">나의 소모임</button></a>
 	  </div>
 	</div>			
+
 <%-- =============소모임 상세페이지 소메뉴 끝================ --%>
 
 <hr>
