@@ -300,11 +300,18 @@ public class GroupDateController{
 			nickNameList.add(nickName);
 		}
 		
+		
+		GroupDate groupDate1=groupDateService.selectGroupDate(groupDateNo);
+		
+		groupDate1.setGroupDate(groupDate.getGroupDate());
+		groupDate1.setPlace(groupDate.getPlace());
+		groupDate1.setTitle(groupDate.getTitle());
+		
+		groupDateService.upDateGroupDate(groupDate1); // DB에 수정된 일정 넣기
+		
 		map.addAttribute("memberIdList", memberIdList);
 		map.addAttribute("nickNameList", nickNameList);
-		
-		groupDateService.upDateGroupDate(groupDate); // DB에 수정된 일정 넣기
-		return "/WEB-INF/view/content/group/groupDate/groupDate_view.jsp";
+		return "/group/groupDate/groupDateView.do?groupDateNo="+groupDateNo;
 	}
 	/**
 	 * 일정 삭제하는 handler
