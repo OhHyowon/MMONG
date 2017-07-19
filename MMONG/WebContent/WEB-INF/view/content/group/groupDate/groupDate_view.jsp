@@ -140,26 +140,25 @@ $(document).ready(function(){
 	</c:choose>
 		</div>
 	</div>
-	
 </div>
 
 
-<div class="col-lg-4">
-	<div class="form-panel" style="background:#E8F1EE"><div>지도 들어갈 자리</div></div>
-</div>
+	<div class="col-lg-4">
+		<div class="form-panel" style="background:#E8F1EE"><div>지도 들어갈 자리</div></div>
+	</div>
 
 	<c:if test="${requestScope.groupDate.memberId == loginId }">
-	<form action="/MMONG/group/groupDate/updateGroupDate1.do" method="post">
-		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-		<input type="hidden" name="groupDateNo" value="${requestScope.groupDate.no }">
-<div style="position:relative; top:210px;">
-		<input class="btn btn-default btn-sm" type="submit" value="수정하기" id="updateBtn" class="Btn" style="float:right;">
-		<input class="btn btn-default btn-sm" type="button" value="삭제하기" id="deleteBtn" class="Btn" style="margin-left:120px">
-		</div>
+		<form action="/MMONG/group/groupDate/updateGroupDate1.do" method="post">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			<input type="hidden" name="groupDateNo" value="${requestScope.groupDate.no }">
+			<div style="position:relative; top:210px;">
+			<input class="btn btn-default btn-sm" type="submit" value="수정하기" id="updateBtn" class="Btn" style="float:right;">
+			<input class="btn btn-default btn-sm" type="button" value="삭제하기" id="deleteBtn" class="Btn" style="margin-left:120px">
+			</div>
 		</form>
 	</c:if>
 <br><br><br><br><br><br><br><br><br><br><br><br><br>
-	</div>
-</div>
-</section>
+			</div>
+		</div>
+	</section>
 </div>

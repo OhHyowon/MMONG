@@ -109,12 +109,6 @@ td {
 
 <button id="inputBtn" class="btn btn-default btn-sm" onclick="location.href='/MMONG/group/groupDate/groupDate_form.do'"style="float:leftt;margin-right: 15px">일정 등록</button>
 
-
-
-
-
-
-
 <%-- ################### 페이징 ################ --%>
 
 	<%-- 첫 페이지로 이동 --%>
