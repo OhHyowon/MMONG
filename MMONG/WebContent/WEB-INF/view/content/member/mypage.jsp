@@ -40,16 +40,16 @@ $(document).ready(function(){
 </script>
 
 <div id="total_div">
-<section class="wrapper site-min-height">
+	<section class="wrapper site-min-height">
 		<h3><i class="fa fa-angle-right"></i> 회원 마이페이지</h3>
 <div id="view-detail">
 
 	
-	<div>
+<div>
 		<div>
 			<h5>회원정보</h5>
 		</div>
-		<p><img src="/MMONG/up_image/profilePicture.PNG" class="img-circle" width="80"></p> 
+		<p><img src="/MMONG/up_image/profilePicture.PNG" class="img-circle" width="100"></p> 
 		<p><b>ID : <sec:authentication property="principal.memberId"/></b></p>
 		<div class="row">
 			<div class="col-md-6">
@@ -57,18 +57,10 @@ $(document).ready(function(){
 				<p><b>전화번호</b> : ${requestScope.member.memberPhone }</p>
 				<p><b>이메일</b> : ${requestScope.member.memberEmail}</p>
 				<p><b>주소</b> : ${requestScope.member.memberAddress}</p>
-				<p><b>사진</b> : ${requestScope.member.memberPicture}</p>
 			</div>
 		</div>
 	</div>
 </div>
-
-
-
-
-
-
-
 <div id="view-menu">
 	<button class="btn btn-default btn-sm" type="button" onclick="location.href='/MMONG/message/message.do' ">쪽지 관리</button>&nbsp;
 	<form action="/MMONG/member/info_member_update_form.do" method="post">
@@ -82,7 +74,5 @@ $(document).ready(function(){
 		<input class="btn btn-default btn-sm" id="withdrawalBtn" type="submit" value="회원탈퇴">
 </form>
 </div>
-	
-	
-</section>
+ </section>
 </div>

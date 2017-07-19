@@ -25,6 +25,8 @@ var sizeChk = true; //아이디 길이 체크값
 var idDuplicationChk = false; //아이디 중복검사 체크값
 var pwdChk = false; //비밀번호 값 검사 체크값
 var emailChk = false; //이메일인증 검사 체크값 
+var phoneDuplicationChk = false;//휴대전화 인증 검사 체크값
+
 
 $(document).ready(function() {///가입 버튼 누르기 전에 폼 이동 시 에러메시지 뿌리기 
 	
@@ -282,6 +284,12 @@ function formChk() {
 		$("#nameMsg").show();
 		$("#nameMsg").focus();
 		result = false;
+	}else if($("#nickName").val()==""){
+		$("#nickNameMsg").empty();
+		$("#nickNameMsg").append("닉네임을 입력하세요.");
+		$("#nickNameMsg").show();
+		$("#nickName").focus();
+		result = false;
 	}else if($("#memberPhone").val()==""){
 		$("#phoneMsg").empty();
 		$("#phoneMsg").append("핸드폰번호는 필수 입력값입니다.");
@@ -304,12 +312,6 @@ function formChk() {
 		$("#addressMsg").append("주소를 입력하세요.");
 		$("#addressMsg").show();
 		$("#addressMsg").focus();
-		result = false;
-	}else if($("#nickName").val()==""){
-		$("#nickNameMsg").empty();
-		$("#nickNameMsg").append("닉네임을 입력하세요.");
-		$("#nickNameMsg").show();
-		$("#nickName").focus();
 		result = false;
 	}else if($("#memberEmail").val()==""){
 		$("#emailMsg").empty();
@@ -337,6 +339,7 @@ function formSubmit(){
 
 </script>
 <div id="total_div">
+
 	<section class="wrapper site-min-height">
 		<h3><i class="fa fa-angle-right"></i> 회원가입</h3>
 <div id="register_form">	
@@ -351,7 +354,7 @@ function formSubmit(){
 		</tr>
 		<tr>
 			<th>ID</th>
-			<td><input class="form-control" placeholder="ID" type="text" id="memberId" name="memberId" value="${param['user.userId'] }"></td>
+			<td><input class="form-control" placeholder="ID" type="text" id="memberId" name="memberId" value="${param['user.userId'] }"><br></td>
 			<td><input class="btn btn-default btn-sm" type="button" id="idChk" value="중복확인"/></td>
 		</tr>
 		
@@ -364,7 +367,7 @@ function formSubmit(){
 		</tr>
 		<tr>
 			<th>비밀번호</th>
-			<td><input class="form-control" placeholder="패스워드" type="password" id="memberPwd" name="user.userPwd" value="${param['user.userPwd'] }"></td>
+			<td><input class="form-control" placeholder="패스워드" type="password" id="memberPwd" name="user.userPwd" value="${param['user.userPwd'] }"><br></td>
 		</tr>
 				
 		<tr>
@@ -375,7 +378,7 @@ function formSubmit(){
 		</tr>
 		<tr>
 			<th>비밀번호 확인</th>
-			<td><input class="form-control" placeholder="패스워드 확인" type="password" id="memberPwdCheck"></td>
+			<td><input class="form-control" placeholder="패스워드 확인" type="password" id="memberPwdCheck"><br></td>
 		</tr>
 		
 		<tr>
@@ -386,7 +389,7 @@ function formSubmit(){
 		</tr>
 		<tr>
 			<th>이름</th>
-			<td><input class="form-control" placeholder="이름" type="text" id="memberName" name="memberName" value="${param.memberName }"></td>
+			<td><input class="form-control" placeholder="이름" type="text" id="memberName" name="memberName" value="${param.memberName }"><br></td>
 		</tr>
 				
 		<tr>
@@ -397,7 +400,7 @@ function formSubmit(){
 		</tr>
 		<tr>
 		<th>닉네임</th>
-			<td><input class="form-control" placeholder="닉네임" type="text" id="nickName" name="nickName" value="${param.nickName }"></td>
+			<td><input class="form-control" placeholder="닉네임" type="text" id="nickName" name="nickName" value="${param.nickName }"><br></td>
 		</tr>
 				
 		<tr>
@@ -409,7 +412,7 @@ function formSubmit(){
 		</tr>
 		<tr>
 			<th>휴대전화 번호</th>
-			<td><input class="form-control" placeholder="휴대전화 번호" type="text" id="memberPhone" name="memberPhone" value="${param.memberPhone }" maxlength="13"></td>
+			<td><input class="form-control" placeholder="휴대전화 번호" type="text" id="memberPhone" name="memberPhone" value="${param.memberPhone }" maxlength="13"><br></td>
 			<td><input class="btn btn-default btn-sm" type="button" id="memberPhoneChk" value="인증"/></td>
 		</tr>		
 		
@@ -421,7 +424,7 @@ function formSubmit(){
 		</tr>
 		<tr>
 			<th>주소</th>
-			<td><input class="form-control" placeholder="주소" type="text" id="memberAddress" name="memberAddress" value="${param.memberAddress }"></td>
+			<td><input class="form-control" placeholder="주소" type="text" id="memberAddress" name="memberAddress" value="${param.memberAddress }"><br></td>
 		</tr>
 				
 		<tr>
@@ -433,11 +436,10 @@ function formSubmit(){
 		</tr>
 		<tr>
 			<th>이메일</th>
-			<td><form>
-					<input class="form-control" placeholder="Email" type="email" id="memberEmail" name="memberEmail" value="${param.memberEmail }"></td>
+			<td>
+					<input class="form-control" placeholder="Email" type="email" id="memberEmail" name="memberEmail" value="${param.memberEmail }"><br></td>
 					<!-- <input type="button" id="emailAuth" value="이메일 인증하기" onClick="emailAuthOpen(); return false;"/> -->
-			<td><input class="btn btn-default btn-sm" type="button" id="emailAuth" value="이메일 인증"/>
-				</form></td>				
+			<td><input class="btn btn-default btn-sm" type="button" id="emailAuth" value="이메일 인증"/></td>				
 			<td><input type="hidden" name="memberPicture" value="tmp"></td>
 		</tr>
 		

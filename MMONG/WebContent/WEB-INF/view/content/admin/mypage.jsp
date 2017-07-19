@@ -40,34 +40,28 @@ $(document).ready(function(){
 
 <div id="total_div">
 	<section class="wrapper site-min-height">
-		<h3>
-			<i class="fa fa-angle-right"></i>관리자 마이페이지
-		</h3>
- 
+		<h3><i class="fa fa-angle-right"></i>관리자 마이페이지</h3>
 <div id="view-detail">
 
 
-
-<div>
+<div style="height:auto; min-width: 350px; text-align:center;">
 		<div>
-			<h5>회원정보</h5>
+			<h5>관리자정보</h5>
 		</div>
-		<p><img src="/MMONG/up_image/profileAdmin.PNG" class="img-circle" width="80"></p> 
+		<p><img src="/MMONG/up_image/profileAdmin.PNG" class="img-circle" width="100"></p> 
 		<p><b>ID</b> : <sec:authentication property="principal.adminId"/></p>
-		<div class="row">
-			<div class="col-md-6">
+		
 				<p><b>이름</b> : ${requestScope.administrator.adminName}</p>
 				<p><b>전화번호</b> : ${requestScope.administrator.adminPhone }</p>
 				<p><b>이메일</b> : ${requestScope.administrator.adminEmail }</p>
-			</div>
-		</div>
+		
 	</div>
 </div>
 <div id="view-menu">
 	<form action="/MMONG/admin/info_admin_update_form.do" method="post">
 				<input type="hidden" name="adminId" value="${requestScope.administrator.adminId }">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-				<input class="btn btn-default btn-sm" type="submit" value="관리자 정보 수정하기">
+				<input class="btn btn-default btn-sm" type="submit" value="관리자 정보수정">
 	</form>&nbsp;
 	<form action="/MMONG/admin/adminWithdrawal.do" method="post">
 				<input type="hidden" name="adminId" value="<sec:authentication property="principal.adminId"/>">

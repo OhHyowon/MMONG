@@ -76,7 +76,7 @@ public class GroupDateController{
 		Calendar calendar = new Calendar(0, groupDate.getTitle(), groupDate.getPlace(), 2, groupDate.getGroupDate(), groupDate.getGroupDate(), 0, "", groupDateNo, memberId);
 		calendarService.insertSchedule(calendar);
 		
-		return "redirect:/group/groupDate/groupDateView.do?groupDateNo="+groupDateNo; // 완성되면 일정 상세보기 페이지로 바꾸기
+		return "redirect:/group/groupDate/allGroupDateList.do"; // 일정 등록되면 일정 목록 페이지로 바뀜
 	}
 
 	/***
@@ -108,7 +108,7 @@ public class GroupDateController{
 		map.addAttribute("nickNameList", nickNameList);
 		map.addAttribute("groupDate", groupDate);
 		
-		return "group/groupDate/groupDate_view.tiles";
+		return "/WEB-INF/view/content/group/groupDate/groupDate_view.jsp";
 	}
 	
 	/***
@@ -269,7 +269,7 @@ public class GroupDateController{
 		map.addAttribute("groupDate", groupDate);
 		map.addAttribute("groupDateNo", groupDateNo);
 		
-		return "group/groupDate/groupDate_update.tiles";
+		return "/WEB-INF/view/content/group/groupDate/groupDate_update.jsp";
 	}
 	
 	/**
@@ -285,7 +285,7 @@ public class GroupDateController{
 		GroupDateValidator vaildator=new GroupDateValidator();
 		vaildator.validate(groupDate, errors);
 		if(errors.hasErrors()){
-			return "group/groupDate/groupDate_update.tiles";
+			return "/WEB-INF/view/content/group/groupDate/groupDate_update.jsp";
 		}
 		
 		List<Integer> memberNoList=groupDateService.selectMeetMemberList(groupDateNo); // 참여자(memberNo) 목록 가져오기
@@ -304,7 +304,7 @@ public class GroupDateController{
 		map.addAttribute("nickNameList", nickNameList);
 		
 		groupDateService.upDateGroupDate(groupDate); // DB에 수정된 일정 넣기
-		return "group/groupDate/groupDate_view.tiles";
+		return "/WEB-INF/view/content/group/groupDate/groupDate_view.jsp";
 	}
 	/**
 	 * 일정 삭제하는 handler
@@ -321,6 +321,8 @@ public class GroupDateController{
 
 		//*** 일정 삭제시 그 일정에 참가신청했던 모든 회원들의 일정들을 calendar DB에서 삭제
 		calendarService.deleteFromGroup(groupDateNo);
+		//일정 삭제 시 그 일정에 참가 신청했던 모든 회원들에게 알람 메시지 
+		//List< GMService.searchGroupMemberByGroupNo(groupDateNo);
 		return "1";
 	}
 }

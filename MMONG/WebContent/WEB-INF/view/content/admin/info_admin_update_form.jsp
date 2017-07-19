@@ -83,10 +83,6 @@ $(document).ready(function() {
 			$("#phoneMsg").empty();
 			$("#phoneMsg").append("핸드폰번호는 필수 입력값입니다.");
 			$("#phoneMsg").show();
-		} else if(phoneDuplicationChk==false){
-			$("#phoneMsg").empty();
-			$("#phoneMsg").append("핸드폰번호 인증을 해 주세요.");
-			$("#phoneMsg").show();
 		}
 	});	
 	//핸드폰번호 숫자만 받게

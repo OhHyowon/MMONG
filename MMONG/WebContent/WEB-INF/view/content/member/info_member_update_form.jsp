@@ -51,7 +51,7 @@ $(document).ready(function() {
 	$("#memberPwdCheck").change(function(){
 		if($("#memberPwd").val() != $("#memberPwdCheck").val()){
 			$("#pwdChkMsg").empty();
-			$("#pwdChkMsg").append("비밀번호를 다시 확인해주세요."); //비밀번호 폼을 바꿨을경우도.. 
+			$("#pwdChkMsg").append("비밀번호를 다시 확인해주세요.");
 			$("#pwdChkMsg").show();		
 		}else{
 			$("#pwdChkMsg").hide();
@@ -67,7 +67,7 @@ $(document).ready(function() {
 			"success":function(response) {
 				if(response==1) {
 					$("#phoneMsg").empty();
-					$("#phoneMsg").append("이미 가입된 핸드폰번호입니다.");
+					$("#phoneMsg").append("이미 사용중인 휴대전화 번호입니다.");
 					$("#phoneMsg").show();
 				} else {
 					$("#phoneMsg").empty();
@@ -166,11 +166,6 @@ function formChk() {
 		$("#phoneMsg").show();
 		$("#memberPhone").focus();
 		result = false;
-	}else if(phoneDuplicationChk==false){
-		$("#phoneMsg").empty();
-		$("#phoneMsg").append("핸드폰번호 인증을 해 주세요.");
-		$("#phoneMsg").show();
-		result = false;
 	}else if($("#memberAddress").val()==""){
 		$("#addressMsg").empty();
 		$("#addressMsg").append("주소를 입력하세요.");
@@ -221,7 +216,7 @@ function formSubmit(){
 			</tr>
 			<tr>
 				<th>비밀번호</th>
-				<td><input class="form-control" type="password" id="memberPwd" name="user.userPwd" value="${param['user.userPwd'] }"></td>
+				<td><input class="form-control" type="password" id="memberPwd" name="user.userPwd" value="${param['user.userPwd'] }"><br></td>
 			</tr>
 					
 			<tr>
@@ -232,7 +227,7 @@ function formSubmit(){
 			</tr>
 			<tr>
 				<th>비밀번호 확인</th>
-				<td><input class="form-control" type="password" id="memberPwdCheck"></td>
+				<td><input class="form-control" type="password" id="memberPwdCheck"><br></td>
 			</tr>
 			
 			<tr>
@@ -265,7 +260,7 @@ function formSubmit(){
 				</td>
 			</tr>
 			<tr>
-				<th>핸드폰번호</th>
+				<th>휴대전화 번호</th>
 				<td><input class="form-control" type="text" id="memberPhone" name="memberPhone" value="${requestScope.member.memberPhone}" maxlength="13"><br></td> 
 				<td> <input class="btn btn-default btn-sm" type="button" id="memberPhoneChk" value="인증"/></td> 
 			</tr>		
