@@ -25,9 +25,9 @@ window.onload=function(){
 </ul>
 <%-- =============소모임 상세페이지 소메뉴 끝================ --%>
 <hr>
-	<a href="/MMONG/group/board/board_form.do">게시글작성</a> | 
-	<a href="/MMONG/group/board/myBoardList.do">내가 쓴 글 보기</a> |
-	<a href="/MMONG/group/reply/myReplyList.do">내가 쓴 댓글 보기</a> |
+	<input type="button"class="btn btn-default btn-sm" value="글쓰기" onclick="location.href='/MMONG/group/board/board_form.do'">
+	<input type="button"class="btn btn-default btn-sm" value="내가 쓴 글" onclick="location.href='/MMONG/group/board/myBoardList.do'">
+	<input type="button"class="btn btn-default btn-sm" value="내가 쓴 댓글" onclick="location.href='/MMONG/group/reply/myReplyList.do'">
 
 
 	<table>

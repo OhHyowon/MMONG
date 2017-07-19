@@ -7,7 +7,6 @@
 
 <style type="text/css">
 .error{
-	font-size:.8em;
 	color: red;
 }
 .messageGo {
@@ -108,9 +107,9 @@ $(document).ready(function(){
 </ul>
 <%-- =============소모임 상세페이지 소메뉴 끝================ --%>
 <hr>
-	<a href="/MMONG/group/board/board_form.do">게시글작성</a> | 
-	<a href="/MMONG/group/board/myBoardList.do">내가 쓴 글 보기</a> |
-	<a href="/MMONG/group/reply/myReplyList.do">내가 쓴 댓글 보기</a> |
+	<input type="button"class="btn btn-default btn-sm" value="글쓰기" onclick="location.href='/MMONG/group/board/board_form.do'">
+	<input type="button"class="btn btn-default btn-sm" value="내가 쓴 글" onclick="location.href='/MMONG/group/board/myBoardList.do'">
+	<input type="button"class="btn btn-default btn-sm" value="내가 쓴 댓글" onclick="location.href='/MMONG/group/reply/myReplyList.do'">
 <br><br>
 
 	<sec:authentication property="principal.memberId" var="loginId"/>
@@ -127,19 +126,19 @@ $(document).ready(function(){
 	
 	<table style="border-bottom:1px solid gray;width:943px">
 		<tr>
-			<td>작성자(닉네임)</td>
-			<td class="messageGo" style="padding: 10px; ">${requestScope.board.memberId }(${requestScope.boardNickname }) &nbsp;&nbsp;&nbsp; 조회수 ${requestScope.board.hit }
+			<td class="messageGo" style="padding: 10px;">${requestScope.board.memberId }(${requestScope.boardNickname }) &nbsp;|&nbsp; 조회수 ${requestScope.board.hit }
 				<div class="messageGoTxt"><a href="/MMONG/message/idNnickFromBoard.do?id=${requestScope.board.memberId }&nickname=${requestScope.boardNickname }">쪽지보내기</a></div>
 			</td>
 		</tr>
 		<tr>
-			<td style="padding: 10px;">${requestScope.board.content }<br>
-				<c:forEach items="${requestScope.nameList }" var="fileName">
-					<img src="/MMONG/up_image/${fileName }" width="400px">
-					<input type="hidden" name="nameList" value="${fileName }">
-				</c:forEach>		
+			<td style="padding: 10px;">
+				<div>${requestScope.board.content }<br>
+					<c:forEach items="${requestScope.nameList }" var="fileName">
+						<img src="/MMONG/up_image/${fileName }" width="400px">
+						<input type="hidden" name="nameList" value="${fileName }">
+					</c:forEach>		
+				</div>
 			</td>
-			<td></td>
 		</tr>
 	</table>	
 
@@ -147,17 +146,17 @@ $(document).ready(function(){
 	
 	
 	<%-- 로그인된 아이디와 글쓴 아이디가 같을 때!!!!  --%>
-	<div style="margin-left:800px;">
+<div style="margin-left:776px;">
 	<form action="/MMONG/group/board/boardUpdate1.do" method="post" style="">
-	<c:if test="${requestScope.board.memberId == loginId }">
-		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-		<input type="hidden" name=nameList value="${requestScope.nameList }">
-		<input type="hidden" id="boardNo" name="boardNo" value="${requestScope.board.no}">
-		<input type="submit" value="수정하기" >
-		<input type="button" id="BoardDeleteBtn" value="삭제하기"/>
-	</c:if>
-		</form>
-		</div>
+		<c:if test="${requestScope.board.memberId == loginId }">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			<input type="hidden" name=nameList value="${requestScope.nameList }">
+			<input type="hidden" id="boardNo" name="boardNo" value="${requestScope.board.no}">
+			<input class="btn btn-default btn-sm" type="submit" value="수정하기" >
+			<input class="btn btn-default btn-sm" type="button" id="BoardDeleteBtn" value="삭제하기"/>
+		</c:if>
+	</form>
+</div>
 <%--########################   댓글    #########################  --%>
 <br><br>
 
@@ -207,10 +206,11 @@ $(document).ready(function(){
 <form action="/MMONG/group/reply/register.do" method="post" style="padding:10px">
 	<div><b>${loginId }(${nickName})</b></div>
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	<span class="error"><form:errors path="reply.content" deilimiter="&nbsp;&nbsp;"/></span>
 	<textarea  cols="120" name="content"></textarea>
 	<input type="hidden" name="boardNo" value="${requestScope.board.no }">
 	<div style="float:right">
-	<input type="submit" value="댓글등록"><span class="error"><form:errors path="reply.content" deilimiter="&nbsp;&nbsp;"/></span>
+	<input type="submit" value="댓글등록" class="btn btn-default" style="margin-right:24px">
 	</div>
 	<br>
 </form>

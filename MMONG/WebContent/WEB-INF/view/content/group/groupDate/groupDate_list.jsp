@@ -101,7 +101,8 @@ td {
 			<td><li>${groupDate.title }</li></td>
 			<td>${groupDate.place }</td>
 			<td><fmt:formatDate value="${groupDate.groupDate }" pattern="yyyy-MM-dd HH:mm" /></td>
-			<td><input type="button" value="상세보기" class="btn btn-default btn-sm" onclick="location.href='/MMONG/group/groupDate/groupDateView.do?groupDateNo=${groupDate.no}'"></td>
+			<td><input type="button" value="상세보기" class="btn btn-default btn-sm" onclick="window.open('/MMONG/group/groupDate/groupDateView.do?groupDateNo=${groupDate.no}','일정 상세보기','top=100px, left=400px, height=500px, width=700px')">
+			</td>
 		</tr>
 	</tbody>
 </c:forEach>
