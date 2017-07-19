@@ -132,11 +132,13 @@ public class GroupController {
 	 * 작성자 : 이주현
 	 */
 	@RequestMapping("searchGroupName")
-	@ResponseBody
-	public List<Group> searchGroupByName(String groupName){
-		List<Group> selctedGroupByName = groupService.searchGroupByName(groupName);
-		return selctedGroupByName;
+	public ModelAndView searchGroupByName(String groupName){
+		List<Group> groupList = groupService.searchGroupByName(groupName); //이름으로 검색된 그룹들
+		return new ModelAndView("group/searchGroup.tiles", "allGroup", groupList);
 	}
+	
+	
+	
 	/**
 	 * 소모임 번호로 소모임 삭제하는 handler method
 	 * @param session

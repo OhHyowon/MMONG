@@ -57,8 +57,8 @@
 	  <!-- 쪽지 관리 탭 -->   
       <mvc:view-controller path="/message/message.do" view-name="message/message.tiles"/>
       <!-- 쪽지 보내기 성공 폼 -->
-      <mvc:view-controller path="/message/sendSuccess.do" view-name="message/sendSuccess.tiles"/>
-   
+      <mvc:view-controller path="/message/sendSuccess.do" view-name="/WEB-INF/view/content/message/sendSuccess.jsp"/>
+    
 	
 		<mvc:view-controller path="/calendar/calendar_main.do" view-name="calendar/calendar_main.tiles"/>
 		<mvc:view-controller path="/calendar/insertSchedule.do" view-name="/WEB-INF/view/content/calendar/insertSchedule.jsp"/>

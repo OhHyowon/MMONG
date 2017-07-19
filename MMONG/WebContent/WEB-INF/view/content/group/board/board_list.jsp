@@ -5,6 +5,33 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
+
+<script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+window.onload=function(){
+	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+}
+
+$(document).ready(function(){
+	
+	//팝업창 크기 조절
+	var width=480, height=480;
+	var left = (screen.availWidth - width)/2;
+	var top = (screen.availHeight - height)/2;
+	var specs = "width=" + width;
+	specs += ",height=" + height;
+	specs += ",left=" + left;
+	specs += ",top=" + top;
+	
+	$(".messageGoTxt").on("click", function(){
+		var id = $("#id").val()
+		var nickname = $("#nickname").val();
+		
+		window.open("/MMONG/message/idNnickFromBoard.do?id="+id+"&nickname="+nickname, "쪽지보내기", specs);
+	});
+});
+
+</script>
 <style type="text/css">
 a:link {
 	/*방문하지 않은 링크 설정.*/
@@ -72,7 +99,7 @@ td {
 
 </style>
 
-<h3>소모임 페이지 - 소모임 상세 페이지</h3>
+<div id="total_div">
 
 	<section class="wrapper site-min-height">
 		<h3>
@@ -116,16 +143,17 @@ td {
 			</tr>
 		</thead>
 
+	<tbody>
 	<c:forEach items="${requestScope.boardList }" var="board" varStatus="idx">
 		<c:choose>
 			<c:when test="${board.replyCount!=0 }">
-				<tbody>
 					<tr>
 						<td>${board.no }</td>
 						<td><a href="/MMONG/group/board/board_view.do?boardNo=${board.no }">${board.title }[${board.replyCount}]</a></td>
 						<td class="messageGo">${board.memberId }(${requestScope.nickNameList[idx.index] })
-							<div class="messageGoTxt">
-								<a href="/MMONG/message/idNnickFromBoard.do?id=${board.memberId }&nickname=${requestScope.nickNameList[idx.index] }">쪽지보내기</a>
+							<div class="messageGoTxt">쪽지보내기
+								<input type="hidden" value="${board.memberId }" id="id">
+								<input type="hidden" value="${requestScope.nickNameList[idx.index] }" id="nickname">
 							</div>
 						</td>
 						<td><fmt:formatDate value="${board.boardDate }" pattern="yyyy-MM-dd HH:mm" />
@@ -133,13 +161,15 @@ td {
 						<td>${board.hit }</td>
 					</tr>
 			</c:when>
+			
 			<c:otherwise>
 				<tr>
 					<td>${board.no }</td>
 					<td><a href="/MMONG/group/board/board_view.do?boardNo=${board.no }">${board.title }</a></td>
 					<td class="messageGo">${board.memberId }(${requestScope.nickNameList[idx.index] })
-						<div class="messageGoTxt">
-							<%-- <a href="/MMONG/message/idNnickFromBoard.do?id=${board.memberId }&nickname=${requestScope.nickNameList[idx.index] }">쪽지보내기</a> --%>
+						<div class="messageGoTxt">쪽지보내기
+							<input type="hidden" value="${board.memberId }" id="id">
+							<input type="hidden" value="${requestScope.nickNameList[idx.index] }" id="nickname">
 						</div>
 					</td>
 					<td><fmt:formatDate value="${board.boardDate }" pattern="yyyy-MM-dd HH:mm" /></td>
@@ -236,3 +266,4 @@ td {
 		</c:otherwise>
 </c:choose>
 	</section>
+</div>

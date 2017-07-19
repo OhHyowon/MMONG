@@ -7,8 +7,14 @@
 
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
+
+window.onload=function(){
+	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+}
+
 $(document).ready(function(){
 	$(".insertBtn").on("click",function(){
+		alert("일정 참여");
 		$.ajax({
 			url:"/MMONG/group/groupDate/registerMeet.do",
 			type:"post",
@@ -71,7 +77,7 @@ $(document).ready(function(){
 	float:right;
 }
 </style>
-
+<div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i> 일정 상세보기
@@ -89,19 +95,20 @@ $(document).ready(function(){
 <div class="col-lg-4">
 	<div class="form-panel" style="background:#E8F1EE">
 		<div>&nbsp;</div>
-		일정 : ${requestScope.groupDate.title}
+		이름 : ${requestScope.groupDate.title}
 		<br>
-		날짜 : <fmt:formatDate value="${requestScope.groupDate.groupDate}" pattern="yyyy-MM-dd HH:mm"/>
+		일정 : <fmt:formatDate value="${requestScope.groupDate.groupDate}" pattern="yyyy-MM-dd HH:mm"/>
 	</div>
 	<div class="form-panel" style="background:#E8F1EE">
 		<div>
-			<c:choose>
+	<c:choose>
  		<c:when test="${empty requestScope.memberIdList}"> <%-- 멤버아이디가 없을 때 --%>
 				<li>일정 참여자가 없습니다!</li>
 			<input class="btn btn-default btn-xs insertBtn" type="button" value="참여하기">
 		</c:when> 
-
-		<c:otherwise>
+	
+		<c:otherwise> <%-- 일정 참여자가 있을 때 --%>
+	<div style="text-align:center">일정 참여자</div>
 	<c:forEach items="${requestScope.memberIdList }" var="memberId" varStatus="idx">
 			<c:choose>
 			<c:when test="${memberId == loginId }"> <%-- 로그인된 아이디와 참여자 아이디가 같다면 --%>
@@ -114,10 +121,21 @@ $(document).ready(function(){
 					<li>
 					${memberId }(${requestScope.nickNameList[idx.index] })
 					</li>			
-			<input type="button" value="참여 하기" class="insertBtn">
 			</c:when>
+					
 			</c:choose>
 			</c:forEach>
+			
+		<% int i =1; %> <%-- 1이면 memberList에 본인 없음, 2이면 본인 있음 --%>
+			<c:forEach items= "${requestScope.memberIdList }" var="memberId">
+				<c:if test="${memberId==loginId }"> 
+					<% i=2; %>
+				</c:if>
+			</c:forEach>
+		<% if (i==1){%>
+			<input type="button" value="참여 하기" class="btn btn-default btn-xs insertBtn">
+		<%}%>
+		
 		</c:otherwise>
 	</c:choose>
 		</div>
@@ -144,5 +162,5 @@ $(document).ready(function(){
 	</div>
 </div>
 
-
 </section>
+</div>

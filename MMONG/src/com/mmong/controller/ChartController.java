@@ -146,6 +146,13 @@ public class ChartController {
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		HashMap<String,Object> map = new HashMap<>();
 		
+		/*
+		//*** 달력에 일정 수정 & 자동 입력
+		Calendar calendar = new Calendar(0, chartContent.substring(0, 4), chartContent, 1, chartDate, chartDate, 0, "", 0, member.getMemberId());
+		calendarService.updateFromChart(calendar);
+		*/
+		
+		
 		map.put("writer", member.getMemberId());
 		map.put("no", healthNo);
 		map.put("date", chartDate);

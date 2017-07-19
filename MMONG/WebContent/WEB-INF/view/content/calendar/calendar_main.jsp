@@ -46,8 +46,9 @@
 		var initialLocaleCode = 'ko'; //한글로 변환
 
 		var date = new Date();
+		
 		//팝업창 크기 조절
-		var width=800, height=500;
+		var width=520, height=520;
 		var left = (screen.availWidth - width)/2;
 		var top = (screen.availHeight - height)/2;
 		var specs = "width=" + width;
@@ -77,7 +78,7 @@
 			eventSources : { 
 				googleCalendarId : 'ko.south_korea#holiday@group.v.calendar.google.com', // 구글과 연동해 휴일 가져오기
 				className : "koHolidays",
-				color : "#ff8080",
+				color : "#DB7093",
 	            textColor : "#FFFFFF"
 			},
 			events:function(start, end, timezone, callback){
@@ -101,11 +102,11 @@
 									
 							for(var j=0; j<events.length; j++){
 								if(parseInt(events[j].type) == 0){ //개인 일정
-									events[j].color="blue";
+									events[j].color="#b3ccff";
 								}else if(parseInt(events[j].type) == 1){ //진료 일정
-									events[j].color="yellow";
+									events[j].color="#C9C0BB";
 								}else{ // 2 : 소모임 일정
-									events[j].color="green";
+									events[j].color="#e6b3cc";
 								}
 							}
 									
@@ -133,13 +134,13 @@
 </script> 
 
 	<section class="wrapper site-min-height">
-	
+	<br><br>
 	<div align="right">
-		<input type="button" value="일정 추가" id="add"><br><br>
-		<div style="color:blue; background-color:blue;" class="typeColor">　　　</div><div class="typeColor">　개인 일정</div><br>
-		<div style="color:yellow; background-color:yellow;" class="typeColor">　　　</div><div class="typeColor">　진료 일정</div><br>
-		<div style="color:green; background-color:green;" class="typeColor">　　　</div><div class="typeColor">　모임 일정</div><br>
-		<div style="color:#ff8080; background-color:#ff8080;" class="typeColor">　　　</div><div class="typeColor">　공휴일　&nbsp;</div><br>
+		<input type="button" class="btn btn-default" style="background-color:#F2F2F2" value="일정 추가" id="add"><br><br>
+		<div style="color:#b3ccff; background-color:#b3ccff;" class="typeColor">　　　</div><div class="typeColor">　개인 일정</div><br>
+		<div style="color:#C9C0BB; background-color:#C9C0BB;" class="typeColor">　　　</div><div class="typeColor">　진료 일정</div><br>
+		<div style="color:#e6b3cc; background-color:#e6b3cc;" class="typeColor">　　　</div><div class="typeColor">　모임 일정</div><br>
+		<div style="color:#DB7093; background-color:#DB7093;" class="typeColor">　　　</div><div class="typeColor">　공휴일　&nbsp;</div><br>
 	</div>
 	<hr><br>
 

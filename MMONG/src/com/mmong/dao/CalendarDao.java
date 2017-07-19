@@ -52,4 +52,10 @@ public interface CalendarDao {
 	 * @param groupDateNo
 	 */
 	 void deleteFromGroup(int groupDateNo);
+	 
+	 /**
+	  * 소모임 일정이 수정되었을 때
+	  * @param calendar
+	  */
+	 void updateFromGroup(Calendar calendar);
 }

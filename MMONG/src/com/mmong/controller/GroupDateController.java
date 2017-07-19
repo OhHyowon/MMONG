@@ -300,6 +300,10 @@ public class GroupDateController{
 			nickNameList.add(nickName);
 		}
 		
+		//*** 달력에 일정 수정 & 자동 입력
+		Calendar calendar = new Calendar(0, groupDate.getTitle(), groupDate.getPlace(), 2, groupDate.getGroupDate(), groupDate.getGroupDate(), 0, "", groupDateNo, "");
+		calendarService.updateFromGroup(calendar);
+		
 		map.addAttribute("memberIdList", memberIdList);
 		map.addAttribute("nickNameList", nickNameList);
 		

@@ -29,6 +29,10 @@ a:active{
 #result {
 	border-collapse: collapse;
 }
+
+table{
+	text-align:center;
+}
 </style>
 
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
@@ -81,20 +85,25 @@ $(document).ready(function(){
 </script>
 
 <body>
-
 	<section class="wrapper site-min-height">
-		<h3>
-			<i class="fa fa-angle-right"></i> 받은 쪽지함
-		</h3>
+	<br><br>
+	<ul>
+		<li><a href="/MMONG/message/selectReceiveMsg.do">받은 쪽지함</a></li>
+		<li><a href="/MMONG/message/selectSendMsg.do">보낸 쪽지함</a></li>
+	</ul>
+		<h2>　받은 쪽지함</h2>
 
-	<table>
+<hr>
+<br>
+<div align="center">
+	<table class="table">
 		<thead>
 			<tr>
-				<td><input type="checkbox" id="allCheck"></td>
-				<td>보낸이</td>
-				<td>제목</td>
-				<td>내용</td>
-				<td>날짜</td>
+				<td style="width: 30px;padding:10px 0px 10px 40px;"><input type="checkbox" id="allCheck"></td>
+				<td style="width: 150px;padding:10px 0px 10px 0px;">보낸이</td>
+				<td style="width: 200px;padding:10px 0px 10px 0px;">제목</td>
+				<td style="width: 200px;padding:10px 0px 10px 0px;">내용</td>
+				<td style="width: 100px;padding:10px 40px 10px 0px;">날짜</td>
 			</tr>
 		</thead>
 		<tbody>
@@ -102,11 +111,11 @@ $(document).ready(function(){
 				<c:when test="${not empty requestScope.searchReceiveList }">
 					<c:forEach items="${requestScope.searchReceiveList }" var="list">
 						<tr>
-							<td><input type="checkbox" name="message" class="check" value="${list.no }"></td>
-							<td>${list.sendId } (${list.member.nickName })</td>
-							<td><a href="/MMONG/message/viewReceiveMsg.do?no=${list.no }">${list.title }</a></td>
-							<td><a href="/MMONG/message/viewReceiveMsg.do?no=${list.no }">${list.content }</a></td>
-							<td><fmt:formatDate type="date" value="${list.messageDate }"/></td>
+							<td style="width: 30px;padding:10px 0px 10px 40px;"><input type="checkbox" name="message" class="check" value="${list.no }"></td>
+							<td style="width: 150px;padding:10px 0px 10px 0px;">${list.sendId } (${list.member.nickName })</td>
+							<td style="width: 200px;padding:10px 0px 10px 0px;"><a href="/MMONG/message/viewReceiveMsg.do?no=${list.no }">${list.title }</a></td>
+							<td style="width: 200px;padding:10px 0px 10px 0px;"><a href="/MMONG/message/viewReceiveMsg.do?no=${list.no }">${list.content }</a></td>
+							<td style="width: 100px;padding:10px 40px 10px 0px;"><fmt:formatDate type="date" value="${list.messageDate }"/></td>
 						</tr>
 					</c:forEach>
 				</c:when>
@@ -116,9 +125,7 @@ $(document).ready(function(){
 			</c:choose>
 		</tbody>
 	</table>
-	
-	<input type="button" value="삭제" id="delete"> 
-	
+<br>
 	<p>
 <%-- ####################################
 										페이징 처리
@@ -177,8 +184,13 @@ $(document).ready(function(){
 <a href="/MMONG/message/searchReceiveMsg.do?page=${requestScope.pageBean.totalPage}&searchOpt=${requestScope.search_opt}&search=${requestScope.search_txt}">마지막페이지</a>
 
 </p>
+</div>
 
-
+<div align="left" style="padding:0px 0px 0px 30px;">
+		<input type="button" class="btn btn-default" value="삭제" id="delete"> 
+	</div>
+	<br><br>
+	<div align="center">
 	<form action="/MMONG/message/searchReceiveMsg.do">
 		<select name="searchOpt">
 			<option value="ID">보낸사람의 ID</option>
@@ -188,4 +200,7 @@ $(document).ready(function(){
 		<input type="text" name="search">
 		<input type="submit" value="검색">
 	</form>
+	<br><br><br>
+	</div>
 	</section>
+</body>
