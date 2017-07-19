@@ -67,18 +67,7 @@ function searchNameChk(){//소모임 검색 버튼 누를때 값 검사
 		$("#searchName").submit();
 	}
 }
-/* 
-function random_image(){
-	var myimages = new Array();
-	// 이곳에 출력할 이미지 주소를 계속해서 아래의 방법처럼 기입해 주세요
-	myimages[0] = "/MMONG/resource/assets/img/doggroup.jpg";
-	myimages[1] = "/MMONG/resource/assets/img/groups.jpg";
-	myimages[2] = "/MMONG/resource/assets/img/ny.jpg";
-	var ry = Math.floor( Math.random() * (myimages.length-1) );
-	$("#groupImg").attr('src', myimages[ry]);
-	//document.write('<img src="' + myimages[ry] + '" border=0>');
-}
- */
+
 </script>
 
 
@@ -138,4 +127,21 @@ function random_image(){
 </section>
 </div>
 
+<script>
+$(document).ready(function(){
+	$(".img-responsive").each(function(){		
+		var myimages = new Array();
+		//랜덤으로 출력할 이미지 소스 주소 
+		myimages[0] = "/MMONG/resource/assets/img/doggroup.jpg";
+		myimages[1] = "/MMONG/resource/assets/img/groups.jpg";
+		myimages[2] = "/MMONG/resource/assets/img/ny.jpg";
+		var ry = Math.floor( Math.random() * (myimages.length-1) );
+		$(this).attr('src', myimages[ry]);
+		//$(this).attr('src', '/MMONG/resource/assets/img/groups.jpg');
+	});
+
+	 
+
+});
+</script>
 
