@@ -7,7 +7,7 @@ public class Alert implements Serializable{
 	private int no;
 	private String content;
 	private int state; //0:안읽  1:읽
-	private int type; //0:소모임 초대 알림  1:쪽지 알림  2:댓글 달렸을때 
+	private int type; //0:소모임 초대 알림  1:쪽지 알림  2:댓글 달렸을때  3:소모임 참여일정 삭제되었을때  
 	private int groupNo; //소모임초대알림(type=0)일 경우 소모임넘버, 댓글달린 경우(type=2)일 경우 게시물넘버
 	
 	private String memberId;

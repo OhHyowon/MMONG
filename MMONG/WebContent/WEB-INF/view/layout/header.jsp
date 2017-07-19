@@ -88,12 +88,20 @@ function showAlertDropdown(){
 							$("#alertDropdown").append("<li><a href='/MMONG/message/selectReceiveMsg.do'>"+this.content
 														+"<input type='hidden' class='alertNo' value='"+this.no+"'></a></li>");
 						}							
-					}else{ //댓글 달렸을 경우
+					}else if(this.type=="2"){ //새 댓글 알림인 경우
 						if(this.state=="0"){//안읽은 알람
 							$("#alertDropdown").append("<li><a href='/MMONG/group/board/board_view.do?boardNo="+this.groupNo+"'>"+this.content
 														+"<input type='hidden' class='alertNo' value='"+this.no+"'><img src='/MMONG/resource/assets/img/noti.png' width='15px' height='15px' align='right'></a></li>");
 						}else{//읽은 알람
 							$("#alertDropdown").append("<li><a href='/MMONG/group/board/board_view.do?boardNo="+this.groupNo+"'>"+this.content
+														+"<input type='hidden' class='alertNo' value='"+this.no+"'></a></li>");
+						}							
+					}else{ //모임일정 삭제알림 인경우
+						if(this.state=="0"){//안읽은 알람
+							$("#alertDropdown").append("<li><a href='/MMONG/group/groupDetail.do?groupNo="+this.groupNo+"'>"+this.content
+														   +"<input type='hidden' class='alertNo' value='"+this.no+"'><img src='/MMONG/resource/assets/img/noti.png' width='15px' height='15px' align='right'></a></li>");
+						}else{//읽은 알람
+							$("#alertDropdown").append("<li><a href='/MMONG/group/groupDetail.do?groupNo="+this.groupNo+"'>"+this.content
 														+"<input type='hidden' class='alertNo' value='"+this.no+"'></a></li>");
 						}							
 					}
