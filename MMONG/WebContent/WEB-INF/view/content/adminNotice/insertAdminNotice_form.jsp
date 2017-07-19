@@ -1,10 +1,20 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-	<section class="wrapper site-min-height">
-		<h3>
-			<i class="fa fa-angle-right"></i> 공지사항 글쓰기
-		</h3>
+<style type="text/css">
+
+#view-menu{
+	text-align: center;
+}
+</style>
+
+<script type="text/javascript">
+window.onload=function(){
+	$("#total_div").css("min-height",(document.body.scrollHeight-38.4)+"px");
+}
+</script>
+
+<div id="total_div">
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
 	
@@ -60,10 +70,13 @@ $(document).ready(function(){
 		});//ajax 끝
 	});//#insertBtn 끝
 });//ready 끝
-
-
 </script>
 
+	<section class="wrapper site-min-height">
+		<h3>
+			<i class="fa fa-angle-right"></i> 공지사항 글쓰기
+		</h3>
+		
 <table>
         <form id="insert" action="/MMONG/adminNotice/insertAdminNotice.do" method="post" >
         		
@@ -82,14 +95,17 @@ $(document).ready(function(){
             </tr>
             <tr>
                 <td colspan="2">
-                    <input type="reset" value="초기화"/>
-                   	<input type="hidden" id="no" name="no" value="-1"/><br>
-                	<input type="hidden" id="adminDate" name="adminDate" value="2000-01-01"/>
-                  	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                    <input type="button" id="insertBtn" value="등록" >
-                    <input type="button" value="목록" onclick="location.href='/MMONG/adminNotice/selectAdminNoticeList.do'"/>
+	                <div id="view-menu">
+	                   	<input type="hidden" id="no" name="no" value="-1"/>
+	                	<input type="hidden" id="adminDate" name="adminDate" value="2000-01-01"/>
+	                    <input class="btn btn-default btn-sm" type="reset" value="초기화"/>&nbsp;
+	                  	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	                    <input class="btn btn-default btn-sm" type="button" id="insertBtn" value="등록" >&nbsp;
+	                    <input class="btn btn-default btn-sm" type="button" value="목록" onclick="location.href='/MMONG/adminNotice/selectAdminNoticeList.do'"/>
+	                </div>
                 </td>
             </tr>
         </form>
 </table>
 </section>
+</div>

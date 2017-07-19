@@ -5,7 +5,11 @@ import java.io.Serializable;
 public class Trail implements Serializable{
 	private int no;
 	private String category;
-	private String route;
+	private String route1;
+	private String route2;
+	private String route3;
+	private String route4;
+	private String route5;
 	private String title;
 	private String content;
 	
@@ -14,22 +18,30 @@ public class Trail implements Serializable{
 	
 	public Trail() {}
 
-	public Trail(int no, String category, String route, String title, String content, String memberId, Member member) {
+	public Trail(int no, String category, String route1, String route2, String route3, String route4, String route5, String title, String content, String memberId, Member member) {
 		super();
 		this.no = no;
 		this.category = category;
-		this.route = route;
+		this.route1 = route1;
+		this.route2 = route2;
+		this.route3 = route3;
+		this.route4 = route4;
+		this.route5 = route5;
 		this.title = title;
 		this.content = content;
 		this.memberId = memberId;
 		this.member = member;
 	}
 
-	public Trail(int no, String category, String route, String title, String content, String memberId) {
+	public Trail(int no, String category, String route1, String route2, String route3, String route4, String route5,String title, String content, String memberId) {
 		super();
 		this.no = no;
 		this.category = category;
-		this.route = route;
+		this.route1 = route1;
+		this.route2 = route2;
+		this.route3 = route3;
+		this.route4 = route4;
+		this.route5 = route5;
 		this.title = title;
 		this.content = content;
 		this.memberId = memberId;
@@ -51,12 +63,44 @@ public class Trail implements Serializable{
 		this.category = category;
 	}
 
-	public String getRoute() {
-		return route;
+	public String getRoute1() {
+		return route1;
 	}
 
-	public void setRoute(String route) {
-		this.route = route;
+	public void setRoute1(String route1) {
+		this.route1 = route1;
+	}
+
+	public String getRoute2() {
+		return route2;
+	}
+
+	public void setRoute2(String route2) {
+		this.route2 = route2;
+	}
+
+	public String getRoute3() {
+		return route3;
+	}
+
+	public void setRoute3(String route3) {
+		this.route3 = route3;
+	}
+
+	public String getRoute4() {
+		return route4;
+	}
+
+	public void setRoute4(String route4) {
+		this.route4 = route4;
+	}
+
+	public String getRoute5() {
+		return route5;
+	}
+
+	public void setRoute5(String route5) {
+		this.route5 = route5;
 	}
 
 	public String getTitle() {
@@ -100,7 +144,11 @@ public class Trail implements Serializable{
 		result = prime * result + ((member == null) ? 0 : member.hashCode());
 		result = prime * result + ((memberId == null) ? 0 : memberId.hashCode());
 		result = prime * result + no;
-		result = prime * result + ((route == null) ? 0 : route.hashCode());
+		result = prime * result + ((route1 == null) ? 0 : route1.hashCode());
+		result = prime * result + ((route2 == null) ? 0 : route2.hashCode());
+		result = prime * result + ((route3 == null) ? 0 : route3.hashCode());
+		result = prime * result + ((route4 == null) ? 0 : route4.hashCode());
+		result = prime * result + ((route5 == null) ? 0 : route5.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
 	}
@@ -136,10 +184,30 @@ public class Trail implements Serializable{
 			return false;
 		if (no != other.no)
 			return false;
-		if (route == null) {
-			if (other.route != null)
+		if (route1 == null) {
+			if (other.route1 != null)
 				return false;
-		} else if (!route.equals(other.route))
+		} else if (!route1.equals(other.route1))
+			return false;
+		if (route2 == null) {
+			if (other.route2 != null)
+				return false;
+		} else if (!route2.equals(other.route2))
+			return false;
+		if (route3 == null) {
+			if (other.route3 != null)
+				return false;
+		} else if (!route3.equals(other.route3))
+			return false;
+		if (route4 == null) {
+			if (other.route4 != null)
+				return false;
+		} else if (!route4.equals(other.route4))
+			return false;
+		if (route5 == null) {
+			if (other.route5 != null)
+				return false;
+		} else if (!route5.equals(other.route5))
 			return false;
 		if (title == null) {
 			if (other.title != null)
@@ -151,8 +219,9 @@ public class Trail implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Trail [no=" + no + ", category=" + category + ", route=" + route + ", title=" + title + ", content="
-				+ content + ", memberId=" + memberId + ", member=" + member + "]";
+		return "Trail [no=" + no + ", category=" + category + ", route1=" + route1 + ", route2=" + route2 + ", route3="
+				+ route3 + ", route4=" + route4 + ", route5=" + route5 + ", title=" + title + ", content=" + content
+				+ ", memberId=" + memberId + ", member=" + member + "]";
 	}
 	
 	

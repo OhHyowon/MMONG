@@ -68,9 +68,8 @@ td {
 	
 <%-- =============소모임 상세페이지 소메뉴 : 밑에 세메뉴안에도 이것 포함시키기! ================ --%>
 <ul>
-	<li><a href="/MMONG/group/groupDate/allGroupDateList.do">모임 일정 목록</a></li> <!-- 소모임 상세페이지 첫 화면 -->
+	<li><a href="/MMONG/group/groupDate/allGroupDateList.do">모임 일정 목록</a></li>
 	<li><a href="/MMONG/group/board/allBoardList.do">자유게시판</a></li>
-	<li><a href="/MMONG/groupMember/searchGroupMember.do">참여 멤버 목록</a></li>
 </ul>
 <%-- =============소모임 상세페이지 소메뉴 끝================ --%>
 
@@ -99,7 +98,7 @@ td {
 			<td><li>${groupDate.title }</td>
 			<td>${groupDate.place }</td>
 			<td><fmt:formatDate value="${groupDate.groupDate }" pattern="yyyy-MM-dd HH:mm" /></td>
-			<td><input type="button" value="상세보기" onclick="location.href='/MMONG/group/groupDate/groupDateView.do?groupDateNo=${groupDate.no}'"></td>
+			<td><input type="button" value="상세보기" onclick="window.open('/MMONG/group/groupDate/groupDateView.do?groupDateNo=${groupDate.no}','일정 상세보기','top=100px, left=400px, height=500px, width=700px')"></td>
 		</tr>
 	</tbody>
 </c:forEach>
