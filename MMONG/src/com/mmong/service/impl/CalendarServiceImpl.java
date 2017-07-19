@@ -51,5 +51,11 @@ public class CalendarServiceImpl implements CalendarService{
 		dao.deleteFromGroup(groupDateNo);
 	}
 
+	@Override
+	public void updateFromGroup(Calendar calendar) {
+		dao.updateFromGroup(calendar);
+	}
+
+	
 	
 }

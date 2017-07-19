@@ -41,4 +41,9 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 	public void deleteGroupMember(int groupNo, String memberId){
 		groupMemberDao.deleteGroupMember(groupNo,memberId);
 	}
+
+	@Override
+	public GroupMember selectGroupMemberByNo(int no) {
+		return groupMemberDao.selectGroupMemberByNo(no);
+	}
 }

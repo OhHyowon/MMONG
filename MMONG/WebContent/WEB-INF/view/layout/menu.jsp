@@ -11,7 +11,7 @@ function alertMsg(){
 	$("#loginWaringMsg").empty();
 	$("#loginWaringMsg").append("<div style='margin:5px;' class='alert alert-warning alert-dismissable'>"
 							   +"<button type='button' onClick='window.location.reload();' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>"
-							   +"<strong>Warning!</strong><br>로그인이 필요합니다.</div> ");
+							   +"&nbsp;&nbsp;&nbsp;&nbsp;<strong>Warning!</strong><br>&nbsp;&nbsp;로그인이 필요한<br>&nbsp;&nbsp;서비스입니다.</div> ");
 }
 </script>
 <form id="logoutForm" action="/MMONG/logout.do" method="post" style="display:none">

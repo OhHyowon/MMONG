@@ -138,24 +138,18 @@ $(document).ready(function(){
 		});//ajax 끝		
 	});
 	
+	$("#warning").on("click", function(){
+		alert("로그인 해주세요.");
+	});
+	$("#warning2").on("click", function(){
+		alert("로그인 해주세요.");
+	});
 	
 });
 </script>
 
 <div id="total_div">
-	<section class="wrapper site-min-height">
-		<h3>
-			<i class="fa fa-angle-right"></i> 소모임 페이지
-		</h3>
-
-<%-- =============소모임 상세페이지 소메뉴 : 밑에 세메뉴안에도 이것 포함시키기! ================ --%>
-  <sec:authorize access="hasRole('ROLE_1')"> 
-<ul>
-	<li><a href="/MMONG/group/groupDate/allGroupDateList.do">모임 일정 목록</a></li> 
-	<li><a href="/MMONG/group/board/allBoardList.do">자유게시판</a></li>
-</ul>
-</sec:authorize>
-<%-- =============소모임 상세페이지 소메뉴 끝================ --%>
+<section class="wrapper site-min-height">
 
 
 <!-- 그룹 상세페이지가 열릴 때마다 해당 소모임NO를 세션에 담음 -->
@@ -170,10 +164,47 @@ $(document).ready(function(){
 </sec:authorize>
 <input type="hidden" id="groupName" value="${requestScope.group.name }">
 
+
+
+<%-- =============소모임 상세페이지 소메뉴 : 밑에 두메뉴안에도 이것 포함시키기! ================ --%>
+
+	<div class="btn-group btn-group-justified" style="margin-top:50px; margin-bottom:30px;">
+		<sec:authorize access="!isAuthenticated()">
+		  <div class="btn-group">
+		    <button type="button" class="btn btn-theme" id="warning">모임 일정 목록</button>
+		  </div>
+		  <div class="btn-group">
+		    <button type="button" class="btn btn-theme" id="warning2">자유게시판</button>
+		  </div>
+		</sec:authorize>	
+		<sec:authorize access="isAuthenticated()">
+		  <div class="btn-group">
+		    <a href="/MMONG/group/groupDate/allGroupDateList.do"><button type="button" class="btn btn-theme">모임 일정 목록</button></a>
+		  </div>
+		  <div class="btn-group">
+		    <a href="/MMONG/group/board/allBoardList.do"><button type="button" class="btn btn-theme">자유게시판</button></a>
+		  </div>
+		</sec:authorize>
+
+		<div class="btn-group">
+		  <a href="/MMONG/group/mygroup.do"><button type="button" class="btn btn-theme">나의 소모임</button></a>
+		</div>
+	</div>			
+<%-- =============소모임 상세페이지 소메뉴 끝================ --%>
+
+
+
+
+
+
+
+
 <!-- 소모임 정보 -->
 <p><b>모임 정보</b></p>
 모임 이름 : ${requestScope.group.name } <br>
 모임 장 : ${requestScope.group.leader } <br>
+
+
 
 <!-- 가입하기 버튼 -->
 <sec:authorize access="!isAuthenticated()"> <!-- 로그인 안했을시  -->       
@@ -187,8 +218,8 @@ $(document).ready(function(){
    if(au.equals("ROLE_1")){//관리자인 경우 아무것도 안뜸 
       Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();      
       if(((Group)request.getAttribute("group")).getLeader().equals(member.getMemberId())){ //주인장은 가입하기 버튼 대신 소모임 정보수정 버튼 필요
-         out.println("<button type='button' id='editGroupBtn' class='btn btn-default'>소모임 수정하기</button>");
-      	 out.println("<button type='button' id='deleteBtn' class='btn btn-default'>소모임 삭제하기</button>");
+         out.println("<center><button type='button' id='editGroupBtn' class='btn btn-default btn-sm'>소모임 수정하기</button></center>");
+      	 out.println("<center><button type='button' id='deleteBtn' class='btn btn-default btn-sm'>소모임 삭제하기</button></center>");
       }else{//주인장이 아닌경우 그룹멤버에 이미 내가 포함되어있는지 검사후 안되어있으면 가입하기버튼
     	  List<GroupMember> groupMemberList = (List)(request.getAttribute("groupMemberList"));
     	  boolean flag = false;
@@ -199,7 +230,7 @@ $(document).ready(function(){
     		  }
     	  }
     	  if(flag==false){ //가입 안되어있는 경우 - 가입하기 버튼 
-    		  out.println("<button type='button' id='create' class='btn btn-default'>가입하기</button>");
+    		  out.println("<center><button type='button' id='create' class='btn btn-default btn-sm'>가입하기</button></center>");
     	  }
       }
    }
