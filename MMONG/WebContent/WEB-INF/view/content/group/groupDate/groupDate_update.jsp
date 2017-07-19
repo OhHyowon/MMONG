@@ -35,6 +35,7 @@
 일정 이름 : <input type="text" name="title" value="${requestScope.groupDate.title }" class="form-control" ><span class="error"><form:errors path="groupDate.title" deilimiter="&nbsp;&nbsp;"/></span><br>
 날짜 : <input type="datetime-local" name="groupDate" class="form-control" value="<fmt:formatDate value="${requestScope.groupDate.groupDate }" pattern="yyyy-MM-dd'T'HH:mm"/>"> <span class="error"><form:errors path="groupDate.groupDate" deilimiter="&nbsp;&nbsp;"/></span><br>
 장소 : <input type="text" name="place" id="keyword" class="form-control" value="${requestScope.groupDate.place }"><input type="button" value="검색" id="searchPOI">
+		<input type="hidden" name="memberId" value="${requestScope.groupDate.memberId}">
 <div id="map_div" style="position: relative;">
 	<div id="result_list_div" style="position: absolute; left: 400px; top: 0px;width: 300px; display: flex;">
 	</div>
@@ -47,4 +48,3 @@
 </form>
 </div>
 </div>
-</section>

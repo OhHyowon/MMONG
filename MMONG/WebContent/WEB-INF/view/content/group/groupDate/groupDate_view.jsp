@@ -151,7 +151,6 @@ $(document).ready(function(){
 	<div class="col-lg-4">
 		<div class="form-panel" style="background:#E8F1EE"><div>지도 들어갈 자리</div></div>
 	</div>
-
 	<c:if test="${requestScope.groupDate.memberId == loginId }">
 		<form action="/MMONG/group/groupDate/updateGroupDate1.do" method="post">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
