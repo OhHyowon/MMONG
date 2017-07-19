@@ -51,13 +51,10 @@ $(document).ready(function(){
 
 <div id="total_div">
 	<section class="wrapper site-min-height">
-		<h3>
-			<i class="fa fa-angle-right"></i> 소모임 페이지
-		</h3>
 
 	<section id="portfolio" class="bg-white">
 		<!-- ==============================타이틀============================== -->
-		<div class="row">
+		<div class="row" style="margin-top:50px;">
 	            <div class="col-lg-12 text-center">
 	                <h2 class="section-heading">My Group</h2>
 	            </div>
@@ -88,7 +85,7 @@ $(document).ready(function(){
 		                          <i class="fa fa-plus fa-3x"></i>
 		                      </div>
 		                  </div>
-		                  <img src="/MMONG/resource/assets/img/groups.jpg" class="img-responsive" alt="">
+		                  <img src="/MMONG/resource/assets/img/doggroup.jpg" class="img-responsive" alt="">
 			            </a>
 			            <div class="portfolio-caption">
 			                  <h4><b>${myGroup.name }</b></h4>
