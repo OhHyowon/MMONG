@@ -32,17 +32,21 @@ $(document).ready(function(){
 </script>
 <div id="total_div">
 	<section class="wrapper site-min-height">
-		<h3>
-			<i class="fa fa-angle-right"></i>게시글 수정
-		</h3>
-		
-		
-<%-- =============소모임 상세페이지 소메뉴 : 밑에 세메뉴안에도 이것 포함시키기! ================ --%>
-<ul>
-	<li><a href="/MMONG/group/groupDate/allGroupDateList.do">모임 일정 목록</a></li>
-	<li><a href="/MMONG/group/board/allBoardList.do">자유게시판</a></li>
-</ul>
+
+<%-- =============소모임 상세페이지 소메뉴 : 밑에 두메뉴안에도 이것 포함시키기! ================ --%>
+	<div class="btn-group btn-group-justified" style="margin-top:50px; margin-bottom:30px;"">
+	  <div class="btn-group">
+	    <a href="/MMONG/group/groupDate/allGroupDateList.do"><button type="button" class="btn btn-theme">모임 일정 목록</button></a>
+	  </div>
+	  <div class="btn-group">
+	    <a href="/MMONG/group/board/allBoardList.do"><button type="button" class="btn btn-theme">자유게시판</button></a>
+	  </div>
+	  <div class="btn-group">
+	    <a href="/MMONG/group/mygroup.do"><button type="button" class="btn btn-theme">나의 소모임</button></a>
+	  </div>
+	</div>			
 <%-- =============소모임 상세페이지 소메뉴 끝================ --%>
+
 <hr>
 	<input type="button"class="btn btn-default btn-sm" value="글쓰기" onclick="location.href='/MMONG/group/board/board_form.do'">
 	<input type="button"class="btn btn-default btn-sm" value="내가 쓴 글" onclick="location.href='/MMONG/group/board/myBoardList.do'">
@@ -59,7 +63,7 @@ $(document).ready(function(){
 <hr>
 기존 사용된 이미지 : <br>
 		<c:forEach items="${requestScope.nameList }" var="name">
-			${name } <br>
+			${name} <br>
 		</c:forEach>
 		
 <input type="hidden" name="no" value="${requestScope.board.no }">

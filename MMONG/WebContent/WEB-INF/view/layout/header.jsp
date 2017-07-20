@@ -1,3 +1,4 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>   
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
@@ -88,7 +89,7 @@ function showAlertDropdown(){
 							$("#alertDropdown").append("<li><a href='/MMONG/message/selectReceiveMsg.do'>"+this.content
 														+"<input type='hidden' class='alertNo' value='"+this.no+"'></a></li>");
 						}							
-					}else{ //댓글 달렸을 경우
+					}else if(this.type=="2"){ //새 댓글 알림인 경우
 						if(this.state=="0"){//안읽은 알람
 							$("#alertDropdown").append("<li><a href='/MMONG/group/board/board_view.do?boardNo="+this.groupNo+"'>"+this.content
 														+"<input type='hidden' class='alertNo' value='"+this.no+"'><img src='/MMONG/resource/assets/img/noti.png' width='15px' height='15px' align='right'></a></li>");
@@ -96,11 +97,34 @@ function showAlertDropdown(){
 							$("#alertDropdown").append("<li><a href='/MMONG/group/board/board_view.do?boardNo="+this.groupNo+"'>"+this.content
 														+"<input type='hidden' class='alertNo' value='"+this.no+"'></a></li>");
 						}							
+					}else if(this.type=="3"){ //모임일정 삭제알림 인경우
+						if(this.state=="0"){//안읽은 알람
+							$("#alertDropdown").append("<li><a href='/MMONG/group/groupDetail.do?groupNo="+this.groupNo+"'>"+this.content
+														   +"<input type='hidden' class='alertNo' value='"+this.no+"'><img src='/MMONG/resource/assets/img/noti.png' width='15px' height='15px' align='right'></a></li>");
+						}else{//읽은 알람
+							$("#alertDropdown").append("<li><a href='/MMONG/group/groupDetail.do?groupNo="+this.groupNo+"'>"+this.content
+														+"<input type='hidden' class='alertNo' value='"+this.no+"'></a></li>");
+						}							
+					}else{ //모임일정 변경알림 인경우
+						if(this.state=="0"){//안읽은 알람
+							$("#alertDropdown").append("<li><a href='/MMONG/group/groupDetail.do?groupNo="+this.groupNo+"'>"+this.content
+														   +"<input type='hidden' class='alertNo' value='"+this.no+"'><img src='/MMONG/resource/assets/img/noti.png' width='15px' height='15px' align='right'></a></li>");
+						}else{//읽은 알람
+							$("#alertDropdown").append("<li><a href='/MMONG/group/groupDetail.do?groupNo="+this.groupNo+"'>"+this.content
+														+"<input type='hidden' class='alertNo' value='"+this.no+"'></a></li>");
+						}							
 					}
 				});
 			}
 		}
 	});//ajax 끝		
+}
+
+function alertMsg2(){
+	$("#loginWaringMsg2").empty();
+	$("#loginWaringMsg2").append("<div class='alert alert-warning alert-dismissable' style='height:30px;'>"
+							   +"<button type='button' onClick='window.location.reload();' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>"
+							   +"&nbsp;&nbsp;<strong>Warning!</strong> 로그인이 필요한 서비스입니다.</div> ");
 }
 
 function logout(){
@@ -113,7 +137,7 @@ function logout(){
 </div>
 
             <!------메인로고-------->
-            <a href="/MMONG/index.do" class="logo"><b>MMONG</b></a>
+            <a href="/MMONG/index.do" class="logo"><b>MMONG <img src="/MMONG/resource/assets/img/puppy/dogPrint.png"></b></a>
             <!------메인 로고 끝------>
             
             <!-- --------------상단 바 : 알림, 쪽지 아이콘------------- -->
@@ -122,30 +146,43 @@ function logout(){
 
 					<!--  알림아이콘 -->
 					<li id="header_inbox_bar" class="dropdown">
-					    <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
-					        <i class="fa fa-bell" id="alertIcon"></i>
-					        <span class="badge bg-theme" id="alert"></span> <%--알람개수 표시 --%>
-						</a>
-						<ul class="dropdown-menu extended inbox" id="alertDropdown">
-						    <!-- <div class="notify-arrow notify-arrow-green"></div> -->
-							<li> <p class="green" id="alertMsg"></p> </li> <%-- *개의 읽지않은 알람이있습니다 --%>
-						</ul>
+						<sec:authorize access="!isAuthenticated()"> 
+						    <a onClick="alertMsg2(); return false;" >
+						        <i class="fa fa-bell"></i>
+						    </a>							
+					    </sec:authorize>
+					    <sec:authorize access="isAuthenticated()"> 
+						    <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
+						        <i class="fa fa-bell" id="alertIcon"></i>
+						        <span class="badge bg-theme" id="alert"></span> <%--알람개수 표시 --%>
+							</a>
+							<ul class="dropdown-menu extended inbox" id="alertDropdown">
+							    <!-- <div class="notify-arrow notify-arrow-green"></div> -->
+								<li> <p class="green" id="alertMsg"></p> </li> <%-- *개의 읽지않은 알람이있습니다 --%>
+							</ul>
+						</sec:authorize>
 					</li>               
                
 					<!--  쪽지아이콘 -->                   
 					<li id="header_inbox_bar" class="dropdown">
 						<sec:authorize access="!isAuthenticated()"> 
-						    <a>
+						    <a onClick="alertMsg2(); return false;" >
 						        <i class="fa fa-envelope-o"></i>
 						    </a>							
 					    </sec:authorize>
 					    <sec:authorize access="isAuthenticated()">
-						    <a href="/MMONG/message/message.do">
+						    <a href="/MMONG/message/selectReceiveMsg.do">
 						        <i class="fa fa-envelope-o"></i>
 						    </a>
 					    </sec:authorize>
-					</li>                    
+					</li> 
+					
+					<!-- 로그인하지 않은 사용자가 로그인이 필요한 메뉴 접근시 경고메시지 뿌려줄 곳 -->
+					<li id="loginWaringMsg2">
+					</li>
+				                   
                 </ul>
+
             </div>
             <!-- --------------상단 바 : 알림, 쪽지 푸쉬알람 아이콘 끝------------- -->
 
@@ -153,7 +190,9 @@ function logout(){
             <!-- --------------상단 바 : 마이페이지, 로그인------------- -->
             <div class="top-menu">
             	<ul class="nav pull-right top-menu">
-            	
+            	                
+
+
             	<li style="padding:21px">
  					<sec:authorize access="hasRole('ROLE_0')">
 						<sec:authentication property="principal.adminId" /> 님 환영합니다.<br>
@@ -185,4 +224,5 @@ function logout(){
                  </sec:authorize>
             	</ul>       	     	
             </div>
+
             <!-- --------------상단 바 : 마이페이지, 로그인 끝------------- -->

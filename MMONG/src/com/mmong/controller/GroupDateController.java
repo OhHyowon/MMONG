@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mmong.service.AlertService;
 import com.mmong.service.CalendarService;
 import com.mmong.service.GroupDateService;
 import com.mmong.service.GroupMemberService;
 import com.mmong.validation.GroupDateValidator;
+import com.mmong.vo.Alert;
 import com.mmong.vo.Calendar;
 import com.mmong.vo.GroupDate;
 import com.mmong.vo.GroupMember;
@@ -35,10 +37,12 @@ public class GroupDateController{
 	@Autowired
 	private GroupDateService groupDateService;
 	@Autowired
-	private GroupMemberService GMService;	
+	private GroupMemberService groupMemberService;	
 	
 	@Autowired
 	private CalendarService calendarService;
+	@Autowired
+	private AlertService alertService;
 	
 	/***
 	 * 일정 등록하는 handler method
@@ -184,7 +188,7 @@ public class GroupDateController{
 		String memberId=member.getMemberId();
 		// groupMember에 groupNo으로 조회했을 때 memberId가 본인이 있으면 1, 없으면 0
 		int check=0;
-		List<GroupMember> groupMemerList=GMService.searchGroupMemberByGroupNo(groupNo);
+		List<GroupMember> groupMemerList=groupMemberService.searchGroupMemberByGroupNo(groupNo);
 		for(int i =0; i<groupMemerList.size();i++){
 			String groupMemberId=groupMemerList.get(i).getMemberId();
 			if(groupMemberId.equals(memberId)){
@@ -224,7 +228,7 @@ public class GroupDateController{
 		
 		// groupMember에 groupNo으로 조회했을 때 memberId가 본인이 있으면 1, 없으면 0
 		int check=0;
-		List<GroupMember> groupMemerList=GMService.searchGroupMemberByGroupNo(groupNo);
+		List<GroupMember> groupMemerList=groupMemberService.searchGroupMemberByGroupNo(groupNo);
 		for(int i =0; i<groupMemerList.size();i++){
 			String groupMemberId=groupMemerList.get(i).getMemberId();
 			if(groupMemberId.equals(memberId)){
@@ -300,11 +304,29 @@ public class GroupDateController{
 			nickNameList.add(nickName);
 		}
 		
+		//*** 달력에 일정 수정 & 자동 입력
+		Calendar calendar = new Calendar(0, groupDate.getTitle(), groupDate.getPlace(), 2, groupDate.getGroupDate(), groupDate.getGroupDate(), 0, "", groupDateNo, "");
+		calendarService.updateFromGroup(calendar);
+		
+		GroupDate groupDate1=groupDateService.selectGroupDate(groupDateNo);
+		
+		groupDate1.setGroupDate(groupDate.getGroupDate());
+		groupDate1.setPlace(groupDate.getPlace());
+		groupDate1.setTitle(groupDate.getTitle());
+		
+		groupDateService.upDateGroupDate(groupDate1); // DB에 수정된 일정 넣기
+		
+		//일정 수정시 일정에 참여했던 멤버들에게 수정된 일정 정보 알리기 --이주현
+		List meetMemberNos = groupDateService.selectMeetMemberList(groupDateNo);
+		GroupMember groupMember; //모임에 참여하는 그룹멤버들 담을 변수 
+		for(int i=0; i<meetMemberNos.size(); i++){
+			groupMember = groupMemberService.selectGroupMemberByNo((int)meetMemberNos.get(i)); //meetMember의 no로 GroupMember를 찾음 
+			alertService.insertAlert(new Alert(0, "모임 [ "+groupDate1.getTitle()+" ]이 변경되었습니다.", 0, 3, groupDate1.getGroupNo(), groupMember.getMemberId()));
+		}
+		
 		map.addAttribute("memberIdList", memberIdList);
 		map.addAttribute("nickNameList", nickNameList);
-		
-		groupDateService.upDateGroupDate(groupDate); // DB에 수정된 일정 넣기
-		return "/WEB-INF/view/content/group/groupDate/groupDate_view.jsp";
+		return "/group/groupDate/groupDateView.do?groupDateNo="+groupDateNo;
 	}
 	/**
 	 * 일정 삭제하는 handler
@@ -316,13 +338,22 @@ public class GroupDateController{
 	@ResponseBody
 	public String groupDateDelete(HttpSession session){
 		int groupDateNo=(int) session.getAttribute("groupDateNo");
+		
+		//일정 삭제 시 그 일정에 참가 신청했던 모든 회원들에게 알람 메시지 보내기 --이주현
+		List meetMemberNos = groupDateService.selectMeetMemberList(groupDateNo);
+		GroupMember groupMember; //모임에 참여하는 그룹멤버들 담을 변수 
+		GroupDate groupDate = groupDateService.selectGroupDate(groupDateNo); //삭제될 모임일정 정보 가져옴	
+		for(int i=0; i<meetMemberNos.size(); i++){
+			groupMember = groupMemberService.selectGroupMemberByNo((int)meetMemberNos.get(i)); //meetMember의 no로 GroupMember를 찾음 
+			alertService.insertAlert(new Alert(0, "모임 [ "+groupDate.getTitle()+" ] 이 취소되었습니다.", 0, 3, groupDate.getGroupNo(), groupMember.getMemberId()));
+		}
+		
 		groupDateService.deleteMeetMemberByGroupDateNo(groupDateNo);
 		groupDateService.deleteGroupDate(groupDateNo);
 
 		//*** 일정 삭제시 그 일정에 참가신청했던 모든 회원들의 일정들을 calendar DB에서 삭제
 		calendarService.deleteFromGroup(groupDateNo);
-		//일정 삭제 시 그 일정에 참가 신청했던 모든 회원들에게 알람 메시지 
-		//List< GMService.searchGroupMemberByGroupNo(groupDateNo);
+		
 		return "1";
 	}
 }

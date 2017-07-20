@@ -57,5 +57,11 @@ public class CalendarDaoImpl implements CalendarDao{
 	public void deleteFromGroup(int groupDateNo) {
 		session.delete(makeSqlId("deleteFromGroup"), groupDateNo);
 	}
+
+	@Override
+	public void updateFromGroup(Calendar calendar) {
+		session.update(makeSqlId("updateFromGroup"), calendar);
+	}
+	
 	
 }

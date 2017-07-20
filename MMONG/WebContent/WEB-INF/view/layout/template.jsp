@@ -21,13 +21,12 @@
     <link rel="stylesheet" type="text/css" href="/MMONG/resource/assets/lineicons/style.css">        
    
     <!-- Custom styles for this template -->
-    <link href="/MMONG/resource/assets/css/style.css?var=2" rel="stylesheet">
+    <link href="/MMONG/resource/assets/css/style.css?var=3" rel="stylesheet">
     <link href="/MMONG/resource/assets/css/style-responsive.css" rel="stylesheet">
 
    <script src="/MMONG/resource/assets/js/chart-master/Chart.js"></script>
    <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
    <script type="text/javascript"></script>
-   
 </head>
 
 <body>

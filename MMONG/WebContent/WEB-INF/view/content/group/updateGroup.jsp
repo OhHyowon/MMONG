@@ -44,10 +44,8 @@ $(document).ready(function(){
 </head>
 <body>
 
-	<section class="wrapper site-min-height">
-		<h3>
-			<i class="fa fa-angle-right"></i> 소모임 수정하기
-		</h3>
+<section class="wrapper site-min-height">
+
 
 <form id="updateGroup" >
 
@@ -71,5 +69,6 @@ $(document).ready(function(){
 	<input type="hidden"  id="token" name="${_csrf.parameterName}"   value="${_csrf.token}"/>
 </form>
 
+</section>
 </body>
 </html>

@@ -9,7 +9,21 @@
 <style>
 #content{ line-height: 50px; }
 </style>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="/MMONG/resource/assets/js/jquery.js"></script>
+<!-- Bootstrap core CSS -->
+<link href="/MMONG/resource/assets/css/bootstrap.css?var=1" rel="stylesheet">
+
+<!--external css-->
+<link href="/MMONG/resource/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="/MMONG/resource/assets/js/gritter/css/jquery.gritter.css" />
+<link rel="stylesheet" type="text/css" href="/MMONG/resource/assets/lineicons/style.css">        
+
+<!-- Custom styles for this template -->
+<link href="/MMONG/resource/assets/css/style.css?var=3" rel="stylesheet">
+<link href="/MMONG/resource/assets/css/style-responsive.css" rel="stylesheet">
+    
 <script type="text/javascript">
 $('document').ready(function(){
 	$("#create").on('click', function(){

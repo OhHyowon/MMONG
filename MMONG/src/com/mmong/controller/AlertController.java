@@ -27,6 +27,7 @@ public class AlertController {
 	 * @param memberId
 	 * @return
 	 */
+
 	@RequestMapping("countAlert.do")
 	@ResponseBody
 	public String countAlert(){

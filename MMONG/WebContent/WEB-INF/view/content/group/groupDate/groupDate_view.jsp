@@ -107,9 +107,11 @@ $(document).ready(function(){
 					}
 				}
 			});
-		}c
+		}
 	}); // end of deleteBtn
 });
+
+
 
 </script>
 <style>
@@ -179,6 +181,55 @@ td.result {
 					</c:choose>
 				</div>
 			</div>
+			
+<div class="col-lg-4">
+	<div class="form-panel" style="background:#E8F1EE">
+		<div>&nbsp;</div>
+		이름 : ${requestScope.groupDate.title}
+		<br>
+		일정 : <fmt:formatDate value="${requestScope.groupDate.groupDate}" pattern="yyyy-MM-dd HH:mm"/>
+	</div>
+	<div class="form-panel" style="background:#E8F1EE">
+		<div>
+	<c:choose> 
+ 		<c:when test="${empty requestScope.memberIdList}"> <%-- 멤버아이디가 없을 때 --%>
+				<div style="display:flex">
+					<div><li>일정 참여자가 없습니다!</div>
+					<div style="margin-left:340px;"><input class="btn btn-default btn-xs insertBtn" type="button" value="참여하기"></div>
+				</div>
+		</c:when> 
+	
+		<c:otherwise> <%-- 일정 참여자가 있을 때 --%>
+	<div style="text-align:center">일정 참여자</div>
+	<c:forEach items="${requestScope.memberIdList }" var="memberId" varStatus="idx">
+			<c:choose>
+			<c:when test="${memberId == loginId }"> <%-- 로그인된 아이디와 참여자 아이디가 같다면 --%>
+					<li>
+					${memberId }(${requestScope.nickNameList[idx.index] })<input type="button" value="참여 취소" id="cancelBtn" style="margin-left:5px" class="btn btn-default btn-xs">
+					</li>
+			</c:when>
+			
+			<c:when test="${memberId != loginId }"> <%-- 로그인된 아이디와 참여자 아이디가 다르다면 --%>
+					<li>
+					${memberId }(${requestScope.nickNameList[idx.index] })
+					</li>			
+			</c:when>
+					
+			</c:choose>
+			</c:forEach>
+			
+		<% int i =1; %> <%-- 1이면 memberList에 본인 없음, 2이면 본인 있음 --%>
+			<c:forEach items= "${requestScope.memberIdList }" var="memberId">
+				<c:if test="${memberId==loginId }"> 
+					<% i=2; %>
+				</c:if>
+			</c:forEach>
+		<% if (i==1){%>
+			<input type="button" value="참여 하기" class="btn btn-default btn-xs insertBtn">
+		<%}%>
+		
+		</c:otherwise>
+	</c:choose>
 		</div>
 		<div class="col-lg-4">
 			<div class="form-panel" style="background:#E8F1EE">
@@ -197,5 +248,9 @@ td.result {
 			</form>
 		</c:if>
 		<br><br><br><br><br><br><br><br><br><br><br><br><br>
+	</div>
+</div>
+		</form>
+<br><br><br><br><br><br><br><br><br><br><br><br><br>
 	</div>
 </div>

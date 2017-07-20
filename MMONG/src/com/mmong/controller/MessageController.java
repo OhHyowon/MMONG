@@ -41,7 +41,7 @@ public class MessageController {
 		map.addAttribute("id", id);
 		map.addAttribute("nickname", nickname);
 		
-		return "message/sendMessage.tiles";
+		return "/WEB-INF/view/content/message/sendMessage.jsp";
 	}
 	
 	/**
@@ -53,8 +53,6 @@ public class MessageController {
 	 */
 	@RequestMapping("insert")
 	public ModelAndView insertMessage(@ModelAttribute Message mess, BindingResult errors, @RequestParam String id, @RequestParam String nickname, ModelMap map){
-		
-		System.out.println("insert");
 		
 		Date date = new Date();
 		String receiveId = id; 
@@ -71,7 +69,7 @@ public class MessageController {
 		valid.validate(message, errors);
 		
 		if(errors.hasErrors()){
-			return new ModelAndView("message/sendMessage.tiles");
+			return new ModelAndView("/WEB-INF/view/content/message/sendMessage.jsp");
 		}
 
 		service.insertMessage(message);
@@ -197,7 +195,8 @@ public class MessageController {
 
 		map.addAttribute("message", message);
 		map.addAttribute("no", no);
-		return "message/replyMessage.tiles";
+		
+		return "/WEB-INF/view/content/message/replyMessage.jsp";
 	}
 	
 	/**
@@ -220,7 +219,7 @@ public class MessageController {
 			Message msg = service.selectMsgIdNick(no);
 			map.addAttribute("message", msg);
 			map.addAttribute("no", no);
-			return new ModelAndView("message/replyMessage.tiles");
+			return new ModelAndView("/WEB-INF/view/content/message/replyMessage.jsp");
 		}
 		
 		service.insertMessage(message);
