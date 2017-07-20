@@ -19,7 +19,6 @@ public class MailController {
 	@RequestMapping("/sendMail/auth")
     public ModelAndView emailAuth(HttpServletResponse response, HttpServletRequest request) throws Exception{
 		String memberEmail = request.getParameter("memberEmail");
-
     	//난수 만들기
     	StringBuffer buffer = new StringBuffer();
     	for(int i=0; i<=6; i++){

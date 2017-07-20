@@ -65,7 +65,7 @@ function alertMsg(){
                   </li>
              </sec:authorize>
              
-             <sec:authorize access="isAuthenticated()"> 
+             <sec:authorize access="hasRole('ROLE_1')">
                   <li class="sub-menu">
                       <a href="/MMONG/calendar/calendar_main.do" > <!-- 다이어리 주소 넣기 -->
                           <i class="fa fa-book"></i>

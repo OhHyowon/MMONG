@@ -92,7 +92,6 @@ public class MemberController {
 	@ResponseBody
 	public String checkMemberPhone(@RequestParam(required=false) String memberPhone){
 		//요청파라미터 검증
-		System.out.println("컨트롤러 2 --"+memberPhone);
 		//비즈니스 로직 처리 - 관리자 번호조회
 		int checkPhone = memberService.checkMemberPhone(memberPhone);
 		//응답
