@@ -24,14 +24,9 @@
 	<!-- 개인회원 회원가입 폼 -->
 	<mvc:view-controller path="/member/register_form.do" view-name="member/register_form.tiles" />
 
-
-
 	<!-- 효원 -->
 	<!-- 기본 맵 폼 -->
 	<mvc:view-controller path="/map/basic_map.do" view-name="map/basic_map.tiles" />
-
-
-
 
 	<!-- 여림 -->
 	<!-- 일정 등록 양식 -->

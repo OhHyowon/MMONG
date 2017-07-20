@@ -6,9 +6,16 @@
 
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
-
 window.onload=function(){
 	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+	
+	var placeSplit;
+	var place;
+	for(var j=1; j<10; j++) {
+		placeSplit = $("#splitIndex"+j+"").next().val();
+		place = placeSplit.split("_");
+		$("#splitIndex"+j+"").next().after(""+place[2]+"");
+	}
 }
 
 </script>
@@ -98,18 +105,19 @@ td {
 			<td>상세보기</td>
 		<tr>
 	</thead>
-	
+	<%int i=1; %>
 	<c:forEach items="${requestScope.groupDateList }" var="groupDate">
 	<tbody>
 		<tr>
 			<td><li>${groupDate.title }</li></td>
-			<td>${groupDate.place }</td>
+			<td><input type="hidden" id="splitIndex<%=i%>" value="<%=i%>"><input type="hidden" value="${groupDate.place }" id="placeSplit"></td>
 			<td><fmt:formatDate value="${groupDate.groupDate }" pattern="yyyy-MM-dd HH:mm" /></td>
-			<td><input type="button" value="상세보기" class="btn btn-default btn-sm" onclick="window.open('/MMONG/group/groupDate/groupDateView.do?groupDateNo=${groupDate.no}','일정 상세보기','top=100px, left=400px, height=500px, width=700px')">
+			<td><input type="button" value="상세보기" class="btn btn-default btn-sm" onclick="window.open('/MMONG/group/groupDate/groupDateView.do?groupDateNo=${groupDate.no}','일정 상세보기','top=100px, left=400px, height=500px, width=500px')">
 			</td>
 		</tr>
 	</tbody>
-</c:forEach>
+	<%i++; %>
+	</c:forEach>
 </table>
 
 <button id="inputBtn" class="btn btn-default btn-sm" onclick="location.href='/MMONG/group/groupDate/groupDate_form.do'"style="float:leftt;margin-right: 15px">일정 등록</button>

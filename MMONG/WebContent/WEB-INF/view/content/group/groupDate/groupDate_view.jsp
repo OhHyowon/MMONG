@@ -17,10 +17,43 @@
 <link href="/MMONG/resource/assets/css/style-responsive.css" rel="stylesheet">
     
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript"
+	src="https://apis.skplanetx.com/tmap/js?version=1&format=javascript&appKey=6627b1a4-d735-3501-8a0d-84ad3ce149c9"></script>
 <script type="text/javascript">
+var map;
+var markerLayer;
+var marker;
+var cLonLat;
+
+function initialize() {
+	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+	map = new Tmap.Map({div:"map_div", width:'350px', height:'240px'});
+	cLonLat = new Tmap.LonLat(14149513.77048, 4495298.9298456);
+	map.ctrl_nav.deactivate();
+	
+	markerLayer = new Tmap.Layer.Markers("marker");
+	map.addLayer(markerLayer);
+}
+
+$(document).ready(function() {
+	var placeSplit = $("#placeSplit").val();
+	var place = placeSplit.split("_");
+	
+	cLonLat = new Tmap.LonLat(place[0], place[1]);
+	map.setCenter(cLonLat, 14);
+	
+	var size = new Tmap.Size(24,38);
+	var offset = new Tmap.Pixel(-(size.w/2), -size.h);
+	var icon = new Tmap.Icon('https://developers.skplanetx.com/upload/tmap/marker/pin_r_b_a.png', size, offset);
+	var placeName = new Tmap.Label("<div style='text-align:center; font-size:14px;'>"+place[2]+"</div>");
+	
+	marker = new Tmap.Markers(cLonLat, icon, placeName);
+	markerLayer.addMarker(marker);
+	markerLayer.markers[0].popup.show();
+});
 
 window.onload=function(){
-	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+	initialize();
 }
 
 $(document).ready(function(){
@@ -68,7 +101,8 @@ $(document).ready(function(){
 				success:function(txt){
 					if(txt=="1"){
 						alert("삭제되었습니다.");
-						location.href="/MMONG/group/groupDate/allGroupDateList.do"
+						opener.parent.location.reload();
+						self.close();		
 					}else{
 						alert("삭제 실패");
 					}
@@ -88,6 +122,19 @@ $(document).ready(function(){
 .Btn{
 	float:right;
 }
+table#list_table {
+	word-break: break-all;
+	padding: 0;
+	margin: 0;
+	table-layout: fixed;
+}
+td.result {
+	padding: 0 5px;
+	margin: 0;
+	height: 40px;
+	width: 250px;
+	font-size: 14px;
+}
 </style>
 
 <%-- 일정 상세보기 페이지가 열릴 때 마다 groupDateNo 세션에 저장 --%>
@@ -96,23 +143,21 @@ $(document).ready(function(){
 	session.setAttribute("groupDateNo",groupDateNo);
 %>
 	<sec:authentication property="principal.memberId" var="loginId"/>
-<div class="col-lg-8">
-	<div class="form-panel">
 
-<div class="col-lg-4">
-	<div class="form-panel" style="background:#E8F1EE">
+			
+<div class="col-lg-8">
+
 		<div>&nbsp;</div>
 		이름 : ${requestScope.groupDate.title}
 		<br>
 		일정 : <fmt:formatDate value="${requestScope.groupDate.groupDate}" pattern="yyyy-MM-dd HH:mm"/>
 	</div>
-	<div class="form-panel" style="background:#E8F1EE">
 		<div>
 	<c:choose> 
  		<c:when test="${empty requestScope.memberIdList}"> <%-- 멤버아이디가 없을 때 --%>
 				<div style="display:flex">
 					<div><li>일정 참여자가 없습니다!</div>
-					<div style="margin-left:340px;"><input class="btn btn-default btn-xs insertBtn" type="button" value="참여하기"></div>
+					<div style="margin-right:150px;">&nbsp;&nbsp;<input class="btn btn-default btn-xs insertBtn" type="button" value="참여하기"></div>
 				</div>
 		</c:when> 
 	
@@ -122,8 +167,9 @@ $(document).ready(function(){
 			<c:choose>
 			<c:when test="${memberId == loginId }"> <%-- 로그인된 아이디와 참여자 아이디가 같다면 --%>
 					<li>
-					${memberId }(${requestScope.nickNameList[idx.index] })<input type="button" value="참여 취소" id="cancelBtn" style="margin-left:5px" class="btn btn-default btn-xs">
+					${memberId }(${requestScope.nickNameList[idx.index] })&nbsp;&nbsp;<input type="button" value="참여 취소" id="cancelBtn" class="btn btn-default btn-xs">
 					</li>
+				
 			</c:when>
 			
 			<c:when test="${memberId != loginId }"> <%-- 로그인된 아이디와 참여자 아이디가 다르다면 --%>
@@ -148,23 +194,20 @@ $(document).ready(function(){
 		</c:otherwise>
 	</c:choose>
 		</div>
-	</div>
-</div>
+		
+		<div class="col-lg-8">
+				<input type="hidden" value="${requestScope.groupDate.place }" id="placeSplit">
+				<div id="map_div"></div>
+		</div>
+		<c:if test="${requestScope.groupDate.memberId == loginId }">
+			<form action="/MMONG/group/groupDate/updateGroupDate1.do" method="post">
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+				<input type="hidden" name="groupDateNo" value="${requestScope.groupDate.no }">
+				<div style="position:relative; top:210px;">
+					<input class="btn btn-default btn-sm" type="submit" value="수정하기" id="updateBtn" class="Btn" style="float:right;">
+					<input class="btn btn-default btn-sm" type="button" value="삭제하기" id="deleteBtn" class="Btn" style="margin-left:120px">
+				</div>
+			</form>
+		</c:if>
+		<br><br><br><br><br>
 
-
-	<div class="col-lg-4">
-		<div class="form-panel" style="background:#E8F1EE"><div>지도 들어갈 자리</div></div>
-	</div>
-	<c:if test="${requestScope.groupDate.memberId == loginId }">
-		<form action="/MMONG/group/groupDate/updateGroupDate1.do" method="post">
-			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-			<input type="hidden" name="groupDateNo" value="${requestScope.groupDate.no }">
-			<div style="position:relative; top:210px;">
-			<input class="btn btn-default btn-sm" type="submit" value="수정하기" id="updateBtn" class="Btn" style="float:right;">
-			<input class="btn btn-default btn-sm" type="button" value="삭제하기" id="deleteBtn" class="Btn" style="margin-left:120px">
-			</div>
-		</form>
-	</c:if>
-<br><br><br><br><br><br><br><br><br><br><br><br><br>
-	</div>
-</div>
