@@ -30,6 +30,7 @@ INSERT INTO health VALUES('29', '중성화수술 - 효과 : 남성호르몬 관�
 INSERT INTO health VALUES('30', '초경 - 효과 : 난소낭종, 난소종양 예방, 자궁축농증, 자궁점액종, 자궁수종 등 예방, 유선염, 유선종양등 예방','g');
 INSERT INTO health VALUES('31', '혈액검사','m');
 INSERT INTO health VALUES('32', '혈액검사','g');						INSERT INTO health VALUES('47', '혈액검사','c');	
+>>>>>>> branch 'master' of https://github.com/OhHyowon/MMONG
 
 
 INSERT INTO health VALUES('48', '곰팡이 백신 - 기초접종 완료후 2차 까지 접종','m');

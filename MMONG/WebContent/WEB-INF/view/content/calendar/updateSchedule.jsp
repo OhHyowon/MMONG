@@ -82,23 +82,23 @@ span.error{
 			<c:choose>
 				<c:when test="${requestScope.updateInfo.type eq 0}">
 					<div>
-						<label>개인 <input type="radio" name="schedule" value=0 style="margin-right:10px" checked="true"></label>
-		  				<label>진료 <input type="radio" name="schedule" value=1 style="margin-right:10px"></label>
-		  				<label>소모임 <input type="radio" name="schedule" value=2 style="margin-right:10px"></label>
+						<label>개인 <input type="radio" name="type" value=0 style="margin-right:10px" checked="true"></label>
+		  				<label>진료 <input type="radio" name="type" value=1 style="margin-right:10px"></label>
+		  				<label>소모임 <input type="radio" name="type" value=2 style="margin-right:10px"></label>
 		  			</div>
 				</c:when>
 				<c:when test="${requestScope.updateInfo.type eq 1}">
 					<div>
-						<label>개인 <input type="radio" name="schedule" value=0 style="margin-right:10px"></label>
-		  				<label>진료 <input type="radio" name="schedule" value=1 style="margin-right:10px" checked="true"></label>
-		  				<label>소모임 <input type="radio" name="schedule" value=2 style="margin-right:10px"></label>
+						<label>개인 <input type="radio" name="type" value=0 style="margin-right:10px"></label>
+		  				<label>진료 <input type="radio" name="type" value=1 style="margin-right:10px" checked="true"></label>
+		  				<label>소모임 <input type="radio" name="type" value=2 style="margin-right:10px"></label>
 		  			</div>
 				</c:when>
 				<c:otherwise>
 					<div>
-						<label>개인 <input type="radio" name="schedule" value=0 style="margin-right:10px"></label>
-		  				<label>진료 <input type="radio" name="schedule" value=1 style="margin-right:10px"></label>
-		  				<label>소모임 <input type="radio" name="schedule" value=2 style="margin-right:10px" checked="true"></label>
+						<label>개인 <input type="radio" name="type" value=0 style="margin-right:10px"></label>
+		  				<label>진료 <input type="radio" name="type" value=1 style="margin-right:10px"></label>
+		  				<label>소모임 <input type="radio" name="type" value=2 style="margin-right:10px" checked="true"></label>
 		  			</div>
 				</c:otherwise>
 			</c:choose>
