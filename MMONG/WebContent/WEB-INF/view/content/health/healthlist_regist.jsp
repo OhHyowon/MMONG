@@ -1,6 +1,44 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+$('document').ready(function(){
+	
+	$('#registButton').on("click",function() {
+		var content = $(".registContent").val();
+		var gender = $("input:radio[name=gender]:checked").val();
+	
+		$.ajax({
+			'url' : "/MMONG/health/regist.do",
+			type : "Post",
+			"data":{"gender":gender,"content":content,"${_csrf.parameterName}":"${_csrf.token}"},
+			"beforeSend":function(){
+				if(!content){
+					alert("내용을 입력해 주세요.");
+					return false;
+				}else if(!gender){
+					alert("성별을 선택해 주세요.");
+					return false;
+				}
+			},
+			"success":function(){
+				location.href='/MMONG/health/success.do';
+			}
+		});	
+		
+	});
+	
+});
+</script>
+
 <style type="text/css">
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+.button{
+		/*손가락 나오게 하는거*/
+		cursor:pointer;
+	}
 
 div.font{
 	font-family: "Noto Sans KR", sans-serif;
@@ -36,17 +74,15 @@ div.background{
 			<i class="fa fa-angle-right"></i> 건강관리 등록
 		</div>
 <div class="background">
-<form action="/MMONG/health/regist.do?${_csrf.parameterName}=${_csrf.token}" method="post" onsubmit="return confirm('등록하시겠습니까?')">
 건강 관리 정보<br>
-<textarea rows="20" cols="70" name="content"></textarea><br>
+<textarea rows="20" cols="70" name="content" class="registContent" maxlength="300"></textarea><br>
 <p>
-<label><input type="radio" name="gender" value="m">수컷</label>
-<label><input type="radio" name="gender" value="g">암컷</label>
-<label><input type="radio" name="gender" value="c">중성</label>
+<label><input type="radio" name="gender" class="registGender" value="m">수컷</label>
+<label><input type="radio" name="gender" class="registGender" value="g">암컷</label>
+<label><input type="radio" name="gender" class="registGender" value="c">중성</label>
 </p>
 
-<input type="submit" value="등록" class="button">
-	</form>
+<input type="button" value="등록" class="button" id="registButton">
 </div>
 </div>
 </div>

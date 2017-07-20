@@ -1,5 +1,39 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+$('document').ready(function(){
+	
+	$('#modButton').on("click",function() {
+		var content = $(".ContentVal").val();
+		var no = '${param.checkedNo }';
+		
+		$.ajax({
+			'url' : "/MMONG/health/updateHealth.do",
+			type : "Post",
+			"data":{"no":no,"content":content,"${_csrf.parameterName}":"${_csrf.token}"},
+			"beforeSend":function(){
+				if(!content){
+					alert("내용을 입력해 주세요.")
+					return false;
+				}
+			},
+			"success":function(){
+				location.href='/MMONG/health/success.do';
+			}
+		});	
+		
+	});
+	
+});
+</script>
 <style type="text/css">
+
+.button{
+		/*손가락 나오게 하는거*/
+		cursor:pointer;
+	}
 
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 
@@ -35,13 +69,11 @@ div.background{
 			<i class="fa fa-angle-right"></i> 건강관리 수정
 	</div>
 <div class="background">
-<form action="/MMONG/health/updateHealth.do?${_csrf.parameterName}=${_csrf.token}" method="post" onsubmit="return confirm('등록하시겠습니까?')">
 건강 관리 정보<br>
-<textarea rows="20" cols="70" name="content">${param.checkedContent }</textarea><br>
-<input type="hidden" name="no" value="${param.checkedNo }">
+<textarea rows="20" cols="70" name="content" class="ContentVal" maxlength="300">${param.checkedContent }</textarea><br>
+<input type="hidden" name="no" class="checkNo" value="${param.checkedNo }">
 
-<input type="submit" value="수정" class="button">
-</form>
+<input type="button" value="수정" id="modButton" class="button" onsubmit="return confirm('수정하시겠습니까?')">
 </div>
 </div>
 </div>
