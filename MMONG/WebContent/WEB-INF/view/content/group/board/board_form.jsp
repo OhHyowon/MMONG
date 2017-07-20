@@ -8,11 +8,53 @@
 window.onload=function(){
 	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
 }
+
+$(function() {
+    $('#title').keyup(function (e){
+        var content = $(this).val();
+        $(this).height(((content.split('\n').length + 1) * 1.5) + 'em');
+    });
+    $('#title').keyup();
+});
+
+$(function() {
+    $('#content').keyup(function (e){
+        var content = $(this).val();
+        $(this).height(((content.split('\n').length + 1) * 1.5) + 'em');
+        $('#counter').html(content.length + '/300');
+    });
+    $('#content').keyup();
+});
+
 </script>
 <style type="text/css">
 .error{
 	color: red;
 }
+/*글자수 카운트*/
+/* .wrap {
+    width: 500px;
+    height: auto;
+    position: relative;
+    display: inline-block;
+}
+.wrap textarea {
+    width: 100%;
+    resize: none;
+    min-height: 4.5em;
+    line-height:1.6em;
+    max-height: 9em;
+}
+.wrap span {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}
+#content {
+  border-radius: 0.5em;
+  padding: 0 .5em 0 .5em;
+  font-size: 0.75em;
+} */
 </style>
 </head>
 <body>
@@ -46,9 +88,10 @@ window.onload=function(){
 		<h4 class="mb">글쓰기</h4>
 		
 <form action="/MMONG/group/board/register.do?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data" onsubmit="return confirm('등록하시겠습니까?');" class="form-horizontal style-form">
-제목 : <input type="text" name="title" class="form-control"><span class="error"><form:errors path="board.title" deilimiter="&nbsp;&nbsp;"/></span><br>
+제목 : <input type="text"  name="title" class="form-control" id="title" maxlength="50" style="height:8px"><span class="error"><form:errors path="board.title" deilimiter="&nbsp;&nbsp;"/></span><br>
 내용 : <br>
-<textarea rows='20' cols='100' name="content" class="form-control">${param.content }</textarea>
+<textarea rows='30' cols='100' name="content" class="form-control" id="content" maxlength="1000">${param.content }</textarea>
+<span id="counter" style="float:right">###</span>
 <span class="error"><form:errors path="board.title" deilimiter="&nbsp;&nbsp;"/></span><br>
 <input class="btn btn-default btn-sm" type="file" name="upImage" multiple><br>
 <div style="float:right; position:relative; bottom:30px">

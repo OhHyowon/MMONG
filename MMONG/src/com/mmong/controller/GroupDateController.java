@@ -195,14 +195,16 @@ public class GroupDateController{
 				check=1;
 			}
 		}
+		
+
 		pagingMap=groupDateService.selectAllGroupDateList(page,groupNo);
 		map.addAttribute("check", check);
 		map.addAttribute("groupNo", groupNo);
 		map.addAttribute("groupDateList", pagingMap.get("groupDateList"));
 		map.addAttribute("pageBean", pagingMap.get("pageBean"));
 
-		
 		return "group/groupDate/groupDate_list.tiles";
+		
 	}
 	/**
 	 * 검색했을 때의 일정 목록 보는 handler method
@@ -242,8 +244,8 @@ public class GroupDateController{
 				dateTime = new SimpleDateFormat("yyyy-MM-dd").parse(key);
 				pagingMap=groupDateService.selectGroupDateOption2(page,groupNo,dateTime,option);
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				
 			}
 		}else{
 			pagingMap=groupDateService.selectGroupDateOption(page,groupNo,option,key);

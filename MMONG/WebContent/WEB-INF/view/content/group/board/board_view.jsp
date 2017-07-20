@@ -63,7 +63,7 @@ $(document).ready(function(){
 		window.open("/MMONG/message/idNnickFromBoard.do?id="+id+"&nickname="+nickname, "쪽지보내기", specs);
 	});
 	
-   $("#BoardDeleteBtn").on("click",function(){
+   $(".BoardDeleteBtn").on("click",function(){
          if(!confirm("삭제하시겠습니까?")){
             return;
          }else{
@@ -86,6 +86,10 @@ $(document).ready(function(){
    $('.updateBtn').on("click",function(){
       $(this).parent().parent().parent().find("div:nth-child(2)").next().show();
    }); // end of updateBtn (리플)
+   $('.cancleBtn').on("click",function(){
+	   $(this).parent().parent().hide();
+   }); // end of cancleBtn (리플)
+   
    $('.replyDeleteBtn').on('click',function(){      
       var replyNo=$(this).next().val();
       if(!confirm("댓글 삭제하시겠습니까?")){
@@ -186,10 +190,13 @@ $(document).ready(function(){
 						<input type="hidden" id="boardNo" name="boardNo"
 							value="${requestScope.board.no}">
 						<input class="btn btn-default btn-sm" type="submit" value="수정하기">
-						<input class="btn btn-default btn-sm" type="button"
-							id="BoardDeleteBtn" value="삭제하기" />
+						<input class="btn btn-default btn-sm BoardDeleteBtn" type="button"
+							 value="삭제하기" />
 					</c:if>
 				</form>
+				<sec:authorize access="hasRole('ROLE_0')">  <%-- 관리자일 경우 게시글 삭제 가능 --%>
+					<input class="btn btn-default btn-sm BoardDeleteBtn" type="button"  value="삭제하기" />
+				</sec:authorize>
 			</div>
 			<%--########################   댓글    #########################  --%>
 			<br>
@@ -236,7 +243,7 @@ $(document).ready(function(){
 											name="boardNo" value="${reply.boardNo }"> <input
 											type="text" name="content" value="${reply.content} "
 											size="100"> <input type="button" value="취소"
-											class="cancleBtn"> <input type="submit" value="수정완료">
+											class="cancleBtn btn btn-default btn-xs"> <input type="submit" value="수정완료" class="btn btn-default btn-xs">
 									</form>
 								</div>
 								<div>
