@@ -3,6 +3,13 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <style type="text/css">
+.error{
+	font-size : 8px;
+	color : red;
+}
+th,td{
+	padding:5px;
+}
 #view-detail{
   top:0;right:0;bottom:0;left:0;
   display:flex;
@@ -15,10 +22,6 @@
 }
 #view-menu{
 	text-align: center;
-}
-.error{
-	font-size : 8px;
-	color : red;
 }
 
 </style>
@@ -58,7 +61,7 @@ $(document).ready(function() {
 	});
 	
 	
-	////////////////////핸드폰번호 인증
+/* 	////////////////////핸드폰번호 인증
 	 $("#adminPhoneChk").on("click", function(){
 		$.ajax({
 			"url" : "/MMONG/admin/checkadminPhone.do",
@@ -77,13 +80,21 @@ $(document).ready(function() {
 				}
 			}
 		});	
-	}); 
+	});  */
+	
+	/////휴대전화 검사
 	$("#adminPhone").blur(function(){
-		if($("#adminPhone").val()==""){
+		if($("#memberPhone").val()==""){
 			$("#phoneMsg").empty();
 			$("#phoneMsg").append("핸드폰번호는 필수 입력값입니다.");
 			$("#phoneMsg").show();
-		}
+		}else if($("#adminPhone").val().length<10 || $("#adminPhone").val().length>11){
+			$("#phoneMsg").empty();
+			$("#phoneMsg").append("10~11자리 번호를 입력해주세요.");
+			$("#phoneMsg").show();
+		}else{
+			 $("#phoneMsg").hide();
+		 }
 	});	
 	//핸드폰번호 숫자만 받게
 	 $("#adminPhone").keyup(function(event){
@@ -94,7 +105,7 @@ $(document).ready(function() {
      });
 	////////////////////이메일 비었는지 체크 
 	 $("#adminEmail").blur(function(){
-		 if($("#adminAddress1").val()==""){
+		 if($("#adminAddress").val()==""){
 			$("#emailMsg").empty();
 			$("#emailMsg").append("이메일을 입력하세요.");
 			$("#emailMsg").show();
@@ -137,6 +148,12 @@ function formChk() {
 		$("#phoneMsg").show();
 		$("#adminPhone").focus();
 		result = false;
+	}else if($("#adminPhone").val().length<10 || $("#adminPhone").val().length>11){
+		$("#phoneMsg").empty();
+		$("#phoneMsg").append("10~11자리 번호를 입력해주세요.");
+		$("#phoneMsg").show();
+		$("#adminPhone").focus();
+		result = false;
 	}else if($("#adminEmail").val()==""){
 		$("#emailMsg").empty();
 		$("#emailMsg").append("이메일을 입력하세요.");
@@ -164,7 +181,14 @@ function formSubmit(){
 		<table>
 			<tr>
 				<th>ID</th>
-				<td><input class="form-control" type="text" id="adminId" name="adminId" readonly value="${requestScope.administrator.adminId}" style="background-color: #e2e2e2;"><br></td>
+				<td><input class="form-control" type="text" id="adminId" name="adminId" readonly value="${requestScope.administrator.adminId}" style="background-color: #e2e2e2;"></td>
+				<td></td>
+			</tr>
+			
+			<tr>
+				<th>비밀번호</th>
+				<td><input class="form-control" type="password" id="adminPwd" name="user.userPwd"></td>
+				<td></td>
 			</tr>
 			<tr>
 				<td></td>
@@ -172,61 +196,73 @@ function formSubmit(){
 					<form:errors path="administrator.user.userPwd" delimiter="<br>"/>
 					<div id="pwdMsg" style="display:none"></div>
 				</td>
-			</tr>
-			<tr>
-				<th>비밀번호</th>
-				<td><input class="form-control" type="password" id="adminPwd" name="user.userPwd"><br></td>
-			</tr>
-			<tr>
 				<td></td>
-				<td class="error">
-				<div id="pwdChkMsg" style="display:none"></div>
-				</td>
 			</tr>
+			
 			<tr>
 				<th>비밀번호 확인</th>
-				<td><input class="form-control" type="password" id="adminPwdCheck" name="userPwd2"><br></td>
+				<td><input class="form-control" type="password" id="adminPwdCheck" name="userPwd2"></td>
+				<td></td>
 			</tr>
 			<tr>
 				<td></td>
 				<td class="error">
-				<div id="nameMsg" style="display:none"></div>
+					<div id="pwdChkMsg" style="display:none"></div>
 				</td>
-			</tr>			
+				<td></td>
+			</tr>
+			
 			<tr>
 				<th>이름</th>
-				<td><input class="form-control" type="text" id="adminName" name="adminName" readonly value="${requestScope.administrator.adminName}" style="background-color: #e2e2e2;"><br></td>
+				<td><input class="form-control" type="text" id="adminName" name="adminName" readonly value="${requestScope.administrator.adminName}" style="background-color: #e2e2e2;"></td>
+				<td></td>
 			</tr>
 			<tr>
 				<td></td>
 				<td class="error">
-					<form:errors path="administrator.adminPhone" delimiter="<br>"/>
-					<div id="phoneMsg" style="display:none"></div>
-			</td>			 
-			<tr>
-				<th>핸드폰번호<br></th>
-				<td><input class="form-control" type="number" id="adminPhone" name="adminPhone" value="${requestScope.administrator.adminPhone}" maxlength="13"><br></td>
-				<td><input class="btn btn-default btn-sm" type="button" id="adminPhoneChk" value="인증"/></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td class="error">
-				<div id="emailMsg" style="display:none"></div>
+					<div id="nameMsg" style="display:none"></div>
 				</td>
-			</tr>			
+				<td></td>
+			</tr>
+			
+			<tr>
+				<th>핸드폰번호</th>
+				<td><input class="form-control" type="number" id="adminPhone" name="adminPhone" value="${requestScope.administrator.adminPhone}" maxlength="13"></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td class="error">
+					<form:errors path="admin.adminPhone" delimiter="<br>"/>
+					<div id="phoneMsg" style="display:none"></div>
+				</td>
+				<td></td>
+			</tr>
+		
 			<tr>
 				<th>이메일</th>
-				<td><input class="form-control" type="text" id="adminEmail" name="adminEmail" value="${requestScope.administrator.adminEmail}"><br></td>
+				<td><input class="form-control" type="text" id="adminEmail" name="adminEmail" value="${requestScope.administrator.adminEmail}"></td>
+				<td></td>
 			</tr>
+			<tr>
+				<td></td>
+				<td class="error">
+					<div id="emailMsg" style="display:none"></div>
+				</td>
+				<td></td>
+			</tr>
+			
 			 <tr>
 				<!-- <th>권한 :</th> -->
 				<td><input class="form-control" type="hidden" name="user.userAuthority" readonly value="${requestScope.administrator.user.userAuthority}" style="background-color: #e2e2e2;"></td>
+				<td></td>
+				<td></td>
 			</tr> 
 		</table>
 		<br>
 		<div id="view-menu">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-				<input class="btn btn-default btn-sm" type="button" value="수정" onClick="formSubmit(); return false;" />&nbsp;
+				<input class="btn btn-default btn-sm" type="button" value="수정" onClick="formSubmit(); return false;" />&nbsp;&nbsp;
 				<input class="btn btn-default btn-sm" type="reset" value="다시 작성">
 		</div>
 	</form>

@@ -14,10 +14,11 @@ $(document).ready(function(){
 				if(response==""){
 					$("#alertDropdown").remove();
 				}else{//로그인한 사용자라면 (로그인하지않은 사용자일땐 response에 빈 값 옴)
-					$("#alert").html(response);
+					//$("#alert").html(response);
 					if(response=="0"){
 						$("#alertMsg").html("새로운 알람이 없습니다.");
 					}else{
+						$("#alert").html(response);
 						$("#alertMsg").html("<b>"+response+"</b>개의 읽지않은 알람이 있습니다.");
 					}					
 				}					
@@ -50,10 +51,11 @@ $(function() { //3초에 한번 알람개수 뿌리는 함수
 				if(response==""){
 					$("#alertDropdown").remove();
 				}else{//로그인한 사용자라면 (로그인하지않은 사용자, 관리자일땐 response에 빈 값 옴)
-					$("#alert").html(response);
+					//$("#alert").html(response);
 					if(response=="0"){
 						$("#alertMsg").html("새로운 알람이 없습니다.");
 					}else{
+						$("#alert").html(response);
 						$("#alertMsg").html("<b>"+response+"</b>개의 읽지않은 알람이 있습니다.");
 					}					
 				}					
@@ -149,9 +151,9 @@ function logout(){
 						<sec:authorize access="!isAuthenticated()"> 
 						    <a onClick="alertMsg2(); return false;" >
 						        <i class="fa fa-bell"></i>
-						    </a>							
+						    </a>
 					    </sec:authorize>
-					    <sec:authorize access="isAuthenticated()"> 
+					    <sec:authorize access="hasRole('ROLE_1')"> 
 						    <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
 						        <i class="fa fa-bell" id="alertIcon"></i>
 						        <span class="badge bg-theme" id="alert"></span> <%--알람개수 표시 --%>
@@ -170,7 +172,7 @@ function logout(){
 						        <i class="fa fa-envelope-o"></i>
 						    </a>							
 					    </sec:authorize>
-					    <sec:authorize access="isAuthenticated()">
+					    <sec:authorize access="hasRole('ROLE_1')">
 						    <a href="/MMONG/message/selectReceiveMsg.do">
 						        <i class="fa fa-envelope-o"></i>
 						    </a>

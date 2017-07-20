@@ -42,7 +42,6 @@ public class AlertController {
 				int cnt = alertService.countUnreadAlert(member.getMemberId());
 				return String.valueOf(cnt);				
 			}else{//로그인한 사용자가 관리자
-				List myGroup = new ArrayList(); //빈 myGroup 전달
 				return "";
 			}			
 		}
@@ -58,11 +57,17 @@ public class AlertController {
 		if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")){ //로그인 안 한 사용자는 myGroup을 없이 전달 
 			return null;
 		}else{
-			Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			List<Alert> allAlert = alertService.selectAllAlert(member.getMemberId());
-			return allAlert;
-		}
+			List authList = (List)SecurityContextHolder.getContext().getAuthentication().getAuthorities(); //로그인한 사용자 권한정보 리스트
+			String au = String.valueOf(authList.get(0)); 
 
+			if(au.equals("ROLE_1")){//로그인한 사용자가 회원
+				Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+				List<Alert> allAlert = alertService.selectAllAlert(member.getMemberId());
+				return allAlert;			
+			}else{//로그인한 사용자가 관리자
+				return null;
+			}
+		}
 	}
 	
 	@RequestMapping("updateState.do")

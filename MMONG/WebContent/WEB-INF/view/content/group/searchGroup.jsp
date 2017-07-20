@@ -108,7 +108,7 @@ function searchNameChk(){//소모임 검색 버튼 누를때 값 검사
 	                              <i class="fa fa-plus fa-3x"></i>
 	                          </div>
 	                      </div>
-	                      <img src="/MMONG/resource/assets/img/doggroup.jpg" class="img-responsive" alt="">	                      
+	                      <img src="" class="img-responsive" alt="">	                      
 	                  </a>
 	                  <div class="portfolio-caption">
 	                      <h4><b>${allGroup.name }</b></h4>
@@ -122,7 +122,7 @@ function searchNameChk(){//소모임 검색 버튼 누를때 값 검사
 
 
 <!-- 나의 소모임으로 돌아가기 버튼 -->
-<center><button type="button" class="btn btn-default" onClick="self.location='/MMONG/group/mygroup.do';">나의 소모임</button></center>
+<center><button type="button" class="btn btn-default btn-sm" onClick="self.location='/MMONG/group/mygroup.do';">나의 소모임</button></center>
 
 </section>
 </div>
@@ -132,16 +132,19 @@ $(document).ready(function(){
 	$(".img-responsive").each(function(){		
 		var myimages = new Array();
 		//랜덤으로 출력할 이미지 소스 주소 
-		myimages[0] = "/MMONG/resource/assets/img/doggroup.jpg";
-		myimages[1] = "/MMONG/resource/assets/img/groups.jpg";
-		myimages[2] = "/MMONG/resource/assets/img/ny.jpg";
+		myimages[0] = "/MMONG/resource/assets/img/doggroup1.jpg";
+		myimages[1] = "/MMONG/resource/assets/img/doggroup2.png";
+		myimages[2] = "/MMONG/resource/assets/img/doggroup3.png";
+		myimages[3] = "/MMONG/resource/assets/img/doggroup4.png";
+		myimages[4] = "/MMONG/resource/assets/img/doggroup5.png";
+		myimages[5] = "/MMONG/resource/assets/img/doggroup6.png";
+		myimages[6] = "/MMONG/resource/assets/img/doggroup7.png";
+		myimages[7] = "/MMONG/resource/assets/img/doggroup8.png";		
+
 		var ry = Math.floor( Math.random() * (myimages.length-1) );
 		$(this).attr('src', myimages[ry]);
 		//$(this).attr('src', '/MMONG/resource/assets/img/groups.jpg');
 	});
-
-	 
-
 });
 </script>
 

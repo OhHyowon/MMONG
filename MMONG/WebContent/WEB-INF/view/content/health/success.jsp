@@ -7,14 +7,14 @@ div {
 	font-family: "Noto Sans KR", sans-serif;
 }
 .button{
-    color: #797979;
+    color: #333;
     font-size: 12px;
     border-radius: 4px;
     -webkit-border-radius: 4px;
-    border: 1px solid #797979 !important;
+    border: 1px solid #ccc !important;
     padding: 5px 15px;
     margin-right: 15px;
-    background: #e5e5e5;
+    background: #fff;
     margin-top: 15px;
 }
 </style>
