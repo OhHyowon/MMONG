@@ -1,5 +1,6 @@
 package com.mmong.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,15 @@ public class CalendarServiceImpl implements CalendarService{
 		dao.updateFromGroup(calendar);
 	}
 
-	
+	@Override
+	public void updateFromChart(Calendar calendar) {
+		dao.updateFromChart(calendar);
+	}
+
+	@Override
+	public void deleteFromChart(HashMap<String, Object> map) {
+		dao.deleteFromChart(map);
+	}
+
 	
 }
