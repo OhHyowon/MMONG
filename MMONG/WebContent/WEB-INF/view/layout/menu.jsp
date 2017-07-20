@@ -49,14 +49,13 @@ function alertMsg(){
                       </a>
                   </li>
                   
-
                   <li class="sub-menu">
-                      <a onClick="alertMsg(); return false;" >
+                      <a href="/MMONG/health/list.do" >
                           <i class="fa fa-cogs"></i>
                           <span>건강관리</span>
                       </a>
                   </li>
-                  
+                 
                   <li class="sub-menu">
                       <a onClick="alertMsg(); return false;" >
                           <i class="fa fa-tasks"></i>
