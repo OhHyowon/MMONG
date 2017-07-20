@@ -49,14 +49,13 @@ function alertMsg(){
                       </a>
                   </li>
                   
-
                   <li class="sub-menu">
-                      <a onClick="alertMsg(); return false;" >
+                      <a href="/MMONG/health/list.do" >
                           <i class="fa fa-cogs"></i>
                           <span>건강관리</span>
                       </a>
                   </li>
-                  
+                 
                   <li class="sub-menu">
                       <a onClick="alertMsg(); return false;" >
                           <i class="fa fa-tasks"></i>
@@ -65,7 +64,7 @@ function alertMsg(){
                   </li>
              </sec:authorize>
              
-             <sec:authorize access="isAuthenticated()"> 
+             <sec:authorize access="hasRole('ROLE_1')">
                   <li class="sub-menu">
                       <a href="/MMONG/calendar/calendar_main.do" > <!-- 다이어리 주소 넣기 -->
                           <i class="fa fa-book"></i>

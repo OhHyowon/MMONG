@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mmong.service.impl.ChartServiceImpl;
 import com.mmong.service.impl.HealthServiceImpl;
-import com.mmong.validation.HealthValidator;
 import com.mmong.vo.Chart;
 import com.mmong.vo.Health;
 import com.mmong.vo.Member;
@@ -32,24 +31,18 @@ public class HealthController {
 
 	// 건강 기록 등록
 	@RequestMapping("regist")
-	public String registHealthList(@ModelAttribute Health health, BindingResult errors,HttpServletRequest request) {
+	@ResponseBody
+	public String registHealthList(@RequestParam String gender, String content) {
 		
-		HealthValidator validator = new HealthValidator();
+
 		
-		validator.validate(health, errors);
-		if(errors.hasErrors()){
-			return "/WEB-INF/view/content/health/healthlist_regist.jsp";
-		}
 		
-		String content = request.getParameter("content");
-		String gender = request.getParameter("gender");
-		
-		Health health2 = new Health(2,content,gender);
+		Health health2 = new Health(54,content,gender);
 		
 		service.addHealthList(health2);
 		
 		
-		return "/WEB-INF/view/content/health/success.jsp";
+		return "1";
 	}
 	
 	// 건강기록 뿌려주기
@@ -87,18 +80,17 @@ public class HealthController {
 	
 	// 건강기록 수정 1
 	@RequestMapping("updateHealth")
-	public String healthUpdate(HttpServletRequest request){
+	@ResponseBody
+	public String healthUpdate(@RequestParam int no, String content){
 		
 		HashMap<String,Object> map = new HashMap<>();
-		String String_no = request.getParameter("no");
-		String content = request.getParameter("content");
-						
-		map.put("no", String_no);	
+
+		map.put("no", no);	
 		map.put("content", content);
 		
 		// 위에 건강기록 수정 
 		service.updateHealthList(map);
 		
-		return "/WEB-INF/view/content/health/success.jsp";
+		return "1";
 	}
 }

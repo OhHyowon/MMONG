@@ -260,7 +260,8 @@ td {
 
 		</c:when>
 	<c:otherwise>
-	<p style="text-align:center">
+	<p style="text-align:center">	
+	<br><br><br>
 			모임 참여자만 볼 수 있습니다. 모임 참여를 해주세요~
 			</p>
 	</c:otherwise>

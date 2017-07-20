@@ -13,7 +13,7 @@ window.onload=function(){
 $(document).ready(function(){
 	
 	//팝업창 크기 조절
-	var width=480, height=480;
+	var width=480, height=440;
 	var left = (screen.availWidth - width)/2;
 	var top = (screen.availHeight - height)/2;
 	var specs = "width=" + width;

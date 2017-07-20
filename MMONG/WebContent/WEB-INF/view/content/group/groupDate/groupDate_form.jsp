@@ -99,7 +99,7 @@ function onCompleteTData(e){
 				};
 				addPOIMarker(options);
 				$("#list_table").append("<tr><td class='result'><div style='width:290px;text-overflow:ellipsis;overflow: hidden;white-space: nowrap;' title='"+name+"'><label><a href='javascript:panToSelectMarker("+lon+","+lat+","+$(this).index()+")'><img src='/MMONG/resource/assets/img/map/noun_413210_cc.png'>&nbsp;&nbsp;&nbsp;"+name+
-						"</a></label></div></td><td><input type='hidden' name='poiName' value='"+name+"'><input type='hidden' name='poiLon' value='"+lon+"'><input type='hidden' name='poiLat' value='"+lat+"'><input type='button' class='poiToMarker' value='등록' style='width:50px'></td></tr>");
+						"</a></label></div></td><td><input type='hidden' name='poiName' value='"+name+"'><input type='hidden' name='poiLon' value='"+lon+"'><input type='hidden' name='poiLat' value='"+lat+"'><input type='button' class='poiToMarker btn btn-default btn-sm' value='등록' style='width:50px'></td></tr>");
 				
 			});
 		map.zoomToExtent(markersLayer.getDataExtent());
@@ -232,7 +232,7 @@ td.result {
 			<div class="form-panel" style="position:relative;">
 				<div>&nbsp;</div>
 				<form action="/MMONG/group/groupDate/register.do?${_csrf.parameterName}=${_csrf.token}" method="post" onsubmit="return confirm('등록하시겠습니까?');" class="form-horizontal style-form">
-					일정 이름 : <div><input type="text" name="title" class="form-control"><span class="error"><form:errors path="groupDate.title" deilimiter="&nbsp;&nbsp;"/></span></div>
+					일정 이름 : <div><input type="text" name="title" class="form-control" maxlength="50"><span class="error"><form:errors path="groupDate.title" deilimiter="&nbsp;&nbsp;"/></span></div>
 					날짜 : <div><input type="datetime-local" name="groupDate" class="form-control"> <span class="error"><form:errors path="groupDate.groupDate" deilimiter="&nbsp;&nbsp;"/></span></div>
 					장소 : <div style="display:flex;"><input type="text" id="keyword" class="form-control" style="width:90%"><input type="button" id="searchPOI" value="검색" style="width:10%" class="btn btn-default">
 							<input type="hidden" name="place"></div>

@@ -92,7 +92,6 @@ public class MemberController {
 	@ResponseBody
 	public String checkMemberPhone(@RequestParam(required=false) String memberPhone){
 		//요청파라미터 검증
-		System.out.println("컨트롤러 2 --"+memberPhone);
 		//비즈니스 로직 처리 - 관리자 번호조회
 		int checkPhone = memberService.checkMemberPhone(memberPhone);
 		//응답
@@ -122,7 +121,6 @@ public class MemberController {
 		return new ModelAndView("member/mypage.tiles", "member", mem);
 	}
 	
-	////////////////////////////회원정보 수정, 탈퇴 -이진우///////////////////////////////////////
 	
 	/** 
 	 * mypage.jsp 에서 info_member_update_form.jsp로 이동시키는 handler method
@@ -144,15 +142,15 @@ public class MemberController {
 	@RequestMapping("info_member_update")
 	public ModelAndView updateAdminInfo(@ModelAttribute Member member, BindingResult errors){
 		User user = new User(member.getMemberId(),member.getUser().getUserPwd(), member.getUser().getUserAuthority(), 1);
-			userService.updateUser(user);
+			member.setUser(user);
 			
-/*		//요청 파라미터 검증
+		//요청 파라미터 검증
 		MemberRegisterValidator validator = new MemberRegisterValidator();		// validator 주석 해제하면 에러발생 'memberUser'
 		validator.validate(member, errors);
 		if(errors.hasErrors()){
-			return new ModelAndView("member/register_form.tiles");
+			return new ModelAndView("member/info_member_update_form.tiles");
 		}
-	*/	
+	
 		//비즈니스 로직처리 - 회원 추가	
 		Member newMember = new Member(member.getMemberId(),member.getMemberName(),member.getNickName(),
 																	member.getMemberPhone(),member.getMemberEmail(),
@@ -161,7 +159,6 @@ public class MemberController {
 			return new ModelAndView("member/mypage.tiles", "member", newMember);
 	}
 	
-	/////////////////////// 삭제 미완성 -- 조인한게 걸림돌 --- 권한을 'ROLE_3'으로 수정  /////////////////
 	
 	//회원탈퇴('ROLE_3')로 권한변경
 	@RequestMapping("memberWithdrawal")
@@ -177,9 +174,7 @@ public class MemberController {
 			SecurityContextHolder.getContext().setAuthentication(null); // security에서 담당하는 session을 null으로 세팅하는 작업.   SecurityContextHolder는 system꺼라서 'new'하고 생성하지 않음.  
 			return "member/byebye_greeting.tiles";
 		}
-	 
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 }
 

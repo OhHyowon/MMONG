@@ -21,7 +21,7 @@
 	<!-- 주현 -->
 	<!-- 로그인 폼 -->
 	<mvc:view-controller path="/login_form.do" view-name="/WEB-INF/view/content/login_form.jsp" />
-	<!-- 개인회원 회원가입 폼 -->
+	<!-- 회원가입 폼 -->
 	<mvc:view-controller path="/member/register_form.do" view-name="member/register_form.tiles" />
 
 	<!-- 효원 -->
@@ -48,8 +48,6 @@
 
 
 	<!-- 세연 -->
-	  <!-- 쪽지 관리 탭 -->   
-      <mvc:view-controller path="/message/message.do" view-name="message/message.tiles"/>
       <!-- 쪽지 보내기 성공 폼 -->
       <mvc:view-controller path="/message/sendSuccess.do" view-name="/WEB-INF/view/content/message/sendSuccess.jsp"/>
     

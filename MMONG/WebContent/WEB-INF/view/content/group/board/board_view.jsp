@@ -48,7 +48,7 @@ window.onload=function(){
 $(document).ready(function(){
 	
 	//팝업창 크기 조절
-	var width=480, height=480;
+	var width=480, height=440;
 	var left = (screen.availWidth - width)/2;
 	var top = (screen.availHeight - height)/2;
 	var specs = "width=" + width;
@@ -57,7 +57,7 @@ $(document).ready(function(){
 	specs += ",top=" + top;
 	
 	$(".messageGoTxt").on("click", function(){
-		var id = $("#id").val()
+		var id = $("#id").val();
 		var nickname = $("#nickname").val();
 		
 		window.open("/MMONG/message/idNnickFromBoard.do?id="+id+"&nickname="+nickname, "쪽지보내기", specs);
@@ -84,7 +84,7 @@ $(document).ready(function(){
          }
    }); // end of deleteBtn
    $('.updateBtn').on("click",function(){
-      $(this).parent().parent().parent().find("div:nth-child(2)").next().show();
+      $(this).parent().parent().parent().find("div:nth-child(3)").next().show();
    }); // end of updateBtn (리플)
    $('.cancleBtn').on("click",function(){
 	   $(this).parent().parent().hide();
@@ -111,6 +111,15 @@ $(document).ready(function(){
          });
       }
    }); // end of .replyDeleteBtn
+});
+
+$(function() {
+    $('#reply').keyup(function (e){
+        var content = $(this).val();
+        $(this).height(((content.split('\n').length + 1) * 1.5) + 'em');
+        $('#counter').html(content.length + '/150');
+    });
+    $('#reply').keyup();
 });
 </script>
 
@@ -155,11 +164,9 @@ $(document).ready(function(){
 				<tr>
 					<td class="messageGo" style="padding: 10px;">${requestScope.board.memberId }(${requestScope.boardNickname })
 						&nbsp;|&nbsp; 조회수 ${requestScope.board.hit }
-						<div class="messageGoTxt">
-							쪽지보내기 <input type="hidden"
-								value="${requestScope.board.memberId }" id="id"> <input
-								type="hidden" value="${requestScope.boardNickname }"
-								id="nickname">
+						<div class="messageGoTxt">쪽지보내기 
+							<input type="hidden" value="${requestScope.board.memberId }" id="id"> 
+							<input type="hidden" value="${requestScope.boardNickname }" id="nickname">
 						</div>
 					</td>
 				</tr>
@@ -215,35 +222,34 @@ $(document).ready(function(){
 										<fmt:formatDate value="${reply.replyDate }"
 											pattern="yyyy-MM-dd HH:mm" />
 										<div class="messageGoTxt">
-											쪽지보내기 <input type="hidden" value="${reply.memberId }" id="id">
-											<input type="hidden"
-												value="${requestScope.replyNickname[idx.index] }"
-												id="nickname">
+											쪽지보내기 
+											<input type="hidden" value="${reply.memberId }" id="id">
+											<input type="hidden" value="${requestScope.replyNickname[idx.index] }" id="nickname">
 										</div>
-									</div>
-									<div id="button" style="margin-right:30px">
-										<button class="updateBtn btn btn-primary btn-xs">
-											<i class="fa fa-pencil"></i>
-										</button>
-										<button class="replyDeleteBtn btn btn-danger btn-xs"
-											value="댓글삭제">
-											<i class="fa fa-trash-o "></i>
-										</button>
-										<input type="hidden" name="replyNo" value="${reply.no }">
 									</div>
 								</div>
 								<div style="padding: 7px">
 									<span>${reply.content}</span>
 								</div>
+								<div style="float:right;">
+										<button class="updateBtn btn btn-primary btn-xs" style="background:#BABABA;border: 1px solid #ADB2B4;">
+											<i class="fa fa-pencil"></i>
+										</button>
+										<button class="replyDeleteBtn btn btn-danger btn-xs"
+											value="댓글삭제" style="background:#BABABA;border: 1px solid #ADB2B4;margin-right:10px;">
+											<i class="fa fa-trash-o "></i>
+										</button>
+										<input type="hidden" name="replyNo" value="${reply.no }">									
+								</div>
 								<div id="updateForm" style="display: none">
 									<form action="/MMONG/group/reply/replyUpdate.do" method="post">
 										<input type="hidden" name="${_csrf.parameterName}"
-											value="${_csrf.token}" /> <input type="hidden" name="no"
-											value="${reply.no }"> <input type="hidden"
-											name="boardNo" value="${reply.boardNo }"> <input
-											type="text" name="content" value="${reply.content} "
-											size="100"> <input type="button" value="취소"
-											class="cancleBtn btn btn-default btn-xs"> <input type="submit" value="수정완료" class="btn btn-default btn-xs">
+											value="${_csrf.token}" /> 
+											<input type="hidden" name="no" value="${reply.no }">
+											 <input type="hidden"name="boardNo" value="${reply.boardNo }">
+											 &nbsp;&nbsp;&nbsp;<input type="text" name="content" value="${reply.content}" size="100" > 
+											<input type="button" value="취소" class="cancleBtn btn btn-default btn-xs"> 
+											<input type="submit" value="수정완료" class="btn btn-default btn-xs"><div>&nbsp;</div>
 									</form>
 								</div>
 								<div>
@@ -268,20 +274,21 @@ $(document).ready(function(){
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
+				<br>
 				<form action="/MMONG/group/reply/register.do" method="post"
 					style="padding: 10px">
-					<div>
+					<div style="margin-top:11px">
 						<b>${loginId }(${nickName})</b>
 					</div>
 					<input type="hidden" name="${_csrf.parameterName}"
 						value="${_csrf.token}" /> <span class="error"><form:errors
 							path="reply.content" deilimiter="&nbsp;&nbsp;" /></span>
-					<textarea cols="120" name="content"></textarea>
+					<textarea cols="120" name="content" id="reply" cols="80"></textarea>
+						<span id="counter">###</span>
 					<input type="hidden" name="boardNo"
-						value="${requestScope.board.no }">
+						value="${requestScope.board.no }" maxlength="150">
 					<div style="float: right">
-						<input type="submit" value="댓글등록" class="btn btn-default"
-							style="margin-right: 24px">
+						<input type="submit" value="댓글등록" class="btn btn-default">
 					</div>
 					<br>
 				</form>

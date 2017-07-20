@@ -15,12 +15,15 @@ window.onload=function(){
 		<h3>
 			<i class="fa fa-angle-right"></i>고객센터
 		</h3>
-<ul>	
 
-
-		<%--공지사항 목록조회 메뉴 : selectAdminNoticeList.jsp로 가기 --%>
-		<li><button class="btn btn-default" type="button" onclick="location.href='/MMONG/adminNotice/selectAdminNoticeList.do' ">공지사항 목록 조회</button></li>
-</ul>
+	<div class="btn-group btn-group-justified" style="margin-top:50px; margin-bottom:30px; width:450px; float:center;">
+		<div class="btn-group">
+			<%--공지사항 목록조회 메뉴 : selectAdminNoticeList.jsp로 가기 --%>
+			<button class="btn btn-default" type="button" onclick="location.href='/MMONG/adminNotice/selectAdminNoticeList.do' ">공지사항 목록 조회</button>
+		</div>
+	
+	</div>	
+		
 </section>
 </div>
 

@@ -21,7 +21,7 @@ $(function() {
     $('#content').keyup(function (e){
         var content = $(this).val();
         $(this).height(((content.split('\n').length + 1) * 1.5) + 'em');
-        $('#counter').html(content.length + '/300');
+        $('#counter').html(content.length + '/1000');
     });
     $('#content').keyup();
 });
@@ -88,10 +88,9 @@ $(function() {
 		<h4 class="mb">글쓰기</h4>
 		
 <form action="/MMONG/group/board/register.do?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data" onsubmit="return confirm('등록하시겠습니까?');" class="form-horizontal style-form">
-제목 : <input type="text"  name="title" class="form-control" id="title" maxlength="50" style="height:8px"><span class="error"><form:errors path="board.title" deilimiter="&nbsp;&nbsp;"/></span><br>
+제목 : <input type="text" name="title" class="form-control" maxlength="50"><span class="error"><form:errors path="board.title" deilimiter="&nbsp;&nbsp;"/></span><br>
 내용 : <br>
-<textarea rows='30' cols='100' name="content" class="form-control" id="content" maxlength="1000">${param.content }</textarea>
-<span id="counter" style="float:right">###</span>
+<textarea rows='20' cols='100' name="content" class="form-control" maxlength="1000">${param.content }</textarea>
 <span class="error"><form:errors path="board.title" deilimiter="&nbsp;&nbsp;"/></span><br>
 <input class="btn btn-default btn-sm" type="file" name="upImage" multiple><br>
 <div style="float:right; position:relative; bottom:30px">

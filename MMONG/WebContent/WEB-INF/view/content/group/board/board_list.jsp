@@ -15,7 +15,7 @@ window.onload=function(){
 $(document).ready(function(){
 	
 	//팝업창 크기 조절
-	var width=480, height=480;
+	var width=480, height=440;
 	var left = (screen.availWidth - width)/2;
 	var top = (screen.availHeight - height)/2;
 	var specs = "width=" + width;
@@ -257,6 +257,7 @@ td {
 	</c:when>
 		<c:otherwise>
 		<p style="text-align:center">
+		<br><br>
 			등록된 게시물이 없습니다. 
 		</p>
 		</c:otherwise>
@@ -265,6 +266,7 @@ td {
 		</c:when>
 		<c:otherwise>
 		<p style="text-align:center">
+		<br><br><br>
 			모임 참여자만 볼 수 있습니다. 모임 참여를 해주세요~</p>
 		</c:otherwise>
 </c:choose>
