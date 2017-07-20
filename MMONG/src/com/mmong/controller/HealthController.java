@@ -44,7 +44,8 @@ public class HealthController {
 		String content = request.getParameter("content");
 		String gender = request.getParameter("gender");
 		
-		Health health2 = new Health(2,content,gender);
+		
+		Health health2 = new Health(54,content,gender);
 		
 		service.addHealthList(health2);
 		
