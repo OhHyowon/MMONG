@@ -101,7 +101,8 @@ $(document).ready(function(){
 				success:function(txt){
 					if(txt=="1"){
 						alert("삭제되었습니다.");
-						location.href="/MMONG/group/groupDate/allGroupDateList.do"
+						opener.parent.location.reload();
+						self.close();		
 					}else{
 						alert("삭제 실패");
 					}
@@ -142,60 +143,21 @@ td.result {
 	session.setAttribute("groupDateNo",groupDateNo);
 %>
 	<sec:authentication property="principal.memberId" var="loginId"/>
-<div class="col-lg-8">
-	<div class="form-panel">
-		<div class="col-lg-4">
-			<div class="form-panel" style="background:#E8F1EE">
-				<div>&nbsp;</div>
-				이름 : ${requestScope.groupDate.title}<br>
-				일정 : <fmt:formatDate value="${requestScope.groupDate.groupDate}" pattern="yyyy-MM-dd HH:mm"/>
-			</div>
-			<div class="form-panel" style="background:#E8F1EE">
-				<div>
-					<c:choose>
- 						<c:when test="${empty requestScope.memberIdList}"> <%-- 멤버아이디가 없을 때 --%>
-							<li>일정 참여자가 없습니다! &nbsp;&nbsp; <input class="btn btn-default btn-xs insertBtn" type="button" value="참여하기"></li>
-						</c:when> 
-						<c:otherwise> <%-- 일정 참여자가 있을 때 --%>
-						<div style="text-align:center">일정 참여자</div>
-							<c:forEach items="${requestScope.memberIdList }" var="memberId" varStatus="idx">
-								<c:choose>
-									<c:when test="${memberId == loginId }"> <%-- 로그인된 아이디와 참여자 아이디가 같다면 --%>
-										<li>
-											${memberId }(${requestScope.nickNameList[idx.index] })<input type="button" value="참여 취소" id="cancelBtn" style="margin-left:5px" class="btn btn-default btn-xs">
-										</li>
-									</c:when>
-									<c:when test="${memberId != loginId }"> <%-- 로그인된 아이디와 참여자 아이디가 다르다면 --%>
-										<li>
-											${memberId }(${requestScope.nickNameList[idx.index] })
-										</li>
-									</c:when>
-								</c:choose>
-							</c:forEach>
-							<% int i =1; %> <%-- 1이면 memberList에 본인 없음, 2이면 본인 있음 --%>
-							<c:forEach items= "${requestScope.memberIdList }" var="memberId">
-								<c:if test="${memberId==loginId }"><% i=2; %></c:if>
-							</c:forEach>
-							<% if (i==1){%><input type="button" value="참여 하기" class="btn btn-default btn-xs insertBtn"><%}%>
-						</c:otherwise>
-					</c:choose>
-				</div>
-			</div>
+
 			
-<div class="col-lg-4">
-	<div class="form-panel" style="background:#E8F1EE">
+<div class="col-lg-8">
+
 		<div>&nbsp;</div>
 		이름 : ${requestScope.groupDate.title}
 		<br>
 		일정 : <fmt:formatDate value="${requestScope.groupDate.groupDate}" pattern="yyyy-MM-dd HH:mm"/>
 	</div>
-	<div class="form-panel" style="background:#E8F1EE">
 		<div>
 	<c:choose> 
  		<c:when test="${empty requestScope.memberIdList}"> <%-- 멤버아이디가 없을 때 --%>
 				<div style="display:flex">
 					<div><li>일정 참여자가 없습니다!</div>
-					<div style="margin-left:340px;"><input class="btn btn-default btn-xs insertBtn" type="button" value="참여하기"></div>
+					<div style="margin-right:150px;">&nbsp;&nbsp;<input class="btn btn-default btn-xs insertBtn" type="button" value="참여하기"></div>
 				</div>
 		</c:when> 
 	
@@ -205,8 +167,9 @@ td.result {
 			<c:choose>
 			<c:when test="${memberId == loginId }"> <%-- 로그인된 아이디와 참여자 아이디가 같다면 --%>
 					<li>
-					${memberId }(${requestScope.nickNameList[idx.index] })<input type="button" value="참여 취소" id="cancelBtn" style="margin-left:5px" class="btn btn-default btn-xs">
+					${memberId }(${requestScope.nickNameList[idx.index] })&nbsp;&nbsp;<input type="button" value="참여 취소" id="cancelBtn" class="btn btn-default btn-xs">
 					</li>
+				
 			</c:when>
 			
 			<c:when test="${memberId != loginId }"> <%-- 로그인된 아이디와 참여자 아이디가 다르다면 --%>
@@ -231,11 +194,10 @@ td.result {
 		</c:otherwise>
 	</c:choose>
 		</div>
-		<div class="col-lg-4">
-			<div class="form-panel" style="background:#E8F1EE">
+		
+		<div class="col-lg-8">
 				<input type="hidden" value="${requestScope.groupDate.place }" id="placeSplit">
 				<div id="map_div"></div>
-			</div>
 		</div>
 		<c:if test="${requestScope.groupDate.memberId == loginId }">
 			<form action="/MMONG/group/groupDate/updateGroupDate1.do" method="post">
@@ -247,10 +209,5 @@ td.result {
 				</div>
 			</form>
 		</c:if>
-		<br><br><br><br><br><br><br><br><br><br><br><br><br>
-	</div>
-</div>
-		</form>
-<br><br><br><br><br><br><br><br><br><br><br><br><br>
-	</div>
-</div>
+		<br><br><br><br><br>
+

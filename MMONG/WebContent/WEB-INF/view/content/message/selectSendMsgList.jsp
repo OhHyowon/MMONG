@@ -91,11 +91,16 @@ window.onload=function(){
 </script>
 <div id="total_div">
 	<section class="wrapper site-min-height">
-	<br><br>
-	<ul>
-		<li><a href="/MMONG/message/selectReceiveMsg.do">받은 쪽지함</a></li>
-		<li><a href="/MMONG/message/selectSendMsg.do">보낸 쪽지함</a></li>
-	</ul>
+	
+	<div class="btn-group btn-group-justified" style="margin-top:50px; margin-bottom:30px;"">
+	  <div class="btn-group">
+	    <a href="/MMONG/message/selectReceiveMsg.do"><button type="button" class="btn btn-theme">받은 쪽지함</button></a>
+	  </div>
+	  <div class="btn-group">
+	    <a href="/MMONG/message/selectSendMsg.do"><button type="button" class="btn btn-theme">보낸 쪽지함</button></a>
+	  </div>
+	</div>
+	<br>
 		<h2>　보낸 쪽지함</h2>
 <hr>
 <br>

@@ -69,9 +69,9 @@ $(document).ready(function(){
 			<td>일정</td>
 			<td style="width: 300px;padding:0px 0px 0px 20px;">
 			<div>
-		  		<label>개인 <input type="radio" name="schedule" value=0 style="margin-right:10px" checked="true" ></label>
-		  		<label>진료 <input type="radio" name="schedule" value=1 style="margin-right:10px"></label>
-		  		<label>소모임 <input type="radio" name="schedule" value=2 style="margin-right:10px"></label>
+		  		<label>개인 <input type="radio" name="type" value=0 style="margin-right:10px" checked="true" ></label>
+		  		<label>진료 <input type="radio" name="type" value=1 style="margin-right:10px"></label>
+		  		<label>소모임 <input type="radio" name="type" value=2 style="margin-right:10px"></label>
 		  		</div>
 			</td>
 		</tr>

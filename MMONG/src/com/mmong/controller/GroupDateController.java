@@ -76,7 +76,7 @@ public class GroupDateController{
 		int groupDateNo=groupDateService.insertGroupDate(groupDate); // 등록한 일정 No
 		groupDateService.insertMeetMember(new MeetMember(groupDateNo, memberNo)); //일정 만든 사람이 최초 일정 참여자
 		
-		//*** 달력에 자동 입력
+		//*** 달력에 자동 입력 -- 박세연
 		String groupPlace = groupDate.getPlace();
 		String [] place = groupPlace.split("_");
 		Calendar calendar = new Calendar(0, groupDate.getTitle(), place[2], 2, groupDate.getGroupDate(), groupDate.getGroupDate(), 0, "", groupDateNo, 0, memberId);
@@ -137,7 +137,7 @@ public class GroupDateController{
 		MeetMember MM = new MeetMember(groupDateNo,memberNo);
 		groupDateService.insertMeetMember(MM);
 		
-		//*** 달력에 자동 입력
+		//*** 달력에 자동 입력 -- 박세연
 		GroupDate groupDateInfo = groupDateService.selectGroupDate(groupDateNo);
 		Calendar calendar = new Calendar(0, groupDateInfo.getTitle(), groupDateInfo.getPlace(), 2, groupDateInfo.getGroupDate(), groupDateInfo.getGroupDate(), 0, "", groupDateNo, 0, memberId);
 		calendarService.insertSchedule(calendar);
@@ -164,7 +164,7 @@ public class GroupDateController{
 		MeetMember MM = new MeetMember(groupDateNo, memberNo);
 		groupDateService.deleteMeetmember(MM);
 		
-		//*** 달력에서 삭제
+		//*** 달력에서 삭제 -- 박세연
 		calendarService.deleteGroupDate(groupDateNo, memberId);
 		
 		return "1";
@@ -294,6 +294,7 @@ public class GroupDateController{
 			return "/WEB-INF/view/content/group/groupDate/groupDate_update.jsp";
 		}
 		
+	
 		List<Integer> memberNoList=groupDateService.selectMeetMemberList(groupDateNo); // 참여자(memberNo) 목록 가져오기
 		List<String> memberIdList=new ArrayList<>();  // id 담을 list
 		List<String> nickNameList=new ArrayList<>(); // 닉네임 담을 list
@@ -306,21 +307,31 @@ public class GroupDateController{
 			nickNameList.add(nickName);
 		}
 		
-		/*//*** 달력에 일정 수정 & 자동 입력
-		System.out.println(groupDate.getPlace());
-		String groupPlace = groupDate.getPlace();
-		String [] place = groupPlace.split("_");
-		System.out.println(place);
-		Calendar calendar = new Calendar(0, groupDate.getTitle(), place[2], 2, groupDate.getGroupDate(), groupDate.getGroupDate(), 0, "", groupDateNo, "");
-		calendarService.updateFromGroup(calendar);
-		*/
+		
 		GroupDate groupDate1=groupDateService.selectGroupDate(groupDateNo);
 		
+		System.out.println("가지고 온 groupDate "+groupDate);
+		
+		if(groupDate.getPlace().isEmpty()){ // 장소가 null 으로 들어오면 (=장소변경이 없으면, groupDate1에 있는 place 가져오기)
+			groupDate1.setGroupDate(groupDate.getGroupDate());
+			groupDate1.setTitle(groupDate.getTitle());
+			System.out.println("장소가 null 일때 DB에 있는 groupDate1"+groupDate1);
+		}else{
 		groupDate1.setGroupDate(groupDate.getGroupDate());
 		groupDate1.setPlace(groupDate.getPlace());
 		groupDate1.setTitle(groupDate.getTitle());
+		System.out.println("장소가 null이 아닐 때 groupDate1"+groupDate1);
+		}
 		
 		groupDateService.upDateGroupDate(groupDate1); // DB에 수정된 일정 넣기
+		
+		
+		//*** 달력에 일정 수정 & 자동 입력 -- 박세연
+		String groupPlace = groupDate1.getPlace();
+		String [] place = groupPlace.split("_");
+		Calendar calendar = new Calendar(0, groupDate.getTitle(), place[2], 2, groupDate.getGroupDate(), groupDate.getGroupDate(), 0, "", groupDateNo, 0, "");
+		calendarService.updateFromGroup(calendar);
+		
 		
 		//일정 수정시 일정에 참여했던 멤버들에게 수정된 일정 정보 알리기 --이주현
 		List meetMemberNos = groupDateService.selectMeetMemberList(groupDateNo);
@@ -357,7 +368,7 @@ public class GroupDateController{
 		groupDateService.deleteMeetMemberByGroupDateNo(groupDateNo);
 		groupDateService.deleteGroupDate(groupDateNo);
 
-		//*** 일정 삭제시 그 일정에 참가신청했던 모든 회원들의 일정들을 calendar DB에서 삭제
+		//*** 일정 삭제시 그 일정에 참가신청했던 모든 회원들의 일정들을 calendar DB에서 삭제 -- 박세연
 		calendarService.deleteFromGroup(groupDateNo);
 		
 		return "1";

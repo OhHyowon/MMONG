@@ -1,5 +1,5 @@
-INSERT INTO health VALUES('1', '면역증강제', '0' ,'m');
-INSERT INTO health VALUES('2', '면역증강제', '0' ,'g');						INSERT INTO health VALUES('33', '면역증강제', '0' ,'c');		
+INSERT INTO health VALUES('1', '면역증강제' ,'m');
+INSERT INTO health VALUES('2', '면역증강제' ,'g');						INSERT INTO health VALUES('33', '면역증강제', '0' ,'c');		
 INSERT INTO health VALUES('3', '회충약 복용', '0' ,'m');
 INSERT INTO health VALUES('4', '회충약 복용', '0' ,'g');					INSERT INTO health VALUES('34', '회충약 복용', '0' ,'c');				
 INSERT INTO health VALUES('5', '종합백신 1차', '0' ,'m');

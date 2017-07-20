@@ -1,5 +1,6 @@
 package com.mmong.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.mmong.vo.Calendar;
@@ -64,4 +65,10 @@ public interface CalendarDao {
 	  * @param calendar
 	  */
 	 void updateFromChart(Calendar calendar);
+	 
+	 /**
+	  * 진료기록이 삭제되었을 때
+	  * @param map
+	  */
+	 void deleteFromChart(HashMap<String, Object> map);
 }
