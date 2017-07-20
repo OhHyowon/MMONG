@@ -431,7 +431,7 @@ function formSubmit(){
 			<td></td>
 		</tr>
 		
-		<tr>
+<%-- 		<tr>
 			<th>주소</th>
 			<td><input class="form-control" placeholder="주소" type="text" id="memberAddress" name="memberAddress" value="${param.memberAddress }"></td>
 			<td></td>
@@ -442,7 +442,7 @@ function formSubmit(){
 				<div id="addressMsg" style="display:none"></div>
 			</td>
 			<td></td>
-		</tr>
+		</tr> --%>
 				
 		<tr>
 			<th>이메일</th>

@@ -50,7 +50,7 @@ window.onload=function(){
 				</tr>
 				<tr>
 					<td style="padding: 10px;">
-							<textarea cols="80" rows="10" id="content" name="content" >${requestScope.adminNotice.content}</textarea>
+							<textarea cols="80" rows="10" id="content" name="content" readonly >${requestScope.adminNotice.content}</textarea>
 					</td>
 				</tr>
 			</table>
