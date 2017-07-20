@@ -41,6 +41,7 @@ function alertMsg(){
                   </li>                 
             </sec:authorize>
             
+            <!-- 로그인 안된 사용자 -->
 			<sec:authorize access="!isAuthenticated()"> 
                   <li class="sub-menu">
                       <a onClick="alertMsg(); return false;" > <!-- 다이어리 주소 넣기 -->
@@ -64,22 +65,24 @@ function alertMsg(){
                   </li>
              </sec:authorize>
              
-             <sec:authorize access="hasRole('ROLE_1')">
+             <!-- 로그인된 사용자 -->
+             <sec:authorize access="hasRole('ROLE_1')"> 
                   <li class="sub-menu">
                       <a href="/MMONG/calendar/calendar_main.do" > <!-- 다이어리 주소 넣기 -->
                           <i class="fa fa-book"></i>
                           <span>다이어리</span>
                       </a>
                   </li>
-                  
-
+             </sec:authorize>    
+			 <sec:authorize access="isAuthenticated()"> 
                   <li class="sub-menu">
                       <a href="/MMONG/health/list.do" >
                           <i class="fa fa-cogs"></i>
                           <span>건강관리</span>
                       </a>
                   </li>
-                  
+             </sec:authorize>
+             <sec:authorize access="hasRole('ROLE_1')">   
                   <li class="sub-menu">
                       <a href="/MMONG/map/basic_map.do" >
                           <i class="fa fa-tasks"></i>
@@ -87,8 +90,7 @@ function alertMsg(){
                       </a>
                   </li>
              </sec:authorize>
-             
-                
+             <sec:authorize access="isAuthenticated()">                 
                   <li class="sub-menu">
                       <a href="/MMONG/group/mygroup.do" >
                           <i class="fa fa-desktop"></i>
@@ -103,7 +105,7 @@ function alertMsg(){
                           <span>고객센터</span>
                       </a>
                   </li>
-                  
+             </sec:authorize>     
                   <!-- 로그인하지 않은 사용자가 로그인이 필요한 메뉴 접근시 경고메시지 뿌려줄 곳 -->
 				  <div id="loginWaringMsg">
 				  </div>

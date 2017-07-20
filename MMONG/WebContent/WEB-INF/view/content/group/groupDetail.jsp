@@ -34,7 +34,7 @@ $(document).ready(function(){
 				"success":function(response) {
 					if(response=="1"){
 						alert("가입이 완료되었습니다.");
-						opener.parent.location.reload();
+						window.location.reload();
 					}else{
 						alert("이미 가입된 소모임 입니다.");
 					}
@@ -286,19 +286,18 @@ $(document).ready(function(){
 
 
 
+	<!-- 멤버초대, 모임탈퇴 버튼 -->
 	<c:choose>
-		<c:when test="${groupMemberList != null}"> <!-- 멤버초대랑 모임탈퇴는 내가 그룹에 가입되어있을때만 -->
-	<!-- 멤버초대 -->	   
-	<div class="col-md-12" style="text-align:center;margin-left:34px"> <!-- 버튼 모아놓음 -->			
-		<button class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">invite</button>
-				<!-- 모임탈퇴 -->	
-		<button class="btn btn-default btn-sm" id="leaveBtn" >모임 탈퇴</button>
-			<sec:authentication property="principal.memberId" var="loginId" />
-		<c:if test="${group.leader eq loginId}">
-			<input type="button" value="모임장 변경하기" class="btn btn-default btn-sm"
-					onclick="window.open('/MMONG/groupMember/searchGroupMember2.do', '모임장 변경하기', 'top=100px, left=100px, height=220px, width=500px')">
-		</c:if>
-	</div>
+		<c:when test="${groupMemberList != null}"> <!-- 멤버초대랑 모임탈퇴는 내가 그룹에 가입되어있을때만 -->   
+			<div class="col-md-12" style="text-align:center;margin-left:34px"> <!-- 버튼 모아놓음 -->			
+				<button class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">invite</button>
+				<button class="btn btn-default btn-sm" id="leaveBtn" >모임 탈퇴</button>
+					<sec:authentication property="principal.memberId" var="loginId" />
+				<c:if test="${group.leader eq loginId}">
+					<input type="button" value="모임장 변경하기" class="btn btn-default btn-sm"
+							onclick="window.open('/MMONG/groupMember/searchGroupMember2.do', '모임장 변경하기', 'top=100px, left=100px, height=220px, width=500px')">
+				</c:if>
+			</div>
 	
 
 		
@@ -332,7 +331,7 @@ $(document).ready(function(){
 			      </div>
 			    </div>
 			  </div>
-			</div>  
+			</div>  <!-- Modal 끝 -->
 		</c:when>
 	</c:choose>
 </sec:authorize>
