@@ -1,5 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+<style>
+#content{
+  top:0;right:0;bottom:0;left:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+ 
+  display:-webkit-flex;
+  -webkit-align-item;center;
+  -webkit-justify-content:center;
+}
+</style>
 <script type="text/javascript">
 window.onload=function(){
 	$("#total_div").css("min-height",(document.body.scrollHeight-38.4)+"px");
@@ -28,8 +41,9 @@ window.onload=function(){
 		
 		
 		
-		
- '${requestScope.administrator.adminId }'님을 관리자로 등록하였습니다<br>
+<div id="content">
+	<h3>'${requestScope.administrator.adminId }'님을 관리자로 등록하였습니다</h3>
+</div>		
 
 </section>
 </div>
