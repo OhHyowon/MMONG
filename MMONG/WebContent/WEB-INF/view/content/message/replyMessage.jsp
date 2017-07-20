@@ -31,6 +31,31 @@ body{
 	background-color: #F2F2F2;
 }
 
+/* 글자수 카운트 */
+.wrap {
+    width: 500px;
+    height: auto;
+    position: relative;
+    display: inline-block;
+}
+.wrap textarea {
+    width: 100%;
+    resize: none;
+    min-height: 4.5em;
+    line-height:1.6em;
+    max-height: 9em;
+}
+.wrap span {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}
+#counter {
+  border-radius: 0.5em;
+  padding: 0 .5em 0 .5em;
+  font-size: 0.75em;
+}
+
 </style>
 
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
@@ -42,10 +67,28 @@ $(document).ready(function(){
 	});
 });
 
+//글자수 카운트
+$(function() {
+    $('#content').keyup(function (e){
+        var content = $(this).val();
+        $(this).height(((content.split('\n').length + 1) * 1.5) + 'em');
+        $('#counter').html(content.length + '/300');
+    });
+    $('#content').keyup();
+});
+
+$(function() {
+    $('#title').keyup(function (e){
+        var title = $(this).val();
+        $(this).height(((title.split('\n').length + 1) * 1.5) + 'em');
+    });
+    $('#title').keyup();
+});
+
 </script>
 
 <body>
-		<div class="viewName" align="center"><br><h2>답장 보내기</h3><br></div>
+		<div class="viewName" align="center"><br><h2>답장 보내기</h2><br></div>
 <br>
 <div align="center">
 
@@ -62,13 +105,13 @@ $(document).ready(function(){
 	<tr>
 		<th>제목</th>
 		<td style="padding:20px 0px 0px 4px;">
-			<input type="text" name="title" style="width:330px;" value="${param.title }">
+			<input type="text" name="title" style="width:330px;" id="title" maxlength="50" value="${param.title }">
 			<br><span class="error"><form:errors path="mess.title"/></span></td>
 	</tr>
 	<tr>
 		<th>내용</th>
-		<td><textarea rows='7' cols='39' name="content">${param.content }</textarea>
-				<br><span class="error"><form:errors path="mess.content"/></span></td>
+		<td><textarea rows='15' cols='40' name="content" id="content" maxlength="300">${param.content }</textarea>
+		 <span id="counter">###</span><br><span class="error"><form:errors path="mess.content"/></span></td>
 	</tr>
 </table>
 <br>

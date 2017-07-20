@@ -44,7 +44,7 @@ public class CalendarController {
 			String fileName = upImage.getOriginalFilename();
 			try {
 				upImage.transferTo(new File(destDir, fileName));
-			} catch (IllegalStateException e) { ///////////Exception 선언~~~필용오요요요요요요ㅛㅇ
+			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
