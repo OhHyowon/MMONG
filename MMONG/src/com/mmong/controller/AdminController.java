@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.mmong.service.AdministratorService;
 import com.mmong.service.MemberService;
 import com.mmong.service.UserService;
+import com.mmong.validation.AdministratorRegisterValidator;
 import com.mmong.vo.Administrator;
 import com.mmong.vo.Member;
 import com.mmong.vo.User;
@@ -31,11 +32,7 @@ public class AdminController {
 	@Autowired	
 	private MemberService memberService;
 	
-	
-	
 
-
-/////////////// 이하 완료////////////////
 	
 	//info_member.jsp(회원 정보)로 가기 위한 컨트롤러
 	@RequestMapping("searchMemberById")
@@ -53,8 +50,6 @@ public class AdminController {
 	public ModelAndView nullMemberId(@RequestParam String memberId){
 		return new ModelAndView("admin/search_member_null.tiles","memberId",memberId);
 	}
-	
-	
 	
 	//일반회원(member) 권한 변경하기
 	@RequestMapping("changeMemberAuthority")
@@ -94,13 +89,12 @@ public class AdminController {
 	public ModelAndView RegisterAdminSuccess(@ModelAttribute Administrator admin, BindingResult errors){
 		User user = new User(admin.getAdminId(), admin.getUser().getUserPwd(), "ROLE_0", 1);
 			admin.setUser(user);
-			System.out.println("컨트롤러 1 --"+admin.getAdminEmail());
 		//1. 요청파라미터 검증
-//		AdministratorRegisterValidator validator = new AdministratorRegisterValidator();
-//		validator.validate(admin, errors);
-//		if(errors.hasErrors()){
-//			return  new ModelAndView("admin/register_form.tiles");
-//		}
+		AdministratorRegisterValidator validator = new AdministratorRegisterValidator();
+		validator.validate(admin, errors);
+		if(errors.hasErrors()){
+			return  new ModelAndView("admin/register_form.tiles");
+		}
 		//2.관리자 등록처리
 		userService.registerUser(user);
 		//Administrator의 vo에 user 속성 추가하는 작업
@@ -201,16 +195,12 @@ public class AdminController {
 	public ModelAndView updateAdminInfo(@ModelAttribute Administrator admin, BindingResult errors){
 		User user = new User(admin.getAdminId(),admin.getUser().getUserPwd(), admin.getUser().getUserAuthority(), 1);
 			admin.setUser(user);
-			userService.updateUser(user);
-			System.out.println("점검---1 "+user);
-//		//1. 요청파라미터 검증
-//		AdministratorRegisterValidator validator = new AdministratorRegisterValidator();   //validator 쓰면 에러발생 'adminUser'
-//		System.out.println("점검---2 "+validator);
-//		validator.validate(admin, errors);
-//		System.out.println("점검---4 "+admin);
-//		if(errors.hasErrors()){
-//			return  new ModelAndView("redirect:/admin/info_admin_update_form.do?adminId="+admin.getAdminId());
-//		}	
+		//1. 요청파라미터 검증
+		AdministratorRegisterValidator validator = new AdministratorRegisterValidator();   //validator 쓰면 에러발생 'adminUser'
+		validator.validate(admin, errors);
+		if(errors.hasErrors()){
+			return  new ModelAndView("redirect:/admin/info_admin_update_form.do?adminId="+admin.getAdminId());
+		}
 		
 		Administrator newAdmin = new Administrator(admin.getAdminName(),admin.getAdminPhone(), admin.getAdminEmail(),admin.getAdminId(),user);
 			adminService.updateAdministrator(newAdmin);
