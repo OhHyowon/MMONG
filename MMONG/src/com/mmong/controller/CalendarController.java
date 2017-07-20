@@ -44,7 +44,7 @@ public class CalendarController {
 			String fileName = upImage.getOriginalFilename();
 			try {
 				upImage.transferTo(new File(destDir, fileName));
-			} catch (IllegalStateException e) { ///////////Exception 선언~~~필용오요요요요요요ㅛㅇ
+			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -56,7 +56,7 @@ public class CalendarController {
 		}
 		
 		calendar.setMemberId(memberId);
-		
+
 		InsertScheduleValidator valid = new InsertScheduleValidator();
 		valid.validate(calendar, errors);
 		
@@ -64,10 +64,10 @@ public class CalendarController {
 			map.addAttribute("insertInfo", calendar);
 			return new ModelAndView("/WEB-INF/view/content/calendar/insertSchedule.jsp");
 		}
-		
+
 		service.insertSchedule(calendar);
-		
-		RedirectView rv = new RedirectView("/WEB-INF/view/content/calendar/insertSuccess.jsp");
+
+		RedirectView rv = new RedirectView("/MMONG/calendar/insertSuccess.do");
 		rv.setExposeModelAttributes(false);
 		
 		return new ModelAndView(rv);

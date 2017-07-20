@@ -36,6 +36,30 @@ body{
 	background-color: #F2F2F2;
 }
 
+/* 글자수 카운트 */
+.wrap {
+    width: 500px;
+    height: auto;
+    position: relative;
+    display: inline-block;
+}
+.wrap textarea {
+    width: 100%;
+    resize: none;
+    min-height: 4.5em;
+    line-height:1.6em;
+    max-height: 9em;
+}
+.wrap span {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}
+#counter {
+  border-radius: 0.5em;
+  padding: 0 .5em 0 .5em;
+  font-size: 0.75em;
+}
 </style>
 
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
@@ -60,6 +84,23 @@ $(document).ready(function(){
 		});
 });
 
+//글자수 카운트
+$(function() {
+    $('#content').keyup(function (e){
+        var content = $(this).val();
+        $(this).height(((content.split('\n').length + 1) * 1.5) + 'em');
+        $('#counter').html(content.length + '/100');
+    });
+    $('#content').keyup();
+});
+
+$(function() {
+    $('#title').keyup(function (e){
+        var title = $(this).val();
+        $(this).height(((title.split('\n').length + 1) * 1.5) + 'em');
+    });
+    $('#title').keyup();
+});
 </script>
 
 <style type="text/css">
@@ -82,23 +123,23 @@ span.error{
 			<c:choose>
 				<c:when test="${requestScope.updateInfo.type eq 0}">
 					<div>
-						<label>개인 <input type="radio" name="schedule" value=0 style="margin-right:10px" checked="true"></label>
-		  				<label>진료 <input type="radio" name="schedule" value=1 style="margin-right:10px"></label>
-		  				<label>소모임 <input type="radio" name="schedule" value=2 style="margin-right:10px"></label>
+						<label>개인 <input type="radio" name="type" value=0 style="margin-right:10px" checked="true"></label>
+		  				<label>진료 <input type="radio" name="type" value=1 style="margin-right:10px"></label>
+		  				<label>소모임 <input type="radio" name="type" value=2 style="margin-right:10px"></label>
 		  			</div>
 				</c:when>
 				<c:when test="${requestScope.updateInfo.type eq 1}">
 					<div>
-						<label>개인 <input type="radio" name="schedule" value=0 style="margin-right:10px"></label>
-		  				<label>진료 <input type="radio" name="schedule" value=1 style="margin-right:10px" checked="true"></label>
-		  				<label>소모임 <input type="radio" name="schedule" value=2 style="margin-right:10px"></label>
+						<label>개인 <input type="radio" name="type" value=0 style="margin-right:10px"></label>
+		  				<label>진료 <input type="radio" name="type" value=1 style="margin-right:10px" checked="true"></label>
+		  				<label>소모임 <input type="radio" name="type" value=2 style="margin-right:10px"></label>
 		  			</div>
 				</c:when>
 				<c:otherwise>
 					<div>
-						<label>개인 <input type="radio" name="schedule" value=0 style="margin-right:10px"></label>
-		  				<label>진료 <input type="radio" name="schedule" value=1 style="margin-right:10px"></label>
-		  				<label>소모임 <input type="radio" name="schedule" value=2 style="margin-right:10px" checked="true"></label>
+						<label>개인 <input type="radio" name="type" value=0 style="margin-right:10px"></label>
+		  				<label>진료 <input type="radio" name="type" value=1 style="margin-right:10px"></label>
+		  				<label>소모임 <input type="radio" name="type" value=2 style="margin-right:10px" checked="true"></label>
 		  			</div>
 				</c:otherwise>
 			</c:choose>
@@ -197,7 +238,7 @@ span.error{
 	</tr>
 	<tr>
 		<th style="line-height:30px;">제목</th>
-		<td style="width: 300px;padding:0px 0px 0px 20px;"><input type="text" name="title" style="width:247.5px; height:30px;" value="${requestScope.updateInfo.title }">
+		<td style="width: 300px;padding:0px 0px 0px 20px;"><input type="text" name="title" style="width:247.5px; height:30px;" id="title" maxlength="50" value="${requestScope.updateInfo.title }">
 				<br><span class="error"><form:errors path="calendar.title"/></span></td> 
 	</tr>
 	<tr style="line-height:30px;">
@@ -212,8 +253,8 @@ span.error{
 	</tr>
 	<tr style="line-height:30px;">
 		<th>메모</th>
-		<td style="width: 300px;padding:10px 0px 0px 20px;"><input type="text" name="content" style="width:247.5px; height:80px;" value="${requestScope.updateInfo.content }">
-				<br><span class="error"><form:errors path="calendar.content"/></span></td>
+		<td style="width: 300px;padding:10px 0px 0px 20px;"><input type="text" name="content" style="width:247.5px; height:80px;"id="content" maxlength="100" value="${requestScope.updateInfo.content }">
+				<span id="counter">###</span><br><span class="error"><form:errors path="calendar.content"/></span></td>
 	</tr>
 	<tr style="line-height:30px;">
 		<th>이미지</th>

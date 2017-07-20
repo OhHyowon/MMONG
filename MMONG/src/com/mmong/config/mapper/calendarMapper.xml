@@ -27,6 +27,7 @@ emotion 변수 사용시, (null 가능)
 	<result column="emotion" property="emotion"/>
 	<result column="picture" property="picture"/>
 	<result column="group_date_no" property="groupDateNo"/>
+	<result column="health_no" property="healthNo"/>
 	<result column="member_id" property="memberId"/>
 </resultMap>
 
@@ -35,7 +36,7 @@ emotion 변수 사용시, (null 가능)
 	<selectKey resultType="int" keyProperty="no" order="BEFORE">
 		SELECT CALENDAR_NO_SEQ.nextval FROM dual
 	</selectKey>
-	INSERT INTO calendar VALUES (#{no}, #{title}, #{content}, #{type}, #{startDate}, #{endDate}, #{emotion}, #{picture}, #{groupDateNo}, #{memberId})
+	INSERT INTO calendar VALUES (#{no}, #{title}, #{content}, #{type}, #{startDate}, #{endDate}, #{emotion}, #{picture}, #{groupDateNo}, #{healthNo}, #{memberId})
 </insert>
 
 <!-- 일정 전체 조회 -->
@@ -97,4 +98,25 @@ emotion 변수 사용시, (null 가능)
 		picture=#{picture}
 	WHERE group_date_no=#{groupDateNo}
 </update>
+
+<!-- 진료기록이 수정되었을 때 -->
+<update id="updateFromChart">
+	UPDATE calendar
+	SET
+		title=#{title}, 
+		content=#{content}, 
+		type=#{type}, 
+		start_date=#{startDate}, 
+		end_date=#{endDate}, 
+		emotion=#{emotion}, 
+		picture=#{picture}
+	WHERE health_no = #{healthNo} AND member_id = #{memberId}
+
+</update>
+
+<!-- 진료기록이 삭제되었을 때 -->
+<delete id="deleteFromChart" parameterType="map">
+	DELETE FROM calendar
+	WHERE health_no = #{no} AND member_id = #{writer}
+</delete>
 </mapper>

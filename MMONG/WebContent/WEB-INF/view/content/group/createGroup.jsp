@@ -21,7 +21,7 @@
 <link rel="stylesheet" type="text/css" href="/MMONG/resource/assets/lineicons/style.css">        
 
 <!-- Custom styles for this template -->
-<link href="/MMONG/resource/assets/css/style.css?var=3" rel="stylesheet">
+<!-- <link href="/MMONG/resource/assets/css/style.css?var=3" rel="stylesheet"> -->
 <link href="/MMONG/resource/assets/css/style-responsive.css" rel="stylesheet">
     
 <script type="text/javascript">

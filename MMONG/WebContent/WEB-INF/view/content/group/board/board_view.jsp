@@ -48,7 +48,7 @@ window.onload=function(){
 $(document).ready(function(){
 	
 	//팝업창 크기 조절
-	var width=480, height=480;
+	var width=480, height=440;
 	var left = (screen.availWidth - width)/2;
 	var top = (screen.availHeight - height)/2;
 	var specs = "width=" + width;
@@ -57,7 +57,7 @@ $(document).ready(function(){
 	specs += ",top=" + top;
 	
 	$(".messageGoTxt").on("click", function(){
-		var id = $("#id").val()
+		var id = $("#id").val();
 		var nickname = $("#nickname").val();
 		
 		window.open("/MMONG/message/idNnickFromBoard.do?id="+id+"&nickname="+nickname, "쪽지보내기", specs);
@@ -172,11 +172,9 @@ $(document).ready(function(){
 				<tr>
 					<td class="messageGo" style="padding: 10px;">${requestScope.board.memberId }(${requestScope.boardNickname })
 						&nbsp;|&nbsp; 조회수 ${requestScope.board.hit }
-						<div class="messageGoTxt">
-							쪽지보내기 <input type="hidden"
-								value="${requestScope.board.memberId }" id="id"> <input
-								type="hidden" value="${requestScope.boardNickname }"
-								id="nickname">
+						<div class="messageGoTxt">쪽지보내기 
+							<input type="hidden" value="${requestScope.board.memberId }" id="id"> 
+							<input type="hidden" value="${requestScope.boardNickname }" id="nickname">
 						</div>
 					</td>
 				</tr>
@@ -229,10 +227,9 @@ $(document).ready(function(){
 										<fmt:formatDate value="${reply.replyDate }"
 											pattern="yyyy-MM-dd HH:mm" />
 										<div class="messageGoTxt">
-											쪽지보내기 <input type="hidden" value="${reply.memberId }" id="id">
-											<input type="hidden"
-												value="${requestScope.replyNickname[idx.index] }"
-												id="nickname">
+											쪽지보내기 
+											<input type="hidden" value="${reply.memberId }" id="id">
+											<input type="hidden" value="${requestScope.replyNickname[idx.index] }" id="nickname">
 										</div>
 									</div>
 									<div id="button">

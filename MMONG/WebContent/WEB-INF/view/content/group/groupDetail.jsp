@@ -13,6 +13,11 @@ window.onload=function(){
 	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
 }
 $(document).ready(function(){
+ 
+	var divLeft = (document.body.scrollWidth-280)+"px";
+	
+	$("#groupInfo").css("left", divLeft);
+	
 	//로그인 안했을 때 소모임 가입 버튼 누르면 처리
 	$("#createNone").on("click", function(){
 		alert("먼저 로그인 해주세요.");
@@ -40,7 +45,6 @@ $(document).ready(function(){
 	
 	//주인장이 소모임 수정 버튼 클릭시
 	$("#editGroupBtn").on("click", function(){
-		alert("수정하기");
 		window.open("/MMONG/group/updateGroup1.do","모임 수정하기","top=100px, left=100px, height=220px, width=500px");
 	});
 	
@@ -192,21 +196,12 @@ $(document).ready(function(){
 	</div>			
 <%-- =============소모임 상세페이지 소메뉴 끝================ --%>
 
+<center><h4>모임 정보</h4></center>
 
 
-
-
-
-
-
-<!-- 소모임 정보 -->
-<p><b>모임 정보</b></p>
-모임 이름 : ${requestScope.group.name } <br>
-모임 장 : ${requestScope.group.leader } <br>
-
-
-
-<!-- 가입하기 버튼 -->
+<!--  버튼 영역-->
+	    
+<div style="margin-left:83%; display:inline-block;">	
 <sec:authorize access="!isAuthenticated()"> <!-- 로그인 안했을시  -->       
    <button type="button" id="createNone" class='btn btn-default'>가입하기</button>
 </sec:authorize>
@@ -237,9 +232,24 @@ $(document).ready(function(){
    %>
 </sec:authorize>
 <br>
+</div>	
 
 
-<hr>
+
+
+
+
+<!-- 소모임 정보 -->
+<div id="groupInfo" style="width:150px;">
+<b>모임 [ ${requestScope.group.name }  ] 입니다. </b><br>
+<img src="/MMONG/resource/assets/img/leader.png" class="img-responsive" alt="" style="width:14px; height:14px;" align="left"> &nbsp; ${requestScope.group.leader } <br>
+<img src="/MMONG/resource/assets/img/talk.png" class="img-responsive" alt="" style="width:18px; height:17px;" align="left"> &nbsp;<i>${requestScope.group.content }</i>
+</div>
+<br><br><br>
+
+
+
+
 
 <!-- 참여자 목록 -->
 <sec:authorize access="!isAuthenticated()">

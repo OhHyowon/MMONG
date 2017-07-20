@@ -62,6 +62,15 @@ public class CalendarDaoImpl implements CalendarDao{
 	public void updateFromGroup(Calendar calendar) {
 		session.update(makeSqlId("updateFromGroup"), calendar);
 	}
-	
+
+	@Override
+	public void updateFromChart(Calendar calendar) {
+		session.update(makeSqlId("updateFromChart"), calendar);
+	}
+
+	@Override
+	public void deleteFromChart(HashMap<String, Object> map) {
+		session.delete(makeSqlId("deleteFromChart"), map);
+	}
 	
 }

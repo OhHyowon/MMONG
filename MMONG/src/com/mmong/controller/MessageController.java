@@ -164,7 +164,7 @@ public class MessageController {
 		Message message = service.viewReceiveMsg(no);
 		
 		map.addAttribute("message", message);
-		return "message/viewReceiveMsg.tiles";
+		return "/WEB-INF/view/content/message/viewReceiveMsg.jsp";
 	}
 	
 	/**
@@ -180,7 +180,7 @@ public class MessageController {
 		
 		map.addAttribute("message", message);
 		
-		return "message/viewSendMsg.tiles";
+		return "/WEB-INF/view/content/message/viewSendMsg.jsp";
 	}
 	
 	/**
