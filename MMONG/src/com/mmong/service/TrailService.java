@@ -37,4 +37,18 @@ public interface TrailService {
 	 * @return
 	 */
 	List<Trail> searchTrailByTitle(String title);
+	
+	/**
+	 * category로 산책로 조회하는 메소드
+	 * @param category
+	 * @return
+	 */
+	List<Trail> searchTrailByCategory(String category);
+	
+	/**
+	 * route content로 산책로 조회하는 메소드
+	 * @param routeContent
+	 * @return
+	 */
+	List<Trail> searchTrailByRouteContent(String routeContent);
 }

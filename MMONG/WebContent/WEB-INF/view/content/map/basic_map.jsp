@@ -6,7 +6,6 @@
 <head>
 <meta charset="UTF-8">
 </head>
-<script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript"
 	src="https://apis.skplanetx.com/tmap/js?version=1&format=javascript&appKey=6627b1a4-d735-3501-8a0d-84ad3ce149c9"></script>
 <script type="text/javascript" src="/MMONG/resource/map/map_func.js"></script>
@@ -53,13 +52,30 @@ var route2 = new Array();
 var route3 = new Array();
 var route4 = new Array();
 var route5 = new Array();
+var routeName = new Array(5);
 var memberId = new Array();
 var trailIndex;
+var scrollWidth = (document.body.scrollWidth-540)+"px";
+var divLeft = (document.body.scrollWidth-480)+"px";
+var searchDivLeft = (document.body.scrollWidth-540)+"px";
+var searchIconDivLeft = (document.body.scrollWidth-230)+"px";
+var trailListDivHeight;
+var resultListDivTop;
+var resultListDivHeight;
+var pagingDivTop;
+var totalMenuLeft = (document.body.scrollWidth-530)+"px";
 
 //맵 초기화 함수
 function initialize() {
 	var scrollHeight = (document.body.scrollHeight-98.4)+"px";
-	map = new Tmap.Map({div:"map_div", width:'800px', height:scrollHeight, animation:true}); //div#map_div에 맵 등록, 기본 zoom 레벨 15
+	map = new Tmap.Map({div:"map_div", width:scrollWidth, height:scrollHeight, animation:true}); //div#map_div에 맵 등록, 기본 zoom 레벨 15
+	$("#search_div").css("left", searchDivLeft);
+	$("#searchIcon_div").css("left", searchIconDivLeft);
+	$("#trail_list_div").css("left", divLeft);
+	$("#map_div").css({"border-right-style":"solid", "border-right-width":"1px", "border-right-color":"#BABABA"});
+	$("#total_menu").css("left", totalMenuLeft);
+	$("#total_div").css("display", "");
+
 	cLonLat = new Tmap.LonLat(14149513.77048, 4495298.9298456);
 	map.setCenter(cLonLat, 16);//유스페이스2 좌표를 맵 중심으로 설정
 	map.addControl(new Tmap.Control.MousePosition()); //마우스 위치 상의 좌표를 맵 우측 하단에 띄워주는 control 등록
@@ -79,25 +95,21 @@ function addMarkerToList(marker, index) {
 	replaceContentHTML = contentHTML.replace(/<\/?[^>]+>/gi, "");
 
 	if(index%2==0) {
-		$("#trail_list_div").append("<div style='display:flex; margin: 15px 0;' name='listDiv"+(index+1)+"'><div class='marker' name='marker"+(index+1)+"'><a href='javascript:panToSelectMarker("
+		$("#trail_list_div").append("<div style='display:flex; margin-bottom: 5px; height:55.2px;' name='listDiv"+(index+1)+"'><div class='marker' name='marker"+(index+1)+"'><div><a href='javascript:panToSelectMarker("
 				+marker.lonlat.lon+", "+marker.lonlat.lat+", "+index+", 0)'><img src='/MMONG/resource/assets/img/map/list_pin_"+(index+1)+
-				".png'/></a></div><div class='content' name='content"+(index+1)+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[index].lonlat.lon+", "
+				".png'/></a></div></div><div class='content' name='content"+(index+1)+"' title='"+replaceContentHTML+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[index].lonlat.lon+", "
 						+markerLayer.markers[index].lonlat.lat+", "+index+", 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption"+(index+1)+
-						"'><input type='hidden' class='markerIndex' value='"+index+"'><input type='button' class='modifyName' name='modifyName"+(index+1)+
-						"' value='수정'><input type='button' class='removeMarker' name='removeMarker"+(index+1)+"' value='삭제'></div></div>");
+						"'><input type='hidden' class='markerIndex' value='"+index+"'><a href='#' class='modifyName' name='modifyName"+(index+1)+
+						"'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker"+(index+1)+"'><span class='glyphicon glyphicon-trash'></a></div><input type='hidden' name='markerAddress"+(index+1)+"' value='"+replaceContentHTML+"'></div>");
 	}else {
-		$("#trail_list_div").append("<div style='display:flex; margin: 15px 0;' name='listDiv"+(index+1)+"'><div class='marker' name='marker"+(index+1)+"'><a href='javascript:panToSelectMarker("
+		$("#trail_list_div").append("<div style='display:flex; margin-bottom: 5px; height:55.2px;' name='listDiv"+(index+1)+"'><div class='marker' name='marker"+(index+1)+"'><div><a href='javascript:panToSelectMarker("
 				+marker.lonlat.lon+", "+marker.lonlat.lat+", "+index+", 0)'><img src='/MMONG/resource/assets/img/map/list_pin_"+(index+1)+
-				".png'/></a></div><div class='content' name='content"+(index+1)+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[index].lonlat.lon+", "
+				".png'/></a></div></div><div class='content' name='content"+(index+1)+"' title='"+replaceContentHTML+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[index].lonlat.lon+", "
 						+markerLayer.markers[index].lonlat.lat+", "+index+", 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption"+(index+1)+
-						"'><input type='hidden' class='markerIndex' value='"+index+"'><input type='button' class='modifyName' name='modifyName"+(index+1)+
-						"' value='수정'><input type='button' class='removeMarker' name='removeMarker"+(index+1)+"' value='삭제'></div></div>");
+						"'><input type='hidden' class='markerIndex' value='"+index+"'><a href='#' class='modifyName' name='modifyName"+(index+1)+
+						"'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker"+(index+1)+"'><span class='glyphicon glyphicon-trash'></a></div><input type='hidden' name='markerAddress"+(index+1)+"' value='"+replaceContentHTML+"'></div>");
 	}
-	/*
-	$("#route_menu_div").empty();
-	$("#route_menu_div").append("<a href='javascript:searchRoute()'>소요 시간 및 거리 계산</a><br>");
-	$("#trail_menu_div").find($("input#fixTrail")).removeAttr("disabled");
-	*/
+
 }
 
 //등록된 산책로 마커 리스트를 div#trail_list_div에 등록하는 함수
@@ -106,25 +118,20 @@ function addTrailToList(marker, index) {
 	replaceContentHTML = contentHTML.replace(/<\/?[^>]+>/gi, "");
 	
 	if(index%2==0) {
-		$("#trail_list_div").append("<div style='display:flex; margin: 15px 0;' name='listDiv"+(index+1)+"'><div class='marker' name='marker"+(index+1)+"'><a href='javascript:panToSelectMarker("
+		$("#trail_list_div").append("<div style='display:flex; margin-bottom: 5px; height:55.2px;' name='listDiv"+(index+1)+"'><div class='marker' name='marker"+(index+1)+"'><a href='javascript:panToSelectMarker("
 				+marker.lonlat.lon+", "+marker.lonlat.lat+", "+index+", 0)'><img src='/MMONG/resource/assets/img/map/list_pin_"+(index+1)+
-				".png'/></a></div><div class='trailContent' name='content"+(index+1)+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[index].lonlat.lon+", "
-						+markerLayer.markers[index].lonlat.lat+", "+index+", 0)'>"+replaceContentHTML+"</a></div></div>");
+				".png'/></a></div><div class='trailContent' name='content"+(index+1)+"' title='"+replaceContentHTML+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[index].lonlat.lon+", "
+						+markerLayer.markers[index].lonlat.lat+", "+index+", 0)'>"+routeName[index]+"</a></div><input type='hidden' name='markerAddress"+(index+1)+"' value='"+replaceContentHTML+"'></div>");
 	}else {
-		$("#trail_list_div").append("<div style='display:flex; margin: 15px 0;' name='listDiv"+(index+1)+"'><div class='marker' name='marker"+(index+1)+"'><a href='javascript:panToSelectMarker("
+		$("#trail_list_div").append("<div style='display:flex; margin-bottom: 5px; height:55.2px;' name='listDiv"+(index+1)+"'><div class='marker' name='marker"+(index+1)+"'><a href='javascript:panToSelectMarker("
 				+marker.lonlat.lon+", "+marker.lonlat.lat+", "+index+", 0)'><img src='/MMONG/resource/assets/img/map/list_pin_"+(index+1)+
-				".png'/></a></div><div class='trailContent' name='content"+(index+1)+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[index].lonlat.lon+", "
-						+markerLayer.markers[index].lonlat.lat+", "+index+", 0)'>"+replaceContentHTML+"</a></div></div>");
+				".png'/></a></div><div class='trailContent' name='content"+(index+1)+"' title='"+replaceContentHTML+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[index].lonlat.lon+", "
+						+markerLayer.markers[index].lonlat.lat+", "+index+", 0)'>"+routeName[index]+"</a></div><input type='hidden' name='markerAddress"+(index+1)+"' value='"+replaceContentHTML+"'></div>");
 	}
-	/*
-	$("#route_menu_div").empty();
-	$("#route_menu_div").append("<a href='javascript:searchRoute()'>소요 시간 및 거리 계산</a><br>");
-	$("#trail_menu_div").find($("input#fixTrail")).removeAttr("disabled");
-	*/
 }
 
 function poiToMarkerOnClick() {
-	$("#result_list_div").on("click", "input.poiToMarker", function() {
+	$("#total_div").on("click", "a.poiToMarker", function() {
 		for(var j=0; j<markerLayer.markers.length; j++) {
 			markerLayer.markers[j].popup.hide();
 		}
@@ -133,7 +140,6 @@ function poiToMarkerOnClick() {
 		}
 		
 		var poiName = $(this).prev().prev().prev().val();
-		alert(poiName);
 		var poiLon = $(this).prev().prev().val();
 		var poiLat = $(this).prev().val();
 		
@@ -145,86 +151,73 @@ function poiToMarkerOnClick() {
 		marker_cLonLat_lat += marker_lat[i];
 		
 		setTrailMarkerProp(i, 1, poiName);
-		/*
-		$("#route_menu_div").empty();
-		$("#route_menu_div").append("<a href='javascript:searchRoute()'>소요 시간 및 거리 계산</a><br>");
-		$("#trail_menu_div").find($("input#fixTrail")).removeAttr("disabled");
-		*/
-		$("#trail_list_div").append("<div><a href='javascript:searchRoute()'>소요 시간 및 거리 계산</a></div>");
-		$("#trail_menu_div").find($("input#fixTrail")).removeAttr("disabled");
-		
 	});
 }
 
 //보행자 경로 안내
 function searchRoute() {
-	if(markerLayer.markers.length>0) {
-		var startX = markerLayer.markers[0].lonlat.lon; //출발지 경도
-		var startY = markerLayer.markers[0].lonlat.lat; //출발지 위도
-		var endX = markerLayer.markers[markerLayer.markers.length-1].lonlat.lon; //목적지 경도
-		var endY = markerLayer.markers[markerLayer.markers.length-1].lonlat.lat; //목적지 위도
-		var startName = encodeURIComponent("출발");
-		var endName = encodeURIComponent("목적");
-		var passList;
-		var speed = 4;
-		var urlStr = "https://apis.skplanetx.com/tmap/routes/pedestrian?version=1&format=xml";
-			urlStr += "&startX="+startX;
-			urlStr += "&startY="+startY;
-			urlStr += "&endX="+endX;
-			urlStr += "&endY="+endY;
-			urlStr += "&startName="+startName;
-			urlStr += "&endName="+endName;
-			urlStr += "&speed="+speed;
-			urlStr += "&appKey="+appKey;
-			
-		if(markerLayer.markers.length==3) {
-			passList = markerLayer.markers[1].lonlat.lon+","+markerLayer.markers[1].lonlat.lat;
-			urlStr += "&passList="+passList;
-		}else if(markerLayer.markers.length==4) {
-			passList = markerLayer.markers[1].lonlat.lon+","+markerLayer.markers[1].lonlat.lat+"_"+markerLayer.markers[2].lonlat.lon+","+markerLayer.markers[2].lonlat.lat;
-			urlStr += "&passList="+passList;
-		}else if(markerLayer.markers.length==5) {
-			passList = markerLayer.markers[1].lonlat.lon+","+markerLayer.markers[1].lonlat.lat+"_"+markerLayer.markers[2].lonlat.lon+","+markerLayer.markers[2].lonlat.lat+"_"+markerLayer.markers[3].lonlat.lon+","+markerLayer.markers[3].lonlat.lat;
-			urlStr += "&passList="+passList;
-		}
-	
-	
-		var xmlHttp = new XMLHttpRequest();
-		xmlHttp.onreadystatechange = routeLoader;
-		xmlHttp.open("GET", urlStr, false);
-		xmlHttp.send(null);
-		var totalTime, totalDistance;
-		function routeLoader() {
-			if(xmlHttp.readyState==4) {
-				if(xmlHttp.status==200) {
-					var temp = xmlHttp.responseXML;
-					totalTime = temp.getElementsByTagName("totalTime")[0].childNodes[0].nodeValue;
-					totalDistance = temp.getElementsByTagName("totalDistance")[0].childNodes[0].nodeValue;
-				}
+	var startX = markerLayer.markers[0].lonlat.lon; //출발지 경도
+	var startY = markerLayer.markers[0].lonlat.lat; //출발지 위도
+	var endX = markerLayer.markers[markerLayer.markers.length-1].lonlat.lon; //목적지 경도
+	var endY = markerLayer.markers[markerLayer.markers.length-1].lonlat.lat; //목적지 위도
+	var startName = encodeURIComponent("출발");
+	var endName = encodeURIComponent("목적");
+	var passList;
+	var speed = 4;
+	var urlStr = "https://apis.skplanetx.com/tmap/routes/pedestrian?version=1&format=xml";
+		urlStr += "&startX="+startX;
+		urlStr += "&startY="+startY;
+		urlStr += "&endX="+endX;
+		urlStr += "&endY="+endY;
+		urlStr += "&startName="+startName;
+		urlStr += "&endName="+endName;
+		urlStr += "&speed="+speed;
+		urlStr += "&appKey="+appKey;
+		
+	if(markerLayer.markers.length==3) {
+		passList = markerLayer.markers[1].lonlat.lon+","+markerLayer.markers[1].lonlat.lat;
+		urlStr += "&passList="+passList;
+	}else if(markerLayer.markers.length==4) {
+		passList = markerLayer.markers[1].lonlat.lon+","+markerLayer.markers[1].lonlat.lat+"_"+markerLayer.markers[2].lonlat.lon+","+markerLayer.markers[2].lonlat.lat;
+		urlStr += "&passList="+passList;
+	}else if(markerLayer.markers.length==5) {
+		passList = markerLayer.markers[1].lonlat.lon+","+markerLayer.markers[1].lonlat.lat+"_"+markerLayer.markers[2].lonlat.lon+","+markerLayer.markers[2].lonlat.lat+"_"+markerLayer.markers[3].lonlat.lon+","+markerLayer.markers[3].lonlat.lat;
+		urlStr += "&passList="+passList;
+	}
+
+
+	var xmlHttp = new XMLHttpRequest();
+	xmlHttp.onreadystatechange = routeLoader;
+	xmlHttp.open("GET", urlStr, false);
+	xmlHttp.send(null);
+	var totalTime, totalDistance;
+	function routeLoader() {
+		if(xmlHttp.readyState==4) {
+			if(xmlHttp.status==200) {
+				var temp = xmlHttp.responseXML;
+				totalTime = temp.getElementsByTagName("totalTime")[0].childNodes[0].nodeValue;
+				totalDistance = temp.getElementsByTagName("totalDistance")[0].childNodes[0].nodeValue;
 			}
 		}
-		
-		var time_hh = Math.floor(totalTime/3600);
-		var time_mm = Math.ceil((totalTime-(time_hh*3600))/60);
-		var distance = (totalDistance/1000).toFixed(2);
-		
-		if(time_hh<1) {
-			$("#route_menu_div").empty();
-			$("#route_menu_div").append("<a href='javascript:searchRoute()'>소요 시간 및 거리 계산</a><br>");
-			$("#route_menu_div").append("<p>약 "+time_mm+"분&nbsp;약 "+distance+"km</p>");
-		}else {	
-			$("#route_menu_div").empty();
-			$("#route_menu_div").append("<a href='javascript:searchRoute()'>소요 시간 및 거리 계산</a><br>");
-			$("#route_menu_div").append("<p>약 "+time_hh+"시간 "+time_mm+"분&nbsp;약 "+distance+"km</p>");
-		}
-	}else {
-		alert("마커를 한 개 이상 마크해주세요.")
+	}
+	
+	var time_hh = Math.floor(totalTime/3600);
+	var time_mm = Math.ceil((totalTime-(time_hh*3600))/60);
+	var distance = (totalDistance/1000).toFixed(2);
+	
+	if(time_hh<1) {
+		$("#route_menu_div > p").remove();
+		$("#route_menu_div").append("<p>약 "+time_mm+"분&nbsp;약 "+distance+"km<a href='javascript:searchRoute()'></p>");
+	}else {	
+		$("#route_menu_div > p").remove();
+		$("#route_menu_div").append("<p>약 "+time_hh+"시간 "+time_mm+"분&nbsp;약 "+distance+"km</p>");
 	}
 }
 
 //산책로 리스트의 확인 버튼을 클릭했을 때 발생하는 이벤트 목록
 function trailListSetOnClick() {
-	$("#trail_list_div").on("click", "input.setName", function() {
+	$("#trail_list_div").on("click", "a.setName", function(event) {
+		event.preventDefault();
 		var modifyIndex = $(this).prev().val();
 		var selectorIndex = parseInt(modifyIndex)+1;
 		var modifyName = "modifyName"+selectorIndex.toString();
@@ -233,7 +226,12 @@ function trailListSetOnClick() {
 			markerName = $("input[name='markerName"+selectorIndex+"']").val();
 			$("input[name='markerName"+selectorIndex+"']").parent().html("<a href='javascript:panToSelectMarker("+markerLayer.markers[selectorIndex-1].lonlat.lon+", "+markerLayer.markers[selectorIndex-1].lonlat.lat+", "+(selectorIndex-1)+", 0)'>"+markerName+"</a>");
 			
-			$("input[name='setName"+selectorIndex+"']").attr({class: "modifyName", name: modifyName, value: "수정"});
+			$("a[name='setName"+selectorIndex+"']").find($("span.glyphicon-floppy-disk")).remove();
+			$("a[name='setName"+selectorIndex+"']").append("<span class='glyphicon glyphicon-pencil'>");
+			$("a[name='setName"+selectorIndex+"']").attr({class: "modifyName", name: modifyName});
+			
+			markerLayer.markers[parseInt(modifyIndex)].popup.contentHTML = markerName;
+			routeName[modifyIndex] = markerName;
 		}else {
 			alert("마커 이름을 입력해주세요!");
 		}
@@ -242,12 +240,15 @@ function trailListSetOnClick() {
 
 //산책로 리스트의 수정 버튼을 클릭했을 때 발생하는 이벤트 목록
 function trailListModifyOnClick() {
-	$("#trail_list_div").on("click", "input.modifyName", function() {
+	$("#trail_list_div").on("click", "a.modifyName", function(event) {
+		event.preventDefault();
 		var modifyIndex = $(this).prev().val();
 		var selectorIndex = parseInt(modifyIndex)+1;
 		var modifyName = "setName"+selectorIndex.toString();
-
-		$("input[name='modifyName"+selectorIndex+"']").attr({class: "setName", name: modifyName, value: "확인"});
+		
+		$("a[name='modifyName"+selectorIndex+"']").find($("span.glyphicon-pencil")).remove();
+		$("a[name='modifyName"+selectorIndex+"']").append("<span class='glyphicon glyphicon-floppy-disk'>");
+		$("a[name='modifyName"+selectorIndex+"']").attr({class: "setName", name: modifyName});
 		markerName = $("div[name='content"+selectorIndex+"']").text();
 		$("div[name='content"+selectorIndex+"']").html("<input type='text' class='markerName' name='markerName"+selectorIndex+"' value='"+markerName+"'>");
 	});
@@ -263,7 +264,7 @@ function mapBak(removeIndex) {
 	markerLayer.clearMarkers();
 	i = markerLayer_bak.markers.length-1;
 	
-	$("input[name='removeMarker"+selectorIndex+"']").parent().parent().remove();
+	$("a[name='removeMarker"+selectorIndex+"']").parent().parent().remove();
 	
 	marker_cLonLat_lon -= marker_lon[removeIndex];
 	marker_cLonLat_lat -= marker_lat[removeIndex];
@@ -290,7 +291,8 @@ function mapBak(removeIndex) {
 //산책로 리스트의 삭제 버튼을 클릭했을 때 발생하는 이벤트 목록
 function trailListRemoveOnClick() {
 	//1번 마커 삭제 버튼 클릭시
-	$("#trail_list_div").on("click", "input[name='removeMarker1']", function() {
+	$("#trail_list_div").on("click", "a[name='removeMarker1']", function(event) {
+		event.preventDefault();
 		var removeIndex = 0;
 		mapBak(removeIndex);
 		var item = markerLayer.markers.length;
@@ -302,130 +304,156 @@ function trailListRemoveOnClick() {
 			replaceContentHTML = contentHTML.replace(/<\/?[^>]+>/gi, "");
 			$("div[name='listDiv2']").empty();
 			$("div[name='listDiv2']").attr('name', 'listDiv1');
-			$("div[name='listDiv1']").append("<div class='marker' name='marker1'><a href='javascript:panToSelectMarker("+markerLayer.markers[0].lonlat.lon+", "+markerLayer.markers[0].lonlat.lat+", 0, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_r_m_1.png'/></a></div><div class='content' name='content1'><a href='javascript:panToSelectMarker("+markerLayer.markers[0].lonlat.lon+", "
-					+markerLayer.markers[0].lonlat.lat+", 0, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption1'><input type='hidden' class='markerIndex' value='0'><input type='button' class='modifyName' name='modifyName1' value='수정'><input type='button' class='removeMarker' name='removeMarker1' value='삭제'</div></div>");
+			$("div[name='listDiv1']").append("<div class='marker' name='marker1'><a href='javascript:panToSelectMarker("+markerLayer.markers[0].lonlat.lon+", "+markerLayer.markers[0].lonlat.lat+", 0, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_r_m_1.png'/></a></div><div class='content' name='content1' title='"+replaceContentHTML+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[0].lonlat.lon+", "
+					+markerLayer.markers[0].lonlat.lat+", 0, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption1'><input type='hidden' class='markerIndex' value='0'><a href='#' class='modifyName' name='modifyName1'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker1'><span class='glyphicon glyphicon-trash'></a></div><input type='hidden' name='markerAddress1' value='"+replaceContentHTML+"'></div>");
+			$("#trail_list_div").find("#route_menu_div").remove();	
 		}
 		else if(item==2) {
 			contentHTML = markerLayer.markers[0].popup.contentHTML;
 			replaceContentHTML = contentHTML.replace(/<\/?[^>]+>/gi, "");
 			$("div[name='listDiv2']").empty();
 			$("div[name='listDiv2']").attr('name', 'listDiv1');
-			$("div[name='listDiv1']").append("<div class='marker' name='marker1'><a href='javascript:panToSelectMarker("+markerLayer.markers[0].lonlat.lon+", "+markerLayer.markers[0].lonlat.lat+", 0, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_r_m_1.png'/></a></div><div class='content' name='content1'><a href='javascript:panToSelectMarker("+markerLayer.markers[0].lonlat.lon+", "
-					+markerLayer.markers[0].lonlat.lat+", 0, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption1'><input type='hidden' class='markerIndex' value='0'><input type='button' class='modifyName' name='modifyName1' value='수정'><input type='button' class='removeMarker' name='removeMarker1' value='삭제'</div></div>");
+			$("div[name='listDiv1']").append("<div class='marker' name='marker1'><a href='javascript:panToSelectMarker("+markerLayer.markers[0].lonlat.lon+", "+markerLayer.markers[0].lonlat.lat+", 0, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_r_m_1.png'/></a></div><div class='content' name='content1' title='"+replaceContentHTML+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[0].lonlat.lon+", "
+					+markerLayer.markers[0].lonlat.lat+", 0, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption1'><input type='hidden' class='markerIndex' value='0'><a href='#' class='modifyName' name='modifyName1'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker1'><span class='glyphicon glyphicon-trash'></a></div><input type='hidden' name='markerAddress1' value='"+replaceContentHTML+"'></div>");
 		
 			contentHTML = markerLayer.markers[1].popup.contentHTML;
 			replaceContentHTML = contentHTML.replace(/<\/?[^>]+>/gi, "");
 			$("div[name='listDiv3']").empty();
 			$("div[name='listDiv3']").attr('name', 'listDiv2');
-			$("div[name='listDiv2']").append("<div class='marker' name='marker2'><a href='javascript:panToSelectMarker("+markerLayer.markers[1].lonlat.lon+", "+markerLayer.markers[1].lonlat.lat+", 1, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_2.png'/></a></div><div class='content' name='content2'><a href='javascript:panToSelectMarker("+markerLayer.markers[1].lonlat.lon+", "
-					+markerLayer.markers[1].lonlat.lat+", 1, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption2'><input type='hidden' class='markerIndex' value='1'><input type='button' class='modifyName' name='modifyName2' value='수정'><input type='button' class='removeMarker' name='removeMarker2' value='삭제'</div></div>");
+			$("div[name='listDiv2']").append("<div class='marker' name='marker2'><a href='javascript:panToSelectMarker("+markerLayer.markers[1].lonlat.lon+", "+markerLayer.markers[1].lonlat.lat+", 1, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_2.png'/></a></div><div class='content' name='content2' title='"+replaceContentHTML+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[1].lonlat.lon+", "
+					+markerLayer.markers[1].lonlat.lat+", 1, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption2'><input type='hidden' class='markerIndex' value='1'><a href='#' class='modifyName' name='modifyName2'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker2'><span class='glyphicon glyphicon-trash'></a></div><input type='hidden' name='markerAddress2' value='"+replaceContentHTML+"'></div>");
+			searchRoute();
 		}
 		else if(item==3) {
 			contentHTML = markerLayer.markers[0].popup.contentHTML;
 			replaceContentHTML = contentHTML.replace(/<\/?[^>]+>/gi, "");
 			$("div[name='listDiv2']").empty();
 			$("div[name='listDiv2']").attr('name', 'listDiv1');
-			$("div[name='listDiv1']").append("<div class='marker' name='marker1'><a href='javascript:panToSelectMarker("+markerLayer.markers[0].lonlat.lon+", "+markerLayer.markers[0].lonlat.lat+", 0, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_r_m_1.png'/></a></div><div class='content' name='content1'><a href='javascript:panToSelectMarker("+markerLayer.markers[0].lonlat.lon+", "
-					+markerLayer.markers[0].lonlat.lat+", 0, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption1'><input type='hidden' class='markerIndex' value='0'><input type='button' class='modifyName' name='modifyName1' value='수정'><input type='button' class='removeMarker' name='removeMarker1' value='삭제'</div></div>");
+			$("div[name='listDiv1']").append("<div class='marker' name='marker1'><a href='javascript:panToSelectMarker("+markerLayer.markers[0].lonlat.lon+", "+markerLayer.markers[0].lonlat.lat+", 0, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_r_m_1.png'/></a></div><div class='content' name='content1' title='"+replaceContentHTML+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[0].lonlat.lon+", "
+					+markerLayer.markers[0].lonlat.lat+", 0, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption1'><input type='hidden' class='markerIndex' value='0'><a href='#' class='modifyName' name='modifyName1'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker1'><span class='glyphicon glyphicon-trash'></a></div><input type='hidden' name='markerAddress1' value='"+replaceContentHTML+"'></div>");
 		
 			contentHTML = markerLayer.markers[1].popup.contentHTML;
 			replaceContentHTML = contentHTML.replace(/<\/?[^>]+>/gi, "");
 			$("div[name='listDiv3']").empty();
 			$("div[name='listDiv3']").attr('name', 'listDiv2');
-			$("div[name='listDiv2']").append("<div class='marker' name='marker2'><a href='javascript:panToSelectMarker("+markerLayer.markers[1].lonlat.lon+", "+markerLayer.markers[1].lonlat.lat+", 1, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_2.png'/></a></div><div class='content' name='content2'><a href='javascript:panToSelectMarker("+markerLayer.markers[1].lonlat.lon+", "
-					+markerLayer.markers[1].lonlat.lat+", 1, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption2'><input type='hidden' class='markerIndex' value='1'><input type='button' class='modifyName' name='modifyName2' value='수정'><input type='button' class='removeMarker' name='removeMarker2' value='삭제'</div></div>");
+			$("div[name='listDiv2']").append("<div class='marker' name='marker2'><a href='javascript:panToSelectMarker("+markerLayer.markers[1].lonlat.lon+", "+markerLayer.markers[1].lonlat.lat+", 1, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_2.png'/></a></div><div class='content' name='content2' title='"+replaceContentHTML+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[1].lonlat.lon+", "
+					+markerLayer.markers[1].lonlat.lat+", 1, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption2'><input type='hidden' class='markerIndex' value='1'><a href='#' class='modifyName' name='modifyName2'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker2'><span class='glyphicon glyphicon-trash'></a></div><input type='hidden' name='markerAddress2' value='"+replaceContentHTML+"'></div>");
 		
 			contentHTML = markerLayer.markers[2].popup.contentHTML;
 			replaceContentHTML = contentHTML.replace(/<\/?[^>]+>/gi, "");
 			$("div[name='listDiv4']").empty();
 			$("div[name='listDiv4']").attr('name', 'listDiv3');
-			$("div[name='listDiv3']").append("<div class='marker' name='marker3'><a href='javascript:panToSelectMarker("+markerLayer.markers[2].lonlat.lon+", "+markerLayer.markers[2].lonlat.lat+", 2, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_r_m_3.png'/></a></div><div class='content' name='content3'><a href='javascript:panToSelectMarker("+markerLayer.markers[2].lonlat.lon+", "
-					+markerLayer.markers[2].lonlat.lat+", 2, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption3'><input type='hidden' class='markerIndex' value='2'><input type='button' class='modifyName' name='modifyName3' value='수정'><input type='button' class='removeMarker' name='removeMarker3' value='삭제'</div></div>");
+			$("div[name='listDiv3']").append("<div class='marker' name='marker3'><a href='javascript:panToSelectMarker("+markerLayer.markers[2].lonlat.lon+", "+markerLayer.markers[2].lonlat.lat+", 2, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_r_m_3.png'/></a></div><div class='content' name='content3' title='"+replaceContentHTML+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[2].lonlat.lon+", "
+					+markerLayer.markers[2].lonlat.lat+", 2, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption3'><input type='hidden' class='markerIndex' value='2'><a href='#' class='modifyName' name='modifyName3'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker3'><span class='glyphicon glyphicon-trash'></a></div><input type='hidden' name='markerAddress3' value='"+replaceContentHTML+"'></div>");
+			searchRoute();
 		}else if(item==4) {
 			contentHTML = markerLayer.markers[0].popup.contentHTML;
 			replaceContentHTML = contentHTML.replace(/<\/?[^>]+>/gi, "");
 			$("div[name='listDiv2']").empty();
 			$("div[name='listDiv2']").attr('name', 'listDiv1');
-			$("div[name='listDiv1']").append("<div class='marker' name='marker1'><a href='javascript:panToSelectMarker("+markerLayer.markers[0].lonlat.lon+", "+markerLayer.markers[0].lonlat.lat+", 0, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_r_m_1.png'/></a></div><div class='content' name='content1'><a href='javascript:panToSelectMarker("+markerLayer.markers[0].lonlat.lon+", "
-					+markerLayer.markers[0].lonlat.lat+", 0, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption1'><input type='hidden' class='markerIndex' value='0'><input type='button' class='modifyName' name='modifyName1' value='수정'><input type='button' class='removeMarker' name='removeMarker1' value='삭제'</div></div>");
+			$("div[name='listDiv1']").append("<div class='marker' name='marker1'><a href='javascript:panToSelectMarker("+markerLayer.markers[0].lonlat.lon+", "+markerLayer.markers[0].lonlat.lat+", 0, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_r_m_1.png'/></a></div><div class='content' name='content1' title='"+replaceContentHTML+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[0].lonlat.lon+", "
+					+markerLayer.markers[0].lonlat.lat+", 0, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption1'><input type='hidden' class='markerIndex' value='0'><a href='#' class='modifyName' name='modifyName1'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker1'><span class='glyphicon glyphicon-trash'></a></div><input type='hidden' name='markerAddress1' value='"+replaceContentHTML+"'></div>");
 		
 			contentHTML = markerLayer.markers[1].popup.contentHTML;
 			replaceContentHTML = contentHTML.replace(/<\/?[^>]+>/gi, "");
 			$("div[name='listDiv3']").empty();
 			$("div[name='listDiv3']").attr('name', 'listDiv2');
-			$("div[name='listDiv2']").append("<div class='marker' name='marker2'><a href='javascript:panToSelectMarker("+markerLayer.markers[1].lonlat.lon+", "+markerLayer.markers[1].lonlat.lat+", 1, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_2.png'/></a></div><div class='content' name='content2'><a href='javascript:panToSelectMarker("+markerLayer.markers[1].lonlat.lon+", "
-					+markerLayer.markers[1].lonlat.lat+", 1, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption2'><input type='hidden' class='markerIndex' value='1'><input type='button' class='modifyName' name='modifyName2' value='수정'><input type='button' class='removeMarker' name='removeMarker2' value='삭제'</div></div>");
+			$("div[name='listDiv2']").append("<div class='marker' name='marker2'><a href='javascript:panToSelectMarker("+markerLayer.markers[1].lonlat.lon+", "+markerLayer.markers[1].lonlat.lat+", 1, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_2.png'/></a></div><div class='content' name='content2' title='"+replaceContentHTML+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[1].lonlat.lon+", "
+					+markerLayer.markers[1].lonlat.lat+", 1, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption2'><input type='hidden' class='markerIndex' value='1'><a href='#' class='modifyName' name='modifyName2'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker2'><span class='glyphicon glyphicon-trash'></a></div><input type='hidden' name='markerAddress2' value='"+replaceContentHTML+"'></div>");
 		
 			contentHTML = markerLayer.markers[2].popup.contentHTML;
 			replaceContentHTML = contentHTML.replace(/<\/?[^>]+>/gi, "");
 			$("div[name='listDiv4']").empty();
 			$("div[name='listDiv4']").attr('name', 'listDiv3');
-			$("div[name='listDiv3']").append("<div class='marker' name='marker3'><a href='javascript:panToSelectMarker("+markerLayer.markers[2].lonlat.lon+", "+markerLayer.markers[2].lonlat.lat+", 2, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_r_m_3.png'/></a></div><div class='content' name='content3'><a href='javascript:panToSelectMarker("+markerLayer.markers[2].lonlat.lon+", "
-					+markerLayer.markers[2].lonlat.lat+", 2, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption3'><input type='hidden' class='markerIndex' value='2'><input type='button' class='modifyName' name='modifyName3' value='수정'><input type='button' class='removeMarker' name='removeMarker3' value='삭제'</div></div>");
+			$("div[name='listDiv3']").append("<div class='marker' name='marker3'><a href='javascript:panToSelectMarker("+markerLayer.markers[2].lonlat.lon+", "+markerLayer.markers[2].lonlat.lat+", 2, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_r_m_3.png'/></a></div><div class='content' name='content3' title='"+replaceContentHTML+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[2].lonlat.lon+", "
+					+markerLayer.markers[2].lonlat.lat+", 2, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption3'><input type='hidden' class='markerIndex' value='2'><a href='#' class='modifyName' name='modifyName3'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker3'><span class='glyphicon glyphicon-trash'></a></div><input type='hidden' name='markerAddress3' value='"+replaceContentHTML+"'></div>");
 		
 			contentHTML = markerLayer.markers[3].popup.contentHTML;
 			replaceContentHTML = contentHTML.replace(/<\/?[^>]+>/gi, "");
 			$("div[name='listDiv5']").empty();
 			$("div[name='listDiv5']").attr('name', 'listDiv4');
-			$("div[name='listDiv4']").append("<div class='marker' name='marker4'><a href='javascript:panToSelectMarker("+markerLayer.markers[3].lonlat.lon+", "+markerLayer.markers[3].lonlat.lat+", 3, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_4.png'/></a></div><div class='content' name='content4'><a href='javascript:panToSelectMarker("+markerLayer.markers[3].lonlat.lon+", "
-					+markerLayer.markers[3].lonlat.lat+", 3, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption3'><input type='hidden' class='markerIndex' value='3'><input type='button' class='modifyName' name='modifyName4' value='수정'><input type='button' class='removeMarker' name='removeMarker4' value='삭제'</div></div>");
+			$("div[name='listDiv4']").append("<div class='marker' name='marker4'><a href='javascript:panToSelectMarker("+markerLayer.markers[3].lonlat.lon+", "+markerLayer.markers[3].lonlat.lat+", 3, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_4.png'/></a></div><div class='content' name='content4' title='"+replaceContentHTML+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[3].lonlat.lon+", "
+					+markerLayer.markers[3].lonlat.lat+", 3, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption3'><input type='hidden' class='markerIndex' value='3'><a href='#' class='modifyName' name='modifyName4'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker4'><span class='glyphicon glyphicon-trash'></a></div><input type='hidden' name='markerAddress4' value='"+replaceContentHTML+"'></div>");
+			searchRoute();
 		}
+		trailListDivHeight = $("div#trail_list_div").height();
+		resultListDivTop = (100+trailListDivHeight)+"px";
+		$("#result_list_div").css({"left":divLeft, "top":resultListDivTop});
+
+		resultListDivHeight = $("div#result_list_div").height();
+		pagingDivTop = (110+trailListDivHeight+resultListDivHeight)+"px";
+		$("#paging_div").css({"left":divLeft, "top":pagingDivTop});
 	});
 	
 	//2번 마커 삭제 버튼 클릭시
-	$("#trail_list_div").on("click", "input[name='removeMarker2']", function() {
+	$("#trail_list_div").on("click", "a[name='removeMarker2']", function(event) {
+		event.preventDefault();
 		var removeIndex = 1;
 		mapBak(removeIndex);
 		var item = markerLayer.markers.length;
 		
-		if(item==2) {
+		if(item==1) {
+			$("#trail_list_div").find("#route_menu_div").remove();	
+		}
+		else if(item==2) {
 			contentHTML = markerLayer.markers[1].popup.contentHTML;
 			replaceContentHTML = contentHTML.replace(/<\/?[^>]+>/gi, "");
 			$("div[name='listDiv3']").empty();
 			$("div[name='listDiv3']").attr('name', 'listDiv2');
-			$("div[name='listDiv2']").append("<div class='marker' name='marker2'><a href='javascript:panToSelectMarker("+markerLayer.markers[1].lonlat.lon+", "+markerLayer.markers[1].lonlat.lat+", 1, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_2.png'/></a></div><div class='content' name='content2'><a href='javascript:panToSelectMarker("+markerLayer.markers[1].lonlat.lon+", "
-					+markerLayer.markers[1].lonlat.lat+", 1, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption2'><input type='hidden' class='markerIndex' value='1'><input type='button' class='modifyName' name='modifyName2' value='수정'><input type='button' class='removeMarker' name='removeMarker2' value='삭제'</div></div>");
+			$("div[name='listDiv2']").append("<div class='marker' name='marker2'><a href='javascript:panToSelectMarker("+markerLayer.markers[1].lonlat.lon+", "+markerLayer.markers[1].lonlat.lat+", 1, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_2.png'/></a></div><div class='content' name='content2' title='"+replaceContentHTML+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[1].lonlat.lon+", "
+					+markerLayer.markers[1].lonlat.lat+", 1, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption2'><input type='hidden' class='markerIndex' value='1'><a href='#' class='modifyName' name='modifyName2'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker2'><span class='glyphicon glyphicon-trash'></a></div><input type='hidden' name='markerAddress2' value='"+replaceContentHTML+"'></div>");
+			searchRoute();
 		}
 		else if(item==3) {
 			contentHTML = markerLayer.markers[1].popup.contentHTML;
 			replaceContentHTML = contentHTML.replace(/<\/?[^>]+>/gi, "");
 			$("div[name='listDiv3']").empty();
 			$("div[name='listDiv3']").attr('name', 'listDiv2');
-			$("div[name='listDiv2']").append("<div class='marker' name='marker2'><a href='javascript:panToSelectMarker("+markerLayer.markers[1].lonlat.lon+", "+markerLayer.markers[1].lonlat.lat+", 1, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_2.png'/></a></div><div class='content' name='content2'><a href='javascript:panToSelectMarker("+markerLayer.markers[1].lonlat.lon+", "
-					+markerLayer.markers[1].lonlat.lat+", 1, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption2'><input type='hidden' class='markerIndex' value='1'><input type='button' class='modifyName' name='modifyName2' value='수정'><input type='button' class='removeMarker' name='removeMarker2' value='삭제'</div></div>");
+			$("div[name='listDiv2']").append("<div class='marker' name='marker2'><a href='javascript:panToSelectMarker("+markerLayer.markers[1].lonlat.lon+", "+markerLayer.markers[1].lonlat.lat+", 1, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_2.png'/></a></div><div class='content' name='content2' title='"+replaceContentHTML+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[1].lonlat.lon+", "
+					+markerLayer.markers[1].lonlat.lat+", 1, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption2'><input type='hidden' class='markerIndex' value='1'><a href='#' class='modifyName' name='modifyName2'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker2'><span class='glyphicon glyphicon-trash'></a></div><input type='hidden' name='markerAddress2' value='"+replaceContentHTML+"'></div>");
 		
 			contentHTML = markerLayer.markers[2].popup.contentHTML;
 			replaceContentHTML = contentHTML.replace(/<\/?[^>]+>/gi, "");
 			$("div[name='listDiv4']").empty();
 			$("div[name='listDiv4']").attr('name', 'listDiv3');
-			$("div[name='listDiv3']").append("<div class='marker' name='marker3'><a href='javascript:panToSelectMarker("+markerLayer.markers[2].lonlat.lon+", "+markerLayer.markers[2].lonlat.lat+", 2, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_r_m_3.png'/></a></div><div class='content' name='content3'><a href='javascript:panToSelectMarker("+markerLayer.markers[2].lonlat.lon+", "
-					+markerLayer.markers[2].lonlat.lat+", 2, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption3'><input type='hidden' class='markerIndex' value='2'><input type='button' class='modifyName' name='modifyName3' value='수정'><input type='button' class='removeMarker' name='removeMarker3' value='삭제'</div></div>");
+			$("div[name='listDiv3']").append("<div class='marker' name='marker3'><a href='javascript:panToSelectMarker("+markerLayer.markers[2].lonlat.lon+", "+markerLayer.markers[2].lonlat.lat+", 2, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_r_m_3.png'/></a></div><div class='content' name='content3' title='"+replaceContentHTML+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[2].lonlat.lon+", "
+					+markerLayer.markers[2].lonlat.lat+", 2, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption3'><input type='hidden' class='markerIndex' value='2'><a href='#' class='modifyName' name='modifyName3'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker3'><span class='glyphicon glyphicon-trash'></a></div><input type='hidden' name='markerAddress3' value='"+replaceContentHTML+"'></div>");
+			searchRoute();
 		}else if(item==4) {
 			contentHTML = markerLayer.markers[1].popup.contentHTML;
 			replaceContentHTML = contentHTML.replace(/<\/?[^>]+>/gi, "");
 			$("div[name='listDiv3']").empty();
 			$("div[name='listDiv3']").attr('name', 'listDiv2');
-			$("div[name='listDiv2']").append("<div class='marker' name='marker2'><a href='javascript:panToSelectMarker("+markerLayer.markers[1].lonlat.lon+", "+markerLayer.markers[1].lonlat.lat+", 1, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_2.png'/></a></div><div class='content' name='content2'><a href='javascript:panToSelectMarker("+markerLayer.markers[1].lonlat.lon+", "
-					+markerLayer.markers[1].lonlat.lat+", 1, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption2'><input type='hidden' class='markerIndex' value='1'><input type='button' class='modifyName' name='modifyName2' value='수정'><input type='button' class='removeMarker' name='removeMarker2' value='삭제'</div></div>");
+			$("div[name='listDiv2']").append("<div class='marker' name='marker2'><a href='javascript:panToSelectMarker("+markerLayer.markers[1].lonlat.lon+", "+markerLayer.markers[1].lonlat.lat+", 1, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_2.png'/></a></div><div class='content' name='content2' title='"+replaceContentHTML+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[1].lonlat.lon+", "
+					+markerLayer.markers[1].lonlat.lat+", 1, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption2'><input type='hidden' class='markerIndex' value='1'><a href='#' class='modifyName' name='modifyName2'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker2'><span class='glyphicon glyphicon-trash'></a></div><input type='hidden' name='markerAddress2' value='"+replaceContentHTML+"'></div>");
 		
 			contentHTML = markerLayer.markers[2].popup.contentHTML;
 			replaceContentHTML = contentHTML.replace(/<\/?[^>]+>/gi, "");
 			$("div[name='listDiv4']").empty();
 			$("div[name='listDiv4']").attr('name', 'listDiv3');
-			$("div[name='listDiv3']").append("<div class='marker' name='marker3'><a href='javascript:panToSelectMarker("+markerLayer.markers[2].lonlat.lon+", "+markerLayer.markers[2].lonlat.lat+", 2, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_r_m_3.png'/></a></div><div class='content' name='content3'><a href='javascript:panToSelectMarker("+markerLayer.markers[2].lonlat.lon+", "
-					+markerLayer.markers[2].lonlat.lat+", 2, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption3'><input type='hidden' class='markerIndex' value='2'><input type='button' class='modifyName' name='modifyName3' value='수정'><input type='button' class='removeMarker' name='removeMarker3' value='삭제'</div></div>");
+			$("div[name='listDiv3']").append("<div class='marker' name='marker3'><a href='javascript:panToSelectMarker("+markerLayer.markers[2].lonlat.lon+", "+markerLayer.markers[2].lonlat.lat+", 2, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_r_m_3.png'/></a></div><div class='content' name='content3' title='"+replaceContentHTML+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[2].lonlat.lon+", "
+					+markerLayer.markers[2].lonlat.lat+", 2, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption3'><input type='hidden' class='markerIndex' value='2'><a href='#' class='modifyName' name='modifyName3'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker3'><span class='glyphicon glyphicon-trash'></a></div><input type='hidden' name='markerAddress3' value='"+replaceContentHTML+"'></div>");
 		
 			contentHTML = markerLayer.markers[3].popup.contentHTML;
 			replaceContentHTML = contentHTML.replace(/<\/?[^>]+>/gi, "");
 			$("div[name='listDiv5']").empty();
 			$("div[name='listDiv5']").attr('name', 'listDiv4');
-			$("div[name='listDiv4']").append("<div class='marker' name='marker4'><a href='javascript:panToSelectMarker("+markerLayer.markers[3].lonlat.lon+", "+markerLayer.markers[3].lonlat.lat+", 3, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_4.png'/></a></div><div class='content' name='content4'><a href='javascript:panToSelectMarker("+markerLayer.markers[3].lonlat.lon+", "
-					+markerLayer.markers[3].lonlat.lat+", 3, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption3'><input type='hidden' class='markerIndex' value='3'><input type='button' class='modifyName' name='modifyName4' value='수정'><input type='button' class='removeMarker' name='removeMarker4' value='삭제'</div></div>");
+			$("div[name='listDiv4']").append("<div class='marker' name='marker4'><a href='javascript:panToSelectMarker("+markerLayer.markers[3].lonlat.lon+", "+markerLayer.markers[3].lonlat.lat+", 3, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_4.png'/></a></div><div class='content' name='content4' title='"+replaceContentHTML+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[3].lonlat.lon+", "
+					+markerLayer.markers[3].lonlat.lat+", 3, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption3'><input type='hidden' class='markerIndex' value='3'><a href='#' class='modifyName' name='modifyName4'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker4'><span class='glyphicon glyphicon-trash'></a></div><input type='hidden' name='markerAddress4' value='"+replaceContentHTML+"'></div>");
+			searchRoute();
 		}
+		trailListDivHeight = $("div#trail_list_div").height();
+		resultListDivTop = (100+trailListDivHeight)+"px";
+		$("#result_list_div").css({"left":divLeft, "top":resultListDivTop});
+
+		resultListDivHeight = $("div#result_list_div").height();
+		pagingDivTop = (110+trailListDivHeight+resultListDivHeight)+"px";
+		$("#paging_div").css({"left":divLeft, "top":pagingDivTop});
 	});
 	
 	//3번 마커 삭제 버튼 클릭시
-	$("#trail_list_div").on("click", "input[name='removeMarker3']", function() {
+	$("#trail_list_div").on("click", "a[name='removeMarker3']", function(event) {
+		event.preventDefault();
 		var removeIndex = 2;
 		mapBak(removeIndex);
 		var item = markerLayer.markers.length;
@@ -435,27 +463,37 @@ function trailListRemoveOnClick() {
 			replaceContentHTML = contentHTML.replace(/<\/?[^>]+>/gi, "");
 			$("div[name='listDiv4']").empty();
 			$("div[name='listDiv4']").attr('name', 'listDiv3');
-			$("div[name='listDiv3']").append("<div class='marker' name='marker3'><a href='javascript:panToSelectMarker("+markerLayer.markers[2].lonlat.lon+", "+markerLayer.markers[2].lonlat.lat+", 2, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_r_m_3.png'/></a></div><div class='content' name='content3'><a href='javascript:panToSelectMarker("+markerLayer.markers[2].lonlat.lon+", "
-					+markerLayer.markers[2].lonlat.lat+", 2, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption3'><input type='hidden' class='markerIndex' value='2'><input type='button' class='modifyName' name='modifyName3' value='수정'><input type='button' class='removeMarker' name='removeMarker3' value='삭제'</div></div>");
+			$("div[name='listDiv3']").append("<div class='marker' name='marker3'><a href='javascript:panToSelectMarker("+markerLayer.markers[2].lonlat.lon+", "+markerLayer.markers[2].lonlat.lat+", 2, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_r_m_3.png'/></a></div><div class='content' name='content3' title='"+replaceContentHTML+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[2].lonlat.lon+", "
+					+markerLayer.markers[2].lonlat.lat+", 2, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption3'><input type='hidden' class='markerIndex' value='2'><a href='#' class='modifyName' name='modifyName3'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker3'><span class='glyphicon glyphicon-trash'></a></div><input type='hidden' name='markerAddress3' value='"+replaceContentHTML+"'></div>");
+			searchRoute();
 		}else if(item==4) {
 			contentHTML = markerLayer.markers[2].popup.contentHTML;
 			replaceContentHTML = contentHTML.replace(/<\/?[^>]+>/gi, "");
 			$("div[name='listDiv4']").empty();
 			$("div[name='listDiv4']").attr('name', 'listDiv3');
-			$("div[name='listDiv3']").append("<div class='marker' name='marker3'><a href='javascript:panToSelectMarker("+markerLayer.markers[2].lonlat.lon+", "+markerLayer.markers[2].lonlat.lat+", 2, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_r_m_3.png'/></a></div><div class='content' name='content3'><a href='javascript:panToSelectMarker("+markerLayer.markers[2].lonlat.lon+", "
-					+markerLayer.markers[2].lonlat.lat+", 2, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption3'><input type='hidden' class='markerIndex' value='2'><input type='button' class='modifyName' name='modifyName3' value='수정'><input type='button' class='removeMarker' name='removeMarker3' value='삭제'</div></div>");
+			$("div[name='listDiv3']").append("<div class='marker' name='marker3'><a href='javascript:panToSelectMarker("+markerLayer.markers[2].lonlat.lon+", "+markerLayer.markers[2].lonlat.lat+", 2, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_r_m_3.png'/></a></div><div class='content' name='content3' title='"+replaceContentHTML+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[2].lonlat.lon+", "
+					+markerLayer.markers[2].lonlat.lat+", 2, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption3'><input type='hidden' class='markerIndex' value='2'><a href='#' class='modifyName' name='modifyName3'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker3'><span class='glyphicon glyphicon-trash'></a></div><input type='hidden' name='markerAddress3' value='"+replaceContentHTML+"'></div>");
 		
 			contentHTML = markerLayer.markers[3].popup.contentHTML;
 			replaceContentHTML = contentHTML.replace(/<\/?[^>]+>/gi, "");
 			$("div[name='listDiv5']").empty();
 			$("div[name='listDiv5']").attr('name', 'listDiv4');
-			$("div[name='listDiv4']").append("<div class='marker' name='marker4'><a href='javascript:panToSelectMarker("+markerLayer.markers[3].lonlat.lon+", "+markerLayer.markers[3].lonlat.lat+", 3, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_4.png'/></a></div><div class='content' name='content4'><a href='javascript:panToSelectMarker("+markerLayer.markers[3].lonlat.lon+", "
-					+markerLayer.markers[3].lonlat.lat+", 3, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption3'><input type='hidden' class='markerIndex' value='3'><input type='button' class='modifyName' name='modifyName4' value='수정'><input type='button' class='removeMarker' name='removeMarker4' value='삭제'</div></div>");
+			$("div[name='listDiv4']").append("<div class='marker' name='marker4'><a href='javascript:panToSelectMarker("+markerLayer.markers[3].lonlat.lon+", "+markerLayer.markers[3].lonlat.lat+", 3, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_4.png'/></a></div><div class='content' name='content4' title='"+replaceContentHTML+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[3].lonlat.lon+", "
+					+markerLayer.markers[3].lonlat.lat+", 3, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption3'><input type='hidden' class='markerIndex' value='3'><a href='#' class='modifyName' name='modifyName4'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker4'><span class='glyphicon glyphicon-trash'></a></div><input type='hidden' name='markerAddress4' value='"+replaceContentHTML+"'></div>");
+			searchRoute();
 		}
+		trailListDivHeight = $("div#trail_list_div").height();
+		resultListDivTop = (100+trailListDivHeight)+"px";
+		$("#result_list_div").css({"left":divLeft, "top":resultListDivTop});
+
+		resultListDivHeight = $("div#result_list_div").height();
+		pagingDivTop = (110+trailListDivHeight+resultListDivHeight)+"px";
+		$("#paging_div").css({"left":divLeft, "top":pagingDivTop});
 	});
 	
 	//4번 마커 삭제 버튼 클릭시
-	$("#trail_list_div").on("click", "input[name='removeMarker4']", function() {
+	$("#trail_list_div").on("click", "a[name='removeMarker4']", function(event) {
+		event.preventDefault();
 		var removeIndex = 3;
 		mapBak(removeIndex);
 		
@@ -463,14 +501,33 @@ function trailListRemoveOnClick() {
 		replaceContentHTML = contentHTML.replace(/<\/?[^>]+>/gi, "");
 		$("div[name='listDiv5']").empty();
 		$("div[name='listDiv5']").attr('name', 'listDiv4');
-		$("div[name='listDiv4']").append("<div class='marker' name='marker4'><a href='javascript:panToSelectMarker("+markerLayer.markers[3].lonlat.lon+", "+markerLayer.markers[3].lonlat.lat+", 3, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_4.png'/></a></div><div class='content' name='content4'><a href='javascript:panToSelectMarker("+markerLayer.markers[3].lonlat.lon+", "
-				+markerLayer.markers[3].lonlat.lat+", 3, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption3'><input type='hidden' class='markerIndex' value='3'><input type='button' class='modifyName' name='modifyName4' value='수정'><input type='button' class='removeMarker' name='removeMarker4' value='삭제'</div></div>");
+		$("div[name='listDiv4']").append("<div class='marker' name='marker4'><a href='javascript:panToSelectMarker("+markerLayer.markers[3].lonlat.lon+", "+markerLayer.markers[3].lonlat.lat+", 3, 0)'><img src='https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_4.png'/></a></div><div class='content' name='content4' title='"+replaceContentHTML+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[3].lonlat.lon+", "
+				+markerLayer.markers[3].lonlat.lat+", 3, 0)'>"+replaceContentHTML+"</a></div>&nbsp;<div class='listOption' name='listOption3'><input type='hidden' class='markerIndex' value='3'><a href='#' class='modifyName' name='modifyName4'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker4'><span class='glyphicon glyphicon-trash'></a></div><input type='hidden' name='markerAddress4' value='"+replaceContentHTML+"'></div>");
+		searchRoute();
+		
+		trailListDivHeight = $("div#trail_list_div").height();
+		resultListDivTop = (100+trailListDivHeight)+"px";
+		$("#result_list_div").css({"left":divLeft, "top":resultListDivTop});
+
+		resultListDivHeight = $("div#result_list_div").height();
+		pagingDivTop = (110+trailListDivHeight+resultListDivHeight)+"px";
+		$("#paging_div").css({"left":divLeft, "top":pagingDivTop});
 	});
 	
 	//5번 마커 삭제 버튼 클릭시
-	$("#trail_list_div").on("click", "input[name='removeMarker5']", function() {
+	$("#trail_list_div").on("click", "a[name='removeMarker5']", function(event) {
+		event.preventDefault();
 		var removeIndex = 4;
 		mapBak(removeIndex);
+		searchRoute();
+		
+		trailListDivHeight = $("div#trail_list_div").height();
+		resultListDivTop = (100+trailListDivHeight)+"px";
+		$("#result_list_div").css({"left":divLeft, "top":resultListDivTop});
+
+		resultListDivHeight = $("div#result_list_div").height();
+		pagingDivTop = (110+trailListDivHeight+resultListDivHeight)+"px";
+		$("#paging_div").css({"left":divLeft, "top":pagingDivTop});
 	});
 }
 
@@ -496,15 +553,14 @@ function buttonOnClick() {
 		$("#list_table").empty();
 		$("#paging_div").empty();
 		$("#keyword").val("");
-		$("#route_menu_div").empty();
-		$("#route_menu_div").append("<a href='javascript:searchRoute()' id='searchLink'>소요 시간 및 거리 계산</a><br>");
 		markersLayer.clearMarkers();
 		map.events.unregister("click", map, onClickMap);
 	});
 	*/
 	
 	//'산책로 등록하기' 버튼 클릭시 맵 클릭 이벤트 등록
-	$("#registerTrail").on("click", function() {
+	$("#registerTrail").on("click", function(event) {
+		event.preventDefault();
 		$("div#myModal1").find($("input[name=category]")).prop("checked", false);
 		$("div#myModal1").find($("input[name=route1]")).val("");
 		$("div#myModal1").find($("input[name=route2]")).val("");
@@ -514,14 +570,13 @@ function buttonOnClick() {
 		$("div#myModal1").find($("textarea[name=title]")).val("");
 		$("div#myModal1").find($("textarea[name=content]")).val("");
 		
+		$("#searchOpt").empty();
+		$("#searchOpt").append("<option>장소</option>");
+		
 		$("#trail_list_div").empty();
 		$("#list_table").empty();
 		$("#paging_div").empty();
 		$("#keyword").val("");
-		//$("#route_menu_div").empty();
-		$("#trail_menu_div").empty();
-		//$("#route_menu_div").append("<a href='javascript:searchRoute()' id='searchLink'>소요 시간 및 거리 계산</a>");
-		$("#trail_menu_div").append("<a href='#confirmTrail' data-toggle='modal' data-target='#myModal1'><input type='button' value='등록' id='fixTrail' disabled='disabled'></a><input type='button' value='취소' id='cancelTrail'>");
 		$("#keyword").next().attr("id", "searchPOI");
 		map.events.unregister("click", map, onClickMap);
 		markerLayer.clearMarkers(); //산책로 마커레이어 clear
@@ -534,48 +589,6 @@ function buttonOnClick() {
 			marker_lat[k] = 0;
 		}
 		map.events.register("click", map, onClickMap);
-	});
-	
-	//'산책로 등록완료' 버튼 클릭시 맵 클릭 이벤트 제거
-	$("#finish").on("click", function() {
-		$("div#myModal1").find($("input[name=category]")).prop("checked", false);
-		$("div#myModal1").find($("input[name=route1]")).val("");
-		$("div#myModal1").find($("input[name=route2]")).val("");
-		$("div#myModal1").find($("input[name=route3]")).val("");
-		$("div#myModal1").find($("input[name=route4]")).val("");
-		$("div#myModal1").find($("input[name=route5]")).val("");
-		$("div#myModal1").find($("textarea[name=title]")).val("");
-		$("div#myModal1").find($("textarea[name=content]")).val("");
-		
-		$("#list_table").empty();
-		$("#paging_div").empty();
-		$("#keyword").val("");
-		$("#keyword").next().attr("id", "searchTrail");
-		markersLayer.clearMarkers();
-		map.events.unregister("click", map, onClickMap);
-	});
-	
-	//'산책로 마커 제거' 버튼 클릭시 산책로 마커 모두 제거, 마커 index 초기화, 마커 좌표 합 초기화
-	$("#removeTrailMarker").on("click", function() {
-		$("div#myModal1").find($("input[name=category]")).prop("checked", false);
-		$("div#myModal1").find($("input[name=route1]")).val("");
-		$("div#myModal1").find($("input[name=route2]")).val("");
-		$("div#myModal1").find($("input[name=route3]")).val("");
-		$("div#myModal1").find($("input[name=route4]")).val("");
-		$("div#myModal1").find($("input[name=route5]")).val("");
-		$("div#myModal1").find($("textarea[name=title]")).val("");
-		$("div#myModal1").find($("textarea[name=content]")).val("");
-		
-		$("#trail_list_div").empty();
-		$("#route_menu_div").find("a#searchLink").next().remove;
-		markerLayer.clearMarkers();
-		i = 0;
-		marker_cLonLat_lon = 0;
-		marker_cLonLat_lat = 0;
-		for(var k=0; k<5; k++) {
-			marker_lon[k] = 0;
-			marker_lat[k] = 0;
-		}
 	});
 	
 	//'POI 마커 제거' 버튼 클릭시 POI 마커 모두 제거, 검색어 초기화
@@ -612,11 +625,7 @@ function buttonOnClick() {
 		searchPOI(searchText);
 	});
 	
-	$("#searchTrail2").on("click", function() {
-		$("#keyword").next().attr("id", "searchTrail");
-	});
-	
-	$("#trail_menu_div").on("click", "#cancelTrail", function() {
+	$("#trail_list_div").on("click", "#cancelTrail", function() {
 		$("div#myModal1").find($("input[name=category]")).prop("checked", false);
 		$("div#myModal1").find($("input[name=route1]")).val("");
 		$("div#myModal1").find($("input[name=route2]")).val("");
@@ -625,6 +634,45 @@ function buttonOnClick() {
 		$("div#myModal1").find($("input[name=route5]")).val("");
 		$("div#myModal1").find($("textarea[name=title]")).val("");
 		$("div#myModal1").find($("textarea[name=content]")).val("");
+		
+		$("#trail_list_div").empty();
+		$("#list_table").empty();
+		$("#paging_div").empty();
+		$("#keyword").val("");
+		$("#route_menu_div").empty();
+		$("#trail_menu_div").empty();
+		$("#keyword").next().attr("id", "searchTrail");
+		$("trail_list_div").css("display", "none");
+		map.events.unregister("click", map, onClickMap);
+		markerLayer.clearMarkers();
+		markersLayer.clearMarkers();
+		i = 0;
+		marker_cLonLat_lon = 0;
+		marker_cLonLat_lat = 0;
+		for(var k=0; k<5; k++) {
+			marker_lon[k] = 0;
+			marker_lat[k] = 0;
+		}
+		
+		iLonLat = new Tmap.LonLat(14149513.77048, 4495298.9298456);
+		map.setCenter(iLonLat, 16);
+	});
+	
+	$("#initializeMap").on("click", function(event) {
+		event.preventDefault();
+		$("div#myModal1").find($("input[name=category]")).prop("checked", false);
+		$("div#myModal1").find($("input[name=route1]")).val("");
+		$("div#myModal1").find($("input[name=route2]")).val("");
+		$("div#myModal1").find($("input[name=route3]")).val("");
+		$("div#myModal1").find($("input[name=route4]")).val("");
+		$("div#myModal1").find($("input[name=route5]")).val("");
+		$("div#myModal1").find($("textarea[name=title]")).val("");
+		$("div#myModal1").find($("textarea[name=content]")).val("");
+		
+		$("#searchOpt").empty();
+		$("#searchOpt").append("<option value='1'>카테고리</option>");
+		$("#searchOpt").append("<option value='2' selected='selected'>이름</option>");
+		$("#searchOpt").append("<option value='3'>내용</option>");
 		
 		$("#trail_list_div").empty();
 		$("#list_table").empty();
@@ -648,39 +696,17 @@ function buttonOnClick() {
 		map.setCenter(iLonLat, 16);
 	});
 	
-	$("#initializeMap").on("click", function() {
-		$("div#myModal1").find($("input[name=category]")).prop("checked", false);
-		$("div#myModal1").find($("input[name=route1]")).val("");
-		$("div#myModal1").find($("input[name=route2]")).val("");
-		$("div#myModal1").find($("input[name=route3]")).val("");
-		$("div#myModal1").find($("input[name=route4]")).val("");
-		$("div#myModal1").find($("input[name=route5]")).val("");
-		$("div#myModal1").find($("textarea[name=title]")).val("");
-		$("div#myModal1").find($("textarea[name=content]")).val("");
+	$("#search_div").on("click", "a#searchTrail", function(event) {
+		event.preventDefault();
+		$("div#trail_list_div").empty();
+		$("div#trail_list_div").css("display", "none");
+		$("div#result_list_div").remove();
+		$("div#paging_div").remove();
+		$("div#trail_list_div").after("<div id='result_list_div' style='position: absolute; width: 300px; margin-top:10px;'><table id='list_table'><tr><td></td></tr></table></div><div id='paging_div' style='font-size:12px; height:25px; margin:0; text-align:center; position:absolute; width:300px;'></div>");
+		trailListDivHeight = $("div#trail_list_div").height();
+		resultListDivTop = (100+trailListDivHeight)+"px";
+		$("#result_list_div").css({"left":divLeft, "top":resultListDivTop});
 		
-		$("#trail_list_div").empty();
-		$("#list_table").empty();
-		$("#paging_div").empty();
-		$("#keyword").val("");
-		$("#route_menu_div").empty();
-		$("#trail_menu_div").empty();
-		$("#keyword").next().attr("id", "searchTrail");
-		map.events.unregister("click", map, onClickMap);
-		markerLayer.clearMarkers();
-		markersLayer.clearMarkers();
-		i = 0;
-		marker_cLonLat_lon = 0;
-		marker_cLonLat_lat = 0;
-		for(var k=0; k<5; k++) {
-			marker_lon[k] = 0;
-			marker_lat[k] = 0;
-		}
-		
-		iLonLat = new Tmap.LonLat(14149513.77048, 4495298.9298456);
-		map.setCenter(iLonLat, 16);
-	});
-	
-	$("#search_div").on("click", "#searchTrail", function() {
 		$("div#myModal1").find($("input[name=category]")).prop("checked", false);
 		$("div#myModal1").find($("input[name=route1]")).val("");
 		$("div#myModal1").find($("input[name=route2]")).val("");
@@ -691,6 +717,11 @@ function buttonOnClick() {
 		$("div#myModal1").find($("textarea[name=content]")).val("");
 		
 		var searchKeyword = $("#keyword").val();
+		if(searchKeyword=="") {
+			alert("검색어를 입력해주세요.");
+			return;
+		}
+		
 		for(var k=0; k<=trailIndex; k++) {
 			no[k] = null;
 			category[k] = null;
@@ -705,37 +736,107 @@ function buttonOnClick() {
 		}
 		trailIndex = 0;
 		
-		jQuery.ajaxSettings.traditional = true;
-		$.ajax ({
-			"url" : "/MMONG/trail/searchTrailByTitle.do",
-			"type" : "POST",
-			"data" : {"title": searchKeyword,"${_csrf.parameterName}":"${_csrf.token}"},
-			"dataType" : "json",
-			"success" : function(response) {
-				$("#list_table").empty();
-				$.each(response, function() {
-					no[trailIndex] = this.no;
-					category[trailIndex] = this.category;
-					tArr[trailIndex] = this.title;
-					content[trailIndex] = this.content;
-					route1[trailIndex] = this.route1;
-					route2[trailIndex] = this.route2;
-					route3[trailIndex] = this.route3;
-					route4[trailIndex] = this.route4;
-					route5[trailIndex] = this.route5;
-					memberId[trailIndex] = this.memberId;
-					$("#list_table").append("<tr><td class='result'><div style='width:240px;text-overflow:ellipsis;overflow: hidden;white-space: nowrap; font-size:'><img src='/MMONG/resource/assets/img/map/noun_413210_cc.png'>&nbsp;&nbsp;&nbsp;"+tArr[trailIndex]+"</div></td><td><input type='button' class='viewDetail' value='상세보기' onClick='viewTrailDetail(no["+trailIndex+"],category["+trailIndex+"],tArr["+trailIndex+"],content["+trailIndex+"],route1["+trailIndex+"],route2["+trailIndex+"],route3["+trailIndex+"],route4["+trailIndex+"],route5["+trailIndex+"],memberId["+trailIndex+"]);'></td></tr>");
-					trailIndex++;
-				});
-			}
-		});
+		var selectedOpt = $("#searchOpt option:selected").val();
+		if(selectedOpt==1) {
+			jQuery.ajaxSettings.traditional = true;
+			$.ajax ({
+				"url" : "/MMONG/trail/searchTrailByCategory.do",
+				"type" : "POST",
+				"data" : {"category": searchKeyword,"${_csrf.parameterName}":"${_csrf.token}"},
+				"dataType" : "json",
+				"success" : function(response) {
+					$("#list_table").empty();
+					if(response.length>0) {
+						$.each(response, function() {
+							no[trailIndex] = this.no;
+							category[trailIndex] = this.category;
+							tArr[trailIndex] = this.title;
+							content[trailIndex] = this.content;
+							route1[trailIndex] = this.route1;
+							route2[trailIndex] = this.route2;
+							route3[trailIndex] = this.route3;
+							route4[trailIndex] = this.route4;
+							route5[trailIndex] = this.route5;
+							memberId[trailIndex] = this.memberId;
+							$("#list_table").append("<tr><td class='result'><div style='width:205px;text-overflow:ellipsis;overflow: hidden;white-space: nowrap;'><img src='/MMONG/resource/assets/img/map/noun_413210_cc.png'>&nbsp;&nbsp;&nbsp;"+tArr[trailIndex]+"</div></td><td><input type='button' class='viewDetail btn btn-default btn-sm' value='상세보기' onClick='viewTrailDetail(no["+trailIndex+"],category["+trailIndex+"],tArr["+trailIndex+"],content["+trailIndex+"],route1["+trailIndex+"],route2["+trailIndex+"],route3["+trailIndex+"],route4["+trailIndex+"],route5["+trailIndex+"],memberId["+trailIndex+"]);'></td></tr>");
+							trailIndex++;
+						});
+					}else {
+						$("#list_table").append("<tr><td class='no_result'>검색 결과가 없습니다.</td></tr>");
+					}
+				}
+			});
+		} else if(selectedOpt==2) {
+			jQuery.ajaxSettings.traditional = true;
+			$.ajax ({
+				"url" : "/MMONG/trail/searchTrailByTitle.do",
+				"type" : "POST",
+				"data" : {"title": searchKeyword,"${_csrf.parameterName}":"${_csrf.token}"},
+				"dataType" : "json",
+				"success" : function(response) {
+					$("#list_table").empty();
+					if(response.length>0) {
+						$.each(response, function() {
+							no[trailIndex] = this.no;
+							category[trailIndex] = this.category;
+							tArr[trailIndex] = this.title;
+							content[trailIndex] = this.content;
+							route1[trailIndex] = this.route1;
+							route2[trailIndex] = this.route2;
+							route3[trailIndex] = this.route3;
+							route4[trailIndex] = this.route4;
+							route5[trailIndex] = this.route5;
+							memberId[trailIndex] = this.memberId;
+							$("#list_table").append("<tr><td class='result'><div style='width:205px;text-overflow:ellipsis;overflow: hidden;white-space: nowrap;'><img src='/MMONG/resource/assets/img/map/noun_413210_cc.png'>&nbsp;&nbsp;&nbsp;"+tArr[trailIndex]+"</div></td><td><input type='button' class='viewDetail btn btn-default btn-sm' value='상세보기' onClick='viewTrailDetail(no["+trailIndex+"],category["+trailIndex+"],tArr["+trailIndex+"],content["+trailIndex+"],route1["+trailIndex+"],route2["+trailIndex+"],route3["+trailIndex+"],route4["+trailIndex+"],route5["+trailIndex+"],memberId["+trailIndex+"]);'></td></tr>");
+							trailIndex++;
+						});
+					}else {
+						$("#list_table").append("<tr><td class='no_result'>검색 결과가 없습니다.</td></tr>");
+					}
+				}
+			});
+		} else if(selectedOpt==3) {
+			jQuery.ajaxSettings.traditional = true;
+			$.ajax ({
+				"url" : "/MMONG/trail/searchTrailByRouteContent.do",
+				"type" : "POST",
+				"data" : {"routeContent": searchKeyword,"${_csrf.parameterName}":"${_csrf.token}"},
+				"dataType" : "json",
+				"success" : function(response) {
+					$("#list_table").empty();
+					if(response.length>0) {
+						$.each(response, function() {
+							no[trailIndex] = this.no;
+							category[trailIndex] = this.category;
+							tArr[trailIndex] = this.title;
+							content[trailIndex] = this.content;
+							route1[trailIndex] = this.route1;
+							route2[trailIndex] = this.route2;
+							route3[trailIndex] = this.route3;
+							route4[trailIndex] = this.route4;
+							route5[trailIndex] = this.route5;
+							memberId[trailIndex] = this.memberId;
+							$("#list_table").append("<tr><td class='result'><div style='width:205px;text-overflow:ellipsis;overflow: hidden;white-space: nowrap;'><img src='/MMONG/resource/assets/img/map/noun_413210_cc.png'>&nbsp;&nbsp;&nbsp;"+tArr[trailIndex]+"</div></td><td><input type='button' class='viewDetail btn btn-default btn-sm' value='상세보기' onClick='viewTrailDetail(no["+trailIndex+"],category["+trailIndex+"],tArr["+trailIndex+"],content["+trailIndex+"],route1["+trailIndex+"],route2["+trailIndex+"],route3["+trailIndex+"],route4["+trailIndex+"],route5["+trailIndex+"],memberId["+trailIndex+"]);'></td></tr>");
+							trailIndex++;
+						});
+					}else {
+						$("#list_table").append("<tr><td class='no_result'>검색 결과가 없습니다.</td></tr>");
+					}
+				}
+			});
+		}
 	});
 }
 	
 function viewTrailDetail(trailNo, trailCategory, trailTitle, trailContent, trailRoute1, trailRoute2, trailRoute3, trailRoute4, trailRoute5, trailOwner) {
+	for(var j=0; j<5; j++) {
+		routeName[j] = null;
+	}
+	
+	var currentId = $("input#loginId").val();
+	
 	$("#trail_list_div").empty();
-	$("#route_menu_div").empty();
-	$("#trail_menu_div").empty();
+	
 	markerLayer.clearMarkers();
 	markersLayer.clearMarkers();
 	i = 0;
@@ -764,7 +865,8 @@ function viewTrailDetail(trailNo, trailCategory, trailTitle, trailContent, trail
 		marker_cLonLat_lon += marker_lon[0];
 		marker_cLonLat_lat += marker_lat[0];
 		
-		setTrailMarkerProp(0, 2, route1[2]);
+		routeName[0] = route1[2];
+		setTrailMarkerProp(0, 2, route1[3]);
 	}
 	if(route2!=null) {
 		route2 = route2.split("_");
@@ -775,7 +877,8 @@ function viewTrailDetail(trailNo, trailCategory, trailTitle, trailContent, trail
 		marker_cLonLat_lon += marker_lon[1];
 		marker_cLonLat_lat += marker_lat[1];
 		
-		setTrailMarkerProp(0, 2, route2[2]);
+		routeName[1] = route2[2];
+		setTrailMarkerProp(0, 2, route2[3]);
 	}
 	if(route3!=null) {
 		route3 = route3.split("_");
@@ -786,7 +889,8 @@ function viewTrailDetail(trailNo, trailCategory, trailTitle, trailContent, trail
 		marker_cLonLat_lon += marker_lon[2];
 		marker_cLonLat_lat += marker_lat[2];
 		
-		setTrailMarkerProp(0, 2, route3[2]);
+		routeName[2] = route3[2];
+		setTrailMarkerProp(0, 2, route3[3]);
 	}
 	if(route4!=null) {
 		route4 = route4.split("_");
@@ -797,7 +901,8 @@ function viewTrailDetail(trailNo, trailCategory, trailTitle, trailContent, trail
 		marker_cLonLat_lon += marker_lon[3];
 		marker_cLonLat_lat += marker_lat[3];
 		
-		setTrailMarkerProp(0, 2, route4[2]);
+		routeName[3] = route4[2];
+		setTrailMarkerProp(0, 2, route4[3]);
 	}
 	if(route5!=null) {
 		route5 = route5.split("_");
@@ -808,8 +913,11 @@ function viewTrailDetail(trailNo, trailCategory, trailTitle, trailContent, trail
 		marker_cLonLat_lon += marker_lon[4];
 		marker_cLonLat_lat += marker_lat[4];
 		
-		setTrailMarkerProp(0, 2, route5[2]);
+		routeName[4] = route5[2];
+		setTrailMarkerProp(0, 2, route5[3]);
 	}
+
+	$("#trail_list_div").find("#trail_menu_div").remove();
 	
 	$("#trail_list_div").append("<input type='hidden' id='modifyNo' value='"+no+"'>");
 	
@@ -828,56 +936,78 @@ function viewTrailDetail(trailNo, trailCategory, trailTitle, trailContent, trail
 	$("div#myModal2").find($("textarea#trail_title")).text(title);
 	$("div#myModal2").find($("textarea#trail_content")).text(content);
 	
-	$("#trail_menu_div").append("<input type='button' id='modifyMyTrail' value='수정하기' onClick='modifyMyTrail()'>");
+	if(currentId==owner) {
+		$("#trail_list_div").append("<div id='trail_menu_div' style='height: 22.8px; width: 96px; margin: 0 102px 10px 102px;'><input class='btn btn-default btn-sm' type='button' id='modifyMyTrail' value='수정' onClick='modifyMyTrail()'> <input class='btn btn-default btn-sm' type='button' id='deleteMyTrail' value='삭제' onClick='deleteMyTrail()'></div>");
+		//$("#trail_menu_div").append("<input type='button' id='modifyMyTrail' value='수정하기' onClick='modifyMyTrail()'>");
+	}
+	trailListDivHeight = $("div#trail_list_div").height();
+	resultListDivTop = (100+trailListDivHeight)+"px";
+	$("#result_list_div").css({"left":divLeft, "top":resultListDivTop});
 }
 
 function modifyMyTrail() {
-	/* 추가해야할내용...
-	&nbsp;<div class='listOption' name='listOption"+(index+1)+
-		"'><input type='hidden' class='markerIndex' value='"+index+"'><input type='button' class='modifyName' name='modifyName"+(index+1)+
-		"' value='수정'><input type='button' class='removeMarker' name='removeMarker"+(index+1)+"' value='삭제'></div>
-	*/
-	$("#trail_menu_div").empty();
+	$("#trail_list_div").find("#trail_menu_div").remove();
 	
 	$("div.trailContent").attr("class", "content");
 	
-	$("div[name='listDiv1']").append("<div class='listOption' name='listOption1'><input type='hidden' class='markerIndex' value='0'><input type='button' class='modifyName' name='modifyName1' value='수정'><input type='button' class='removeMarker' name='removeMarker1' value='삭제'></div>");
-	$("div[name='listDiv2']").append("<div class='listOption' name='listOption2'><input type='hidden' class='markerIndex' value='1'><input type='button' class='modifyName' name='modifyName2' value='수정'><input type='button' class='removeMarker' name='removeMarker2' value='삭제'></div>");
-	$("div[name='listDiv3']").append("<div class='listOption' name='listOption3'><input type='hidden' class='markerIndex' value='2'><input type='button' class='modifyName' name='modifyName3' value='수정'><input type='button' class='removeMarker' name='removeMarker3' value='삭제'></div>");
-	$("div[name='listDiv4']").append("<div class='listOption' name='listOption4'><input type='hidden' class='markerIndex' value='3'><input type='button' class='modifyName' name='modifyName4' value='수정'><input type='button' class='removeMarker' name='removeMarker4' value='삭제'></div>");
-	$("div[name='listDiv5']").append("<div class='listOption' name='listOption5'><input type='hidden' class='markerIndex' value='4'><input type='button' class='modifyName' name='modifyName5' value='수정'><input type='button' class='removeMarker' name='removeMarker5' value='삭제'></div>");
+	$("div[name='listDiv1']").append("<div class='listOption' name='listOption1'><input type='hidden' class='markerIndex' value='0'><a href='#' class='modifyName' name='modifyName1'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker1'><span class='glyphicon glyphicon-trash'></a></div>");
+	$("div[name='listDiv2']").append("<div class='listOption' name='listOption2'><input type='hidden' class='markerIndex' value='1'><a href='#' class='modifyName' name='modifyName2'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker2'><span class='glyphicon glyphicon-trash'></a></div>");
+	$("div[name='listDiv3']").append("<div class='listOption' name='listOption3'><input type='hidden' class='markerIndex' value='2'><a href='#' class='modifyName' name='modifyName3'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker3'><span class='glyphicon glyphicon-trash'></a></div>");
+	$("div[name='listDiv4']").append("<div class='listOption' name='listOption4'><input type='hidden' class='markerIndex' value='3'><a href='#' class='modifyName' name='modifyName4'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker4'><span class='glyphicon glyphicon-trash'></a></div>");
+	$("div[name='listDiv5']").append("<div class='listOption' name='listOption5'><input type='hidden' class='markerIndex' value='4'><a href='#' class='modifyName' name='modifyName5'><span class='glyphicon glyphicon-pencil'></a><a href='#' class='removeMarker' name='removeMarker5'><span class='glyphicon glyphicon-trash'></a></div>");
 	
-	$("#trail_menu_div").append("<a href='#confirmTrail' data-toggle='modal' data-target='#myModal2'><input type='button' value='수정' id='modifyTrail'></a><input type='button' value='취소' onClick='cancelModifyTrail();'>");
+	$("#trail_list_div").append("<div id='trail_menu_div' style='height: 22.8px; width: 96px; margin: 0 102px 10px 102px;'><a href='#confirmTrail' data-toggle='modal' data-target='#myModal2'><input class='btn btn-default btn-sm' type='button' value='수정' id='modifyTrail'></a> <input class='btn btn-default btn-sm' type='button' value='취소' onClick='cancelModifyTrail();'>");
+}
+
+function deleteMyTrail() {
+	var deleteNo = $("input#modifyNo").val();
+	if(!confirm("이 산책로를 삭제하시겠습니까?")) {
+		return;
+	}else {
+		$.ajax ({
+			"cache":false,
+			"url" : "/MMONG/trail/deleteTrailByNo.do",
+			"type" : "POST",
+			"data" : {"no": deleteNo,"${_csrf.parameterName}":"${_csrf.token}"},
+			"dataType" : "json",
+			"success" : function(response) {
+				//★여기 왜 안될까 뭘 잘못했지
+			}
+		});
+	}
+	alert("삭제되었습니다.");
+	location.href="/MMONG/map/basic_map.do";
 }
 
 function cancelModifyTrail() {
 	$("#trail_menu_div").empty();
-	$("#trail_menu_div").append("<input type='button' id='modifyMyTrail' value='수정하기' onClick='modifyMyTrail()'>");
+	$("#trail_menu_div").append("<input class='btn btn-default btn-sm' type='button' id='modifyMyTrail' value='수정' onClick='modifyMyTrail()'> <input class='btn btn-default btn-sm' type='button' id='deleteMyTrail' value='삭제' onClick='deleteMyTrail()'>");
 	$("div.content").attr("class", "trailContent");
 	$("div.listOption").remove();
 }
 
+//class markerAddress val
 function formSubmit() {
 	if(markerLayer.markers.length==1) {
-		$("input[name=route1]").val(markerLayer.markers[0].lonlat.lon+"_"+markerLayer.markers[0].lonlat.lat+"_"+markerLayer.markers[0].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
+		$("input[name=route1]").val(markerLayer.markers[0].lonlat.lon+"_"+markerLayer.markers[0].lonlat.lat+"_"+markerLayer.markers[0].popup.contentHTML.replace(/<\/?[^>]+>/gi, "")+"_"+$("input[name=markerAddress1]").val());
 	}else if(markerLayer.markers.length==2) {
-		$("input[name=route1]").val(markerLayer.markers[0].lonlat.lon+"_"+markerLayer.markers[0].lonlat.lat+"_"+markerLayer.markers[0].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
-		$("input[name=route2]").val(markerLayer.markers[1].lonlat.lon+"_"+markerLayer.markers[1].lonlat.lat+"_"+markerLayer.markers[1].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
+		$("input[name=route1]").val(markerLayer.markers[0].lonlat.lon+"_"+markerLayer.markers[0].lonlat.lat+"_"+markerLayer.markers[0].popup.contentHTML.replace(/<\/?[^>]+>/gi, "")+"_"+$("input[name=markerAddress1]").val());
+		$("input[name=route2]").val(markerLayer.markers[1].lonlat.lon+"_"+markerLayer.markers[1].lonlat.lat+"_"+markerLayer.markers[1].popup.contentHTML.replace(/<\/?[^>]+>/gi, "")+"_"+$("input[name=markerAddress2]").val());
 	}else if(markerLayer.markers.length==3) {
-		$("input[name=route1]").val(markerLayer.markers[0].lonlat.lon+"_"+markerLayer.markers[0].lonlat.lat+"_"+markerLayer.markers[0].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
-		$("input[name=route2]").val(markerLayer.markers[1].lonlat.lon+"_"+markerLayer.markers[1].lonlat.lat+"_"+markerLayer.markers[1].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
-		$("input[name=route3]").val(markerLayer.markers[2].lonlat.lon+"_"+markerLayer.markers[2].lonlat.lat+"_"+markerLayer.markers[2].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
+		$("input[name=route1]").val(markerLayer.markers[0].lonlat.lon+"_"+markerLayer.markers[0].lonlat.lat+"_"+markerLayer.markers[0].popup.contentHTML.replace(/<\/?[^>]+>/gi, "")+"_"+$("input[name=markerAddress1]").val());
+		$("input[name=route2]").val(markerLayer.markers[1].lonlat.lon+"_"+markerLayer.markers[1].lonlat.lat+"_"+markerLayer.markers[1].popup.contentHTML.replace(/<\/?[^>]+>/gi, "")+"_"+$("input[name=markerAddress2]").val());
+		$("input[name=route3]").val(markerLayer.markers[2].lonlat.lon+"_"+markerLayer.markers[2].lonlat.lat+"_"+markerLayer.markers[2].popup.contentHTML.replace(/<\/?[^>]+>/gi, "")+"_"+$("input[name=markerAddress3]").val());
 	}else if(markerLayer.markers.length==4) {
-		$("input[name=route1]").val(markerLayer.markers[0].lonlat.lon+"_"+markerLayer.markers[0].lonlat.lat+"_"+markerLayer.markers[0].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
-		$("input[name=route2]").val(markerLayer.markers[1].lonlat.lon+"_"+markerLayer.markers[1].lonlat.lat+"_"+markerLayer.markers[1].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
-		$("input[name=route3]").val(markerLayer.markers[2].lonlat.lon+"_"+markerLayer.markers[2].lonlat.lat+"_"+markerLayer.markers[2].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
-		$("input[name=route4]").val(markerLayer.markers[3].lonlat.lon+"_"+markerLayer.markers[3].lonlat.lat+"_"+markerLayer.markers[3].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
+		$("input[name=route1]").val(markerLayer.markers[0].lonlat.lon+"_"+markerLayer.markers[0].lonlat.lat+"_"+markerLayer.markers[0].popup.contentHTML.replace(/<\/?[^>]+>/gi, "")+"_"+$("input[name=markerAddress1]").val());
+		$("input[name=route2]").val(markerLayer.markers[1].lonlat.lon+"_"+markerLayer.markers[1].lonlat.lat+"_"+markerLayer.markers[1].popup.contentHTML.replace(/<\/?[^>]+>/gi, "")+"_"+$("input[name=markerAddress2]").val());
+		$("input[name=route3]").val(markerLayer.markers[2].lonlat.lon+"_"+markerLayer.markers[2].lonlat.lat+"_"+markerLayer.markers[2].popup.contentHTML.replace(/<\/?[^>]+>/gi, "")+"_"+$("input[name=markerAddress3]").val());
+		$("input[name=route4]").val(markerLayer.markers[3].lonlat.lon+"_"+markerLayer.markers[3].lonlat.lat+"_"+markerLayer.markers[3].popup.contentHTML.replace(/<\/?[^>]+>/gi, "")+"_"+$("input[name=markerAddress4]").val());
 	}else if(markerLayer.markers.length==5) {
-		$("input[name=route1]").val(markerLayer.markers[0].lonlat.lon+"_"+markerLayer.markers[0].lonlat.lat+"_"+markerLayer.markers[0].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
-		$("input[name=route2]").val(markerLayer.markers[1].lonlat.lon+"_"+markerLayer.markers[1].lonlat.lat+"_"+markerLayer.markers[1].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
-		$("input[name=route3]").val(markerLayer.markers[2].lonlat.lon+"_"+markerLayer.markers[2].lonlat.lat+"_"+markerLayer.markers[2].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
-		$("input[name=route4]").val(markerLayer.markers[3].lonlat.lon+"_"+markerLayer.markers[3].lonlat.lat+"_"+markerLayer.markers[3].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
-		$("input[name=route5]").val(markerLayer.markers[4].lonlat.lon+"_"+markerLayer.markers[4].lonlat.lat+"_"+markerLayer.markers[4].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
+		$("input[name=route1]").val(markerLayer.markers[0].lonlat.lon+"_"+markerLayer.markers[0].lonlat.lat+"_"+markerLayer.markers[0].popup.contentHTML.replace(/<\/?[^>]+>/gi, "")+"_"+$("input[name=markerAddress1]").val());
+		$("input[name=route2]").val(markerLayer.markers[1].lonlat.lon+"_"+markerLayer.markers[1].lonlat.lat+"_"+markerLayer.markers[1].popup.contentHTML.replace(/<\/?[^>]+>/gi, "")+"_"+$("input[name=markerAddress2]").val());
+		$("input[name=route3]").val(markerLayer.markers[2].lonlat.lon+"_"+markerLayer.markers[2].lonlat.lat+"_"+markerLayer.markers[2].popup.contentHTML.replace(/<\/?[^>]+>/gi, "")+"_"+$("input[name=markerAddress3]").val());
+		$("input[name=route4]").val(markerLayer.markers[3].lonlat.lon+"_"+markerLayer.markers[3].lonlat.lat+"_"+markerLayer.markers[3].popup.contentHTML.replace(/<\/?[^>]+>/gi, "")+"_"+$("input[name=markerAddress4]").val());
+		$("input[name=route5]").val(markerLayer.markers[4].lonlat.lon+"_"+markerLayer.markers[4].lonlat.lat+"_"+markerLayer.markers[4].popup.contentHTML.replace(/<\/?[^>]+>/gi, "")+"_"+$("input[name=markerAddress5]").val());
 	}
 	$("#insert_trail_form").submit();
 }
@@ -887,25 +1017,25 @@ function modifyFormSubmit() {
 	$("input[name=no]").val(modifyIndex);
 	
 	if(markerLayer.markers.length==1) {
-		$("input[name=route1]").val(markerLayer.markers[0].lonlat.lon+"_"+markerLayer.markers[0].lonlat.lat+"_"+markerLayer.markers[0].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
+		$("input[name=route1]").val(markerLayer.markers[0].lonlat.lon+"_"+markerLayer.markers[0].lonlat.lat+"_"+routeName[0]+"_"+$("input[name=markerAddress1]").val());
 	}else if(markerLayer.markers.length==2) {
-		$("input[name=route1]").val(markerLayer.markers[0].lonlat.lon+"_"+markerLayer.markers[0].lonlat.lat+"_"+markerLayer.markers[0].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
-		$("input[name=route2]").val(markerLayer.markers[1].lonlat.lon+"_"+markerLayer.markers[1].lonlat.lat+"_"+markerLayer.markers[1].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
+		$("input[name=route1]").val(markerLayer.markers[0].lonlat.lon+"_"+markerLayer.markers[0].lonlat.lat+"_"+routeName[0]+"_"+$("input[name=markerAddress1]").val());
+		$("input[name=route2]").val(markerLayer.markers[1].lonlat.lon+"_"+markerLayer.markers[1].lonlat.lat+"_"+routeName[1]+"_"+$("input[name=markerAddress2]").val());
 	}else if(markerLayer.markers.length==3) {
-		$("input[name=route1]").val(markerLayer.markers[0].lonlat.lon+"_"+markerLayer.markers[0].lonlat.lat+"_"+markerLayer.markers[0].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
-		$("input[name=route2]").val(markerLayer.markers[1].lonlat.lon+"_"+markerLayer.markers[1].lonlat.lat+"_"+markerLayer.markers[1].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
-		$("input[name=route3]").val(markerLayer.markers[2].lonlat.lon+"_"+markerLayer.markers[2].lonlat.lat+"_"+markerLayer.markers[2].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
+		$("input[name=route1]").val(markerLayer.markers[0].lonlat.lon+"_"+markerLayer.markers[0].lonlat.lat+"_"+routeName[0]+"_"+$("input[name=markerAddress1]").val());
+		$("input[name=route2]").val(markerLayer.markers[1].lonlat.lon+"_"+markerLayer.markers[1].lonlat.lat+"_"+routeName[1]+"_"+$("input[name=markerAddress2]").val());
+		$("input[name=route3]").val(markerLayer.markers[2].lonlat.lon+"_"+markerLayer.markers[2].lonlat.lat+"_"+routeName[2]+"_"+$("input[name=markerAddress3]").val());
 	}else if(markerLayer.markers.length==4) {
-		$("input[name=route1]").val(markerLayer.markers[0].lonlat.lon+"_"+markerLayer.markers[0].lonlat.lat+"_"+markerLayer.markers[0].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
-		$("input[name=route2]").val(markerLayer.markers[1].lonlat.lon+"_"+markerLayer.markers[1].lonlat.lat+"_"+markerLayer.markers[1].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
-		$("input[name=route3]").val(markerLayer.markers[2].lonlat.lon+"_"+markerLayer.markers[2].lonlat.lat+"_"+markerLayer.markers[2].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
-		$("input[name=route4]").val(markerLayer.markers[3].lonlat.lon+"_"+markerLayer.markers[3].lonlat.lat+"_"+markerLayer.markers[3].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
+		$("input[name=route1]").val(markerLayer.markers[0].lonlat.lon+"_"+markerLayer.markers[0].lonlat.lat+"_"+routeName[0]+"_"+$("input[name=markerAddress1]").val());
+		$("input[name=route2]").val(markerLayer.markers[1].lonlat.lon+"_"+markerLayer.markers[1].lonlat.lat+"_"+routeName[1]+"_"+$("input[name=markerAddress2]").val());
+		$("input[name=route3]").val(markerLayer.markers[2].lonlat.lon+"_"+markerLayer.markers[2].lonlat.lat+"_"+routeName[2]+"_"+$("input[name=markerAddress3]").val());
+		$("input[name=route4]").val(markerLayer.markers[3].lonlat.lon+"_"+markerLayer.markers[3].lonlat.lat+"_"+routeName[3]+"_"+$("input[name=markerAddress4]").val());
 	}else if(markerLayer.markers.length==5) {
-		$("input[name=route1]").val(markerLayer.markers[0].lonlat.lon+"_"+markerLayer.markers[0].lonlat.lat+"_"+markerLayer.markers[0].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
-		$("input[name=route2]").val(markerLayer.markers[1].lonlat.lon+"_"+markerLayer.markers[1].lonlat.lat+"_"+markerLayer.markers[1].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
-		$("input[name=route3]").val(markerLayer.markers[2].lonlat.lon+"_"+markerLayer.markers[2].lonlat.lat+"_"+markerLayer.markers[2].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
-		$("input[name=route4]").val(markerLayer.markers[3].lonlat.lon+"_"+markerLayer.markers[3].lonlat.lat+"_"+markerLayer.markers[3].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
-		$("input[name=route5]").val(markerLayer.markers[4].lonlat.lon+"_"+markerLayer.markers[4].lonlat.lat+"_"+markerLayer.markers[4].popup.contentHTML.replace(/<\/?[^>]+>/gi, ""));
+		$("input[name=route1]").val(markerLayer.markers[0].lonlat.lon+"_"+markerLayer.markers[0].lonlat.lat+"_"+routeName[0]+"_"+$("input[name=markerAddress1]").val());
+		$("input[name=route2]").val(markerLayer.markers[1].lonlat.lon+"_"+markerLayer.markers[1].lonlat.lat+"_"+routeName[1]+"_"+$("input[name=markerAddress2]").val());
+		$("input[name=route3]").val(markerLayer.markers[2].lonlat.lon+"_"+markerLayer.markers[2].lonlat.lat+"_"+routeName[2]+"_"+$("input[name=markerAddress3]").val());
+		$("input[name=route4]").val(markerLayer.markers[3].lonlat.lon+"_"+markerLayer.markers[3].lonlat.lat+"_"+routeName[3]+"_"+$("input[name=markerAddress4]").val());
+		$("input[name=route5]").val(markerLayer.markers[4].lonlat.lon+"_"+markerLayer.markers[4].lonlat.lat+"_"+routeName[4]+"_"+$("input[name=markerAddress5]").val());
 	}
 	$("#modify_trail_form").submit();
 }
@@ -918,6 +1048,7 @@ window.onload = function() {
 	trailListRemoveOnClick();
 	buttonOnClick();
 }
+
 </script>
 <style type="text/css">
 a {
@@ -934,14 +1065,29 @@ td.result {
 	padding: 0 5px;
 	margin: 0;
 	height: 40px;
-	width: 250px;
-	font-size: 14px;
+	width: 205px;
+	font-size: 12px;
+}
+td.no_result {
+	padding: 0 5px;
+	margin: 0;
+	height: 40px;
+	width:300px;
+	font-size: 12px;
+	text-align: center;
+}
+td.poiResult {
+	padding: 0 5px;
+	margin: 0;
+	height: 40px;
+	width: 240px;
+	font-size: 12px;
 }
 div.marker {
-	margin: 5px 0;
+	margin: 5px 0 5px 10px;
 }
 div.content {
-	width: 61%;
+	width: 206px;
 	margin: auto 5px;
 	font-size: 13px;
 	padding: 0;
@@ -954,7 +1100,7 @@ div.trailContent {
 }
 div.listOption {
 	margin: auto 0 ;
-	width: 27%;
+	width: 50px;
 }
 div#poi_popup_div {
 	margin: auto;
@@ -977,36 +1123,31 @@ input.markerName {
     background: #000;
     display: none;
 }
+span.glyphicon {
+	display: inline-block;
+	padding-left: 5px;
+	width: 20px;
+}
 </style>
 <body>
-<div id="total_div" style="position:relative;">
+<div id="total_div" style="position:relative; display:none;">
+	<input type="hidden" id="loginId" value="<sec:authentication property="principal.memberId"/>">
 	<div id="map_div" style="position: absolute; top:60px;"></div>
-	<div id="search_div" style="position: absolute; top: 60px; left: 800px; width: 300px; display: flex">
-			<input type="text" id="keyword" placeholder="검색어를 입력해주세요" style="width: 200px;"><input id="searchTrail" type="button" value="검색" style="width:100px">
+	<div id="search_div" style="position: absolute; top: 60px; width: 360px; display: flex">
+			<select id="searchOpt" style="width:75px;">
+				<option value="1">카테고리</option>
+				<option value="2" selected="selected">이름</option>
+				<option value="3">내용</option>
+			</select>
+			<input type="text" id="keyword" placeholder="검색어를 입력해주세요" style="width: 255px; height:30px;">
+			<a href="#" id="searchTrail" style="padding:6px;"><img src="/MMONG/resource/assets/img/map/search.png" style="height:16px;"></a>
 	</div>
-	<div id="result_list_div" style="position: absolute; top: 470px; left: 800px; width: 300px;">
-		<table id="list_table">
-			<tr>
-				<td></td>
-			</tr>
-		</table>
-	</div>
-	<div id="paging_div" style="font-size: 12px; height: 25px; margin: 0; text-align: center; position: absolute; top: 680px; left: 800px; width: 300px;"></div>
-	<div id="trail_list_div" style="font-size: 12px; position: absolute; top: 85px; left: 800px; height: 375px; width: 300px;">trail_list_div</div>
-	<div id="route_menu_div" style="position: absolute; top: 360px; left: 800px; height: 50px; width: 300px; text-align:center;">
-		
-	</div>
-	<div id="trail_menu_div" style="position: absolute; top: 400px; left: 800px; height: 24px; width: 85.34px; margin: 0 107.33px;">
-		
-	</div>
+	<div id="trail_list_div" style="font-size: 12px; position: absolute; top: 100px; width: 300px; border-bottom-style:solid; border-bottom-width:1px; border-bottom-color:#BABABA; display:none;"></div>
 
-	<div style="position:absolute; top:460px;">
-	<input type="button" value="산책로 조회" id="searchTrail2">
-	<input type="button" value="산책로 등록" id="registerTrail">
-	<input type="button" value="산책로 등록 완료" id="finish">
-	<input type="button" value="산책로 마커 제거" id="removeTrailMarker">
-	<input type="button" value="POI 마커 제거" id="removePOIMarker">
-	<input type="button" value="지도 초기화" id="initializeMap">
+	<div id="total_menu" style="position:absolute; top:110px;">
+		<div><a href="#" id="initializeMap" ><img src="/MMONG/resource/assets/img/map/refresh.png" style="width:36px;" title="지도 초기화"></a></div>
+		<div><a href="#" id="registerTrail"><img src="/MMONG/resource/assets/img/map/plus2.png" style="width:36px;" title="산책로 추가"></a></div>
+		<div><a href="#" id="removePOIMarker"><img src="/MMONG/resource/assets/img/map/delete.png" style="width:36px;" title="마커 제거"></a></div>
 	</div>
 	
 	<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

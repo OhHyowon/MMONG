@@ -39,5 +39,15 @@ public class TrailServiceImpl implements TrailService {
 	public List<Trail> searchTrailByTitle(String title) {
 		return trailDao.searchTrailByTitle(title);
 	}
-	
+
+	@Override
+	public List<Trail> searchTrailByCategory(String category) {
+		return trailDao.searchTrailByCategory(category);
+	}
+
+	@Override
+	public List<Trail> searchTrailByRouteContent(String routeContent) {
+		return trailDao.searchTrailByRouteContent(routeContent);
+	}
+
 }

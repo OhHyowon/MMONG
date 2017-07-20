@@ -51,7 +51,7 @@ var Script = function () {
 
     $('.fa-bars').click(function () {
         if ($('#sidebar > ul').is(":visible") === true) {
-            $('#main-content').css({
+        	$('#main-content').css({
                 'margin-left': '0px'
             });
             $('#sidebar').css({
@@ -60,7 +60,7 @@ var Script = function () {
             $('#sidebar > ul').hide();
             $("#container").addClass("sidebar-closed");
         } else {
-            $('#main-content').css({
+        	$('#main-content').css({
                 'margin-left': '180px'
             });
             $('#sidebar > ul').show();

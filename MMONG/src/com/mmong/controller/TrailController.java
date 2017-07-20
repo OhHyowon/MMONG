@@ -28,7 +28,6 @@ public class TrailController {
 		String memberId = member.getMemberId();
 		trail.setMemberId(memberId);
 		
-		System.out.println(trail);
 		trailService.insertTrail(trail);
 		
 		return new ModelAndView("redirect:/trail/searchTrailByNo.do", "no", trail.getNo());
@@ -49,6 +48,22 @@ public class TrailController {
 		return trail;
 	}
 	
+	@RequestMapping("searchTrailByCategory")
+	@ResponseBody
+	public List<Trail> searchTrailByCategory(@RequestParam(required=false) String category) {
+		List<Trail> trail = trailService.searchTrailByCategory(category);
+
+		return trail;
+	}
+	
+	@RequestMapping("searchTrailByRouteContent")
+	@ResponseBody
+	public List<Trail> searchTrailByRouteContent(@RequestParam(required=false) String routeContent) {
+		List<Trail> trail = trailService.searchTrailByRouteContent(routeContent);
+
+		return trail;
+	}
+	
 	@RequestMapping("updateTrail")
 	public ModelAndView updateTrail(@ModelAttribute Trail trail, BindingResult errors) {
 		trailService.updateTrail(trail);
@@ -57,9 +72,10 @@ public class TrailController {
 	}
 	
 	@RequestMapping("deleteTrailByNo")
+	@ResponseBody
 	public String deleteTrailByNo(@RequestParam(required=false) int no) {
 		trailService.deleteTrailByNo(no);
 		
-		return "map/basic_map.do";
+		return "success";
 	}
 }

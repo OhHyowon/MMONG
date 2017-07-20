@@ -2,8 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mmong.config.mapper.trailMapper">
 
-	<!-- no(trail_no_seq), category(nn), route1(nn), route2, route3, route4, route5, title(nn), content, member_id -->
-	
 	<resultMap id="trail-resultmap" type="trail">
 		<id column="no" property="no"/>
 		<result column="category" property="category"/>
@@ -38,6 +36,22 @@
 		WHERE	title LIKE '%'||#{title}||'%'
 	</select>
 	
+	<select id="searchTrailByCategory" parameterType="String" resultMap="trail-resultmap">
+		SELECT	no, category, route1, route2, route3, route4, route5, title, content, member_id
+		FROM	trail
+		WHERE	category LIKE '%'||#{category}||'%'
+	</select>
+	
+	<select id="searchTrailByRouteContent" parameterType="String" resultMap="trail-resultmap">
+		SELECT	no, category, route1, route2, route3, route4, route5, title, content, member_id
+		FROM	trail
+		WHERE	route1 LIKE '%'||#{routeContent}||'%'
+					OR route2 LIKE '%'||#{routeContent}||'%'
+					OR route3 LIKE '%'||#{routeContent}||'%'
+					OR route4 LIKE '%'||#{routeContent}||'%'
+					OR route5 LIKE '%'||#{routeContent}||'%'
+	</select>
+	
 	<insert id="insertTrail" parameterType="trail">
 		<selectKey keyProperty="no" resultType="_int" order="BEFORE">
 			SELECT	trail_no_seq.nextval
@@ -62,5 +76,4 @@
 	<delete id="deleteTrailByNo" parameterType="int">
 		DELETE FROM trail WHERE no=#{no}
 	</delete>
-	
 </mapper>

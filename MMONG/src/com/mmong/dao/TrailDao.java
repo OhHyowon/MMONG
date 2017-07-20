@@ -40,4 +40,18 @@ public interface TrailDao {
 	 * @return
 	 */
 	List<Trail> searchTrailByTitle(String title);
+	
+	/**
+	 * 산책로 카테고리로 산책로 조회
+	 * @param category
+	 * @return
+	 */
+	List<Trail> searchTrailByCategory(String category);
+	
+	/**
+	 * 산책로 경로 내용으로 산책로 조회
+	 * @param content
+	 * @return
+	 */
+	List<Trail> searchTrailByRouteContent(String routeContent);
 }

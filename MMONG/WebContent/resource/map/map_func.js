@@ -8,6 +8,13 @@ function searchPOI(keyword){
 
 //입력된 keyword로 주위 반경 5km 검색, 한 페이지당 10개 출력하는 함수, 페이징리스트에서 클릭한 페이지 검색
 function searchKeyword(keyword, searchPage) {
+	$("div#result_list_div").remove();
+	$("div#paging_div").remove();
+	$("div#trail_list_div").after("<div id='result_list_div' style='position: absolute; width: 300px; margin-top:10px;'><table id='list_table'><tr><td></td></tr></table></div><div id='paging_div' style='font-size:12px; height:25px; margin:0; text-align:center; position:absolute; width:300px;'></div>");
+	trailListDivHeight = $("div#trail_list_div").height();
+	resultListDivTop = (100+trailListDivHeight)+"px";
+	$("#result_list_div").css({"left":divLeft, "top":resultListDivTop});
+	
 	var center = searchLonLat;
 	tdata.getPOIDataFromSearch(encodeURIComponent(keyword), {centerLon:center.lon, centerLat:center.lat, radius:5, page:searchPage, count:5});
 }
@@ -43,24 +50,28 @@ function onCompleteTData(e){
 	markersLayer.clearMarkers(); //markersLayer에 있는 기존의 모든 마커 제거
 	if($(this.responseXML).find("searchPoiInfo pois poi").text() != ''){ //검색 결과가 있을 경우 true
 		var page = $(this.responseXML).find("searchPoiInfo page").text();
-			$(this.responseXML).find("searchPoiInfo pois poi").each(function(){
-				var name = $(this).find("name").text(); //해당 POI의 이름
-				var lon = $(this).find("frontLon").text(); //해당 POI의 lon 좌표
-				var lat = $(this).find("frontLat").text(); //해당 POI의 lat 좌표
-				var options = {
-					lonlat:new Tmap.LonLat(lon, lat),
-					label:new Tmap.Label("<div id='poi_popup_div' style='word-wrap:break-word;word-break:break-all;width:100px;'>"+name+"</div>") //POI 장소 이름을 label로 생성
-				};
-				addPOIMarker(options); //var options을 가지고 addPOIMarker 함수 실행
-				/*
-				$("#list_table").append("<tr><th class='index'><a href='javascript:panToSelectMarker("+lon+","+lat+","+$(this).index()+",1)'>"
-						+($(this).index()+(10*(page-1))+1)+"</a></th><td class='result'><div style='width:200px;text-overflow:ellipsis;overflow: hidden;white-space: nowrap;' title='"+name+"'><a href='javascript:panToSelectMarker("+lon+","+lat+","+$(this).index()+",1)'>"+name+
-						"</a></div></td><td><input type='hidden' name='poiName' value='"+name+"'><input type='hidden' name='poiLon' value='"+lon+"'><input type='hidden' name='poiLat' value='"+lat+"'><input type='button' class='poiToMarker' value='등록'></td></tr>");
-				*/
-				$("#list_table").append("<tr><td class='result'><div style='width:240px;text-overflow:ellipsis;overflow: hidden;white-space: nowrap;' title='"+name+"'><label><a href='javascript:panToSelectMarker("+lon+","+lat+","+$(this).index()+",1)'><img src='/MMONG/resource/assets/img/map/noun_413210_cc.png'>&nbsp;&nbsp;&nbsp;"+name+
-						"</a></label></div></td><td><input type='hidden' name='poiName' value='"+name+"'><input type='hidden' name='poiLon' value='"+lon+"'><input type='hidden' name='poiLat' value='"+lat+"'><input type='button' class='poiToMarker' value='등록' style='width:50px'></td></tr>");
-				
-			});
+		$(this.responseXML).find("searchPoiInfo pois poi").each(function(){
+			var name = $(this).find("name").text(); //해당 POI의 이름
+			var lon = $(this).find("frontLon").text(); //해당 POI의 lon 좌표
+			var lat = $(this).find("frontLat").text(); //해당 POI의 lat 좌표
+			var options = {
+				lonlat:new Tmap.LonLat(lon, lat),
+				label:new Tmap.Label("<div id='poi_popup_div' style='word-wrap:break-word;word-break:break-all;width:100px;'>"+name+"</div>") //POI 장소 이름을 label로 생성
+			};
+			addPOIMarker(options); //var options을 가지고 addPOIMarker 함수 실행
+			/*
+			$("#list_table").append("<tr><td class='result'><div style='width:205px;text-overflow:ellipsis;overflow: hidden;white-space: nowrap;' title='"+name+"'><label><a href='javascript:panToSelectMarker("+lon+","+lat+","+$(this).index()+",1)'><img src='/MMONG/resource/assets/img/map/noun_413210_cc.png'>&nbsp;&nbsp;&nbsp;"+name+
+					"</a></label></div></td><td><input type='hidden' name='poiName' value='"+name+"'><input type='hidden' name='poiLon' value='"+lon+"'><input type='hidden' name='poiLat' value='"+lat+"'><input type='button' class='poiToMarker' value='등록' style='width:50px'></td></tr>");		
+			*/
+			$("#list_table").append("<tr><td class='poiResult'><div style='width:240px;text-overflow:ellipsis;overflow: hidden;white-space: nowrap;' title='"+name+"'><label><a href='javascript:panToSelectMarker("+lon+","+lat+","+$(this).index()+",1)'><img src='/MMONG/resource/assets/img/map/noun_413210_cc.png'>&nbsp;&nbsp;&nbsp;"+name+
+					"</a></label></div></td><td><input type='hidden' name='poiName' value='"+name+"'><input type='hidden' name='poiLon' value='"+lon+"'><input type='hidden' name='poiLat' value='"+lat+"'><a href='#' class='poiToMarker'><span class='glyphicon glyphicon-plus'></a></td></tr>");		
+		
+		});
+		
+		resultListDivHeight = $("div#result_list_div").height();
+		pagingDivTop = (110+trailListDivHeight+resultListDivHeight)+"px";
+		$("#paging_div").css({"left":divLeft, "top":pagingDivTop});
+		
 		map.zoomToExtent(markersLayer.getDataExtent()); //POI 마커들을 모두 가지고 있는 bound로 맵 줌 및 이동
 		pagingView(searchText); //검색 키워드(searchText)를 가지고 pagingView 함수 실행
 	}else {
@@ -97,7 +108,6 @@ function panToSelectMarker(lon, lat, index, layer) {
 function pagingView(searchText) {
 	var totalCount = $(tdata.responseXML).find("searchPoiInfo totalCount").text(); //전체 리스트 갯수
 	var currentPage = $(tdata.responseXML).find("searchPoiInfo page").text(); //현재 페이지
-	alert(currentPage);
 	var count = 5; //페이지당 보여줄 리스트 갯수
 	var totalPage = Math.ceil((totalCount/count)); //전체 페이지 갯수
 //	var startRow = (currentPage-1)*count+1; //시작 리스트 번호
@@ -276,10 +286,29 @@ function addTrailMarker(markerCLonLat, markerIcon, markerLabel, markerSrc) {
 	marker.events.register("mouseout", marker, onOutMouseTrailMarker);
 	
 	if(markerSrc!=2) {
+		$("div#trail_list_div").css("display","");
 		addMarkerToList(marker, i); //산책로 마커를 산책로 리스트(div#trail_list_div)에 등록
 	}else{
+		$("div#trail_list_div").css("display","");
 		addTrailToList(marker, i); //등록된 산책로 마커 리스트를 div#trail_list_div에 등록
 	}
+
+	if(markerLayer.markers.length>1) {
+		$("#trail_list_div").find("#route_menu_div").remove();
+		$("#trail_list_div").append("<div id='route_menu_div' style='width:300px; height:25px; text-align:center;'><a href='javascript:searchRoute()'></div>");
+		searchRoute();
+	}	
+
+	trailListDivHeight = $("div#trail_list_div").height();
+	resultListDivTop = (100+trailListDivHeight)+"px";
+	$("#result_list_div").css({"left":divLeft, "top":resultListDivTop});
+
+	resultListDivHeight = $("div#result_list_div").height();
+	pagingDivTop = (110+trailListDivHeight+resultListDivHeight)+"px";
+	$("#paging_div").css({"left":divLeft, "top":pagingDivTop});
+
+	$("#trail_list_div").find("#trail_menu_div").remove();
+	$("#trail_list_div").append("<div id='trail_menu_div' style='height: 24px; width: 96px; margin: 0 102px 10px 102px;'><a href='#confirmTrail' data-toggle='modal' data-target='#myModal1'><input class='btn btn-default btn-sm' type='button' value='등록' id='fixTrail'></a> <input class='btn btn-default btn-sm' type='button' value='취소' id='cancelTrail'>");
 	
 	//마커가 1개일 경우 해당 마커 좌표로 지도 이동, 2개 이상일 경우 bound가 모든 마커들을 포함하고 있는지 여부를 따져 지도 이동
 	if(i==0) {

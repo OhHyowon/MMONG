@@ -41,8 +41,16 @@ public class TrailDaoImpl implements TrailDao {
 	
 	@Override
 	public List<Trail> searchTrailByTitle(String title) {
-		List<Trail> awrawra=session.selectList(makeSql("searchTrailByTitle"), title);
 		return session.selectList(makeSql("searchTrailByTitle"), title);
 	}
-	
+
+	@Override
+	public List<Trail> searchTrailByCategory(String category) {
+		return session.selectList(makeSql("searchTrailByCategory"), category);
+	}
+
+	@Override
+	public List<Trail> searchTrailByRouteContent(String routeContent) {
+		return session.selectList(makeSql("searchTrailByRouteContent"), routeContent);
+	}
 }
