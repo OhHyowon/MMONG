@@ -58,7 +58,8 @@ var trailIndex;
 
 //맵 초기화 함수
 function initialize() {
-	map = new Tmap.Map({div:"map_div", width:'600px', height:'400px', animation:true}); //div#map_div에 맵 등록, 기본 zoom 레벨 15
+	var scrollHeight = (document.body.scrollHeight-98.4)+"px";
+	map = new Tmap.Map({div:"map_div", width:'800px', height:scrollHeight, animation:true}); //div#map_div에 맵 등록, 기본 zoom 레벨 15
 	cLonLat = new Tmap.LonLat(14149513.77048, 4495298.9298456);
 	map.setCenter(cLonLat, 16);//유스페이스2 좌표를 맵 중심으로 설정
 	map.addControl(new Tmap.Control.MousePosition()); //마우스 위치 상의 좌표를 맵 우측 하단에 띄워주는 control 등록
@@ -92,9 +93,11 @@ function addMarkerToList(marker, index) {
 						"'><input type='hidden' class='markerIndex' value='"+index+"'><input type='button' class='modifyName' name='modifyName"+(index+1)+
 						"' value='수정'><input type='button' class='removeMarker' name='removeMarker"+(index+1)+"' value='삭제'></div></div>");
 	}
+	/*
 	$("#route_menu_div").empty();
 	$("#route_menu_div").append("<a href='javascript:searchRoute()'>소요 시간 및 거리 계산</a><br>");
 	$("#trail_menu_div").find($("input#fixTrail")).removeAttr("disabled");
+	*/
 }
 
 //등록된 산책로 마커 리스트를 div#trail_list_div에 등록하는 함수
@@ -113,9 +116,11 @@ function addTrailToList(marker, index) {
 				".png'/></a></div><div class='trailContent' name='content"+(index+1)+"'><a href='javascript:panToSelectMarker("+markerLayer.markers[index].lonlat.lon+", "
 						+markerLayer.markers[index].lonlat.lat+", "+index+", 0)'>"+replaceContentHTML+"</a></div></div>");
 	}
+	/*
 	$("#route_menu_div").empty();
 	$("#route_menu_div").append("<a href='javascript:searchRoute()'>소요 시간 및 거리 계산</a><br>");
 	$("#trail_menu_div").find($("input#fixTrail")).removeAttr("disabled");
+	*/
 }
 
 function poiToMarkerOnClick() {
@@ -140,9 +145,14 @@ function poiToMarkerOnClick() {
 		marker_cLonLat_lat += marker_lat[i];
 		
 		setTrailMarkerProp(i, 1, poiName);
+		/*
 		$("#route_menu_div").empty();
 		$("#route_menu_div").append("<a href='javascript:searchRoute()'>소요 시간 및 거리 계산</a><br>");
 		$("#trail_menu_div").find($("input#fixTrail")).removeAttr("disabled");
+		*/
+		$("#trail_list_div").append("<div><a href='javascript:searchRoute()'>소요 시간 및 거리 계산</a></div>");
+		$("#trail_menu_div").find($("input#fixTrail")).removeAttr("disabled");
+		
 	});
 }
 
@@ -508,9 +518,9 @@ function buttonOnClick() {
 		$("#list_table").empty();
 		$("#paging_div").empty();
 		$("#keyword").val("");
-		$("#route_menu_div").empty();
+		//$("#route_menu_div").empty();
 		$("#trail_menu_div").empty();
-		$("#route_menu_div").append("<a href='javascript:searchRoute()' id='searchLink'>소요 시간 및 거리 계산</a>");
+		//$("#route_menu_div").append("<a href='javascript:searchRoute()' id='searchLink'>소요 시간 및 거리 계산</a>");
 		$("#trail_menu_div").append("<a href='#confirmTrail' data-toggle='modal' data-target='#myModal1'><input type='button' value='등록' id='fixTrail' disabled='disabled'></a><input type='button' value='취소' id='cancelTrail'>");
 		$("#keyword").next().attr("id", "searchPOI");
 		map.events.unregister("click", map, onClickMap);
@@ -714,7 +724,7 @@ function buttonOnClick() {
 					route4[trailIndex] = this.route4;
 					route5[trailIndex] = this.route5;
 					memberId[trailIndex] = this.memberId;
-					$("#list_table").append("<tr><td class='result'><div style='width:200px;text-overflow:ellipsis;overflow: hidden;white-space: nowrap; font-size:'><img src='/MMONG/resource/assets/img/map/noun_413210_cc.png'>&nbsp;&nbsp;&nbsp;"+tArr[trailIndex]+"</div></td><td><input type='button' class='viewDetail' value='상세보기' onClick='viewTrailDetail(no["+trailIndex+"],category["+trailIndex+"],tArr["+trailIndex+"],content["+trailIndex+"],route1["+trailIndex+"],route2["+trailIndex+"],route3["+trailIndex+"],route4["+trailIndex+"],route5["+trailIndex+"],memberId["+trailIndex+"]);'></td></tr>");
+					$("#list_table").append("<tr><td class='result'><div style='width:240px;text-overflow:ellipsis;overflow: hidden;white-space: nowrap; font-size:'><img src='/MMONG/resource/assets/img/map/noun_413210_cc.png'>&nbsp;&nbsp;&nbsp;"+tArr[trailIndex]+"</div></td><td><input type='button' class='viewDetail' value='상세보기' onClick='viewTrailDetail(no["+trailIndex+"],category["+trailIndex+"],tArr["+trailIndex+"],content["+trailIndex+"],route1["+trailIndex+"],route2["+trailIndex+"],route3["+trailIndex+"],route4["+trailIndex+"],route5["+trailIndex+"],memberId["+trailIndex+"]);'></td></tr>");
 					trailIndex++;
 				});
 			}
@@ -971,22 +981,22 @@ input.markerName {
 <body>
 <div id="total_div" style="position:relative;">
 	<div id="map_div" style="position: absolute; top:60px;"></div>
-	<div id="search_div" style="position: absolute; top: 60px; left: 600px; width: 300px; display: flex">
+	<div id="search_div" style="position: absolute; top: 60px; left: 800px; width: 300px; display: flex">
 			<input type="text" id="keyword" placeholder="검색어를 입력해주세요" style="width: 200px;"><input id="searchTrail" type="button" value="검색" style="width:100px">
 	</div>
-	<div id="result_list_div" style="position: absolute; top: 60px; left: 900px; width: 300px;">
+	<div id="result_list_div" style="position: absolute; top: 470px; left: 800px; width: 300px;">
 		<table id="list_table">
 			<tr>
 				<td></td>
 			</tr>
 		</table>
 	</div>
-	<div id="paging_div" style="font-size: 12px; height: 25px; margin: 0; text-align: center; position: absolute; top: 480px; left: 900px; width: 300px;"></div>
-	<div id="trail_list_div" style="font-size: 12px; position: absolute; top: 85px; left: 600px; height: 375px; width: 300px;">trail_list_div</div>
-	<div id="route_menu_div" style="position: absolute; top: 400px; left: 600px; height: 50px; width: 300px; text-align:center;">
+	<div id="paging_div" style="font-size: 12px; height: 25px; margin: 0; text-align: center; position: absolute; top: 680px; left: 800px; width: 300px;"></div>
+	<div id="trail_list_div" style="font-size: 12px; position: absolute; top: 85px; left: 800px; height: 375px; width: 300px;">trail_list_div</div>
+	<div id="route_menu_div" style="position: absolute; top: 360px; left: 800px; height: 50px; width: 300px; text-align:center;">
 		
 	</div>
-	<div id="trail_menu_div" style="position: absolute; top: 460px; left: 600px; height: 24px; width: 85.34px; margin: 0 107.33px;">
+	<div id="trail_menu_div" style="position: absolute; top: 400px; left: 800px; height: 24px; width: 85.34px; margin: 0 107.33px;">
 		
 	</div>
 

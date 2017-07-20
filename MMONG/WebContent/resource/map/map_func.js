@@ -9,7 +9,7 @@ function searchPOI(keyword){
 //입력된 keyword로 주위 반경 5km 검색, 한 페이지당 10개 출력하는 함수, 페이징리스트에서 클릭한 페이지 검색
 function searchKeyword(keyword, searchPage) {
 	var center = searchLonLat;
-	tdata.getPOIDataFromSearch(encodeURIComponent(keyword), {centerLon:center.lon, centerLat:center.lat, radius:5, page:searchPage, count:10});
+	tdata.getPOIDataFromSearch(encodeURIComponent(keyword), {centerLon:center.lon, centerLat:center.lat, radius:5, page:searchPage, count:5});
 }
 
 //POI 검색시 사용되는 마커 등록 함수
@@ -57,7 +57,7 @@ function onCompleteTData(e){
 						+($(this).index()+(10*(page-1))+1)+"</a></th><td class='result'><div style='width:200px;text-overflow:ellipsis;overflow: hidden;white-space: nowrap;' title='"+name+"'><a href='javascript:panToSelectMarker("+lon+","+lat+","+$(this).index()+",1)'>"+name+
 						"</a></div></td><td><input type='hidden' name='poiName' value='"+name+"'><input type='hidden' name='poiLon' value='"+lon+"'><input type='hidden' name='poiLat' value='"+lat+"'><input type='button' class='poiToMarker' value='등록'></td></tr>");
 				*/
-				$("#list_table").append("<tr><td class='result'><div style='width:200px;text-overflow:ellipsis;overflow: hidden;white-space: nowrap;' title='"+name+"'><label><a href='javascript:panToSelectMarker("+lon+","+lat+","+$(this).index()+",1)'><img src='/MMONG/resource/assets/img/map/noun_413210_cc.png'>&nbsp;&nbsp;&nbsp;"+name+
+				$("#list_table").append("<tr><td class='result'><div style='width:240px;text-overflow:ellipsis;overflow: hidden;white-space: nowrap;' title='"+name+"'><label><a href='javascript:panToSelectMarker("+lon+","+lat+","+$(this).index()+",1)'><img src='/MMONG/resource/assets/img/map/noun_413210_cc.png'>&nbsp;&nbsp;&nbsp;"+name+
 						"</a></label></div></td><td><input type='hidden' name='poiName' value='"+name+"'><input type='hidden' name='poiLon' value='"+lon+"'><input type='hidden' name='poiLat' value='"+lat+"'><input type='button' class='poiToMarker' value='등록' style='width:50px'></td></tr>");
 				
 			});
@@ -98,7 +98,7 @@ function pagingView(searchText) {
 	var totalCount = $(tdata.responseXML).find("searchPoiInfo totalCount").text(); //전체 리스트 갯수
 	var currentPage = $(tdata.responseXML).find("searchPoiInfo page").text(); //현재 페이지
 	alert(currentPage);
-	var count = 10; //페이지당 보여줄 리스트 갯수
+	var count = 5; //페이지당 보여줄 리스트 갯수
 	var totalPage = Math.ceil((totalCount/count)); //전체 페이지 갯수
 //	var startRow = (currentPage-1)*count+1; //시작 리스트 번호
 //	var endRow = startRow+count-1; //끝 리스트 번호

@@ -21,16 +21,12 @@
 	<!-- 주현 -->
 	<!-- 로그인 폼 -->
 	<mvc:view-controller path="/login_form.do" view-name="/WEB-INF/view/content/login_form.jsp" />
-
-
-
+	<!-- 회원가입 폼 -->
+	<mvc:view-controller path="/member/register_form.do" view-name="member/register_form.tiles" />
 
 	<!-- 효원 -->
 	<!-- 기본 맵 폼 -->
 	<mvc:view-controller path="/map/basic_map.do" view-name="map/basic_map.tiles" />
-
-
-
 
 	<!-- 여림 -->
 	<!-- 일정 등록 양식 -->

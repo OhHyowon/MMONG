@@ -5,145 +5,255 @@
 <script type="text/javascript"
 	src="https://apis.skplanetx.com/tmap/js?version=1&format=javascript&appKey=6627b1a4-d735-3501-8a0d-84ad3ce149c9"></script>
 <script type="text/javascript">
-
-window.onload=function(){
-	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
-}
-
-var map, markerLayer;
+var map;
+var markerLayer, markersLayer;
 var tdata;
-
-var markers; //POI검색시 등록되는 마커
-var placeMarker; //일정 장소 마커
-var cLonLat; //지도 중심 좌표
-
-var marker_size;
-var marker_offset;
-var marker_icon;
-
-var searchText = "keyword"; //검색 키워드
+var marker, markers;
+var cLonLat;
+var searchText = "keyword";
+var searchLonLat;
 
 function initialize() {
-	map = new Tmap.Map({div:"map_div", width:'400px', height:'250px'});
+	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+	
+	map = new Tmap.Map({div:"map_div", width:'500px', height:'350px'});
+	cLonLat = new Tmap.LonLat(14149513.77048, 4495298.9298456);
+	map.setCenter(cLonLat, 16);
 	map.addControl(new Tmap.Control.MousePosition());
 	
 	markerLayer = new Tmap.Layer.Markers("marker");
-    map.addLayer(markerLayer);
-    
-    map.events.register("click", map, onClickMap);
-    
-    $("#searchPOI").on("click", function() {
-		$("#result_list_div").empty();
-		markerLayer.clearMarkers();
+	markersLayer = new Tmap.Layer.Markers("markers");
+	map.addLayer(markersLayer);
+	map.addLayer(markerLayer);
+}
+
+function eventInitialize() {
+	$("#searchPOI").on("click", function() {
+		markersLayer.clearMarkers();
 		searchText = $("#keyword").val();
 		searchPOI(searchText);
 	});
-    
-    marker_size = new Tmap.Size(24,38);
-	marker_offset = new Tmap.Pixel(-(marker_size.w/2), -marker_size.h);
-	marker_icon = new Tmap.Icon("https://developers.skplanetx.com/upload/tmap/marker/pin_r_m_1.png", marker_size, marker_offset);
+	
+	$("#result_list_div").on("click", "input.poiToMarker", function() {
+		for(var j=0; j<markersLayer.markers.length; j++) {
+			markersLayer.markers[j].popup.hide();
+		}
+		markerLayer.clearMarkers();
+		
+		var size = new Tmap.Size(24,38);
+		var offset = new Tmap.Pixel(-(size.w/2), -size.h);
+		var icon = new Tmap.Icon('https://developers.skplanetx.com/upload/tmap/marker/pin_r_b_a.png', size, offset);
+
+		var poiName = $(this).prev().prev().prev().val();
+		var poiLon = $(this).prev().prev().val();
+		var poiLat = $(this).prev().val();
+		cLonLat = new Tmap.LonLat(poiLon, poiLat);
+		$("input#keyword").val(poiName);
+		$("input[name=place]").val(poiLon+"_"+poiLat+"_"+poiName);
+		
+		var poiLabel = new Tmap.Label(poiName);
+		
+		marker = new Tmap.Markers(cLonLat, icon, poiLabel);
+		markerLayer.addMarker(marker);
+		//marker.events.register("mouseover", marker, onOverMouseGroupMarker);
+		//marker.events.register("mouseout", marker, onOutMouseGroupMarker);
+		
+		map.panTo(cLonLat);
+	});
 }
 
 function searchPOI(keyword){
 	tdata = new Tmap.TData();
 	tdata.events.register("onComplete", tdata, onCompleteTData);
+	searchLonLat = map.getCenter();
 	searchKeyword(keyword, 1);
 }
 
 function searchKeyword(keyword, searchPage) {
-	var center = map.getCenter();
-	tdata.getPOIDataFromSearch(encodeURIComponent(keyword), {centerLon:center.lon, centerLat:center.lat, radius:5, page:searchPage, count:10});
+	var center = searchLonLat;
+	tdata.getPOIDataFromSearch(encodeURIComponent(keyword), {centerLon:center.lon, centerLat:center.lat, radius:5, page:searchPage, count:8});
+}
+
+function addPOIMarker(options) {
+	var size = new Tmap.Size(18, 29);
+	var offset = new Tmap.Pixel(-(size.w/2), -size.h);
+	var icon = new Tmap.Icon("https://developers.skplanetx.com/upload/tmap/marker/pin_b_s_simple.png", size, offset);
+	markers = new Tmap.Markers(options.lonlat,icon,options.label);
+	markersLayer.addMarker(markers);
+	markers.events.register("mouseover", markers, onOverMousePOI);
+	markers.events.register("mouseout", markers, onOutMousePOI);
 }
 
 function onCompleteTData(e){
-	$("#result_list_div").empty();
-	markerLayer.clearMarkers();
+	$("#list_table").empty();
+	markersLayer.clearMarkers();
 	if($(this.responseXML).find("searchPoiInfo pois poi").text() != ''){
+		var page = $(this.responseXML).find("searchPoiInfo page").text();
 			$(this.responseXML).find("searchPoiInfo pois poi").each(function(){
 				var name = $(this).find("name").text();
 				var lon = $(this).find("frontLon").text();
 				var lat = $(this).find("frontLat").text();
 				var options = {
-					label:new Tmap.Label(name),
-					lonlat:new Tmap.LonLat(lon, lat)
+					lonlat:new Tmap.LonLat(lon, lat),
+					label:new Tmap.Label("<div id='poi_popup_div' style='word-wrap:break-word;word-break:break-all;width:100px;'>"+name+"</div>")
 				};
-				addMarker(options);
-				$("#result_list_div").append("<span class='index'>"+($(this).index()+1)+"</span><span class='result'><a href='javascript:selectPOI("+lon+","+lat+","+$(this).index()+")'>"+name+"</a></span><br>");
-		});
-		map.zoomToExtent(markerLayer.getDataExtent());
+				addPOIMarker(options);
+				$("#list_table").append("<tr><td class='result'><div style='width:290px;text-overflow:ellipsis;overflow: hidden;white-space: nowrap;' title='"+name+"'><label><a href='javascript:panToSelectMarker("+lon+","+lat+","+$(this).index()+")'><img src='/MMONG/resource/assets/img/map/noun_413210_cc.png'>&nbsp;&nbsp;&nbsp;"+name+
+						"</a></label></div></td><td><input type='hidden' name='poiName' value='"+name+"'><input type='hidden' name='poiLon' value='"+lon+"'><input type='hidden' name='poiLat' value='"+lat+"'><input type='button' class='poiToMarker' value='등록' style='width:50px'></td></tr>");
+				
+			});
+		map.zoomToExtent(markersLayer.getDataExtent());
+		pagingView(searchText);
 	}else {
-		alert('검색결과가 없습니다.');
+		$("#list_table").append("<tr><td class='result'><div style='width:340px; text-align:cetner;'>검색 결과가 없습니다.</div></td></tr>");
 	}
-	pagingView(searchText);
 }
 
-//function paging view 복붙
-
-function onCompleteTData(e){
-	$("#result_list_div").empty();
-	markerLayer.clearMarkers();
-	if($(this.responseXML).find("searchPoiInfo pois poi").text() != ''){
-			$(this.responseXML).find("searchPoiInfo pois poi").each(function(){
-				var name = $(this).find("name").text();
-				var lon = $(this).find("frontLon").text();
-				var lat = $(this).find("frontLat").text();
-				var options = {
-					label:new Tmap.Label(name),
-					lonlat:new Tmap.LonLat(lon, lat)
-				};
-				addMarker(options);
-				$("#result_list_div").append("<span class='index'>"+($(this).index()+1)+"</span><span class='result'><a href='javascript:selectPOI("+lon+","+lat+","+$(this).index()+")'>"+name+"</a></span><br>");
-		});
-		map.zoomToExtent(markerLayer.getDataExtent());
+function panToSelectMarker(lon, lat, index) {
+	for(var j=0; j<markersLayer.markers.length; j++) {
+		markersLayer.markers[j].popup.hide();
+	}
+	
+	markersLayer.markers[index].popup.show();
+	
+	cLonLat = new Tmap.LonLat(lon, lat);
+	if(map.getZoom()<14) {
+		map.setCenter(cLonLat, 14);
 	}else {
-		alert('검색결과가 없습니다.');
+		map.panTo(cLonLat);
 	}
-	pagingView(searchText);
 }
 
-function onClickMap(event) {
-	cLonLat = this.getLonLatFromPixel(new Tmap.Pixel(event.clientX, event.clientY-100));
-	var marker_label = new Tmap.Label();
-	placeMarker = new Tmap.Marker(cLonLat, marker_icon, marker_label);
-	markerLayer.addMarker(placeMarker);
+function pagingView(searchText) {
+	var totalCount = $(tdata.responseXML).find("searchPoiInfo totalCount").text(); //전체 리스트 갯수
+	var currentPage = $(tdata.responseXML).find("searchPoiInfo page").text(); //현재 페이지
+	alert(currentPage);
+	var count = 8; //페이지당 보여줄 리스트 갯수
+	var totalPage = Math.ceil((totalCount/count)); //전체 페이지 갯수
+	var pageBlock = 5; //페이지 그룹당 보여줄 페이지 갯수
+	var startPage = Math.floor((currentPage-1)/pageBlock)*pageBlock+1;
+	var endPage = startPage+pageBlock-1; //끝 페이지
+	var firstPage = 1; //첫 페이지
+	var lastPage = totalPage; //마지막 페이지
 	
-	markerLayer.markers.popup.show();
+	if(totalPage>20) { //검색 가능 데이터 갯수가 최대 200개 이므로 페이지도 최대 20페이지
+		totalPage = 20;
+		lastPage = totalPage;
+	}
+	if(endPage>totalPage) {
+		endPage = totalPage;
+	}
 	
-	map.panTo(cLonLat);
+	//현재 페이지가 1이 아닐 경우 처음 버튼 활성화
+	if(currentPage!=1) {
+		document.getElementById("paging_div").innerHTML = "<a href='javascript:searchKeyword(searchText,"+firstPage+")'>[처음] </a>";
+	}else {
+		document.getElementById("paging_div").innerHTML = "[처음] ";
+	}
+	
+	//현재 페이지가 2이상일 경우 이전(◀)버튼 활성화
+	//현재 페이지 2~5일 경우 firstPage로 이동, 그 외에는 startPage-pageBlock으로 이동
+	if(currentPage>1 && currentPage<6) {
+   		document.getElementById("paging_div").innerHTML += "<a href='javascript:searchKeyword(searchText,"+startPage+")'>◀ </a>";
+   		//$("#paging_div").append("<a href='javascript:searchKeyword("+searchText+","+1+")'>◀ </a>");
+	}else if(currentPage>=6){
+		document.getElementById("paging_div").innerHTML += "<a href='javascript:searchKeyword(searchText,"+(startPage-pageBlock)+")'>◀ </a>";
+	}else if(currentPage<2) {
+	//	$("#paging_div").append("◀ ");
+		document.getElementById("paging_div").innerHTML += "◀ ";
+	}
+	
+	//시작 페이지부터 끝 페이지까지 1~5/6~10/11~15
+	for(var j=startPage; j<=endPage; j++) {
+		if(j==currentPage) { //현재 페이지는 링크 처리 X
+			document.getElementById("paging_div").innerHTML += "<font color='red'>"+j+" </font>";
+		}else { //현재 페이지가 아닐 경우 링크 처리
+			document.getElementById("paging_div").innerHTML += "<a href='javascript:searchKeyword(searchText,"+j+")'>"+j+" </a>";
+		}
+	}
+	
+	//끝 페이지가 전체 페이지 수보다 작을 경우 다음(▶)버튼 활성화
+	//끝 페이지의 다음 페이지가 있을 경우 다음(▶)버튼 활성화
+	if(endPage<totalPage && totalPage>=(endPage+1)) {
+		document.getElementById("paging_div").innerHTML += "<a href='javascript:searchKeyword(searchText,"+(startPage+pageBlock)+")'>▶ </a>";
+	}else if(endPage==totalPage && currentPage<endPage) {
+		document.getElementById("paging_div").innerHTML += "<a href='javascript:searchKeyword(searchText,"+endPage+")'>▶ </a>";
+	}else if(currentPage==totalPage) {
+		document.getElementById("paging_div").innerHTML += "▶ ";
+	}
+	
+	//현재 페이지가 lastPage가 아닐 경우 끝 버튼 활성화
+	if(currentPage!=lastPage) {
+		document.getElementById("paging_div").innerHTML += "<a href='javascript:searchKeyword(searchText,"+lastPage+")'>[끝]</a>";
+	}else {
+		document.getElementById("paging_div").innerHTML += "[끝]";
+	}
 }
 
-window.onload = function() {
+function onOverMousePOI(e){
+	for(var j=0; j<markersLayer.markers.length; j++) {
+		markersLayer.markers[j].popup.hide();
+	}
+	this.popup.show();
+}
+
+function onOutMousePOI(e){
+	this.popup.hide();
+}
+
+window.onload = function(){
 	initialize();
+	eventInitialize();
 }
+
 </script>
 <style type="text/css">
 .error{
 	color: red;
 }
+table#list_table {
+	word-break: break-all;
+	padding: 0;
+	margin: 0;
+	table-layout: fixed;
+}
+td.result {
+	padding: 0 5px;
+	margin: 0;
+	height: 40px;
+	width: 250px;
+	font-size: 14px;
+}
 </style>
 
 <div id="total_div">
-<div>　</div>
+	<div></div>
 	<section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i>일정 등록
 		</h3>
-		
-		
 		<div class="col-lg-8">
-	<div class="form-panel">
-	<div>&nbsp;</div>
-<form action="/MMONG/group/groupDate/register.do?${_csrf.parameterName}=${_csrf.token}" method="post" onsubmit="return confirm('등록하시겠습니까?');" class="form-horizontal style-form">
-일정 이름 : <input type="text" name="title" class="form-control"><span class="error"><form:errors path="groupDate.title" deilimiter="&nbsp;&nbsp;"/></span><br>
-날짜 : <input type="datetime-local" name="groupDate" class="form-control"> <span class="error"><form:errors path="groupDate.groupDate" deilimiter="&nbsp;&nbsp;"/></span><br>
-장소 : <input type="text" name="place" id="keyword" class="form-control"><input type="button" value="검색" id="searchPOI" >
-<div id="map_div" style="position: relative;">
-	<div id="result_list_div" style="position: absolute; left: 400px; top: 0px;width: 300px; display: flex;">
-	</div>
-</div>
-<input type="submit" value="등록">
-</form>
-</div>
-</div>
-</section>
+			<div class="form-panel" style="position:relative;">
+				<div>&nbsp;</div>
+				<form action="/MMONG/group/groupDate/register.do?${_csrf.parameterName}=${_csrf.token}" method="post" onsubmit="return confirm('등록하시겠습니까?');" class="form-horizontal style-form">
+					일정 이름 : <div><input type="text" name="title" class="form-control"><span class="error"><form:errors path="groupDate.title" deilimiter="&nbsp;&nbsp;"/></span></div>
+					날짜 : <div><input type="datetime-local" name="groupDate" class="form-control"> <span class="error"><form:errors path="groupDate.groupDate" deilimiter="&nbsp;&nbsp;"/></span></div>
+					장소 : <div style="display:flex;"><input type="text" id="keyword" class="form-control" style="width:90%"><input type="button" value="검색" id="searchPOI" style="width:10%">
+							<input type="hidden" name="place"></div>
+					<div id="wrap_map_div" style="height:420px; position:relative">
+						<div id="map_div" style="width:500px; height:350px; position:absolute; top:30px; left:15px;"></div>
+						<div id="result_list_div" style="width:350px; height:300px; position:absolute; top:30px; left:650px">
+							<table id="list_table">
+								<tr>
+									<td></td>
+								</tr>
+							</table>
+						</div>
+						<div id="paging_div" style="font-size:12px; width:350px; height:25px; text-align:center; position:absolute; top:370px; left:650px;"></div>
+					</div>
+					<div style="margin:auto; width:42px; height:24px;"><input type="submit" value="등록"></div>
+				</form>
+			</div>
+		</div>
+	</section>
 </div>
