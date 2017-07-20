@@ -91,11 +91,15 @@ window.onload=function(){
 
 <div id="total_div">
 <section class="wrapper site-min-height">
-	<br><br>
-	<ul>
-		<li><a href="/MMONG/message/selectReceiveMsg.do">받은 쪽지함</a></li>
-		<li><a href="/MMONG/message/selectSendMsg.do">보낸 쪽지함</a></li>
-	</ul>
+	<div class="btn-group btn-group-justified" style="margin-top:50px; margin-bottom:30px;"">
+	  <div class="btn-group">
+	    <a href="/MMONG/message/selectReceiveMsg.do"><button type="button" class="btn btn-theme">받은 쪽지함</button></a>
+	  </div>
+	  <div class="btn-group">
+	    <a href="/MMONG/message/selectSendMsg.do"><button type="button" class="btn btn-theme">보낸 쪽지함</button></a>
+	  </div>
+	</div>
+	<br>
 		<h2>　보낸 쪽지함</h2>
 <hr>
 <br>
@@ -118,8 +122,12 @@ window.onload=function(){
 					<tr>
 						<td style="width: 30px;padding:10px 0px 10px 40px;"><input type="checkbox" name="message" class="check" value="${list.no }"></td>
 						<td style="width: 150px;padding:10px 0px 10px 0px;">${list.receiveId } (${list.member.nickName })</td>
-						<td style="width:150px;padding:10px 0px 10px 0px;"><a href="/MMONG/message/viewSendMsg.do?no=${list.no }">${list.title }</a></td>
-						<td style="width: 150px;padding:10px 0px 10px 0px;"><a href="/MMONG/message/viewSendMsg.do?no=${list.no }">${list.content }</a></td>
+						<td style="width:150px;padding:10px 0px 10px 0px;">
+							<a href="#" onclick="window.open('/MMONG/message/viewSendMsg.do?no=${list.no }', '보낸쪽지상세보기', 'height=480px, width=480px, left=400, top=100')">${list.title }</a>
+						</td>
+						<td style="width: 150px;padding:10px 0px 10px 0px;">
+							<a href="#" onclick="window.open('/MMONG/message/viewSendMsg.do?no=${list.no }', '보낸쪽지상세보기', 'height=480px, width=480px, left=400, top=100')">${list.content }</a>
+						</td>
 						<td style="width: 100px;padding:10px 0px 10px 0px;"><fmt:formatDate type="date" value="${list.messageDate }"/></td>
 						<td style="width: 100px;padding:10px 40px 10px 0px;">
 							<c:choose>
