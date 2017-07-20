@@ -45,20 +45,16 @@ $(document).ready(function(){
 <div id="view-detail">
 
 	
-<div>
+<div style="height:auto; min-width: 350px; text-align:center;">
 		<div>
 			<h5>회원정보</h5>
 		</div>
 		<p><img src="/MMONG/up_image/profilePicture.PNG" class="img-circle" width="100"></p> 
 		<p><b>ID : <sec:authentication property="principal.memberId"/></b></p>
-		<div class="row">
-			<div class="col-md-6">
 				<p><b>이름</b> : ${requestScope.member.memberName }</p>
 				<p><b>전화번호</b> : ${requestScope.member.memberPhone }</p>
 				<p><b>이메일</b> : ${requestScope.member.memberEmail}</p>
 				<p><b>주소</b> : ${requestScope.member.memberAddress}</p>
-			</div>
-		</div>
 	</div>
 </div>
 <div id="view-menu">

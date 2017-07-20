@@ -71,7 +71,7 @@ window.onload=function(){
 				<tr>
 						<td>${list.no }</td>
 						<td><a href="/MMONG/adminNotice/viewAdminNotice.do?adminNoticeNo=${list.no }">${list.title}</a></td>			
-						<td><fmt:formatDate value="${list.adminDate }" pattern="yyyy-MM-dd"/></td>
+						<td><fmt:formatDate value="${list.adminDate }" pattern="yyyy-MM-dd HH:mm"/></td>
 						<td>${list.adminId }</td>
 				</tr>
 			</c:forEach>

@@ -32,31 +32,33 @@ window.onload=function(){
 			<i class="fa fa-angle-right"></i> 공지사항 상세조회 
 		</h3>
 <div id="view-detail">
-	<table>
-				<tr>
-					 <th>글 번호: </th>
-	                <td>${requestScope.adminNotice.no }</td>
-				</tr>
-				<tr>
-					<th>작성일: </th>
-	                <td><fmt:formatDate value="${requestScope.adminNotice.adminDate }" pattern="yyyy-MM-dd"/></td>
-				</tr>
-	        	<tr>
-	                <th>작성자: </th>
-	                <td>${requestScope.adminNotice.administrator.adminId}</td>
-	            </tr>
-	            <tr>
-	                <th>제목: </th>
-	                <td>${requestScope.adminNotice.title}</td>
-	            </tr>
-	            <tr>
-	                <th>내용: </th>
-	                <td>${requestScope.adminNotice.content}</td>
-	            </tr>
-	         </tbody>
-	         <tbody>
-</table>
+	
 </div>
+
+<table style="border-top: 1px solid gray; border-bottom: 1px dashed; width: 943px; margin-botton: 1px">
+				<tr>
+					<td style="padding: 10px;">글 번호: ${requestScope.adminNotice.no }&nbsp;&nbsp;</td>
+					<td style="text-align: center;">${requestScope.adminNotice.title}</td>
+					<td style="text-align: right;">작성일: <fmt:formatDate value="${requestScope.adminNotice.adminDate }" pattern="yyyy-MM-dd HH:mm" /></td>
+				</tr>
+			</table>
+
+
+			<table style="border-bottom: 1px solid gray; width: 943px">
+				<tr>
+					<td>관리자(${requestScope.adminNotice.administrator.adminId})</td>
+				</tr>
+				<tr>
+					<td style="padding: 10px;">
+						<textarea cols="80" rows="10" id="content" name="content" >${requestScope.adminNotice.content}</textarea>
+					</td>
+				</tr>
+			</table>
+
+
+
+
+
 <br>
 <div id="view-menu">
 	<sec:authorize access="hasRole('ROLE_0')">

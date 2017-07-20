@@ -1,7 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 
-
-
+<style type="text/css">
+#view-menu{
+	text-align: center;
+}
+</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -13,7 +16,6 @@ $(document).ready(function(){
 		}
 	 });
 });
-<script type="text/javascript">
 window.onload=function(){
 	$("#total_div").css("min-height",(document.body.scrollHeight-38.4)+"px");
 }
@@ -25,48 +27,25 @@ window.onload=function(){
 			<i class="fa fa-angle-right"></i>회원정보 조회
 		</h3>
  
- 
-<table>
- <tr>
-	<th>ID : </th>
-	<td>${requestScope.member.user.userId}</td>
- <tr>
- <tr>
-	<th>이름 : </th>
-	<td>${requestScope.member.memberName}</td>
- <tr>
- <tr>
- 	<th>닉네임 : </th>
- 	<td>${requestScope.member.nickName}</td>
- </tr>
- <tr>
-	<th>권한 : </th>
-	<td>${requestScope.member.user.userAuthority}</td>
- </tr>
- <tr>
-	<th>전화번호 : </th>
-	<td>${requestScope.member.memberPhone}</td>
- </tr>
- <tr>
-	<th>이메일 : </th>
-	<td>${requestScope.member.memberEmail}</td>
- </tr>
- <tr>
- 	<th>주소 :</th>
- 	<td>${requestScope.member.memberAddress}</td>
- </tr>
- <tr>
- 	<th>사진 :</th>
- 	<td>${requestScope.member.memberPicture}</td>
- </tr>
- <tr>
-	<td colspan="2"><form action="/MMONG/admin/changeMemberAuthority.do" method="post">
+<div style="height:auto; min-width: 350px; text-align:center;">
+		<div>
+			<h5>회원정보</h5>
+		</div>
+		<p><img src="/MMONG/up_image/profilePicture.PNG" class="img-circle" width="100"></p> 
+		<p><b>ID :${requestScope.member.user.userId}</b></p>
+				<p><b>이름</b> : ${requestScope.member.memberName }</p>
+				<p><b>전화번호</b> : ${requestScope.member.memberPhone }</p>
+				<p><b>이메일</b> : ${requestScope.member.memberEmail}</p>
+				<p><b>주소</b> : ${requestScope.member.memberAddress}</p>
+				<p><b>권한</b> : ${requestScope.member.user.userAuthority}</p>
+</div>
+
+<div id="view-menu">
+	<form action="/MMONG/admin/changeMemberAuthority.do" method="post">
 										<input type="hidden" name="memberId" value="${requestScope.member.user.userId}">
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 										<input class="btn btn-default btn-sm" type="submit" id="memberAuthorityBtn" value="활동 정지/재개 변경">
 							   </form>
-	</td>
-<tr>
-</table>
+</div>
 </section>
 </div>
