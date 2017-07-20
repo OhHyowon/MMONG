@@ -2,9 +2,14 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-
-
 <style type="text/css">
+.error{
+	font-size : 8px;
+	color : red;
+}
+th,td{
+	padding: 5px;
+}
 #view-detail{
   top:0;right:0;bottom:0;left:0;
   display:flex;
@@ -15,13 +20,7 @@
   -webkit-align-item;center;
   -webkit-justify-content:center;
 }
-.error{
-	font-size : 8px;
-	color : red;
-}
-th, td {
-	padding-right : 5px;
-}
+
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
@@ -58,7 +57,7 @@ $(document).ready(function() {
 		}
 	});
 	
-	////////////////////핸드폰번호 인증
+/* 	////////////////////핸드폰번호 인증
 	 $("#memberPhoneChk").on("click", function(){
 		$.ajax({
 			"url" : "/MMONG/member/checkMemberPhone.do",
@@ -77,17 +76,24 @@ $(document).ready(function() {
 				}
 			}
 		});	
-	}); 
+	});  */
+	/////////////휴대폰 번호 비었는지 체크
 	$("#memberPhone").blur(function(){
 		if($("#memberPhone").val()==""){
 			$("#phoneMsg").empty();
 			$("#phoneMsg").append("핸드폰번호는 필수 입력값입니다.");
 			$("#phoneMsg").show();
-		} else if(phoneDuplicationChk==false){
+		}else if($("#memberPhone").val().length<10 || $("#memberPhone").val().length>11){
 			$("#phoneMsg").empty();
-			$("#phoneMsg").append("핸드폰번호 인증을 해 주세요.");
+			$("#phoneMsg").append("10~11자리 번호를 입력해주세요.");
 			$("#phoneMsg").show();
-		} 
+		}/* else if(phoneDuplicationChk==false){
+		$("#phoneMsg").empty();
+		$("#phoneMsg").append("핸드폰번호 인증을 해 주세요.");
+		$("#phoneMsg").show();
+		} */else{
+			 $("#phoneMsg").hide();
+		 }
 	});	
 	//핸드폰번호 숫자만 받게
 	 $("#memberPhone").keyup(function(event){
@@ -108,6 +114,10 @@ $(document).ready(function() {
 			 $("#nickNameMsg").hide();
 		 }
 	 });
+	
+
+	
+	
 	////////////////////주소 비었는지 체크 
 	 $("#memberAddress").blur(function(){
 		 if($("#memberAddress").val()==""){
@@ -154,6 +164,12 @@ function formChk() {
     }else if($("#memberPwd").val().length<7 || $("#memberPwd").val().length>13){
  		alert("비밀번호는 8~12자리입니다");
  		result = false;
+	}else if($("#nickName").val()==""){
+		$("#nickNameMsg").empty();
+		$("#nickNameMsg").append("닉네임을 입력하세요.");
+		$("#nickNameMsg").show();
+		$("#nickName").focus();
+		result = false;
 	}else if($("#memberPhone").val()==""){
 		$("#phoneMsg").empty();
 		$("#phoneMsg").append("핸드폰번호는 필수 입력값입니다.");
@@ -171,12 +187,6 @@ function formChk() {
 		$("#addressMsg").append("주소를 입력하세요.");
 		$("#addressMsg").show();
 		$("#addressMsg").focus();
-		result = false;
-	}else if($("#nickName").val()==""){
-		$("#nickNameMsg").empty();
-		$("#nickNameMsg").append("닉네임을 입력하세요.");
-		$("#nickNameMsg").show();
-		$("#nickName").focus();
 		result = false;
 	}else if($("#memberEmail").val()==""){
 		$("#emailMsg").empty();
@@ -204,54 +214,68 @@ function formSubmit(){
 		<table>	
 			<tr>
 				<th>ID</th>
-				<td><input class="form-control" type="text" id="memberId" name="memberId" readonly value="${requestScope.member.memberId}" style="background-color: #e2e2e2;"><br></td>
+				<td><input class="form-control" type="text" id="memberId" name="memberId" readonly value="${requestScope.member.memberId}" style="background-color: #e2e2e2;"></td>
+				<td></td>
 			</tr>
 			
+			<tr>
+				<th>비밀번호</th>
+				<td><input class="form-control" type="password" id="memberPwd" name="user.userPwd" value="${param['user.userPwd'] }"></td>
+				<td></td>
+			</tr>
 			<tr>
 				<td></td>
 				<td class="error">
 					<form:errors path="member.user.userPwd" delimiter="<br>"/>
 					<div id="pwdMsg" style="display:none"></div>
 				</td>
-			</tr>
-			<tr>
-				<th>비밀번호</th>
-				<td><input class="form-control" type="password" id="memberPwd" name="user.userPwd" value="${param['user.userPwd'] }"><br></td>
+				<td></td>
 			</tr>
 					
 			<tr>
+				<th>비밀번호 확인</th>
+				<td><input class="form-control" type="password" id="memberPwdCheck"></td>
 				<td></td>
-				<td class="error">
-				<div id="pwdChkMsg" style="display:none"></div>
-				</td>
 			</tr>
 			<tr>
-				<th>비밀번호 확인</th>
-				<td><input class="form-control" type="password" id="memberPwdCheck"><br></td>
+				<td></td>
+				<td class="error">
+					<div id="pwdChkMsg" style="display:none"></div>
+				</td>
+				<td></td>
 			</tr>
 			
 			<tr>
-				<td></td>
-				<td class="error">
-				<div id="nameMsg" style="display:none"></div>
-				</td>
-			</tr>
-			<tr>
 				<th>이름</th>
-				<td><input class="form-control" type="text" id="memberName" name="memberName" readonly value="${requestScope.member.memberName}" style="background-color: #e2e2e2;"><br></td>
+				<td><input class="form-control" type="text" id="memberName" name="memberName" readonly value="${requestScope.member.memberName}" style="background-color: #e2e2e2;"></td>
+				<td></td>
 			</tr>
-					
 			<tr>
 				<td></td>
 				<td class="error">
-				<div id="nickNameMsg" style="display:none"></div>
+					<div id="nameMsg" style="display:none"></div>
 				</td>
-			</tr>
-			<tr>
-			<th>닉네임</th>
-				<td><input class="form-control" type="text" id="nickName" name="nickName" value="${requestScope.member.nickName}"><br></td>
+				<td></td>
 			</tr>
 					
+			<tr>
+				<th>닉네임</th>
+				<td><input class="form-control" type="text" id="nickName" name="nickName" value="${requestScope.member.nickName}"></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td class="error">
+					<div id="nickNameMsg" style="display:none"></div>
+				</td>
+				<td></td>
+			</tr>
+					
+			<tr>
+				<th>휴대전화 번호</th>
+				<td><input class="form-control" type="text" id="memberPhone" name="memberPhone" value="${requestScope.member.memberPhone}" maxlength="13"></td> 
+				<td></td> 
+			</tr>		
 			<tr>
 				<td></td>
 				<td class="error">
@@ -259,34 +283,32 @@ function formSubmit(){
 					<div id="phoneMsg" style="display:none"></div>
 				</td>
 			</tr>
-			<tr>
-				<th>휴대전화 번호</th>
-				<td><input class="form-control" type="text" id="memberPhone" name="memberPhone" value="${requestScope.member.memberPhone}" maxlength="13"><br></td> 
-				<td> <input class="btn btn-default btn-sm" type="button" id="memberPhoneChk" value="인증"/></td> 
-			</tr>		
 			
+			<tr>
+				<th>주소</th>
+				<td><input class="form-control" type="text" id="memberAddress" name="memberAddress" value="${requestScope.member.memberAddress}"></td>
+				<td></td>
+			</tr>
 			<tr>
 				<td></td>
 				<td class="error">
-				<div id="addressMsg" style="display:none"></div>
+					<div id="addressMsg" style="display:none"></div>
 				</td>
-			</tr>
-			<tr>
-				<th>주소</th>
-				<td><input class="form-control" type="text" id="memberAddress" name="memberAddress" value="${requestScope.member.memberAddress}"><br></td>
+				<td></td>
 			</tr>
 					
 			<tr>
-				<td></td>
-				<td class="error">
-				<div id="emailMsg" style="display:none"></div>
-				</td>
-			</tr>
-			<tr>
 				<th>이메일</th>
-				<td><input class="form-control" type="text" id="memberEmail" name="memberEmail" value="${requestScope.member.memberEmail }"><br></td>
+				<td><input class="form-control" type="text" id="memberEmail" name="memberEmail" value="${requestScope.member.memberEmail }"></td>
 				<td><input type="hidden" name="memberPicture" value="tmp"></td>
 			</tr>		
+			<tr>
+				<td></td>
+				<td class="error">
+					<div id="emailMsg" style="display:none"></div>
+				</td>
+				<td></td>
+			</tr>
 		</table>
 		<br>
 				<input type="hidden" name="user.userAuthority" value="ROLE_1"/>

@@ -14,11 +14,17 @@ window.onload=function(){
 		</h3>
 
 <sec:authorize access="hasRole('ROLE_0')">
-
-	<button class="btn btn-default" type="button" onclick="location.href='/MMONG/admin/register_form.do' ">관리자 등록</button>&nbsp;
-	<button class="btn btn-default" type="button" onclick="location.href='/MMONG/admin/search_admin_form.do' ">관리자 찾기</button>&nbsp;
-	<button class="btn btn-default" type="button" onclick="location.href='/MMONG/admin/search_member_form.do' ">회원 찾기</button>&nbsp;
-
+<div class="btn-group btn-group-justified" style="margin-top:50px; margin-bottom:30px;">
+<div class="btn-group">
+	<button class="btn btn-theme" type="button" onclick="location.href='/MMONG/admin/register_form.do' ">관리자 등록</button>&nbsp;
+</div>
+<div class="btn-group">	
+	<button class="btn btn-theme" type="button" onclick="location.href='/MMONG/admin/search_admin_form.do' ">관리자 찾기</button>&nbsp;
+</div>
+<div class="btn-group">	
+	<button class="btn btn-theme" type="button" onclick="location.href='/MMONG/admin/search_member_form.do' ">회원 찾기</button>&nbsp;
+</div>
+</div>
 </sec:authorize>
 
 
