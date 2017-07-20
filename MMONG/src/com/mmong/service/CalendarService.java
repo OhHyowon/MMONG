@@ -58,4 +58,10 @@ public interface CalendarService {
 	 * @param calendar
 	 */
 	void updateFromGroup(Calendar calendar);
+	
+	/**
+	 * 진료기록이 수정되었을 때
+	 * @param calendar
+	 */
+	void updateFromChart(Calendar calendar);
 }

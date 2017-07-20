@@ -56,6 +56,9 @@ public class CalendarServiceImpl implements CalendarService{
 		dao.updateFromGroup(calendar);
 	}
 
-	
-	
+	@Override
+	public void updateFromChart(Calendar calendar) {
+		dao.updateFromChart(calendar);
+	}
+
 }

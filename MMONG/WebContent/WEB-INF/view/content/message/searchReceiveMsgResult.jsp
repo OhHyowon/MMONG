@@ -117,8 +117,12 @@ window.onload=function(){
 						<tr>
 							<td style="width: 30px;padding:10px 0px 10px 40px;"><input type="checkbox" name="message" class="check" value="${list.no }"></td>
 							<td style="width: 150px;padding:10px 0px 10px 0px;">${list.sendId } (${list.member.nickName })</td>
-							<td style="width: 200px;padding:10px 0px 10px 0px;"><a href="/MMONG/message/viewReceiveMsg.do?no=${list.no }">${list.title }</a></td>
-							<td style="width: 200px;padding:10px 0px 10px 0px;"><a href="/MMONG/message/viewReceiveMsg.do?no=${list.no }">${list.content }</a></td>
+							<td style="width: 200px;padding:10px 0px 10px 0px;">
+								<a href="#" onclick="window.open('/MMONG/message/viewReceiveMsg.do?no=${list.no }', '받은쪽지상세보기', 'height=480px, width=480px, left=400, top=100')">${list.title }</a>
+							</td>
+							<td style="width: 200px;padding:10px 0px 10px 0px;">
+								<a href="#" onclick="window.open('/MMONG/message/viewReceiveMsg.do?no=${list.no }', '받은쪽지상세보기', 'height=480px, width=480px, left=400, top=100')">${list.content }</a>
+							</td>
 							<td style="width: 100px;padding:10px 40px 10px 0px;"><fmt:formatDate type="date" value="${list.messageDate }"/></td>
 						</tr>
 					</c:forEach>

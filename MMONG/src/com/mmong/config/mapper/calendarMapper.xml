@@ -27,6 +27,7 @@ emotion 변수 사용시, (null 가능)
 	<result column="emotion" property="emotion"/>
 	<result column="picture" property="picture"/>
 	<result column="group_date_no" property="groupDateNo"/>
+	<result column="health_no" property="healthNo"/>
 	<result column="member_id" property="memberId"/>
 </resultMap>
 
@@ -96,5 +97,20 @@ emotion 변수 사용시, (null 가능)
 		emotion=#{emotion}, 
 		picture=#{picture}
 	WHERE group_date_no=#{groupDateNo}
+</update>
+
+<!-- 진료기록이 수정되었을 때 -->
+<update id="updateFromChart">
+	UPDATE calendar
+	SET
+		title=#{title}, 
+		content=#{content}, 
+		type=#{type}, 
+		start_date=#{startDate}, 
+		end_date=#{endDate}, 
+		emotion=#{emotion}, 
+		picture=#{picture}
+	WHERE health_no = #{healthNo} AND member_id = #{memberId}
+
 </update>
 </mapper>

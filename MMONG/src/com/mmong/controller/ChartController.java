@@ -105,7 +105,7 @@ public class ChartController {
 		service2.insertChart(chart);
 
 		//*** 달력에 자동 입력
-		Calendar calendar = new Calendar(0, chartContent.substring(0, 4), chartContent, 1, chartDate, chartDate, 0, "", 0, member.getMemberId());
+		Calendar calendar = new Calendar(0, chartContent.substring(0, 4), chartContent, 1, chartDate, chartDate, 0, "", 0, chartNo, member.getMemberId());
 		calendarService.insertSchedule(calendar);
 		
 		
@@ -140,17 +140,15 @@ public class ChartController {
 	// 진료기록 수정
 	@RequestMapping("chartModify")
 	@ResponseBody
-	public void modifyChart(@RequestParam int healthNo, String content,
+	public void modifyChart(@RequestParam int healthNo, @RequestParam String content,
 							@RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date chartDate){
 		
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		HashMap<String,Object> map = new HashMap<>();
 		
-		/*
 		//*** 달력에 일정 수정 & 자동 입력
-		Calendar calendar = new Calendar(0, chartContent.substring(0, 4), chartContent, 1, chartDate, chartDate, 0, "", 0, member.getMemberId());
+		Calendar calendar = new Calendar(0, content.substring(0, 4), content, 1, chartDate, chartDate, 0, "", 0, healthNo, member.getMemberId());
 		calendarService.updateFromChart(calendar);
-		*/
 		
 		
 		map.put("writer", member.getMemberId());

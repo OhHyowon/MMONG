@@ -77,7 +77,9 @@ public class GroupDateController{
 		groupDateService.insertMeetMember(new MeetMember(groupDateNo, memberNo)); //일정 만든 사람이 최초 일정 참여자
 		
 		//*** 달력에 자동 입력
-		Calendar calendar = new Calendar(0, groupDate.getTitle(), groupDate.getPlace(), 2, groupDate.getGroupDate(), groupDate.getGroupDate(), 0, "", groupDateNo, memberId);
+		String groupPlace = groupDate.getPlace();
+		String [] place = groupPlace.split("_");
+		Calendar calendar = new Calendar(0, groupDate.getTitle(), place[2], 2, groupDate.getGroupDate(), groupDate.getGroupDate(), 0, "", groupDateNo, 0, memberId);
 		calendarService.insertSchedule(calendar);
 		
 		return "redirect:/group/groupDate/allGroupDateList.do"; // 일정 등록되면 일정 목록 페이지로 바뀜
@@ -137,7 +139,7 @@ public class GroupDateController{
 		
 		//*** 달력에 자동 입력
 		GroupDate groupDateInfo = groupDateService.selectGroupDate(groupDateNo);
-		Calendar calendar = new Calendar(0, groupDateInfo.getTitle(), groupDateInfo.getPlace(), 2, groupDateInfo.getGroupDate(), groupDateInfo.getGroupDate(), 0, "", groupDateNo, memberId);
+		Calendar calendar = new Calendar(0, groupDateInfo.getTitle(), groupDateInfo.getPlace(), 2, groupDateInfo.getGroupDate(), groupDateInfo.getGroupDate(), 0, "", groupDateNo, 0, memberId);
 		calendarService.insertSchedule(calendar);
 		
 		return "1";
@@ -304,10 +306,14 @@ public class GroupDateController{
 			nickNameList.add(nickName);
 		}
 		
-		//*** 달력에 일정 수정 & 자동 입력
-		Calendar calendar = new Calendar(0, groupDate.getTitle(), groupDate.getPlace(), 2, groupDate.getGroupDate(), groupDate.getGroupDate(), 0, "", groupDateNo, "");
+		/*//*** 달력에 일정 수정 & 자동 입력
+		System.out.println(groupDate.getPlace());
+		String groupPlace = groupDate.getPlace();
+		String [] place = groupPlace.split("_");
+		System.out.println(place);
+		Calendar calendar = new Calendar(0, groupDate.getTitle(), place[2], 2, groupDate.getGroupDate(), groupDate.getGroupDate(), 0, "", groupDateNo, "");
 		calendarService.updateFromGroup(calendar);
-		
+		*/
 		GroupDate groupDate1=groupDateService.selectGroupDate(groupDateNo);
 		
 		groupDate1.setGroupDate(groupDate.getGroupDate());
