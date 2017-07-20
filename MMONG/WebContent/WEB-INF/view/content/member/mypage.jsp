@@ -47,12 +47,13 @@ $(document).ready(function(){
 	
 <div>
 		<div>
-			<h5>회원정보</h5>
+			<center><h5>회원정보</h5></center>
 		</div>
-		<p><img src="/MMONG/up_image/profilePicture.PNG" class="img-circle" width="100"></p> 
-		<p><b>ID : <sec:authentication property="principal.memberId"/></b></p>
-		<div class="row">
+		<p><center><img src="/MMONG/up_image/profilePicture.PNG" class="img-circle" width="100"></center></p> 
+
+		<div class="row" style="margin-top:15px;">
 			<div class="col-md-6">
+				<p><b>ID : <sec:authentication property="principal.memberId"/></b></p>
 				<p><b>이름</b> : ${requestScope.member.memberName }</p>
 				<p><b>전화번호</b> : ${requestScope.member.memberPhone }</p>
 				<p><b>이메일</b> : ${requestScope.member.memberEmail}</p>
@@ -62,7 +63,6 @@ $(document).ready(function(){
 	</div>
 </div>
 <div id="view-menu">
-	<button class="btn btn-default btn-sm" type="button" onclick="location.href='/MMONG/message/message.do' ">쪽지 관리</button>&nbsp;
 	<form action="/MMONG/member/info_member_update_form.do" method="post">
 		<input type="hidden" name="memberId" value="${requestScope.member.memberId }">
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -72,7 +72,7 @@ $(document).ready(function(){
 		<input type="hidden" name="memberId" value="${requestScope.member.memberId }">
 		<input class="btn btn-default btn-sm" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<input class="btn btn-default btn-sm" id="withdrawalBtn" type="submit" value="회원탈퇴">
-</form>
+	</form>
 </div>
  </section>
 </div>
