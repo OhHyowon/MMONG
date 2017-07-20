@@ -213,18 +213,18 @@ function showPopup2(){
 		
 		
 		// 진료 기록 추가
-		$(document).on('click','.insertChart',function(){
+		$("#healthlist").on('click','.insertChart',function(){
 			var chartNo = $(this).attr('id');
 			var chartContent = $("#chartContent").val();
 			var chartDate = $("#chartDate").val();
 			
 			var that = this; // event source
-			$(".chartForm").remove();
-			$(".chartContentForm").remove();
+//			$(".chartForm").remove();
+//			$(".chartContentForm").remove();
 			 $.ajax({
 					"url":"/MMONG/chart/chartInsert.do",
 					"type":"post",
-					dataType:"json",
+					dataType:"text",
 					"data":{"chartNo":chartNo,"chartContent":chartContent,"chartDate":chartDate, "${_csrf.parameterName}":"${_csrf.token}"},
 					"beforeSend":function(chart){
 						if(!chartContent){
@@ -236,10 +236,10 @@ function showPopup2(){
 							return false;
 						}
 					},
-					"success":function(chart){
-						alert("등록이 완료 되었습니다.")
+					"success":function(success){
+						alert("등록이 완료 되었습니다.");
 						$('.chartForm').empty();
-						$(that).parent().parent().empty();
+						$('.chartAdd').empty();
 			 		},
 					"error":function(){
 							alert("로그인을 하셔야 이용 하실 수 있습니다.")
@@ -258,9 +258,9 @@ function showPopup2(){
 					"type":"post",
 					"data":{"chartNo":chartNo, "${_csrf.parameterName}":"${_csrf.token}"},
 					"success":function(){
-						alert("삭제가 완료 되었습니다.")
+						alert("삭제가 완료 되었습니다.");
 						$('.chartForm').empty();
-						$(that).parent().parent().empty();
+						$(that).parent().parent().parent().empty();
 					},
 					"error":function(){
 						alert("에러")
@@ -312,6 +312,9 @@ function showPopup2(){
 		
 		
 });	// end of ready
+window.onload=function(){
+	   $("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+	}
 </script>
 
 <!-- ############################### CSS ########################### -->
@@ -335,14 +338,14 @@ function showPopup2(){
 
 /*########## button ############*/
 .button{
-    color: #797979;
+    color: #333;
     font-size: 12px;
     border-radius: 4px;
     -webkit-border-radius: 4px;
-    border: 1px solid #797979 !important;
+    border: 1px solid #ccc !important;
     padding: 5px 15px;
     margin-right: 15px;
-    background: #e5e5e5;
+    background: #fff;
     margin-top: 15px;
 }
 
@@ -450,6 +453,7 @@ table.chartTable .even {
 }
 
 </style>
+<div id="total_div">
 <section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i> 건강관리
@@ -500,3 +504,4 @@ table.chartTable .even {
 
 <%-- ==============소모임 페이지 소메뉴 끝================== --%>
 </section>
+</div>
