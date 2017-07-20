@@ -112,9 +112,7 @@ $(document).ready(function(){
 
 <div id="total_div">
 	<section class="wrapper site-min-height">
-		<h3>
-			<i class="fa fa-angle-right"></i>게시글 보기
-		</h3>
+
 
 
 <%-- =============소모임 상세페이지 소메뉴 : 밑에 두메뉴안에도 이것 포함시키기! ================ --%>
@@ -133,26 +131,7 @@ $(document).ready(function(){
 	<input type="button"class="btn btn-default btn-sm" value="글쓰기" onclick="location.href='/MMONG/group/board/board_form.do'">
 	<input type="button"class="btn btn-default btn-sm" value="내가 쓴 글" onclick="location.href='/MMONG/group/board/myBoardList.do'">
 	<input type="button"class="btn btn-default btn-sm" value="내가 쓴 댓글" onclick="location.href='/MMONG/group/reply/myReplyList.do'">
-<br><br>
-
-		<%-- =============소모임 상세페이지 소메뉴 : 밑에 세메뉴안에도 이것 포함시키기! ================ --%>
-		<ul>
-			<li><a href="/MMONG/group/groupDate/allGroupDateList.do">모임
-					일정 목록</a></li>
-			<!-- 소모임 상세페이지 첫 화면 -->
-			<li><a href="/MMONG/group/board/allBoardList.do">자유게시판</a></li>
-		</ul>
-		<%-- =============소모임 상세페이지 소메뉴 끝================ --%>
-		<hr>
-		<input type="button" class="btn btn-default btn-sm" value="글쓰기"
-			onclick="location.href='/MMONG/group/board/board_form.do'"> <input
-			type="button" class="btn btn-default btn-sm" value="내가 쓴 글"
-			onclick="location.href='/MMONG/group/board/myBoardList.do'">
-		<input type="button" class="btn btn-default btn-sm" value="내가 쓴 댓글"
-			onclick="location.href='/MMONG/group/reply/myReplyList.do'">
-		<br>
-		<br>
-
+		<br><br><br>
 		<sec:authentication property="principal.memberId" var="loginId" />
 		<sec:authentication property="principal.nickName" var="nickName" />
 		<div class="col-md-9" style="margin-left: 170px;">
@@ -221,7 +200,7 @@ $(document).ready(function(){
 					varStatus="idx">
 					<c:choose>
 						<c:when test="${ reply.memberId  == loginId}">
-							<div>
+							<div id="reply">
 								<div style="padding-left: 10px;">
 									<div class="messageGo">
 										<b> ${reply.memberId }(${requestScope.replyNickname[idx.index] })
@@ -235,7 +214,7 @@ $(document).ready(function(){
 												id="nickname">
 										</div>
 									</div>
-									<div id="button">
+									<div id="button" style="margin-right:30px">
 										<button class="updateBtn btn btn-primary btn-xs">
 											<i class="fa fa-pencil"></i>
 										</button>

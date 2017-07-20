@@ -311,17 +311,13 @@ public class GroupDateController{
 		
 		GroupDate groupDate1=groupDateService.selectGroupDate(groupDateNo);
 		
-		System.out.println("가지고 온 groupDate "+groupDate);
-		
 		if(groupDate.getPlace().isEmpty()){ // 장소가 null 으로 들어오면 (=장소변경이 없으면, groupDate1에 있는 place 가져오기)
 			groupDate1.setGroupDate(groupDate.getGroupDate());
 			groupDate1.setTitle(groupDate.getTitle());
-			System.out.println("장소가 null 일때 DB에 있는 groupDate1"+groupDate1);
 		}else{
 		groupDate1.setGroupDate(groupDate.getGroupDate());
 		groupDate1.setPlace(groupDate.getPlace());
 		groupDate1.setTitle(groupDate.getTitle());
-		System.out.println("장소가 null이 아닐 때 groupDate1"+groupDate1);
 		}
 		
 		groupDateService.upDateGroupDate(groupDate1); // DB에 수정된 일정 넣기
