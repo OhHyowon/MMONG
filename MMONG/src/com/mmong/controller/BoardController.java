@@ -260,11 +260,11 @@ public class BoardController {
 
 		Board board=boardService.selectBoard(boardNo);
 
-		if(board.getMemberId().equals(memberId)){
+	
 			replyService.deleteReplyByBoardNo(boardNo);
 			BPService.deleteBPByBoardNo(boardNo);
 			boardService.deleteBoard(boardNo, memberId);
-		}
+		
 		
 		return "1";
 	}

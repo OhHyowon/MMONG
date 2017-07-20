@@ -17,6 +17,69 @@ window.onload=function(){
 		$("#splitIndex"+j+"").next().after(""+place[2]+"");
 	}
 }
+$(document).ready(function(){
+	$("#option").on("change",function(){
+		if($("#option").val()=="dateTime"){
+			if($("#searchBtn").on("click",function(){
+				
+			var key = $("#key").val();
+			if(key.length!=10 || key.split('-').length != 3 || validateYear(key) == false || validateMonth(key) == false || validateDay(key) == false ){
+				alert("날짜가 형식에 맞지 않습니다.");
+				return;
+				}else{
+					$("#action").submit();
+				}
+			})); // end of searchBtn
+		} 
+	}); 
+});
+
+function validateYear(key){
+	var result=false;
+	var val = key.split('-')[0];
+	
+	if(val.indexOf('-')>-1){
+		result = false;
+	}else if(val.length<4){
+		result = false;
+	}else if(Number(val)<2000){
+		result = false;
+	}else{
+		result = true;
+	}
+	return result;
+}
+
+function validateMonth(key){
+	var result = false;
+	var val = key.split('-')[1];
+	
+	if(val.indexOf('-')>-1){
+		result = false;
+	}else if(Number(val)>12||Number(val)<1){
+		result = false;		
+	}else{
+		result = true;
+	}
+	return result;
+}
+
+function validateDay(key){
+	var result = false;
+	var y  = key.split('-')[0];
+	var m = key.split('-')[1];
+	var d = key.split('-')[2];
+	var lastDay = (new Date(y,m,0)).getDate();
+	
+	if (d.indexOf('-')>-1){
+		result = false;
+	}else if(Number(d)>Number(lastDay)||Number(d)<1){
+		result = false;
+	}else{
+		result = true;
+	}
+	return result;
+}
 
 </script>
 
@@ -173,17 +236,17 @@ td {
 
 <%-- 검색 창 --%>
 <div id="form">
-<form action="/MMONG/group/groupDate/allGroupDateListByKey.do">
+	<form id="action" action="/MMONG/group/groupDate/allGroupDateListByKey.do">
 		* 날짜 : 검색일 이후의 날짜로 검색 됩니다.<br>
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-		<select name="option" style="height:24.4px; margin-top:3px">
+		<select id="option" name="option" style="height:24.4px; margin-top:3px">
 			<option value="title">일정이름</option>
 			<option value="place">장소</option>
 			<option value="dateTime">날짜</option>
 		</select>
-			<input type="text" name="key" placeholder="날짜:yyyy-mm-dd 입력" style="margin-bottom:1px;margin-left:3px"> 
-			<input class="btn btn-default btn-sm" type="submit" value="검색" style="margin-left:3px">
-</form>
+			<input type="text" name="key" placeholder="날짜:yyyy-mm-dd 입력" style="margin-bottom:1px;margin-left:3px" id="key"> 
+			<input id="searchBtn"class="btn btn-default btn-sm" type="button" value="검색" style="margin-left:3px">
+		</form>
 </div>
 </div>
 </c:when>
@@ -197,7 +260,8 @@ td {
 
 		</c:when>
 	<c:otherwise>
-	<p style="text-align:center">
+	<p style="text-align:center">	
+	<br><br><br>
 			모임 참여자만 볼 수 있습니다. 모임 참여를 해주세요~
 			</p>
 	</c:otherwise>

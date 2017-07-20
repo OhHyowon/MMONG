@@ -21,8 +21,6 @@ function showPopup2(){
 	$("input[name='chek']:checked").each(function(){
 		checkedNo=($(this).attr('id'));
 		checkedContent=($(this).val());
-		alert(checkedNo);
-		alert(checkedContent);
 	});	// end of checklist
 	
 	
@@ -62,7 +60,7 @@ function showPopup2(){
 							this.gender='중성';
 						}
 						txt = txt+'<tr><td class="radioNo" id="'+this.content+'">'+this.no+"</td><td class='clickByHealth' id='"+this.no+"'>"+this.content+"</td><td>"
-						+this.gender+'</td><td class="checkboxClass"><sec:authorize access="hasRole(\'ROLE_0\')"><input type="checkbox" name="chek" id="'+this.no+'" value='+this.content+'></sec:authorize></td></tr>'
+						+this.gender+'</td><td class="checkboxClass"><sec:authorize access="hasRole(\'ROLE_0\')"><input type="checkbox" name="chek" id="'+this.no+'" value='+this.content+' maxlength="300"></sec:authorize></td></tr>'
 					});	// end of each
 					$("#listTbody").html(txt);
 					$("#healthlist").show();
@@ -196,7 +194,7 @@ function showPopup2(){
 						});
 					},	// end of success
 					"error":function(){													
-						$(that).parent().after('<tr class="chartForm"><td>진료날짜 입력</td><td>진료내용을 입력해 주세요</td><td>등록 여부</td></tr><tr class="chartAdd"><td><input type=date id="chartDate"></td><td><textarea rows="2" cols="50" id="chartContent" name="textarea"></textarea>'+'</td><td>'
+						$(that).parent().after('<tr class="chartForm"><td>진료날짜 입력</td><td>진료내용을 입력해 주세요</td><td>등록 여부</td></tr><tr class="chartAdd"><td><input type=date id="chartDate"></td><td><textarea rows="2" cols="50" id="chartContent" name="textarea" maxlength="300"></textarea>'+'</td><td>'
 								+'<center><input type="button" value="등록" class="insertChart" id="'+chartNo+'"><center>'+'</td></tr>');
 						$('input[id='+chartNo+']:checkbox').each(function() {
 							$(this).prop('checked', true);
@@ -213,18 +211,18 @@ function showPopup2(){
 		
 		
 		// 진료 기록 추가
-		$(document).on('click','.insertChart',function(){
+		$("#healthlist").on('click','.insertChart',function(){
 			var chartNo = $(this).attr('id');
 			var chartContent = $("#chartContent").val();
 			var chartDate = $("#chartDate").val();
 			
 			var that = this; // event source
-			$(".chartForm").remove();
-			$(".chartContentForm").remove();
+//			$(".chartForm").remove();
+//			$(".chartContentForm").remove();
 			 $.ajax({
 					"url":"/MMONG/chart/chartInsert.do",
 					"type":"post",
-					dataType:"json",
+					dataType:"text",
 					"data":{"chartNo":chartNo,"chartContent":chartContent,"chartDate":chartDate, "${_csrf.parameterName}":"${_csrf.token}"},
 					"beforeSend":function(chart){
 						if(!chartContent){
@@ -236,10 +234,10 @@ function showPopup2(){
 							return false;
 						}
 					},
-					"success":function(chart){
-						alert("등록이 완료 되었습니다.")
+					"success":function(success){
+						alert("등록이 완료 되었습니다.");
 						$('.chartForm').empty();
-						$(that).parent().parent().empty();
+						$('.chartAdd').empty();
 			 		},
 					"error":function(){
 							alert("로그인을 하셔야 이용 하실 수 있습니다.")
@@ -258,9 +256,9 @@ function showPopup2(){
 					"type":"post",
 					"data":{"chartNo":chartNo, "${_csrf.parameterName}":"${_csrf.token}"},
 					"success":function(){
-						alert("삭제가 완료 되었습니다.")
+						alert("삭제가 완료 되었습니다.");
 						$('.chartForm').empty();
-						$(that).parent().parent().empty();
+						$(that).parent().parent().parent().empty();
 					},
 					"error":function(){
 						alert("에러")
@@ -272,7 +270,7 @@ function showPopup2(){
 		$("#healthlist").on('click','.chartMod',function(){
 			var chartNo = $(this).attr('id');
 			$(this).parent().parent().after('<tr class="chartForm"><td>진료날짜 입력</td><td>수정할 진료내용을 입력해 주세요</td><td>등록 여부</td></tr>'+
-											'<tr class="modForm"><td><input type=date id="modeDate"></td><td>'+'<textarea rows="2" cols="40" id="chartContent" name="textarea"></textarea>'+'</td><td>'
+											'<tr class="modForm"><td><input type=date id="modeDate"></td><td>'+'<textarea rows="2" cols="40" id="chartContent" name="textarea" maxlength="300"></textarea>'+'</td><td>'
 						+'<input type="button" value="등록" class="mod" align="center" id="'+chartNo+'">'+'</td></tr>');
 		}) // end of chartMod
 														
@@ -312,6 +310,9 @@ function showPopup2(){
 		
 		
 });	// end of ready
+window.onload=function(){
+	   $("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+	}
 </script>
 
 <!-- ############################### CSS ########################### -->
@@ -323,10 +324,10 @@ function showPopup2(){
 	}
 	
 .chartDetail{
-	color : #797979;
+	color : #050404;
 } 
 .chartContentForm, .chartForm{
-	color : #f45ae5;	
+	color : #050404;	
 	}
 
 .radioNo{
@@ -335,14 +336,14 @@ function showPopup2(){
 
 /*########## button ############*/
 .button{
-    color: #797979;
+    color: #333;
     font-size: 12px;
     border-radius: 4px;
     -webkit-border-radius: 4px;
-    border: 1px solid #797979 !important;
+    border: 1px solid #ccc !important;
     padding: 5px 15px;
     margin-right: 15px;
-    background: #e5e5e5;
+    background: #fff;
     margin-top: 15px;
 }
 
@@ -450,6 +451,7 @@ table.chartTable .even {
 }
 
 </style>
+<div id="total_div">
 <section class="wrapper site-min-height">
 		<h3>
 			<i class="fa fa-angle-right"></i> 건강관리
@@ -480,7 +482,7 @@ table.chartTable .even {
 <sec:authorize access="hasRole('ROLE_1')">
 <input type ="button" id="selectBtn" value="진료기록 검색" class="button"><br>
 </sec:authorize>
-<sec:authorize access="hasRole('ROLE_1')">
+<sec:authorize access="hasRole('ROLE_0')">
 <input type="button" value="건강 리스트 등록" onclick="showPopup();" class="button">
 <input type="button" value="건강 리스트 삭제" id="removeHealth" class="button" onsubmit="return confirm('삭제하시겠습니까?')">
 <input type="button" value="건강 리스트 수정" id="modifyHealth" class="button" onclick="showPopup2();">
@@ -500,3 +502,4 @@ table.chartTable .even {
 
 <%-- ==============소모임 페이지 소메뉴 끝================== --%>
 </section>
+</div>

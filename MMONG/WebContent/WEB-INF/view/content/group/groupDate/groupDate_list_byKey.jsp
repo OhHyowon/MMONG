@@ -203,6 +203,7 @@ td {
 
 		</c:when>
 	<c:otherwise>
+	<br><br><br>
 			<br>모임 참여자만 볼 수 있습니다. 모임 참여를 해주세요~
 	</c:otherwise>
 </c:choose>

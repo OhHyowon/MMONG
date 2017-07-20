@@ -15,35 +15,42 @@
 
 <script type="text/javascript" src="/MMONG/resource/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
-window.onload=function(){
-	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
-}
+$(document).ready(function(){
+	$("#ok").on("click", function(){
+		opener.parent.location.reload();
+		self.close();		
+	});
+});
+
 </script>
 
 <style type="text/css">
 table{
 	font-size:18px;
 }
+
+body{
+	font-size: 16px;
+}
+
+.viewName{
+	background-color: #F2F2F2;
+}
 </style>
-	<div id="total_div">
-		<section class="wrapper site-min-height">
-		<br><br>
-		<ul>
-			<li><a href="/MMONG/message/selectReceiveMsg.do">받은 쪽지함</a></li>
-			<li><a href="/MMONG/message/selectSendMsg.do">보낸 쪽지함</a></li>
-		</ul>
-		<h2>　보낸 쪽지 상세 보기</h2>
-	<hr>
-	<br>
+
+<body>
+		<div class="viewName" align="center"><br>
+		<h2>보낸 쪽지 상세 보기</h2><br></div>
+<br><br>
+<div align="center">
 <table>
-	<tr><td style="width: 200px;padding:10px 0px 10px 45px;">보낸이</td><td>${requestScope.message.receiveId }(${requestScope.message.member.nickName })</td></tr>
-	<tr><td style="width: 200px;padding:10px 0px 10px 45px;">받은 시간</td><td>${requestScope.message.messageDate }</td></tr>
-	<tr><td style="width: 200px;padding:10px 0px 10px 45px;">제목</td><td>${requestScope.message.title }</td></tr>
-	<tr><td style="width: 200px;padding:10px 0px 10px 45px;">내용</td><td>${requestScope.message.content }</td></tr>
+	<tr><td style="width: 150px;padding:10px 0px 10px 30px;">보낸이</td><td>${requestScope.message.receiveId }(${requestScope.message.member.nickName })</td></tr>
+	<tr><td style="width: 150px;padding:10px 0px 10px 30px;">받은 시간</td><td>${requestScope.message.messageDate }</td></tr>
+	<tr><td style="width: 150px;padding:10px 0px 10px 30px;">제목</td><td>${requestScope.message.title }</td></tr>
+	<tr><td style="width: 150px;padding:10px 0px 10px 30px;">내용</td><td>${requestScope.message.content }</td></tr>
 </table>
 <br><br>
-	<div style="padding-left:170px">
-		<input type="button" class="btn btn-default" value="확인" onclick="javascript:history.back(-1)">
-	</div>
-</section>
+		<input type="button" class="btn btn-default" value="확인" id="ok">
+
 </div>
+</body>

@@ -8,11 +8,15 @@
 	color : red;
 }
 th, td {
-	padding-right : 5px;
+	padding: 5px;
 }
 #register_form{
-	width:80%; height:30%; margin:0 auto; 
+	width:34%; height:30%; 
+	position: relative;
+	top:-10px;
+	left:395px;
 }
+
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
@@ -148,7 +152,7 @@ $(document).ready(function() {///가입 버튼 누르기 전에 폼 이동 시 �
 		});
 	});
 
-	////////////////////핸드폰번호 인증
+/* 	////////////////////핸드폰번호 인증
 	$("#memberPhoneChk").on("click", function(){
 		$.ajax({
 			"url" : "/MMONG/member/checkMemberPhone.do",
@@ -167,17 +171,23 @@ $(document).ready(function() {///가입 버튼 누르기 전에 폼 이동 시 �
 				}
 			}
 		});	
-	});
+	}); */
 	 $("#memberPhone").blur(function(){
 		 if($("#memberPhone").val()==""){
 			$("#phoneMsg").empty();
 			$("#phoneMsg").append("핸드폰번호는 필수 입력값입니다.");
 			$("#phoneMsg").show();
-		 }else if(phoneDuplicationChk==false){
+		 }else if($("#memberPhone").val().length<10 || $("#memberPhone").val().length>11){
+				$("#phoneMsg").empty();
+				$("#phoneMsg").append("10~11자리 번호를 입력해주세요.");
+				$("#phoneMsg").show();
+			}/* else if(phoneDuplicationChk==false){
 				$("#phoneMsg").empty();
 				$("#phoneMsg").append("핸드폰번호 인증을 해 주세요.");
 				$("#phoneMsg").show();
-			}
+			} */else{
+				 $("#phoneMsg").hide();
+			 }
 		});	
 	//핸드폰번호 숫자만 받게
 	 $("#memberPhone").keyup(function(event){
@@ -226,13 +236,12 @@ $(document).ready(function() {///가입 버튼 누르기 전에 폼 이동 시 �
 			 $("#emailMsg").hide();
 		 }
 	 });
-	 
 });//ready fucntion끝
 
 
 
 function emailAuthOpen(){ //이메일 인증컨트롤러 부르는 함수
-	if($("#memberEmail1").val()==""||$("#memberEmail2").val()==""){
+	if($("#memberEmail").val()==""){
 		$("#emailMsg").empty();
 		$("#emailMsg").append("이메일을 입력하세요.");
 		$("#emailMsg").show();
@@ -282,7 +291,7 @@ function formChk() {
 		$("#nameMsg").empty();
 		$("#nameMsg").append("이름을 입력하세요.");
 		$("#nameMsg").show();
-		$("#nameMsg").focus();
+		$("#memberName").focus();
 		result = false;
 	}else if($("#nickName").val()==""){
 		$("#nickNameMsg").empty();
@@ -302,22 +311,17 @@ function formChk() {
 		$("#phoneMsg").show();
 		$("#memberPhone").focus();
 		result = false;
-	}else if(phoneDuplicationChk==false){
-		$("#phoneMsg").empty();
-		$("#phoneMsg").append("핸드폰번호 인증을 해 주세요.");
-		$("#phoneMsg").show();
-		result = false;
 	}else if($("#memberAddress").val()==""){
 		$("#addressMsg").empty();
 		$("#addressMsg").append("주소를 입력하세요.");
 		$("#addressMsg").show();
-		$("#addressMsg").focus();
+		$("#memberAddress").focus();
 		result = false;
 	}else if($("#memberEmail").val()==""){
 		$("#emailMsg").empty();
 		$("#emailMsg").append("이메일을 입력하세요.");
 		$("#emailMsg").show();
-		$("#memberEmail1").focus();
+		$("#memberEmail").focus();
 		result = false;
 	}else if($("#emailSuccessMsg").text()!="인증완료"){
 		$("#emailMsg").empty();
@@ -342,111 +346,126 @@ function formSubmit(){
 
 	<section class="wrapper site-min-height">
 		<h3><i class="fa fa-angle-right"></i> 회원가입</h3>
+		
 <div id="register_form">	
 <form name="registerForm" id="register" action="/MMONG/member/registerMember.do" method="post">
 	<table>	
+		<tr>
+			<th>ID</th>
+			<td><input class="form-control" placeholder="ID" type="text" id="memberId" name="memberId" value="${param['user.userId'] }"></td>
+			<td><input class="btn btn-default btn-sm" type="button" id="idChk" value="중복확인"/></td>
+		</tr>
 		<tr>
 			<td></td>
 			<td class="error">
 				<form:errors path="member.user.userId" delimiter="<br>"/>
 				<div id="idMsg" style="display:none"></div>
 			</td>
-		</tr>
-		<tr>
-			<th>ID</th>
-			<td><input class="form-control" placeholder="ID" type="text" id="memberId" name="memberId" value="${param['user.userId'] }"><br></td>
-			<td><input class="btn btn-default btn-sm" type="button" id="idChk" value="중복확인"/></td>
+			<td></td>
 		</tr>
 		
+		<tr>
+			<th>비밀번호</th>
+			<td><input class="form-control" placeholder="패스워드" type="password" id="memberPwd" name="user.userPwd" value="${param['user.userPwd'] }"></td>
+			<td></td>
+		</tr>
 		<tr>
 			<td></td>
 			<td class="error">
 				<form:errors path="member.user.userPwd" delimiter="<br>"/>
 				<div id="pwdMsg" style="display:none"></div> 
 			</td>
-		</tr>
-		<tr>
-			<th>비밀번호</th>
-			<td><input class="form-control" placeholder="패스워드" type="password" id="memberPwd" name="user.userPwd" value="${param['user.userPwd'] }"><br></td>
+			<td></td>
 		</tr>
 				
 		<tr>
+			<th>비밀번호 확인</th>
+			<td><input class="form-control" placeholder="패스워드 확인" type="password" id="memberPwdCheck"></td>
 			<td></td>
-			<td class="error">
-			<div id="pwdChkMsg" style="display:none"></div>
-			</td>
 		</tr>
 		<tr>
-			<th>비밀번호 확인</th>
-			<td><input class="form-control" placeholder="패스워드 확인" type="password" id="memberPwdCheck"><br></td>
+			<td></td>
+			<td class="error">
+				<div id="pwdChkMsg" style="display:none"></div>
+			</td>
+			<td></td>
 		</tr>
 		
 		<tr>
+			<th>이름</th>
+			<td><input class="form-control" placeholder="이름" type="text" id="memberName" name="memberName" value="${param.memberName }"></td>
 			<td></td>
-			<td class="error">
-			<div id="nameMsg" style="display:none"></div>
-			</td>
 		</tr>
 		<tr>
-			<th>이름</th>
-			<td><input class="form-control" placeholder="이름" type="text" id="memberName" name="memberName" value="${param.memberName }"><br></td>
+			<td></td>
+			<td class="error">
+				<div id="nameMsg" style="display:none"></div>
+			</td>
+			<td></td>
 		</tr>
 				
-		<tr>
-			<td></td>
-			<td class="error">
-			<div id="nickNameMsg" style="display:none"></div>
-			</td>
-		</tr>
 		<tr>
 		<th>닉네임</th>
-			<td><input class="form-control" placeholder="닉네임" type="text" id="nickName" name="nickName" value="${param.nickName }"><br></td>
+			<td><input class="form-control" placeholder="닉네임" type="text" id="nickName" name="nickName" value="${param.nickName }"></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td class="error">
+				<div id="nickNameMsg" style="display:none"></div>
+			</td>
+			<td></td>
 		</tr>
 				
+		<tr>
+			<th>휴대전화 번호</th>
+			<td><input class="form-control" placeholder="휴대전화 번호" type="text" id="memberPhone" name="memberPhone" value="${param.memberPhone }" maxlength="13"></td>
+			<td></td>
+		</tr>		
 		<tr>
 			<td></td>
 			<td class="error">
 				<form:errors path="member.memberPhone" delimiter="<br>"/>
 				<div id="phoneMsg" style="display:none"></div>
 			</td>
+			<td></td>
 		</tr>
-		<tr>
-			<th>휴대전화 번호</th>
-			<td><input class="form-control" placeholder="휴대전화 번호" type="text" id="memberPhone" name="memberPhone" value="${param.memberPhone }" maxlength="13"><br></td>
-			<td><input class="btn btn-default btn-sm" type="button" id="memberPhoneChk" value="인증"/></td>
-		</tr>		
 		
-		<tr>
-			<td></td>
-			<td class="error">
-			<div id="addressMsg" style="display:none"></div>
-			</td>
-		</tr>
-		<tr>
+<%-- 		<tr>
 			<th>주소</th>
-			<td><input class="form-control" placeholder="주소" type="text" id="memberAddress" name="memberAddress" value="${param.memberAddress }"><br></td>
+			<td><input class="form-control" placeholder="주소" type="text" id="memberAddress" name="memberAddress" value="${param.memberAddress }"></td>
+			<td></td>
 		</tr>
-				
 		<tr>
 			<td></td>
 			<td class="error">
-			<div id="emailMsg" style="display:none"></div>
-			<div id="emailSuccessMsg"></div>
+				<div id="addressMsg" style="display:none"></div>
 			</td>
-		</tr>
+			<td></td>
+		</tr> --%>
+				
 		<tr>
 			<th>이메일</th>
 			<td>
-					<input class="form-control" placeholder="Email" type="email" id="memberEmail" name="memberEmail" value="${param.memberEmail }"><br></td>
+					<input class="form-control" placeholder="Email" type="email" id="memberEmail" name="memberEmail" value="${param.memberEmail }"></td>
 					<!-- <input type="button" id="emailAuth" value="이메일 인증하기" onClick="emailAuthOpen(); return false;"/> -->
 			<td><input class="btn btn-default btn-sm" type="button" id="emailAuth" value="이메일 인증"/></td>				
-			<td><input type="hidden" name="memberPicture" value="tmp"></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td class="error">
+				<div id="emailMsg" style="display:none"></div>
+				<div id="emailSuccessMsg"></div>
+			</td>
 		</tr>
 		
 		<tr>
-			<td colspan="2">
-				<input class="btn btn-default btn-sm" type="button" value="가입" onClick="formSubmit(); return false;" />
+			<td><input type="hidden" name="memberPicture" value="tmp"></td>
+			<td>
+				<input class="btn btn-default btn-sm" type="button" value="가입" onClick="formSubmit(); return false;"/>
 			</td>
+			<td></td>
 		</tr>
 	</table>
 	<sec:csrfInput/>
@@ -454,5 +473,3 @@ function formSubmit(){
 </div>
 </section>
 </div>
-
-

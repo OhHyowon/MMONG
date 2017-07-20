@@ -13,6 +13,11 @@ window.onload=function(){
 	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
 }
 $(document).ready(function(){
+ 
+	var divLeft = (document.body.scrollWidth-280)+"px";
+	
+	$("#groupInfo").css("left", divLeft);
+	
 	//로그인 안했을 때 소모임 가입 버튼 누르면 처리
 	$("#createNone").on("click", function(){
 		alert("먼저 로그인 해주세요.");
@@ -29,7 +34,7 @@ $(document).ready(function(){
 				"success":function(response) {
 					if(response=="1"){
 						alert("가입이 완료되었습니다.");
-						opener.parent.location.reload();
+						window.location.reload();
 					}else{
 						alert("이미 가입된 소모임 입니다.");
 					}
@@ -40,7 +45,6 @@ $(document).ready(function(){
 	
 	//주인장이 소모임 수정 버튼 클릭시
 	$("#editGroupBtn").on("click", function(){
-		alert("수정하기");
 		window.open("/MMONG/group/updateGroup1.do","모임 수정하기","top=100px, left=100px, height=220px, width=500px");
 	});
 	
@@ -192,21 +196,12 @@ $(document).ready(function(){
 	</div>			
 <%-- =============소모임 상세페이지 소메뉴 끝================ --%>
 
+<center><h4>모임 정보</h4></center>
 
 
-
-
-
-
-
-<!-- 소모임 정보 -->
-<p><b>모임 정보</b></p>
-모임 이름 : ${requestScope.group.name } <br>
-모임 장 : ${requestScope.group.leader } <br>
-
-
-
-<!-- 가입하기 버튼 -->
+<!--  버튼 영역-->
+	    
+<div style="margin-left:83%; display:inline-block;">	
 <sec:authorize access="!isAuthenticated()"> <!-- 로그인 안했을시  -->       
    <button type="button" id="createNone" class='btn btn-default'>가입하기</button>
 </sec:authorize>
@@ -218,8 +213,8 @@ $(document).ready(function(){
    if(au.equals("ROLE_1")){//관리자인 경우 아무것도 안뜸 
       Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();      
       if(((Group)request.getAttribute("group")).getLeader().equals(member.getMemberId())){ //주인장은 가입하기 버튼 대신 소모임 정보수정 버튼 필요
-         out.println("<center><button type='button' id='editGroupBtn' class='btn btn-default btn-sm'>소모임 수정하기</button></center>");
-      	 out.println("<center><button type='button' id='deleteBtn' class='btn btn-default btn-sm'>소모임 삭제하기</button></center>");
+         out.println("<center><button type='button' id='editGroupBtn' class='btn btn-default btn-sm'>소모임 수정하기</button>&nbsp;&nbsp;<button type='button' id='deleteBtn' class='btn btn-default btn-sm'>소모임 삭제하기</button></center>");
+      	 //out.println("<center><button type='button' id='deleteBtn' class='btn btn-default btn-sm'>소모임 삭제하기</button></center>");
       }else{//주인장이 아닌경우 그룹멤버에 이미 내가 포함되어있는지 검사후 안되어있으면 가입하기버튼
     	  List<GroupMember> groupMemberList = (List)(request.getAttribute("groupMemberList"));
     	  boolean flag = false;
@@ -237,9 +232,24 @@ $(document).ready(function(){
    %>
 </sec:authorize>
 <br>
+</div>	
 
 
-<hr>
+
+
+
+
+<!-- 소모임 정보 -->
+<div id="groupInfo" style="width:150px;">
+<b>모임 [ ${requestScope.group.name }  ] 입니다. </b><br>
+<img src="/MMONG/resource/assets/img/leader.png" class="img-responsive" alt="" style="width:14px; height:14px;" align="left"> &nbsp; ${requestScope.group.leader } <br>
+<img src="/MMONG/resource/assets/img/talk.png" class="img-responsive" alt="" style="width:18px; height:17px;" align="left"> &nbsp;<i>${requestScope.group.content }</i>
+</div>
+<br><br><br>
+
+
+
+
 
 <!-- 참여자 목록 -->
 <sec:authorize access="!isAuthenticated()">
@@ -275,15 +285,21 @@ $(document).ready(function(){
 	</c:choose>
 
 
+			<sec:authentication property="principal.memberId" var="loginId" />
+	<% int i = 1; %>
+		<c:forEach var="groupMember" items="${groupMemberList }">
+			<c:if test="${groupMember.memberId == loginId}">
+				<% i = 2; %>
+			</c:if>
+		</c:forEach>
 
-	<c:choose>
-		<c:when test="${groupMemberList != null}"> <!-- 멤버초대랑 모임탈퇴는 내가 그룹에 가입되어있을때만 -->
+	<%if (i==2){ %> <!-- 멤버초대랑 모임탈퇴는 내가 그룹에 가입되어있을때만 -->
 	<!-- 멤버초대 -->	   
 	<div class="col-md-12" style="text-align:center;margin-left:34px"> <!-- 버튼 모아놓음 -->			
 		<button class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">invite</button>
 				<!-- 모임탈퇴 -->	
 		<button class="btn btn-default btn-sm" id="leaveBtn" >모임 탈퇴</button>
-			<sec:authentication property="principal.memberId" var="loginId" />
+		<%}%>
 		<c:if test="${group.leader eq loginId}">
 			<input type="button" value="모임장 변경하기" class="btn btn-default btn-sm"
 					onclick="window.open('/MMONG/groupMember/searchGroupMember2.do', '모임장 변경하기', 'top=100px, left=100px, height=220px, width=500px')">
@@ -323,8 +339,8 @@ $(document).ready(function(){
 			    </div>
 			  </div>
 			</div>  
-		</c:when>
-	</c:choose>
+		
+
 </sec:authorize>
 
 <input type="hidden" id="leader" value="${group.leader }">

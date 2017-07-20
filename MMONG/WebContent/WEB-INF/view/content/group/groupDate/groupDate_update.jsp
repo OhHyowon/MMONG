@@ -156,7 +156,6 @@ function panToSelectMarker(lon, lat, index) {
 function pagingView(searchText) {
 	var totalCount = $(tdata.responseXML).find("searchPoiInfo totalCount").text(); //전체 리스트 갯수
 	var currentPage = $(tdata.responseXML).find("searchPoiInfo page").text(); //현재 페이지
-	alert(currentPage);
 	var count = 8; //페이지당 보여줄 리스트 갯수
 	var totalPage = Math.ceil((totalCount/count)); //전체 페이지 갯수
 	var pageBlock = 5; //페이지 그룹당 보여줄 페이지 갯수
@@ -255,7 +254,6 @@ window.onload = function(){
 </script>
 <style type="text/css">
 .error {
-	font-size: .8em;
 	color: red;
 }
 table#list_table {
@@ -274,7 +272,7 @@ td.result {
 </style>
 
 <div class="col-lg-8">
-	<div class="form-panel">
+	<div class="form-panel" >
 		<div>&nbsp;</div>
 		<form action="/MMONG/group/groupDate/updateGroupDate2.do" method="post">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -288,7 +286,7 @@ td.result {
 			</div>
 			장소 :
 			<div style="display: flex;">
-				<input type="hidden" class="form-control" id="placeSplit" value="${requestScope.groupDate.place }"><input type="text" id="keyword" class="form-control" style="width:90%"><input type="button" value="검색" id="searchPOI" style="width: 10%"><input type="hidden" name="place">
+				<input type="hidden" class="form-control" id="placeSplit" value="${requestScope.groupDate.place }"><input type="text" id="keyword" class="form-control" style="width:90%"><input type="button" value="검색" id="searchPOI" style="width: 10%" class="btn btn-default"><input type="hidden" name="place">
 			</div>
 			<input type="hidden" name="memberId" value="${requestScope.groupDate.memberId}">
 			<div id="wrap_map_div" style="height: 420px; position: relative">
