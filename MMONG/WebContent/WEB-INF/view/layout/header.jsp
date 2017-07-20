@@ -149,7 +149,7 @@ function logout(){
 						<sec:authorize access="!isAuthenticated()"> 
 						    <a onClick="alertMsg2(); return false;" >
 						        <i class="fa fa-bell"></i>
-						    </a>							
+						    </a>
 					    </sec:authorize>
 					    <sec:authorize access="isAuthenticated()"> 
 						    <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">

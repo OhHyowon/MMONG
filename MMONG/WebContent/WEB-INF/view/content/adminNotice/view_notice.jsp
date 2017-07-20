@@ -32,10 +32,10 @@ window.onload=function(){
 			<i class="fa fa-angle-right"></i> 공지사항 상세조회 
 		</h3>
 <div id="view-detail">
-	
+
 </div>
 
-<table style="border-top: 1px solid gray; border-bottom: 1px dashed; width: 943px; margin-botton: 1px">
+		    <table style="border-top: 1px solid gray; border-bottom: 1px dashed; width: 943px; margin-botton: 1px">
 				<tr>
 					<td style="padding: 10px;">글 번호: ${requestScope.adminNotice.no }&nbsp;&nbsp;</td>
 					<td style="text-align: center;">${requestScope.adminNotice.title}</td>
@@ -50,13 +50,10 @@ window.onload=function(){
 				</tr>
 				<tr>
 					<td style="padding: 10px;">
-						<textarea cols="80" rows="10" id="content" name="content" >${requestScope.adminNotice.content}</textarea>
+							<textarea cols="80" rows="10" id="content" name="content" >${requestScope.adminNotice.content}</textarea>
 					</td>
 				</tr>
 			</table>
-
-
-
 
 
 <br>
