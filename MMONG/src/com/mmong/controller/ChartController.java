@@ -92,7 +92,7 @@ public class ChartController {
 	// 진료기록 등록
 	@RequestMapping("chartInsert")
 	@ResponseBody
-	public Chart insertChartList(@RequestParam String chartContent, 
+	public String insertChartList(@RequestParam String chartContent, 
 								@RequestParam int chartNo, 
 								@RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date chartDate){
 		
@@ -108,16 +108,7 @@ public class ChartController {
 		Calendar calendar = new Calendar(0, chartContent.substring(0, 4), chartContent, 1, chartDate, chartDate, 0, "", 0, member.getMemberId());
 		calendarService.insertSchedule(calendar);
 		
-		
-		// 넣은 객체를 리턴해주기 위한 여정
-		map.put("no", chartNo);
-		map.put("writer", member.getMemberId());
-		
-		// no와 id를 이용해서 지금 등록한 객체 조회
-		chart = service2.selectChartByNoAndWriter(map);
-
-		return chart;
-	
+		return("success");
 	}
 	
 	// 진료기록 삭제
