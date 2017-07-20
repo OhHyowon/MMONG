@@ -21,8 +21,6 @@ function showPopup2(){
 	$("input[name='chek']:checked").each(function(){
 		checkedNo=($(this).attr('id'));
 		checkedContent=($(this).val());
-		alert(checkedNo);
-		alert(checkedContent);
 	});	// end of checklist
 	
 	
@@ -62,7 +60,7 @@ function showPopup2(){
 							this.gender='중성';
 						}
 						txt = txt+'<tr><td class="radioNo" id="'+this.content+'">'+this.no+"</td><td class='clickByHealth' id='"+this.no+"'>"+this.content+"</td><td>"
-						+this.gender+'</td><td class="checkboxClass"><sec:authorize access="hasRole(\'ROLE_0\')"><input type="checkbox" name="chek" id="'+this.no+'" value='+this.content+'></sec:authorize></td></tr>'
+						+this.gender+'</td><td class="checkboxClass"><sec:authorize access="hasRole(\'ROLE_1\')"><input type="checkbox" name="chek" id="'+this.no+'" value='+this.content+'></sec:authorize></td></tr>'
 					});	// end of each
 					$("#listTbody").html(txt);
 					$("#healthlist").show();
@@ -326,10 +324,10 @@ window.onload=function(){
 	}
 	
 .chartDetail{
-	color : #797979;
+	color : #050404;
 } 
 .chartContentForm, .chartForm{
-	color : #f45ae5;	
+	color : #050404;	
 	}
 
 .radioNo{

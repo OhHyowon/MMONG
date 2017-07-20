@@ -55,10 +55,17 @@ $('document').ready(function(){
 	
 });
 </script>
+<style type="text/css">
+
+th, td{
+	padding: 8px;
+}
+</style>
 </head>
 <body>
 
 	<section class="wrapper site-min-height">
+<div align="center">
 		<h3>
 			<i class="fa fa-angle-right"></i> 소모임 만들기
 		</h3>
@@ -66,23 +73,22 @@ $('document').ready(function(){
 <form id="createGroup">
 	<table>	
 		<tr>
-			<th>소모임 이름</th>
-			<td><input type="text" id="name" name="name" value="${param.name}"></td>
-		</tr>		
+			<th>소모임 이름&nbsp</th>
+			<td><input type="text" id="name" name="name" value="${param.name}" class="form-control"></td>
+		</tr>
 		<tr>
-			<th>모임 설명</th>
-			<td><input type="text" id="content" name="content" value="${param.content}">
+			<th>모임 설명&nbsp</th>
+			<td><input type="text" id="content" name="content" value="${param.content}" class="form-control">
 				<input type="hidden" id="picture" name="picture" value="tmp"></td>
-		</tr>		
-		<tr>
-			<td colspan="2">    
-				<input type="button" id="create" value="생성">&nbsp; 
-				<input type="reset" value="다시 작성">&nbsp;</td>
-			</td>
+				
 		</tr>
 	</table>
+	<br>
+	<input type="button" id="create" value="생성" class="btn btn-default btn-sm" >&nbsp; 
+	<input type="reset" value="다시 작성" class="btn btn-default btn-sm">&nbsp;
 	<input type="hidden"  id="token" name="${_csrf.parameterName}"   value="${_csrf.token}"/>
 </form>
+</div>
 </section>
 </body>
 </html>
