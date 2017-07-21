@@ -52,6 +52,12 @@
 					OR route5 LIKE '%'||#{routeContent}||'%'
 	</select>
 	
+	<select id="searchTrailMine" parameterType="String" resultMap="trail-resultmap">
+		SELECT	no, category, route1, route2, route3, route4, route5, title, content, member_id
+		FROM	trail
+		WHERE	member_id = #{memberId}
+	</select>
+	
 	<insert id="insertTrail" parameterType="trail">
 		<selectKey keyProperty="no" resultType="_int" order="BEFORE">
 			SELECT	trail_no_seq.nextval

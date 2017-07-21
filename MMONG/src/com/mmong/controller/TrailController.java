@@ -36,7 +36,8 @@ public class TrailController {
 	@RequestMapping("searchTrailByNo")
 	public ModelAndView searchTrailByNo(@RequestParam(required=false) int no) {
 		Trail trail = trailService.searchTrailByNo(no);
-		return new ModelAndView("map/search_trail_test.tiles", "trail", trail);
+		//return new ModelAndView("map/search_trail_test.tiles", "trail", trail);
+		return new ModelAndView("map/basic_map.tiles");
 	}
 	
 	@RequestMapping("searchTrailByTitle")
@@ -64,11 +65,20 @@ public class TrailController {
 		return trail;
 	}
 	
+	@RequestMapping("searchTrailMine")
+	@ResponseBody
+	public List<Trail> searchTrailMine(@RequestParam(required=false) String memberId) {
+		List<Trail> trail = trailService.searchTrailMine(memberId);
+		
+		return trail;
+	}
+	
 	@RequestMapping("updateTrail")
 	public ModelAndView updateTrail(@ModelAttribute Trail trail, BindingResult errors) {
 		trailService.updateTrail(trail);
 		
-		return new ModelAndView("map/search_trail_test.tiles", "trail", trail);
+		//return new ModelAndView("map/search_trail_test.tiles", "trail", trail);
+		return new ModelAndView("map/basic_map.tiles");
 	}
 	
 	@RequestMapping("deleteTrailByNo")
