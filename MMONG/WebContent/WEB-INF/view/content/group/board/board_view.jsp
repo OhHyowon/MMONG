@@ -183,7 +183,7 @@ $(function() {
 			</table>
 
 			<br>
-
+ 
 
 			<%-- 로그인된 아이디와 글쓴 아이디가 같을 때!!!!  --%>
 			<div style="margin-left: 776px;">
@@ -207,14 +207,13 @@ $(function() {
 			</div>
 			<%--########################   댓글    #########################  --%>
 			<br>
-			<br>
 			<div style="background: #DFDFDF; width: 943px">
 				<div>&nbsp;</div>
 				<c:forEach items="${requestScope.replyList }" var="reply"
 					varStatus="idx">
 					<c:choose>
 						<c:when test="${ reply.memberId  == loginId}">
-							<div id="reply">
+							<div>   
 								<div style="padding-left: 10px;">
 									<div class="messageGo">
 										<b> ${reply.memberId }(${requestScope.replyNickname[idx.index] })
