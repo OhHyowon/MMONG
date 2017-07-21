@@ -34,7 +34,7 @@ $(document).ready(function(){
             "success":function(response) {
                if(response=="1"){
                   alert("가입이 완료되었습니다.");
-                  opener.parent.location.reload();
+                  window.location.reload();
                }else{
                   alert("이미 가입된 소모임 입니다.");
                }
