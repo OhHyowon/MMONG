@@ -10,145 +10,145 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
 window.onload=function(){
-	$("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
+   $("#total_div").css("min-height", (document.body.scrollHeight-38.4)+"px");
 }
 $(document).ready(function(){
  
-	var divLeft = (document.body.scrollWidth-280)+"px";
-	
-	$("#groupInfo").css("left", divLeft);
-	
-	//로그인 안했을 때 소모임 가입 버튼 누르면 처리
-	$("#createNone").on("click", function(){
-		alert("먼저 로그인 해주세요.");
-		return;
-	});
-	
-	//소모임 가입 처리
-	$("#create").on("click", function(){
-		if(confirm("소모임에 가입하시겠습니까?")){
-			$.ajax({
-				"url" : "/MMONG/groupMember/insertGroupMember.do",
-				"data" : {"no":0, "groupNo":$("#groupNo").val(), "memberId":$("#memberId").val(), "${_csrf.parameterName}":"${_csrf.token}"},
-				"dataType" : "text",
-				"success":function(response) {
-					if(response=="1"){
-						alert("가입이 완료되었습니다.");
-						window.location.reload();
-					}else{
-						alert("이미 가입된 소모임 입니다.");
-					}
-				}
-			});//ajax 끝
-		}
-	});
-	
-	//주인장이 소모임 수정 버튼 클릭시
-	$("#editGroupBtn").on("click", function(){
-		window.open("/MMONG/group/updateGroup1.do","모임 수정하기","top=100px, left=100px, height=220px, width=500px");
-	});
-	
-	$("#deleteBtn").on("click",function(){
-		var groupName=$("#groupName").val();
-	
-		if(!confirm("'"+groupName+"'"+" 소모임을 삭제하시겠습니까?")){
-			return
-		}else{
-			$.ajax({
-				url:"/MMONG/group/deleteGroup.do",
-				type:"post",
-				data:{"${_csrf.parameterName}":"${_csrf.token}"},
-				dataType:"text",
-				success:function(txt){
-					if(txt=="1"){
-						alert("삭제되었습니다.");
-						location.href="/MMONG/group/mygroup.do"
-					}else{
-						alert("소모임에 참여중인 멤버가 있습니다. 삭제 불가");
-					}
-				}
-			}); //ajax 끝
-		}
-	});
-	
-	
-	//소모임 하나 클릭했을 때 소모임 상세페이지로 이동 
-	$(".myGroup").on("click", function(){
-		$(this).parent().submit();
-	});
-	
-	$("#leaveBtn").on("click", function() {
-		var leader = $("#leader").val();
-		var loginId = $("#loginId").val();
+   var divLeft = (document.body.scrollWidth-280)+"px";
+   
+   $("#groupInfo").css("left", divLeft);
+   
+   //로그인 안했을 때 소모임 가입 버튼 누르면 처리
+   $("#createNone").on("click", function(){
+      alert("먼저 로그인 해주세요.");
+      return;
+   });
+   
+   //소모임 가입 처리
+   $("#create").on("click", function(){
+      if(confirm("소모임에 가입하시겠습니까?")){
+         $.ajax({
+            "url" : "/MMONG/groupMember/insertGroupMember.do",
+            "data" : {"no":0, "groupNo":$("#groupNo").val(), "memberId":$("#memberId").val(), "${_csrf.parameterName}":"${_csrf.token}"},
+            "dataType" : "text",
+            "success":function(response) {
+               if(response=="1"){
+                  alert("가입이 완료되었습니다.");
+                  opener.parent.location.reload();
+               }else{
+                  alert("이미 가입된 소모임 입니다.");
+               }
+            }
+         });//ajax 끝
+      }
+   });
+   
+   //주인장이 소모임 수정 버튼 클릭시
+   $("#editGroupBtn").on("click", function(){
+      window.open("/MMONG/group/updateGroup1.do","모임 수정하기","top=100px, left=100px, height=220px, width=500px");
+   });
+   
+   $("#deleteBtn").on("click",function(){
+      var groupName=$("#groupName").val();
+   
+      if(!confirm("'"+groupName+"'"+" 소모임을 삭제하시겠습니까?")){
+         return
+      }else{
+         $.ajax({
+            url:"/MMONG/group/deleteGroup.do",
+            type:"post",
+            data:{"${_csrf.parameterName}":"${_csrf.token}"},
+            dataType:"text",
+            success:function(txt){
+               if(txt=="1"){
+                  alert("삭제되었습니다.");
+                  location.href="/MMONG/group/mygroup.do"
+               }else{
+                  alert("소모임에 참여중인 멤버가 있습니다. 삭제 불가");
+               }
+            }
+         }); //ajax 끝
+      }
+   });
+   
+   
+   //소모임 하나 클릭했을 때 소모임 상세페이지로 이동 
+   $(".myGroup").on("click", function(){
+      $(this).parent().submit();
+   });
+   
+   $("#leaveBtn").on("click", function() {
+      var leader = $("#leader").val();
+      var loginId = $("#loginId").val();
 
-		if (leader == loginId) {
-			alert("모임장은 모임을 탈퇴 할 수 없습니다!!!");
-		} else {
-			if (!confirm("정말 모임을 탈퇴 하시겠습니까?")) {
-				return;
-			} else {
-				$.ajax({
-					url : "/MMONG/groupMember/leaveGroup.do",
-					type : "post",
-					data : {
-						"${_csrf.parameterName}" : "${_csrf.token}"
-					},
-					dataType : "json",
-					success : function(txt) {
-						if (txt == '1') {
-							alert("탈퇴 하였습니다.");
-							location.href = "/MMONG/group/mygroup.do"
-						} else {
-							alert("탈퇴 불가");
-						}
-					}
-				}); // ajax 끝
-			}
-		}
-	});
-	
-	//아이디로 검색 (모달에서)시 검색결과 뿌리기
-	$("#searchBtn").on("click", function(){
-		if($("#searchMemberId").val()==""){
-			$("#inputForm").attr('class', 'form-group has-error');
-			return;
-		}
-		$.ajax({
-			"url" : "/MMONG/groupMember/searchAllMember.do",
-			"data" : {"memberId":$("#searchMemberId").val()},
-			"dataType" : "JSON",
-			"success":function(response) {
-				$("#searchMemberList").empty();
-				if(response==""){
-					$("#searchMemberList").append("검색된 아이디는 존재하지 않습니다.");
-				}else{
-					$.each(response, function(){
-						$("#searchMemberList").append("<li id='searchedId' value='"+this.memberId+"'><button type='button' class='btn btn-default btn-xs' style='margin-right:10px'>초대</button>"+this.memberId+"</li>");
-					});
-				}
-			}
-		});//ajax 끝
-	});
-	
-	//초대버튼 누를 시 
-	$("#searchMemberList").on("click", "button", function(){
-		$.ajax({
-			"url" : "/MMONG/groupMember/inviteGroupMember.do",
-			"data" : {"memberId" : $(this).parent().attr('value'), "groupNo":$("#groupNo").val()},
-			"dataType" : "text",
-			"success":function(response) {
-				alert("초대메시지를 보냈습니다.");
-			}
-		});//ajax 끝		
-	});
-	
-	$("#warning").on("click", function(){
-		alert("로그인 해주세요.");
-	});
-	$("#warning2").on("click", function(){
-		alert("로그인 해주세요.");
-	});
-	
+      if (leader == loginId) {
+         alert("모임장은 모임을 탈퇴 할 수 없습니다!!!");
+      } else {
+         if (!confirm("정말 모임을 탈퇴 하시겠습니까?")) {
+            return;
+         } else {
+            $.ajax({
+               url : "/MMONG/groupMember/leaveGroup.do",
+               type : "post",
+               data : {
+                  "${_csrf.parameterName}" : "${_csrf.token}"
+               },
+               dataType : "json",
+               success : function(txt) {
+                  if (txt == '1') {
+                     alert("탈퇴 하였습니다.");
+                     location.href = "/MMONG/group/mygroup.do"
+                  } else {
+                     alert("탈퇴 불가");
+                  }
+               }
+            }); // ajax 끝
+         }
+      }
+   });
+   
+   //아이디로 검색 (모달에서)시 검색결과 뿌리기
+   $("#searchBtn").on("click", function(){
+      if($("#searchMemberId").val()==""){
+         $("#inputForm").attr('class', 'form-group has-error');
+         return;
+      }
+      $.ajax({
+         "url" : "/MMONG/groupMember/searchAllMember.do",
+         "data" : {"memberId":$("#searchMemberId").val()},
+         "dataType" : "JSON",
+         "success":function(response) {
+            $("#searchMemberList").empty();
+            if(response==""){
+               $("#searchMemberList").append("검색된 아이디는 존재하지 않습니다.");
+            }else{
+               $.each(response, function(){
+                  $("#searchMemberList").append("<li id='searchedId' value='"+this.memberId+"'><button type='button' class='btn btn-default btn-xs' style='margin-right:10px'>초대</button>"+this.memberId+"</li>");
+               });
+            }
+         }
+      });//ajax 끝
+   });
+   
+   //초대버튼 누를 시 
+   $("#searchMemberList").on("click", "button", function(){
+      $.ajax({
+         "url" : "/MMONG/groupMember/inviteGroupMember.do",
+         "data" : {"memberId" : $(this).parent().attr('value'), "groupNo":$("#groupNo").val()},
+         "dataType" : "text",
+         "success":function(response) {
+            alert("초대메시지를 보냈습니다.");
+         }
+      });//ajax 끝      
+   });
+   
+   $("#warning").on("click", function(){
+      alert("로그인 해주세요.");
+   });
+   $("#warning2").on("click", function(){
+      alert("로그인 해주세요.");
+   });
+   
 });
 </script>
 
@@ -158,13 +158,13 @@ $(document).ready(function(){
 
 <!-- 그룹 상세페이지가 열릴 때마다 해당 소모임NO를 세션에 담음 -->
 <%
-	int groupNo = ((Group)request.getAttribute("group")).getNo();
-	session.setAttribute("groupNo", groupNo);	
+   int groupNo = ((Group)request.getAttribute("group")).getNo();
+   session.setAttribute("groupNo", groupNo);   
 %>
 <!-- 그룹 가입 시 그룹멤버 객체 만들어주기위해 넘겨줄 값 : 이건 예전에 만든거라 세션처리 못함 - 이주현 -->
 <input type="hidden" id="groupNo" value="${requestScope.group.no}">
 <sec:authorize access="hasRole('ROLE_1')">
-	<input type="hidden" id="memberId" value="<sec:authentication property="principal.memberId"/>">
+   <input type="hidden" id="memberId" value="<sec:authentication property="principal.memberId"/>">
 </sec:authorize>
 <input type="hidden" id="groupName" value="${requestScope.group.name }">
 
@@ -172,36 +172,36 @@ $(document).ready(function(){
 
 <%-- =============소모임 상세페이지 소메뉴 : 밑에 두메뉴안에도 이것 포함시키기! ================ --%>
 
-	<div class="btn-group btn-group-justified" style="margin-top:50px; margin-bottom:30px;">
-		<sec:authorize access="!isAuthenticated()">
-		  <div class="btn-group">
-		    <button type="button" class="btn btn-theme" id="warning">모임 일정 목록</button>
-		  </div>
-		  <div class="btn-group">
-		    <button type="button" class="btn btn-theme" id="warning2">자유게시판</button>
-		  </div>
-		</sec:authorize>	
-		<sec:authorize access="isAuthenticated()">
-		  <div class="btn-group">
-		    <a href="/MMONG/group/groupDate/allGroupDateList.do"><button type="button" class="btn btn-theme">모임 일정 목록</button></a>
-		  </div>
-		  <div class="btn-group">
-		    <a href="/MMONG/group/board/allBoardList.do"><button type="button" class="btn btn-theme">자유게시판</button></a>
-		  </div>
-		</sec:authorize>
+   <div class="btn-group btn-group-justified" style="margin-top:50px; margin-bottom:30px;">
+      <sec:authorize access="!isAuthenticated()">
+        <div class="btn-group">
+          <button type="button" class="btn btn-theme" id="warning">모임 일정 목록</button>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-theme" id="warning2">자유게시판</button>
+        </div>
+      </sec:authorize>   
+      <sec:authorize access="isAuthenticated()">
+        <div class="btn-group">
+          <a href="/MMONG/group/groupDate/allGroupDateList.do"><button type="button" class="btn btn-theme">모임 일정 목록</button></a>
+        </div>
+        <div class="btn-group">
+          <a href="/MMONG/group/board/allBoardList.do"><button type="button" class="btn btn-theme">자유게시판</button></a>
+        </div>
+      </sec:authorize>
 
-		<div class="btn-group">
-		  <a href="/MMONG/group/mygroup.do"><button type="button" class="btn btn-theme">나의 소모임</button></a>
-		</div>
-	</div>			
+      <div class="btn-group">
+        <a href="/MMONG/group/mygroup.do"><button type="button" class="btn btn-theme">나의 소모임</button></a>
+      </div>
+   </div>         
 <%-- =============소모임 상세페이지 소메뉴 끝================ --%>
 
 <center><h4>모임 정보</h4></center>
 
 
 <!--  버튼 영역-->
-	    
-<div style="margin-left:83%; display:inline-block;">	
+       
+<div style="margin-left:83%; display:inline-block;">   
 <sec:authorize access="!isAuthenticated()"> <!-- 로그인 안했을시  -->       
    <button type="button" id="createNone" class='btn btn-default'>가입하기</button>
 </sec:authorize>
@@ -214,25 +214,25 @@ $(document).ready(function(){
       Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();      
       if(((Group)request.getAttribute("group")).getLeader().equals(member.getMemberId())){ //주인장은 가입하기 버튼 대신 소모임 정보수정 버튼 필요
          out.println("<center><button type='button' id='editGroupBtn' class='btn btn-default btn-sm'>소모임 수정하기</button>&nbsp;&nbsp;<button type='button' id='deleteBtn' class='btn btn-default btn-sm'>소모임 삭제하기</button></center>");
-      	 //out.println("<center><button type='button' id='deleteBtn' class='btn btn-default btn-sm'>소모임 삭제하기</button></center>");
+          //out.println("<center><button type='button' id='deleteBtn' class='btn btn-default btn-sm'>소모임 삭제하기</button></center>");
       }else{//주인장이 아닌경우 그룹멤버에 이미 내가 포함되어있는지 검사후 안되어있으면 가입하기버튼
-    	  List<GroupMember> groupMemberList = (List)(request.getAttribute("groupMemberList"));
-    	  boolean flag = false;
-    	  for(GroupMember gm : groupMemberList){
-    		  if(gm.getMemberId().equals(member.getMemberId())){
-    			  flag = true; //내가 가입되어있음 
-    			  break;
-    		  }
-    	  }
-    	  if(flag==false){ //가입 안되어있는 경우 - 가입하기 버튼 
-    		  out.println("<center><button type='button' id='create' class='btn btn-default btn-sm'>가입하기</button></center>");
-    	  }
+         List<GroupMember> groupMemberList = (List)(request.getAttribute("groupMemberList"));
+         boolean flag = false;
+         for(GroupMember gm : groupMemberList){
+            if(gm.getMemberId().equals(member.getMemberId())){
+               flag = true; //내가 가입되어있음 
+               break;
+            }
+         }
+         if(flag==false){ //가입 안되어있는 경우 - 가입하기 버튼 
+            out.println("<center><button type='button' id='create' class='btn btn-default btn-sm'>가입하기</button></center>");
+         }
       }
    }
    %>
 </sec:authorize>
 <br>
-</div>	
+</div>   
 
 
 
@@ -253,95 +253,97 @@ $(document).ready(function(){
 
 <!-- 참여자 목록 -->
 <sec:authorize access="!isAuthenticated()">
-		로그인 해주세요. 
-	</sec:authorize>
+      로그인 해주세요. 
+   </sec:authorize>
+   
+<!-- 참여멤버 조회 -->   
 <sec:authorize access="isAuthenticated()">
-	<!-- 참여멤버 조회 -->
 
-	<c:choose>
-		<c:when test="${groupMemberList == null}">
-				참여 멤버 목록 조회는 모임 멤버만 가능합니다. 
-			</c:when>
-		<c:otherwise>
-	<div class="col-md-12" style="margin-left:450px;">
-		<div class="col-md-4" style="text-align:center;">
-					<table class="table">
-						<thead>
-							<tr>
-								<td><b>참여자 ID</b></td>
-							</tr>
-						</thead>
-						<tbody>
-								<c:forEach var="groupMember" items="${groupMemberList }">
-							<tr>
-									<td>${groupMember.memberId }</td>
-							</tr>
-								</c:forEach>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</c:otherwise>
-	</c:choose>
+   <c:choose>
+      <c:when test="${groupMemberList == null}">
+            참여 멤버 목록 조회는 모임 멤버만 가능합니다. 
+      </c:when>
+      <c:otherwise>
+         <div class="col-md-12" style="margin-left:450px;">
+            <div class="col-md-4" style="text-align:center;">
+                  <table class="table">
+                     <thead>
+                        <tr>
+                           <td><b>참여자 ID</b></td>
+                        </tr>
+                     </thead>
+                     <tbody>
+                           <c:forEach var="groupMember" items="${groupMemberList }">
+                        <tr>
+                              <td>${groupMember.memberId }</td>
+                        </tr>
+                           </c:forEach>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+      </c:otherwise>
+   </c:choose>
 
 
-			<sec:authentication property="principal.memberId" var="loginId" />
-	<% int i = 1; %>
-		<c:forEach var="groupMember" items="${groupMemberList }">
-			<c:if test="${groupMember.memberId == loginId}">
-				<% i = 2; %>
-			</c:if>
-		</c:forEach>
-
-	<%if (i==2){ %> <!-- 멤버초대랑 모임탈퇴는 내가 그룹에 가입되어있을때만 -->
-	<!-- 멤버초대 -->	   
-	<div class="col-md-12" style="text-align:center;margin-left:34px"> <!-- 버튼 모아놓음 -->			
-		<button class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">invite</button>
-				<!-- 모임탈퇴 -->	
-		<button class="btn btn-default btn-sm" id="leaveBtn" >모임 탈퇴</button>
-		<%}%>
-		<c:if test="${group.leader eq loginId}">
-			<input type="button" value="모임장 변경하기" class="btn btn-default btn-sm"
-					onclick="window.open('/MMONG/groupMember/searchGroupMember2.do', '모임장 변경하기', 'top=100px, left=100px, height=220px, width=500px')">
-		</c:if>
-	</div>
-	
-
-		
-			<!-- Modal -->
-			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			  <div class="modal-dialog">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			        <h4 class="modal-title" id="myModalLabel">Invite Member</h4>
-			      </div>
-			      <div class="modal-body">
-			       	 <!-- INLINE FORM ELELEMNTS -->
-			          	<div class="row mt">
-			          		<div class="col-lg-12">
-			                      <form class="form-inline" role="form">
-			                          <div id=inputForm class="form-group">
-			                              <!-- <label class="sr-only" for="exampleInputEmail2">Email address</label> -->
-			                              <input class="form-control" id="searchMemberId" placeholder="아이디 검색">
-			                          </div>
-			                          <button type="button" class="btn btn-theme" id="searchBtn">search</button> <br>
-			                          <input type="hidden" id="groupNo" value="${requestScope.groupNo }"> <!-- 모임 초대 시 groupNo보내기 위해 -->
-									  <br>
-									  <div id="searchMemberList"></div> <!-- 검색된 아이디 뿌려줌 -->									  
-			                      </form>
-			          		</div><!-- /col-lg-12 -->
-			          	</div><!-- /row -->
-			      </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">cancel</button>
-			      </div>
-			    </div>
-			  </div>
-			</div>  
-		
-
+   <!-- 멤버초대, 모임탈퇴, 모임장 변경 버튼들 -->
+   <sec:authorize access="hasRole('ROLE_1')">
+   <c:choose>
+      <c:when test="${groupMemberList != null}"><!-- 멤버초대랑 모임탈퇴는 내가 그룹에 가입되어있을때만 -->
+          
+         <!-- 버튼들 -->      
+         <div class="col-md-12" style="text-align:center;margin-left:34px">
+            <!-- 멤버초대 -->   
+            <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">invite</button>
+            <!-- 모임탈퇴 -->   
+            <button class="btn btn-default btn-sm" id="leaveBtn" >모임 탈퇴</button>
+            <!-- 모임장변경하기 버튼 -->
+            
+               <sec:authentication property="principal.memberId" var="loginId" />
+               <c:if test="${group.leader eq loginId}">
+                  <input type="button" value="모임장 변경하기" class="btn btn-default btn-sm"
+                        onclick="window.open('/MMONG/groupMember/searchGroupMember2.do', '모임장 변경하기', 'top=100px, left=100px, height=220px, width=500px')">
+               </c:if>
+         </div>
+   
+         <!-- Modal -->
+         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+           <div class="modal-dialog">
+             <div class="modal-content">
+               <div class="modal-header">
+                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                 <h4 class="modal-title" id="myModalLabel">Invite Member</h4>
+               </div>
+               <div class="modal-body">
+                    <!-- INLINE FORM ELELEMNTS -->
+                      <div class="row mt">
+                         <div class="col-lg-12">
+                               <form class="form-inline" role="form">
+                                   <div id=inputForm class="form-group">
+                                       <!-- <label class="sr-only" for="exampleInputEmail2">Email address</label> -->
+                                       <input class="form-control" id="searchMemberId" placeholder="아이디 검색">
+                                   </div>
+                                   <button type="button" class="btn btn-theme" id="searchBtn">search</button> <br>
+                                   <input type="hidden" id="groupNo" value="${requestScope.groupNo }"> <!-- 모임 초대 시 groupNo보내기 위해 -->
+                             <br>
+                             <div id="searchMemberList"></div> <!-- 검색된 아이디 뿌려줌 -->                             
+                               </form>
+                         </div><!-- /col-lg-12 -->
+                      </div><!-- /row -->
+               </div>
+               <div class="modal-footer">
+                 <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">cancel</button>
+               </div>
+             </div>
+           </div>
+         </div> <!-- MODAL 끝 -->
+         
+      </c:when>
+   </c:choose>
+   </sec:authorize>
+   
 </sec:authorize>
+
 
 <input type="hidden" id="leader" value="${group.leader }">
 <input type="hidden" id="loginId" value="${loginId }">
