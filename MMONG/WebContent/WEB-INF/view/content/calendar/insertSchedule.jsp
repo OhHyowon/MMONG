@@ -135,7 +135,7 @@ $(function() {
 		</tr>
 		<tr style="line-height:30px;">
 			<td>제목</td>
-			<td style="width: 300px;padding:0px 0px 0px 20px;"><input type="text" name="title" style="width:247.5px; height:30px;" id="title" maxlength="50" value="${param.title }">
+			<td style="width: 300px;padding:0px 0px 0px 20px;"><input type="text" name="title" style="width:237.5px; height:30px;" id="title" maxlength="50" value="${param.title }">
 					<br><span class="error"><form:errors path="calendar.title"/></span></td>
 		</tr>
 		<tr style="line-height:30px;">
@@ -150,7 +150,7 @@ $(function() {
 		</tr>
 		<tr style="line-height:30px;">
 			<td>메모</td>
-			<td style="width: 300px;padding:10px 0px 0px 20px;"><input type="text" name="content" style="width:247.5px; height:80px;" id="content" maxlength="100" value="${param.content }">
+			<td style="width: 300px;padding:10px 0px 0px 20px;"><input type="text" name="content" style="width:237.5px; height:80px;" id="content" maxlength="100" value="${param.content }">
 				<span id="counter">###</span><br><span class="error"><form:errors path="calendar.content"/></span></td> 
 		</tr>
 		<tr style="line-height:30px;">
