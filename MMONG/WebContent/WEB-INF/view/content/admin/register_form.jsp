@@ -3,6 +3,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <style type="text/css">
 .error{
+	font-size:8px;
 	color: red;
 }
 th, td{
@@ -304,7 +305,7 @@ function formSubmit(){
 		
 		<tr>
 			<th>ID</th>
-			<td><input class="form-control" placeholder="ID" type="text" id="adminId" name="adminId"  value="${param.adminId }"></td> 
+			<td><input class="form-control" placeholder="ID" type="text" id="adminId" name="adminId" value="${param.adminId }"></td> 
 			<td><input class="btn btn-default btn-sm" type="button" id="idChk" value="중복확인"/></td> 
 		</tr>
 		<tr>

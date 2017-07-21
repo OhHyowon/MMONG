@@ -97,6 +97,7 @@ function alertMsg(){
                           <span>소모임</span>
                       </a>
                    </li>
+             </sec:authorize>     
 
                   
                   <li class="sub-menu">
@@ -105,7 +106,6 @@ function alertMsg(){
                           <span>고객센터</span>
                       </a>
                   </li>
-             </sec:authorize>     
                   <!-- 로그인하지 않은 사용자가 로그인이 필요한 메뉴 접근시 경고메시지 뿌려줄 곳 -->
 				  <div id="loginWaringMsg">
 				  </div>
