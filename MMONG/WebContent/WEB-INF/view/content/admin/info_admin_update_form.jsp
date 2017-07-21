@@ -4,7 +4,6 @@
 
 <style type="text/css">
 .error{
-	font-size : 8px;
 	color : red;
 }
 th,td{
@@ -173,7 +172,7 @@ function formSubmit(){
 <div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
-			<i class="fa fa-angle-right"></i>관리자 정보수정
+			관리자 정보수정
 		</h3>
 
 <div id="view-detail">

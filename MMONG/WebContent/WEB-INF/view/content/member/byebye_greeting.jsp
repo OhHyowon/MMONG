@@ -16,7 +16,7 @@ window.onload=function(){
 
 	<section class="wrapper site-min-height">
 		<h3>
-			<i class="fa fa-angle-right"></i> 회원 탈퇴가 완료되었습니다.
+			회원 탈퇴가 완료되었습니다.
 		</h3>
 <div id="content">
 	그동안 이용해 주셔서 감사합니다

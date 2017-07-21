@@ -23,7 +23,7 @@
 <div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
-			<i class="fa fa-angle-right"></i> 관리자 찾기 폼
+			관리자 찾기 폼
 		</h3>
 
 	<sec:authorize access="hasRole('ROLE_0')">

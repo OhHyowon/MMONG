@@ -24,7 +24,7 @@ window.onload=function(){
 <div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
-			<i class="fa fa-angle-right"></i>검색한 관리자 정보조회
+			검색한 관리자 정보조회
 		</h3>
 
 

@@ -4,7 +4,6 @@
 
 <style type="text/css">
 .error{
-	font-size : 8px;
 	color : red;
 }
 th,td{
@@ -207,7 +206,7 @@ function formSubmit(){
 </script>
 <div id="total_div">
 <section class="wrapper site-min-height">
-		<h3><i class="fa fa-angle-right"></i> 회원정보 수정</h3>
+		<h3>회원정보 수정</h3>
 <div id="view-detail">
  
 	<form name="updateForm" id="register" action="/MMONG/member/info_member_update.do" method="post">

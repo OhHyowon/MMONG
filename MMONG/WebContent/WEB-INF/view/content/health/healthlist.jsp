@@ -454,7 +454,7 @@ table.chartTable .even {
 <div id="total_div">
 <section class="wrapper site-min-height">
 		<h3>
-			<i class="fa fa-angle-right"></i> 건강관리
+			건강관리
 		</h3>
 
 <%-- ================건강관리 페이지 소메뉴=================== --%>
