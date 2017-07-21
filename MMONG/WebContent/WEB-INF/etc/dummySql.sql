@@ -39,21 +39,19 @@ INSERT INTO health VALUES(health_no_seq.nextval, '외부 기생충 예방 - 월 
 INSERT INTO health VALUES(health_no_seq.nextval, '외부 기생충 예방 - 월 1회(년 중) 옴, 벼룩, 진드기 등 외부기생충 예방 및 치료','g');
 
 
-INSERT INTO users VALUES('adminABC', 'pwd', 'ROLE_0', 1);
-INSERT INTO administrator VALUES('adminABC', '어드민', '01029934482', 'admin@kosta.or.kr');
 
-INSERT INTO administrator_notice VALUES(administrator_notice_no_seq.nextval,'[공지] MMONG 홈페이지 개설 안내','MMONG 홈페이지가 개설 되었습니다. 많은 활동 부탁드립니다.',TO_DATE('2006/10/25 16:10:40','yyyy/mm/dd hh24:mi:ss'),'adminABC');
-INSERT INTO administrator_notice VALUES(administrator_notice_no_seq.nextval,'[공지] 새해 복 많이 받으세요','MMONG 홈페이지가 개설 되었습니다. 많은 활동 부탁드립니다.',TO_DATE('2006/10/25 16:10:40','yyyy/mm/dd hh24:mi:ss'),'adminABC');
-INSERT INTO administrator_notice VALUES(administrator_notice_no_seq.nextval,'[공지] 신종금융사기! 스미싱 주의바랍니다!!','MMONG 홈페이지가 개설 되었습니다. 많은 활동 부탁드립니다.',TO_DATE('2007/10/25 16:10:40','yyyy/mm/dd hh24:mi:ss'),'adminABC');
-INSERT INTO administrator_notice VALUES(administrator_notice_no_seq.nextval,'[공지] 2016 국가고객만족도(NCSI) 애완어플 부문 최초 1위 선정','MMONG 홈페이지가 내용 개설 되었습니다. 많은 활동 부탁드립니다.',TO_DATE('2008/11/25 08:14:30','yyyy/mm/dd hh24:mi:ss'),'adminABC');
-INSERT INTO administrator_notice VALUES(administrator_notice_no_seq.nextval,'[공지] MMONG 개인정보 처리방침이 일부 개정되어 안내드립니다.','MMONG 내용. 많은 활동 부탁드립니다.',TO_DATE('2009/06/15 10:10:20','yyyy/mm/dd hh24:mi:ss'),'adminABC');
-INSERT INTO administrator_notice VALUES(administrator_notice_no_seq.nextval,'[이벤트] Best 소모임을 찾아라!','회원 여러분들의 많은 참여 부탁드립니다.',TO_DATE('2010/09/25 06:10:10','yyyy/mm/dd hh24:mi:ss'),'adminABC');
-INSERT INTO administrator_notice VALUES(administrator_notice_no_seq.nextval,'[공지] 자유게시판 홈페이지 검색도움말 개선 안내','MMONG 홈페이지가 개설 되었습니다. 많은 활동 부탁드립니다.',TO_DATE('2010/10/21 16:15:40','yyyy/mm/dd hh24:mi:ss'),'adminABC');
-INSERT INTO administrator_notice VALUES(administrator_notice_no_seq.nextval,'[공지] 마케팅정보 수신동의 확인 안내 (11/28) 제목','MMONG 홈페이지가 개설 되었습니다. 많은 활동 부탁드립니다.',TO_DATE('2011/10/25 07:10:10','yyyy/mm/dd hh24:mi:ss'),'adminABC');
-INSERT INTO administrator_notice VALUES(administrator_notice_no_seq.nextval,'[공지] 시스템점검으로 인한 홈페이지시스템 사용 일시 중지 안내 제목','MMONG 내용 홈페이지가 개설 되었습니다. 많은 활동 부탁드립니다.',TO_DATE('2011/10/25 06:10:10','yyyy/mm/dd hh24:mi:ss'),'adminABC');
-INSERT INTO administrator_notice VALUES(administrator_notice_no_seq.nextval,'[이벤트] 이벤트 당첨자 공지','당첨자 아이디 : tpdus123',TO_DATE('2012/10/25 06:10:10','yyyy/mm/dd hh24:mi:ss'),'adminABC');
-INSERT INTO administrator_notice VALUES(administrator_notice_no_seq.nextval,'[공지] 2014년 일부 서비스 점검 안내(9/7-8) 제목','MMONG 홈페이지가 개설 되었습니다. 많은 활동 부탁드립니다.',TO_DATE('2011/10/25 06:10:10','yyyy/mm/dd hh24:mi:ss'),'adminABC');
-INSERT INTO administrator_notice VALUES(administrator_notice_no_seq.nextval,'[공지] 산책로 기능 향상 안내','MMONG 홈페이지가 개설 되었습니다. 많은 활동 부탁드립니다.',TO_DATE('2017/05/11 14:10:10','yyyy/mm/dd hh24:mi:ss'),'adminABC');
+INSERT INTO administrator_notice VALUES(administrator_notice_no_seq.nextval,'[공지] MMONG 홈페이지 개설 안내','MMONG 홈페이지가 개설 되었습니다. 많은 활동 부탁드립니다.',TO_DATE('2006/10/25 16:10:40','yyyy/mm/dd hh24:mi:ss'),'admin123');
+INSERT INTO administrator_notice VALUES(administrator_notice_no_seq.nextval,'[공지] 새해 복 많이 받으세요','MMONG 홈페이지가 개설 되었습니다. 많은 활동 부탁드립니다.',TO_DATE('2006/10/25 16:10:40','yyyy/mm/dd hh24:mi:ss'),'admin123');
+INSERT INTO administrator_notice VALUES(administrator_notice_no_seq.nextval,'[공지] 신종금융사기! 스미싱 주의바랍니다!!','MMONG 홈페이지가 개설 되었습니다. 많은 활동 부탁드립니다.',TO_DATE('2007/10/25 16:10:40','yyyy/mm/dd hh24:mi:ss'),'admin123');
+INSERT INTO administrator_notice VALUES(administrator_notice_no_seq.nextval,'[공지] 2016 국가고객만족도(NCSI) 애완어플 부문 최초 1위 선정','MMONG 홈페이지가 내용 개설 되었습니다. 많은 활동 부탁드립니다.',TO_DATE('2008/11/25 08:14:30','yyyy/mm/dd hh24:mi:ss'),'admin123');
+INSERT INTO administrator_notice VALUES(administrator_notice_no_seq.nextval,'[공지] MMONG 개인정보 처리방침이 일부 개정되어 안내드립니다.','MMONG 내용. 많은 활동 부탁드립니다.',TO_DATE('2009/06/15 10:10:20','yyyy/mm/dd hh24:mi:ss'),'admin123');
+INSERT INTO administrator_notice VALUES(administrator_notice_no_seq.nextval,'[이벤트] Best 소모임을 찾아라!','회원 여러분들의 많은 참여 부탁드립니다.',TO_DATE('2010/09/25 06:10:10','yyyy/mm/dd hh24:mi:ss'),'admin123');
+INSERT INTO administrator_notice VALUES(administrator_notice_no_seq.nextval,'[공지] 자유게시판 홈페이지 검색도움말 개선 안내','MMONG 홈페이지가 개설 되었습니다. 많은 활동 부탁드립니다.',TO_DATE('2010/10/21 16:15:40','yyyy/mm/dd hh24:mi:ss'),'admin123');
+INSERT INTO administrator_notice VALUES(administrator_notice_no_seq.nextval,'[공지] 마케팅정보 수신동의 확인 안내 (11/28) 제목','MMONG 홈페이지가 개설 되었습니다. 많은 활동 부탁드립니다.',TO_DATE('2011/10/25 07:10:10','yyyy/mm/dd hh24:mi:ss'),'admin123');
+INSERT INTO administrator_notice VALUES(administrator_notice_no_seq.nextval,'[공지] 시스템점검으로 인한 홈페이지시스템 사용 일시 중지 안내 제목','MMONG 내용 홈페이지가 개설 되었습니다. 많은 활동 부탁드립니다.',TO_DATE('2011/10/25 06:10:10','yyyy/mm/dd hh24:mi:ss'),'admin123');
+INSERT INTO administrator_notice VALUES(administrator_notice_no_seq.nextval,'[이벤트] 이벤트 당첨자 공지','당첨자 아이디 : tpdus123',TO_DATE('2012/10/25 06:10:10','yyyy/mm/dd hh24:mi:ss'),'admin123');
+INSERT INTO administrator_notice VALUES(administrator_notice_no_seq.nextval,'[공지] 2014년 일부 서비스 점검 안내(9/7-8) 제목','MMONG 홈페이지가 개설 되었습니다. 많은 활동 부탁드립니다.',TO_DATE('2011/10/25 06:10:10','yyyy/mm/dd hh24:mi:ss'),'admin123');
+INSERT INTO administrator_notice VALUES(administrator_notice_no_seq.nextval,'[공지] 산책로 기능 향상 안내','MMONG 홈페이지가 개설 되었습니다. 많은 활동 부탁드립니다.',TO_DATE('2017/05/11 14:10:10','yyyy/mm/dd hh24:mi:ss'),'admin123');
 
 
 
