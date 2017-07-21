@@ -88,7 +88,7 @@ $(document).ready(function(){
 <section id="main-content">
 	<section class="wrapper site-min-height">
 		<h3>
-			<i class="fa fa-angle-right"></i> 공지사항 수정 폼
+			공지사항 수정 폼
 		</h3>
 
 

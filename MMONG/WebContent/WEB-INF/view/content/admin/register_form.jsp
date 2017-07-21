@@ -3,7 +3,6 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <style type="text/css">
 .error{
-	font-size:8px;
 	color: red;
 }
 th, td{

@@ -24,7 +24,7 @@ window.onload=function(){
 <div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
-			<i class="fa fa-angle-right"></i>회원정보 조회
+			회원정보 조회
 		</h3>
 		
 		

@@ -14,7 +14,7 @@ window.onload=function(){
 <div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
-			<i class="fa fa-angle-right"></i>관리자탈퇴가 완료되었습니다.
+			관리자탈퇴가 완료되었습니다.
 		</h3>
 	
 <div id="content">	

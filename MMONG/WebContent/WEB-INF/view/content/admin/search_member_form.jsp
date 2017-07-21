@@ -23,7 +23,7 @@ window.onload=function(){
 <div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
-			<i class="fa fa-angle-right"></i> 회원 찾기
+			회원 찾기
 		</h3>
 		
 		

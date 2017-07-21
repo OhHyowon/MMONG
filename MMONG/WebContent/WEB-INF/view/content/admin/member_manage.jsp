@@ -10,7 +10,7 @@ window.onload=function(){
 <div id="total_div">
 	<section class="wrapper site-min-height">
 		<h3>
-			<i class="fa fa-angle-right"></i>회원관리
+			회원관리
 		</h3>
 
 <sec:authorize access="hasRole('ROLE_0')">

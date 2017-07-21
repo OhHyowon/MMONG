@@ -40,7 +40,7 @@ $(document).ready(function(){
 
 <div id="total_div">
 	<section class="wrapper site-min-height">
-		<h3><i class="fa fa-angle-right"></i>관리자 마이페이지</h3>
+		<h3>관리자 마이페이지</h3>
 <div id="view-detail">
 
 

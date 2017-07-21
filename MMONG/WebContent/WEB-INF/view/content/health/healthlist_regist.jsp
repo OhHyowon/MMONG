@@ -71,7 +71,7 @@ div.background{
 <div align="center">
 	<div class="font">
 		<div class="header">
-			<i class="fa fa-angle-right"></i> 건강관리 등록
+			건강관리 등록
 		</div>
 <div class="background">
 건강 관리 정보<br>
