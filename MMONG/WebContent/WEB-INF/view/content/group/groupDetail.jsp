@@ -240,7 +240,7 @@ $(document).ready(function(){
 
 
 <!-- 소모임 정보 -->
-<div id="groupInfo" style="width:150px;">
+<div id="groupInfo" style="width:300px;">
 <b>모임 [ ${requestScope.group.name }  ] 입니다. </b><br>
 <img src="/MMONG/resource/assets/img/leader.png" class="img-responsive" alt="" style="width:14px; height:14px;" align="left"> &nbsp; ${requestScope.group.leader } <br>
 <img src="/MMONG/resource/assets/img/talk.png" class="img-responsive" alt="" style="width:18px; height:17px;" align="left"> &nbsp;<i>${requestScope.group.content }</i>
