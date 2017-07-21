@@ -100,7 +100,7 @@ function alertMsg(){
 
                   
                   <li class="sub-menu">
-                      <a href="/MMONG/admin/customerCenter.do" >
+                      <a href="/MMONG/adminNotice/selectAdminNoticeList.do" >   <%-- 고객센터 클릭하면 바로 공지사항 목록 조회 화면으로 이동하기로 수정 --%>
                           <i class="fa fa-th"></i>
                           <span>고객센터</span>
                       </a>

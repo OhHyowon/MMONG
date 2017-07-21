@@ -54,4 +54,11 @@ public interface TrailDao {
 	 * @return
 	 */
 	List<Trail> searchTrailByRouteContent(String routeContent);
+	
+	/**
+	 * 내가 등록한 산책로 조회
+	 * @param memberId
+	 * @return
+	 */
+	List<Trail> searchTrailMine(String memberId);
 }

@@ -81,11 +81,6 @@ function formChk(){
 
 $(document).ready(function(){
 	$("#insertBtn").on("click", function(){
-	/* 	alert($("#adminId").val());
-		alert($("#title").val().length);
-		alert($("#content").val());
-		alert($("#no").val());
-		alert($("#adminDate").val()); */
 		$.ajax({
 			"url":"/MMONG/adminNotice/insertAdminNoticeAjax.do",
 			"type":"post",

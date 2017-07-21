@@ -51,4 +51,11 @@ public interface TrailService {
 	 * @return
 	 */
 	List<Trail> searchTrailByRouteContent(String routeContent);
+	
+	/**
+	 * memberId로 자신이 등록한 산책로 조회하는 메소드
+	 * @param memberId
+	 * @return
+	 */
+	List<Trail> searchTrailMine(String memberId);
 }

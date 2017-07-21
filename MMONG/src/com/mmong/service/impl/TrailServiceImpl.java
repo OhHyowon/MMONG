@@ -50,4 +50,9 @@ public class TrailServiceImpl implements TrailService {
 		return trailDao.searchTrailByRouteContent(routeContent);
 	}
 
+	@Override
+	public List<Trail> searchTrailMine(String memberId) {
+		return trailDao.searchTrailMine(memberId);
+	}
+
 }
