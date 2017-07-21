@@ -4,6 +4,7 @@
 
 <style type="text/css">
 .error{
+	font-size:8px;
 	color : red;
 }
 th, td {
