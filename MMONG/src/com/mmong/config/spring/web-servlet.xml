@@ -80,9 +80,7 @@
 
 	<!-- 회원 찾기 폼 (search_member_form.jsp) -->
 	<mvc:view-controller path="/admin/search_member_form.do" view-name="admin/search_member_form.tiles" />
-
-	<!-- 고객센터로 이동 -->
-	<mvc:view-controller path="/admin/customerCenter.do" view-name="admin/customerCenter.tiles" />
+	
 	<!-- 공지사항 글쓰기 폼 -->
 	<mvc:view-controller path="/adminNotice/insertAdminNotice_form.do" view-name="adminNotice/insertAdminNotice_form.tiles" />
 

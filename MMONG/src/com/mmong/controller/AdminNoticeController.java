@@ -30,13 +30,6 @@ public class AdminNoticeController {
 	
 	
 	
-	
-	
-	
-	
-	/////// 이하 테스트 완료////////////
-	
-	
 	//관리자 공지사항 페이징
 	@RequestMapping("selectAdminNoticeList")
 	public String selectAdminNoticeList(@RequestParam(value="page", defaultValue="1")int page, 
@@ -63,25 +56,17 @@ public class AdminNoticeController {
 	}
 	
 	
-	//관리자 공지사항 글 하나 조회
-	@RequestMapping("viewAdminNotice")
-	public ModelAndView viewAdminNotice(@RequestParam int adminNoticeNo){
-		AdministratorNotice adNo = adminNoticeService.viewAdminNoticeByNo(adminNoticeNo);
-		return new ModelAndView("adminNotice/view_notice.tiles", "adminNotice", adNo);
-	}
-	
-	
 	//관리자 공지사항 등록
 	@RequestMapping("insertAdminNotice")
 	public ModelAndView insertAdminNotice (@ModelAttribute AdministratorNotice adminNotice, BindingResult errors){
 		System.out.println(adminNotice);
 		// 요청 파라미터 검증
-//		AdministratorNoticeValidator validator = new AdministratorNoticeValidator();
-//		validator.validate(adminNotice, errors);
-//		if(errors.hasErrors()){
-//			return  new ModelAndView("adminNotice/insertAdminNotice_form.tiles");
-//		}
-//		
+		AdministratorNoticeValidator validator = new AdministratorNoticeValidator();
+		validator.validate(adminNotice, errors);
+		if(errors.hasErrors()){
+			return  new ModelAndView("adminNotice/insertAdminNotice_form.tiles");
+		}
+		
 		
 		adminNotice.setAdminDate(new Date());
 		adminNoticeService.insertAdminNotice(adminNotice);
@@ -135,6 +120,13 @@ public class AdminNoticeController {
 		return new ModelAndView("redirect:/adminNotice/viewAdminNotice.do","adminNoticeNo",newAdminNoticeNo);
 	}
 
+	
+	//관리자 공지사항 글 하나 조회
+	@RequestMapping("viewAdminNotice")
+	public ModelAndView viewAdminNotice(@RequestParam int adminNoticeNo){
+		AdministratorNotice adNo = adminNoticeService.viewAdminNoticeByNo(adminNoticeNo);
+		return new ModelAndView("adminNotice/view_notice.tiles", "adminNotice", adNo);
+	}
 	
 	//공지사항 검색 (제목 or 내용)
 	@RequestMapping("selectAdminNoticeByKeyword")
