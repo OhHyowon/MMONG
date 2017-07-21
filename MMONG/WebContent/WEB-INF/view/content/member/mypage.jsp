@@ -54,7 +54,7 @@ $(document).ready(function(){
             <p><b>이름</b> : ${requestScope.member.memberName }</p>
             <p><b>전화번호</b> : ${requestScope.member.memberPhone }</p>
             <p><b>이메일</b> : ${requestScope.member.memberEmail}</p>
-            <p><b>주소</b> : ${requestScope.member.memberAddress}</p>
+  <%--           <p><b>주소</b> : ${requestScope.member.memberAddress}</p> --%>
    </div>
 </div>
 <div id="view-menu">

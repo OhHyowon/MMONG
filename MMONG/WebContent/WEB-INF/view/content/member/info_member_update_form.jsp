@@ -284,7 +284,7 @@ function formSubmit(){
 				</td>
 			</tr>
 			
-			<tr>
+			<%-- <tr>
 				<th>주소</th>
 				<td><input class="form-control" type="text" id="memberAddress" name="memberAddress" value="${requestScope.member.memberAddress}"></td>
 				<td></td>
@@ -295,7 +295,7 @@ function formSubmit(){
 					<div id="addressMsg" style="display:none"></div>
 				</td>
 				<td></td>
-			</tr>
+			</tr> --%>
 					
 			<tr>
 				<th>이메일</th>
