@@ -64,6 +64,7 @@ var resultListDivTop;
 var resultListDivHeight;
 var pagingDivTop;
 var totalMenuLeft = (document.body.scrollWidth-530)+"px";
+var currentId;
 
 //맵 초기화 함수
 function initialize() {
@@ -573,6 +574,8 @@ function buttonOnClick() {
 		$("#searchOpt").empty();
 		$("#searchOpt").append("<option>장소</option>");
 		
+		$("#removePOIMarker").attr("href", "#");
+		
 		$("#trail_list_div").empty();
 		$("#list_table").empty();
 		$("#paging_div").empty();
@@ -634,6 +637,8 @@ function buttonOnClick() {
 		$("div#myModal1").find($("input[name=route5]")).val("");
 		$("div#myModal1").find($("textarea[name=title]")).val("");
 		$("div#myModal1").find($("textarea[name=content]")).val("");
+
+		$("#removePOIMarker").removeAttr("href");
 		
 		$("#trail_list_div").empty();
 		$("#list_table").empty();
@@ -669,10 +674,15 @@ function buttonOnClick() {
 		$("div#myModal1").find($("textarea[name=title]")).val("");
 		$("div#myModal1").find($("textarea[name=content]")).val("");
 		
+
+		$("div#trail_list_div").css("display", "none");
+		
 		$("#searchOpt").empty();
 		$("#searchOpt").append("<option value='1'>카테고리</option>");
 		$("#searchOpt").append("<option value='2' selected='selected'>이름</option>");
 		$("#searchOpt").append("<option value='3'>내용</option>");
+		
+		$("#removePOIMarker").removeAttr("href");
 		
 		$("#trail_list_div").empty();
 		$("#list_table").empty();
@@ -694,6 +704,72 @@ function buttonOnClick() {
 		
 		iLonLat = new Tmap.LonLat(14149513.77048, 4495298.9298456);
 		map.setCenter(iLonLat, 16);
+	});
+	
+	$("a#searchMyTrail").on("click", function(event) {
+		event.preventDefault();
+		$("div#trail_list_div").empty();
+		$("div#trail_list_div").css("display", "none");
+		$("div#result_list_div").remove();
+		$("div#paging_div").remove();
+		$("div#trail_list_div").after("<div id='result_list_div' style='position: absolute; width: 300px; margin-top:10px;'><table id='list_table'><tr><td></td></tr></table></div><div id='paging_div' style='font-size:12px; height:25px; margin:0; text-align:center; position:absolute; width:300px;'></div>");
+		trailListDivHeight = $("div#trail_list_div").height();
+		resultListDivTop = (100+trailListDivHeight)+"px";
+		$("#result_list_div").css({"left":divLeft, "top":resultListDivTop});
+		
+		$("div#myModal1").find($("input[name=category]")).prop("checked", false);
+		$("div#myModal1").find($("input[name=route1]")).val("");
+		$("div#myModal1").find($("input[name=route2]")).val("");
+		$("div#myModal1").find($("input[name=route3]")).val("");
+		$("div#myModal1").find($("input[name=route4]")).val("");
+		$("div#myModal1").find($("input[name=route5]")).val("");
+		$("div#myModal1").find($("textarea[name=title]")).val("");
+		$("div#myModal1").find($("textarea[name=content]")).val("");
+		
+		for(var k=0; k<=trailIndex; k++) {
+			no[k] = null;
+			category[k] = null;
+			title[k] = null;
+			content[k] = null;
+			route1[k] = null;
+			route2[k] = null;
+			route3[k] = null;
+			route4[k] = null;
+			route5[k] = null;
+			memberId[k] = null;
+		}
+		trailIndex = 0;
+		currentId = $("input#loginId").val();
+		
+		jQuery.ajaxSettings.traditional = true;
+		$.ajax ({
+			"url" : "/MMONG/trail/searchTrailMine.do",
+			"type" : "POST",
+			"data" : {"memberId": currentId,"${_csrf.parameterName}":"${_csrf.token}"},
+			"dataType" : "json",
+			"success" : function(response) {
+				$("#list_table").empty();
+				if(response.length>0) {
+					$.each(response, function() {
+						no[trailIndex] = this.no;
+						category[trailIndex] = this.category;
+						tArr[trailIndex] = this.title;
+						content[trailIndex] = this.content;
+						route1[trailIndex] = this.route1;
+						route2[trailIndex] = this.route2;
+						route3[trailIndex] = this.route3;
+						route4[trailIndex] = this.route4;
+						route5[trailIndex] = this.route5;
+						memberId[trailIndex] = this.memberId;
+						$("#list_table").append("<tr><td class='result'><div style='width:205px;text-overflow:ellipsis;overflow: hidden;white-space: nowrap;'><img src='/MMONG/resource/assets/img/map/noun_413210_cc.png'>&nbsp;&nbsp;&nbsp;"+tArr[trailIndex]+"</div></td><td><input type='button' class='viewDetail btn btn-default btn-sm' value='상세보기' onClick='viewTrailDetail(no["+trailIndex+"],category["+trailIndex+"],tArr["+trailIndex+"],content["+trailIndex+"],route1["+trailIndex+"],route2["+trailIndex+"],route3["+trailIndex+"],route4["+trailIndex+"],route5["+trailIndex+"],memberId["+trailIndex+"]);'></td></tr>");
+						trailIndex++;
+					});
+				}else {
+					$("#list_table").append("<tr><td class='no_result'>검색 결과가 없습니다.</td></tr>");
+				}
+			}
+		});
+		
 	});
 	
 	$("#search_div").on("click", "a#searchTrail", function(event) {
@@ -833,7 +909,7 @@ function viewTrailDetail(trailNo, trailCategory, trailTitle, trailContent, trail
 		routeName[j] = null;
 	}
 	
-	var currentId = $("input#loginId").val();
+	currentId = $("input#loginId").val();
 	
 	$("#trail_list_div").empty();
 	
@@ -1147,7 +1223,8 @@ span.glyphicon {
 	<div id="total_menu" style="position:absolute; top:110px;">
 		<div><a href="#" id="initializeMap" ><img src="/MMONG/resource/assets/img/map/refresh.png" style="width:36px;" title="지도 초기화"></a></div>
 		<div><a href="#" id="registerTrail"><img src="/MMONG/resource/assets/img/map/plus2.png" style="width:36px;" title="산책로 추가"></a></div>
-		<div><a href="#" id="removePOIMarker"><img src="/MMONG/resource/assets/img/map/delete.png" style="width:36px;" title="마커 제거"></a></div>
+		<div><a id="removePOIMarker"><img src="/MMONG/resource/assets/img/map/delete.png" style="width:36px;" title="마커 제거"></a></div>
+		<div><a href="#" id="searchMyTrail"><img src="/MMONG/resource/assets/img/map/roundpin.png" style="width:36px;" title="내 산책로"></a></div>
 	</div>
 	
 	<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
