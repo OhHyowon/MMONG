@@ -9,9 +9,9 @@ public class AdministratorNotice  implements Serializable {
 	private int no;
 	private String title;
 	private String content;
-	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 	private Date adminDate;
-	
+		
 	private String adminId;
 	private Administrator administrator;
 	
